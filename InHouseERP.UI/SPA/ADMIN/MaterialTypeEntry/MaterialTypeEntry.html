@@ -1,0 +1,155 @@
+﻿<form name="MatrealTypeEntryForm" novalidate>
+    <div class="col-md-12">
+        <div class="alert alert-info alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="topInfo"> &nbsp; &#9755; <span style="color:red;">Red Icon</span> Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp; &#9755; Click On A Table Row To Update/Delete</div>
+        </div>
+    </div>
+    <div class="col-md-4" ng-show="CreatePermission">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-group"></i>&nbsp;Material Type Entry</h3>
+            </div>
+            <div class="panel-body">
+                <div class="form-group" ng-class="{ 'has-error' :MatrealTypeEntryForm.MaterialTypeName.$invalid && MatrealTypeEntryForm.MaterialTypeName.$touched }">
+                    <div class="input-group tooltipAll" data-toggle="tooltip" data-placement="bottom" title="Material Type Name">
+                        <input type="text" id="MaterialTypeNameText" name="MaterialTypeName" maxlength="201" class="form-control" ng-model="ad_MatrialType.MaterialTypeName" placeholder="Material Type Name" ng-maxlength="200" autofocus required>
+                        <span class="input-group-addon"><i class="fa fa-text-width" style="color:red;"></i></span>
+                    </div>
+                    <span class="help-block" ng-if="MatrealTypeEntryForm.DeclarationType.$error.required && MatrealTypeEntryForm.DeclarationType.$touched">Matreial Type is required</span>
+                    <span class="help-block" ng-if="MatrealTypeEntryForm.DeclarationType.$error.maxlength">200 Character Max</span>
+                </div>
+                <div class="form-group" ng-class="{ 'has-error' :MatrealTypeEntryForm.MaterialTypeCode.$invalid && MatrealTypeEntryForm.MaterialTypeCode.$touched }">
+                    <div class="input-group tooltipAll" data-toggle="tooltip" data-placement="bottom" title="Material Code ">
+                        <input type="text" id="txtMaterialCode " name="MaterialTypeCode " maxlength="201" class="form-control" ng-model="ad_MatrialType.MaterialTypeCode " placeholder="Material Code" ng-maxlength="200" autofocus required>
+                        <span class="input-group-addon"><i class="fa fa-text-width" style="color:red;"></i></span>
+                    </div>
+                    <span class="help-block" ng-if="MatrealTypeEntryForm.MaterialTypeCode.$error.required && MatrealTypeEntryForm.MaterialTypeCode.$touched">Material Code is required</span>
+                    <span class="help-block" ng-if="MatrealTypeEntryForm.MaterialTypeCode.$error.maxlength">100 Character Max</span>
+                </div>
+                <div class="form-group" ng-class="{ 'has-error' :MatrealTypeEntryForm.MaterialTypeDescription.$invalid && MatrealTypeEntryForm.MaterialTypeDescription.$touched }">
+                    <div class="input-group tooltipAll" data-toggle="tooltip" data-placement="bottom" title="Material Type Description ">
+                        <textarea type="text" id="txtMaterialTypeDescription " cols="2" rows="2" name="MaterialTypeDescription " maxlength="201" class="form-control" ng-model="ad_MatrialType.MaterialTypeDescription " placeholder="Material Type Description " ng-maxlength="200" autofocus></textarea>
+                        <!--<input type="text" id="txtMaterialTypeDescription " name="MaterialTypeDescription " maxlength="201" class="form-control" ng-model="ad_MatrialType.MaterialTypeDescription " placeholder="Material Type Description " ng-maxlength="200" autofocus required>-->
+                        <span class="input-group-addon"><i class="fa fa-text-width" style="color:black;"></i></span>
+                    </div>
+                    <!--<span class="help-block" ng-if="MatrealTypeEntryForm.MaterialTypeDescription.$error.required && MatrealTypeEntryForm.MaterialTypeDescription.$touched">Material Type Description is required</span>-->
+                    <span class="help-block" ng-if="MatrealTypeEntryForm.MaterialTypeDescription.$error.maxlength">300 Character Max</span>
+                </div>
+                <div class="form-group">
+                    <div class="input-group">
+                        <label>Status: </label>
+                        &nbsp;&nbsp;
+                        <div class="radio-inline"><input type="radio" name="optionsRadios" ng-value="true" ng-model="ad_MatrialType.IsActive">Active</div>
+                        <div class="radio-inline"><input type="radio" name="optionsRadios" ng-value="false" ng-model="ad_MatrialType.IsActive"> Inactive</div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+
+                    <div class=" row">
+                        <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 5%; padding-right: 7%;">
+                            <div class="row">
+                                <button class="btn btn-success" ng-click="SaveMaterialType()" ng-disabled="!ad_MatrialType.MaterialTypeCode||!ad_MatrialType.MaterialTypeName">
+                                    <i class="fa fa-floppy-o"></i>&nbsp;{{button}}
+                                </button>
+                            </div>
+                        </div>
+                        <!--<div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 6%; padding-right: 6%;">
+                            <div class="row">
+                                <button id="btnDelete" class="customBtn custmoBtnDelete" ng-click="Delete()" ng-show="Show" title="Search">
+                                    <i class="fa fa-trash"></i>&nbsp;Delete
+                                </button>
+                            </div>
+                        </div>-->
+                        <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 7%; padding-right: 5%;">
+                            <div class="row">
+                                <button id="Button3" class="btn btn-danger tooltipAll" title="Reset" ng-click="resetForm()">
+                                    <i class="fa fa-refresh"></i>&nbsp;Reset
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8" ng-show="ListViewPermission">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-list"></i>&nbsp;Material Type List</h3>
+            </div>
+            
+            <div class="panel-body custom-panal-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group tooltipAll" data-toggle="tooltip" title="Material Code / Name / Description">
+                            <input type="text" class="form-control" id="textItemCodeAndDescription" ng-model="ItemCodeAndDescription" ng-change="MaterialTypeSearch();" name="name" placeholder="Material Code / Name / Description" />
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <div class="row">
+                            <button id="btnSearch" ng-click="reloadBtn()" class="customBtn custmoBtnSearch tooltipAll" title="Reload">
+                                <i class="fa fa-refresh"></i>&nbsp;Clear
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="tbl-outer">
+                    <table class="responstable table-hover">
+                        <tbody>
+                            <tr class="t-head">
+                                <th>S/N</th>
+                                <th class="txt-center"><span>Material Type Name</span></th>
+                                <th class="txt-center"><span>Description</span></th>
+                                <th class="txt-center"><span>Material Code</span></th>
+                                <th class="txt-center">Status</th>
+                                <th class="txt-center" ng-show="RevisePermission">Action</th>
+                            </tr>
+                            <tr class="HoverTable" dir-paginate="MaterialType in MaterialTypelist | filter:q | itemsPerPage: PerPage" current-page="currentPage" total-items="total_count">
+                                <td>{{$index + ((currentPage-1)*PerPage) + 1}}</td>
+                                <td class="txt-center">{{MaterialType.MaterialTypeName}}</td>
+
+                                <td class="txt-center">{{MaterialType.MaterialTypeDescription}}</td>
+                                <td class="txt-center">{{MaterialType.MaterialTypeCode}}</td>
+                                <td class="txt-center">
+
+                                    <p ng-if="MaterialType.IsActive==true">Active</p>
+                                    <p ng-if="MaterialType.IsActive==false">Inactive</p>
+
+
+                                </td>
+                                <td class="txt-center" ng-click="SelMaterialType(MaterialType)" ng-show="RevisePermission">
+                                    <button class="btn btn-primary"><i class="fa fa-edit">Edit</i></button>
+                                </td>
+                            </tr>
+                            <tr class="t-foot" ng-show="total_count>PerPage">
+                                <th colspan="8">
+                                    <dir-pagination-controls max-size="8"
+                                                             direction-links="true"
+                                                             boundary-links="true"
+                                                             on-page-change="getData(newPageNumber)" style="text-align:center;">
+                                    </dir-pagination-controls>
+                                </th>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="row pagination-footer">
+                        <div class="col-md-6">
+                            <span>Show </span><input class="input-pagesize" type="number" ng-maxlength="100" ng-minlength="1" width="1" ng-model="PerPage"> <span>Records </span>
+                        </div>
+                        <div class="col-md-6">
+                            <span class="pull-right">Showing {{((currentPage-1)*PerPage)+1}} to {{((currentPage-1)*PerPage)+DeclarationTypelist.length}} of {{total_count}} Records</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script>
+    $('.tooltipAll').tooltip({ boundary: 'window' })
+</script>

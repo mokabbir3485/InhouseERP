@@ -1,0 +1,200 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mushak_4.3</title>
+
+    <style type="text/css">
+        body {
+            font-family: 'SolaimanLipi', sans-serif;
+            font-size: 11px;
+            line-height: 12px;
+        }
+
+        .header {
+            text-align: center;
+            line-height: 10px;
+        }
+
+        .flexcontainer {
+            display: flex;
+            justify-content: space-between;
+        }
+
+
+        .ProductTable th {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+
+        .ProductTable td {
+            border: 1px solid black;
+            border-collapse: collapse;
+            padding: 5px;
+        }
+        @page {
+            size: A4 portrait;
+        }
+    </style>
+
+</head>
+
+<body>
+    <table style="width: 100%; font-size: 11px;">
+        <tbody>
+            <tr>
+                <td>
+                    <div class=" hidden-print">
+
+                        <div class="row">
+                            <div class="col-sm-2 col-md-2">
+                                <button type="button" onclick="document.title = 'Mushak_6_3 ' + getCurrentDateTime(); PrintPdf();" class="customBtn custmoBtnReset"
+                                        style="border-radius: 3px; margin-bottom: -.9em; margin-top: -15px; padding-bottom: 3px; padding-top: 3px;"
+                                        title="Export to .doc">
+                                    <i class="fa fa-print"></i>&nbsp;Print
+                                </button>
+                            </div>
+
+
+                        </div>
+                        <hr />
+                    </div>
+                    <div style="display: flex;justify-content: center;align-items: center">
+                        <div style="text-align:left;">
+
+                            <img style="width:90px;height:55px;border-radius:100%;" src="/UploadedImages/govt.jpg" />
+
+                        </div>
+                        <div>
+                            <p class="header">গণপ্রজাতন্ত্রী বাংলাদেশ সরকার </p>
+                            <p class="header"> জাতীয় রাজস্ব বোর্ড</p>
+                            <p class="header">কর চালান পত্র</p>
+                            <p class="header">[ বিধি ৪০ এর উপ-বিধি (১) এর দফা (গ) ও দফা (চ) দ্রষ্টব্য ]</p>
+
+                        </div>
+                    </div>
+
+                    <div class="flexcontainer">
+                        <div></div>
+                        <div>
+                            <p style="border: 1px solid #000000; text-align:center; width:60px; height:20px;"><b>মূসক-৬.৩</b></p>
+                        </div>
+
+                    </div>
+                    <div style="display: flex;justify-content: center;align-items: center">
+                        <div>
+                            <p>নিবন্ধিত ব্যক্তির নাম: {{Mushak_6_3DataList[0].OrganizationName}}</p>
+                            <p>নিবন্ধিত ব্যক্তির বি আই এন: {{Mushak_6_3DataList[0].OrganizationBIN}}</p>
+                            <p>চালান পত্র ইস্যুর ঠিকানা: {{Mushak_6_3DataList[0].OrganizationAddress}}</p>
+
+                        </div>
+                    </div>
+                    <div class="flexcontainer">
+                        <div>
+                            <p>ক্রেতার নাম: {{Mushak_6_3DataList[0].CompanyName}}</p>
+                            <p>ক্রেতার বি আই এন: {{Mushak_6_3DataList[0].CompanyBIN}}</p>
+                            <p>সরবরাহের গন্তব্যস্থল: {{Mushak_6_3DataList[0].CompanyDeliveryAddress}}</p>
+                        </div>
+                        <div>
+                            <p>চালান পত্র নম্বর: {{Mushak_6_3DataList[0].SalesInvoiceNo}}</p>
+                            <p>ইস্যুর তারিখ: {{Mushak_6_3DataList[0].SalesInvoiceDate}}</p>
+                            <p>ইস্যুর সময়: {{Mushak_6_3DataList[0].InvoiceTime}}</p>
+                        </div>
+                    </div>
+                    <br />
+                    <br />
+                    <table class="ProductTable table-hover" style="width: 100%;  margin:auto">
+                        <tbody>
+                            <tr>
+                                <th class="t-cell-center">ক্রমিক</th>
+                                <th class="t-cell-center" style="width:40%">পণ্য সেবার বর্ণনা (প্রযোজ্য ক্ষেত্রে ব্র্যান্ড নামসহ)</th>
+                                <th class="t-cell-center">সরবরাহের একক</th>
+                                <th class="t-cell-center">পরিমাণ</th>
+                                <th class="t-cell-center">একক মূল্য<sup>১</sup> (টাকায়)</th>
+                                <th class="t-cell-center">মোট মূল্য<sup>১</sup> (টাকায়)</th>
+                                <th class="t-cell-center">সম্পূরক শুল্কের পরিমাণ (টাকায়)</th>
+                                <th class="t-cell-center">মূল্য সংযোজন করের হার/সুনির্দিষ্ট কর</th>
+                                <th class="t-cell-center">মূল্য সংযোজন কর হার /সুনির্দিষ্ট কর এর পরিমাণ টাকায়</th>
+                                <th class="t-cell-center">সকল প্রকার শুল্ক  ও করসহ মূল্য</th>
+
+                            </tr>
+                            <tr class="HoverTable" ng-repeat="aMushak_6_3 in Mushak_6_3DataList track by $index">
+                                <td class="t-cell-center">{{$index+1}}</td>
+                                <td class="t-cell-center">{{aMushak_6_3.ItemDescription}} </td>
+                                <td style="text-align:center">{{aMushak_6_3.UnitName}}</td>
+                                <td style="text-align:center">{{aMushak_6_3.DeliveryQuantity}}</td>
+                                <td style="text-align:center">{{aMushak_6_3.DeliveryUnitPrice}}</td>
+                                <td style="text-align:center">{{aMushak_6_3.Amount}}</td>
+                                <td style="text-align:center">{{aMushak_6_3.SDAmount}}</td>
+                                <td style="text-align:center">{{aMushak_6_3.VatPercentage}} %</td>
+                                <td style="text-align:center">{{aMushak_6_3.VatAmount}}</td>
+                                <td style="text-align:center">{{aMushak_6_3.AmountWithVATAndSD}}</td>
+                                
+                            </tr>
+                            <tr>
+                                <td colspan="5" style="text-align:right;">সর্বমোট </td>
+                                <td style="text-align:center">{{TotalAmount}}</td>
+                                <td style="text-align:center">{{TotalSDAmount}}</td>
+                                <td style="text-align:center"></td>
+                                <td style="text-align:center">{{TotalVatAmount}}</td>
+                                <td style="text-align:center">{{TotalAmountWithVATAndSD}}</td>
+                                
+                            </tr>
+                        </tbody>
+                    </table>
+
+
+                    <br />
+                    <p><b>প্রতিষ্ঠান কতৃপক্ষের দায়িত্বপ্রাপ্ত ব্যক্তির নামঃ</b></p>
+                    <p><b>পদবীঃ</b></p>
+                    <p><b>স্বাক্ষরঃ</b></p>
+                    <p><b>সীলঃ</b></p>
+                    <br />
+                    <p style="text-align: left">
+                        * উৎসে কর্তনযোগ্য সরবরাহের ক্ষেত্রে ফরমটি সমন্বিত কর চালানপত্র ও  
+                        উৎসে কর কর্তন সনদপত্র হিসাবে বিবেচিত হইবে এবং উহা উৎসে কর কর্তনযোগ্য সরবরাহের ক্ষেত্রে প্রযোজ্য হবে।
+                    </p>
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <p style="text-align: left">
+                        
+                        _______________________________
+                    </p>
+                    <p style="text-align: left">
+                        
+                        <sup>১</sup>সকল প্রকার কর ব্যতীত মূল্য";
+                    </p>
+                </td>
+
+            </tr>
+        </tbody>
+    </table>
+</body>
+
+</html>
+<script>
+
+
+
+    jQuery(document).ready(function ($) {
+
+        $(".main-sidebar").attr("hidden", true);
+        $(".main-header").attr("hidden", true);
+        $(".main-footer").attr("hidden", true);
+        $("#Hidebr").attr("hidden", true);
+
+        $("div").removeClass("wrapper");
+        $("div").removeClass("content-wrapper");
+    });
+
+
+    function PrintPdf() {
+        window.print();
+    }
+
+</script>

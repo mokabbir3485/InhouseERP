@@ -1,0 +1,470 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+        body {
+            font-family: "Times New Roman", Times, serif;
+            color: #000000;
+            width: 100%;
+            height: 100%;
+        }
+
+        .ProductTable th {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+
+        .ProductTable td {
+            border: 1px solid black;
+            border-collapse: collapse;
+            padding: 5px;
+        }
+        textarea {
+            resize: none;
+            border: none;
+            outline: none;
+            background-color:transparent;
+        }
+        .footer {
+            position: fixed;
+            left: 29px;
+            bottom: 0px;
+        }
+
+        .flexcontainer {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        @media print {
+            .page-break {
+                display: block;
+                page-break-before: always;
+            }
+        }
+
+        @page {
+            size: A4;
+            font-family: 'Times New Roman';
+        }
+
+        @media screen {
+            div#footer_wrapper {
+                display: none;
+            }
+        }
+
+        @media print {
+            #signeture {
+                visibility: hidden;
+            }
+
+            div#footer_wrapper {
+                margin: 0px 2px 0px 7px;
+                position: fixed;
+                bottom: 5px;
+            }
+
+            div#footer_content {
+                font-weight: bold;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="footer_wrapper" class="container">
+        <div id="footer_content">
+            <table style="width: 100%;">
+                <tbody>
+                    <tr>
+                        <td style="text-align:center;">
+                            <div>
+                                <span style="font-size: 13px; text-align: center;"><b>________________________________</b></span><br />
+                                <span style="font-size: 13px;text-align: center;"><b>Prepared By</b></span><br />
+                                <span style="font-size: 13px;text-align: center;"><b>Executive - Accounts</b></span>
+                            </div>
+                        </td>
+                        <td style="text-align:center;" width="1000">
+                            <div>
+                                <span style="font-size: 13px; text-align: center;"><b>________________________________</b></span><br />
+                                <span style="font-size: 13px;text-align: center;"><b>Check & Verify By</b></span><br />
+                                <span style="font-size: 13px;text-align: center;"><b>Asst Manager - Accounts & Cash</b></span>
+                            </div>
+                        </td>
+                        <td style="text-align:center;" width="1000">
+                            <div>
+                                <span style="font-size: 13px; text-align: center;"><b>________________________________</b></span><br />
+                                <span style="font-size: 13px;text-align: center;"><b>Approved By</b></span><br />
+                                <span style="font-size: 13px;text-align: center;"><b> Managing Director</b></span>
+                            </div>
+                        </td>
+
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <table style="width: 100%">
+        <tbody>
+            <tr>
+                <td>
+                    <div class=" hidden-print">
+                        <div class="row">
+
+                            <div class="col-sm-3 col-md-2">
+
+                                <button type="button" onclick="document.title = 'Purchase Order ' + getCurrentDateTime(); PrintPdf();" class="customBtn custmoBtnReset" style="border-radius: 3px; margin-bottom: -.9em; margin-top: -15px; padding-bottom: 3px; padding-top: 3px;" title="Print PDF">
+                                    <i class="fa fa-print"></i>&nbsp;Print
+                                </button>
+                            </div>
+                        </div>
+                        <hr />
+                    </div>
+
+                    <div id="source-html">
+                        <!--<div>
+                            <img id="LogoImg" style="height:64px; width:750px;" src="/UploadedImages/rtlFullName.png" />
+                        </div>
+                        <br />-->
+                        <div valign="middle" align="center">
+                            <span style="font-size:20px; border: 1px solid #000000; width:180px; padding:5px;"><b>Purchase Order</b></span><br />
+                            <span>Label Unit</span>
+                        </div>
+                        <biv class="flexcontainer">
+                            <div style="width:150px;">
+                                <span> Site: {{PurchaseOrderDetailList[0].BranchName}}</span>
+                            </div>
+                            <!--<div>
+                                <span> Label Unit</span>
+                            </div>-->
+                            <div>
+                                <span ng-if="PurchaseOrderDetailList[0].OrganizationBIN"> BIN NO: {{PurchaseOrderDetailList[0].OrganizationBIN}}</span>
+                            </div>
+
+                        </biv>
+                        <biv class="flexcontainer" >
+                            <div style="width: 370px; border: 1px solid; padding: 5px; border-radius: 10px;">
+                                <table width="100%">
+                                    <tr>
+                                        <td style="vertical-align: top; text-align: left; line-height: 0.8;" width="25%">
+                                            <span>Supplier Name </span>
+                                        </td>
+                                        <td style="vertical-align: top; text-align: left; line-height: 0.8;" width="10%">
+                                            <span>&emsp; : &emsp;</span>
+                                        </td>
+                                        <td style="vertical-align: top; text-align: left; line-height: 0.8;" width="65%">
+                                            <span>{{PurchaseOrderDetailList[0].SupplierName}}</span>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <table width="100%">
+                                    <tr>
+                                        <td style="vertical-align: top; text-align: left; line-height: 1;" width="25%">
+                                            <span>Address </span>
+                                        </td>
+                                        <td style="vertical-align: top; text-align: left; line-height: 1;" width="10%">
+                                            <span>&emsp; : &emsp;</span>
+                                        </td>
+                                        <td style="vertical-align: top; text-align: left; line-height: 1;" width="65%">
+                                            <span>{{PurchaseOrderDetailList[0].Address}}</span>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <table width="100%">
+                                    <tr ng-if="PurchaseOrderDetailList[0].Email">
+                                        <td style="vertical-align: top; text-align: left; line-height: 0.8;" width="25%">
+                                            <span>E- Mail </span>
+                                        </td>
+                                        <td style="vertical-align: top; text-align: left; line-height: 0.8;" width="10%">
+                                            <span>&emsp; : &emsp;</span>
+                                        </td>
+                                        <td style="vertical-align: top; text-align: left; line-height: 0.8;" width="65%">
+                                            <span>{{PurchaseOrderDetailList[0].Email}}</span>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <table style="margin-bottom: auto;" width="100%">
+                                    <tr ng-if="PurchaseOrderDetailList[0].Mobile">
+                                        <td style="vertical-align: top; text-align: left; line-height: 0.8;" width="25%">
+                                            <span>Contact </span>
+                                        </td>
+                                        <td style="vertical-align: top; text-align: left; line-height: 0.8;" width="10%">
+                                            <span>&emsp; : &emsp;</span>
+                                        </td>
+                                        <td style="vertical-align: top; text-align: left; line-height: 0.8;" width="65%">
+                                            <span>{{PurchaseOrderDetailList[0].Mobile}}</span>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <table width="100%">
+                                    <tr ng-if="PurchaseOrderDetailList[0].SupplierBIN">
+                                        <td style="vertical-align: top; text-align: left; line-height: 0.8;" width="25%">
+                                            <span>BIN </span>
+                                        </td>
+                                        <td style="vertical-align: top; text-align: left; line-height: 0.8;" width="10%">
+                                            <span>&emsp; : &emsp;</span>
+                                        </td>
+                                        <td style="vertical-align: top; text-align: left; line-height: 0.8;" width="65%">
+                                            <span>{{PurchaseOrderDetailList[0].SupplierBIN}}</span>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <table width="100%">
+                                    <tr ng-if="PurchaseOrderDetailList[0].SupplierTIN">
+                                        <td style="vertical-align: top; text-align: left; line-height: 0.8;" width="25%">
+                                            <span>TIN </span>
+                                        </td>
+                                        <td style="vertical-align: top; text-align: left; line-height: 0.8;" width="10%">
+                                            <span>&emsp; : &emsp;</span>
+                                        </td>
+                                        <td style="vertical-align: top; text-align: left; line-height: 0.8;" width="65%">
+                                            <span>{{PurchaseOrderDetailList[0].SupplierTIN}}</span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div style="width: 370px; border: 1px solid; padding: 10px; border-radius: 10px;">
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <span>PO No </span>
+                                        </td>
+                                        <td>
+                                            <span>&emsp; : &emsp;</span>
+                                        </td>
+                                        <td>
+                                            <span>{{PurchaseOrderDetailList[0].PONo}}&emsp;</span>
+                                        </td>
+                                        <td>
+                                            <span>Date </span>
+                                        </td>
+                                        <td>
+                                            <span>&emsp; : &emsp;</span>
+                                        </td>
+                                        <td>
+                                            <span>{{PurchaseOrderDetailList[0].PODate}}</span>
+                                        </td>
+                                    </tr>
+                                    <tr ng-if="PurchaseOrderDetailList[0].QuotationNo">
+                                        <td>
+                                            <span>Quotation No </span>
+                                        </td>
+                                        <td>
+                                            <span>&emsp; : &emsp;</span>
+                                        </td>
+                                        <td>
+                                            <span>{{PurchaseOrderDetailList[0].QuotationNo}}</span>
+                                        </td>
+                                        <td>
+                                            <span></span>
+                                        </td>
+                                        <td>
+                                            <span></span>
+                                        </td>
+                                        <td>
+                                            <span></span>
+                                        </td>
+                                    </tr>
+                                    <tr ng-if="PurchaseOrderDetailList[0].MaterialsDemandNo">
+                                        <td>
+                                            <span>Work Req </span>
+                                        </td>
+                                        <td>
+                                            <span>&emsp; : &emsp;</span>
+                                        </td>
+                                        <td>
+                                            <span>{{PurchaseOrderDetailList[0].MaterialsDemandNo}}&emsp;</span>
+                                        </td>
+                                        <td>
+                                            <span>Date </span>
+                                        </td>
+                                        <td>
+                                            <span>&emsp; : &emsp;</span>
+                                        </td>
+                                        <td>
+                                            <span>{{PurchaseOrderDetailList[0].DemandDate}}</span>
+                                        </td>
+                                    </tr>
+                                    
+
+                                </table>
+                                <table width="100%">
+                                    <tr ng-if="PurchaseOrderDetailList[0].PreparedByName">
+                                        <td style="vertical-align: top; text-align: left; line-height: 0.8;" width="25%">
+                                            <span>Prepared By </span>
+                                        </td>
+                                        <td style="vertical-align: top; text-align: left; line-height: 0.8;" width="10%">
+                                            <span>&emsp; : &emsp;</span>
+                                        </td>
+                                        <td style="vertical-align: top; text-align: left; line-height: 0.8;" width="65%">
+                                            <span>{{PurchaseOrderDetailList[0].PreparedByName}}</span>
+                                        </td>
+                                    </tr>
+                                    <tr ng-if="PurchaseOrderDetailList[0].CheckedByName">
+                                        <td style="vertical-align: top; text-align: left; line-height: 0.8;" width="25%">
+                                            <span>Checked By</span>
+                                        </td>
+                                        <td style="vertical-align: top; text-align: left; line-height: 0.8;" width="10%">
+                                            <span>&emsp; : &emsp;</span>
+                                        </td>
+                                        <td style="vertical-align: top; text-align: left; line-height: 0.8;" width="65%">
+                                            <span>{{PurchaseOrderDetailList[0].CheckedByName}}</span>
+                                        </td>
+                                    </tr>
+                                    <tr ng-if="PurchaseOrderDetailList[0].ApprovedByName">
+                                        <td style="vertical-align: top; text-align: left; line-height: 0.8;" width="25%">
+                                            <span>Approved By</span>
+                                        </td>
+                                        <td style="vertical-align: top; text-align: left; line-height: 0.8;" width="10%">
+                                            <span>&emsp; : &emsp;</span>
+                                        </td>
+                                        <td style="vertical-align: top; text-align: left; line-height: 0.8;" width="65%">
+                                            <span>{{PurchaseOrderDetailList[0].ApprovedByName}}</span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </biv>
+                        <br />
+
+                        <table class="ProductTable table-hover" style="width: 100%;  margin:auto">
+                            <tbody>
+                                <tr>
+                                    <th class="t-cell-center">S/N</th>
+                                    <th class="t-cell-center" style="width:40%">ITEM DESCRIPTION WITH SPECIFICATION</th>
+                                    <th class="t-cell-center">MATERIAL</th>
+                                    <th class="t-cell-center">UNIT</th>
+                                    <th class="t-cell-center">QTY.</th>
+                                    <th class="t-cell-center">RATE (Tk.)</th>
+                                    <th class="t-cell-center">VAT(%)</th>
+                                    <th class="t-cell-center" style="width: 20%">Amount</th>
+                                </tr>
+                                <tr class="HoverTable" ng-repeat="aPurchaseOrderDetail in PurchaseOrderDetailList track by $index">
+                                    <td class="t-cell-center">{{$index+1}}</td>
+                                    <td class="t-cell-center">{{aPurchaseOrderDetail.ItemDescriptionTwo}}</td>
+                                    <td style="text-align:center">{{aPurchaseOrderDetail.MaterialTypeCode}}</td>
+                                    <td style="text-align:center">{{aPurchaseOrderDetail.UnitName}}</td>
+                                    <td style="text-align:center">{{aPurchaseOrderDetail.Quantity}}</td>
+                                    <td style="text-align:center">{{aPurchaseOrderDetail.UnitPrice}}</td>
+                                    <td style="text-align:center">{{aPurchaseOrderDetail.VATPercentage}}</td>
+                                    <td style="text-align:right;">{{aPurchaseOrderDetail.Amount}}</td>
+
+                                </tr>
+                                <tr>
+                                    <td colspan="4" rowspan="4"><b>In words:{{PurchaseOrderDetailList[0].AmountInWords}} </b></td>
+                                    <td colspan="3"><b>SUB TOTAL(TK)</b></td>
+                                    <td align="right">{{SubTotalAmount}}</td>
+                                </tr>
+                                <tr style="line-height: 5px">
+                                    <td colspan="3">Discount</td>
+                                    <td align="right">{{PurchaseOrderDetailList[0].AdditionalDiscount}}</td>
+                                </tr>
+                                <tr style="line-height: 5px">
+                                    <td colspan="3">VAT Amount</td>
+                                    <td align="right">{{PurchaseOrderDetailList[0].TotalVAT}}</td>
+                                </tr>
+                                <tr style="line-height: 5px">
+                                    <td colspan="3">Total Amount (Tk.)</td>
+                                    <td align="right"><b>{{TotalAmount}}</b></td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                        <br />
+                        <div>
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <div class="row" style="font-family: 'Times New Roman'">
+                                                <div class="col-md-12">
+                                                    <span style="font-size: 14px;"><b><u>Terms & Conditions:</u></b></span>
+                                                    <br />
+                                                    <div style="font-size: 14px; font-family: 'Times New Roman'" id="htmlTermsAndCondition">
+
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+
+                        <p style="font-size:14px;" ng-if="PurchaseOrderDetailList[0].DeliveryDate"><b>Delivery Date:</b> {{PurchaseOrderDetailList[0].DeliveryDate}}</p>
+                        <p style="font-size:14px;" ng-if="PurchaseOrderDetailList[0].PlaceOfDelivery"><b>Place Of Delivery:</b> {{PurchaseOrderDetailList[0].PlaceOfDelivery}}</p>
+                        <p style="font-size:14px;" ng-if="PurchaseOrderDetailList[0].ContactNo"><b>Contact No:</b> {{PurchaseOrderDetailList[0].ContactNo}}</p>
+                        <p style="font-size:14px;" ng-if="PurchaseOrderDetailList[0].Remarks"><b>Remarks:</b> {{PurchaseOrderDetailList[0].Remarks}}</p>
+                        <span style="font-size:14px;" ng-if="PurchaseOrderDetailList[0].AdditionalInfo"><u>Copy:</u></span><br />
+                        <textarea id="AdditionalInfo" rows="5"  name="AdditionalInfo" ng-model="PurchaseOrderDetailList[0].AdditionalInfo" disabled> </textarea>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+        <tfoot id="signeture">
+            <tr>
+                <td>
+                    <div>
+                        <table style="width: 100%;">
+                            <tbody>
+                                <tr class="flexcontainer">
+                                    <td style="text-align:center;">
+                                        <div>
+                                            <span style="font-size: 13px; text-align: center;"><b>________________________________</b></span><br />
+                                            <span style="font-size: 13px;text-align: center;"><b>Prepared By</b></span><br />
+                                            <span style="font-size: 13px;text-align: center;"><b>Executive - Accounts</b></span>
+                                        </div>
+                                    </td>
+                                    <td style="text-align:center;">
+                                        <div>
+                                            <span style="font-size: 13px; text-align: center;"><b>________________________________</b></span><br />
+                                            <span style="font-size: 13px;text-align: center;"><b>Check & Verify By</b></span><br />
+                                            <span style="font-size: 13px;text-align: center;"><b>Asst Manager - Accounts & Cash</b></span>
+                                        </div>
+                                    </td>
+                                    <td style="text-align:center;">
+                                        <div>
+                                            <span style="font-size: 13px; text-align: center;"><b>________________________________</b></span><br />
+                                            <span style="font-size: 13px;text-align: center;"><b>Approved By</b></span><br />
+                                            <span style="font-size: 13px;text-align: center;"><b> Managing Director</b></span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                    <span style="font-size:8px;">Powered By Retail Software Development</span>
+                </td>
+            </tr>
+
+        </tfoot>
+    </table>
+</body>
+</html>
+<script>
+
+
+
+    jQuery(document).ready(function ($) {
+
+        $(".main-sidebar").attr("hidden", true);
+        $(".main-header").attr("hidden", true);
+        $(".main-footer").attr("hidden", true);
+        $("#Hidebr").attr("hidden", true);
+
+        $("div").removeClass("wrapper");
+        $("div").removeClass("content-wrapper");
+    });
+
+
+    function PrintPdf() {
+        window.print();
+    }
+
+</script>

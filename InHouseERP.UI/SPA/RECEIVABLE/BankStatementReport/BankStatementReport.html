@@ -1,0 +1,286 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+
+    <style type="text/css">
+
+        body {
+            font-family: "Times New Roman", Times, serif;
+            color: #000000;
+            height: auto;
+            font-size: 15px;
+        }
+
+        #MainTable td {
+            text-align: center;
+        }
+
+        @page {
+            size: A4 portrait;
+        }
+
+        .flexcontainer {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        #UpperTable td {
+            border-collapse: collapse;
+            padding: 5px;
+        }
+
+        #container {
+            width: 100%;
+            bottom: 0;
+            position: fixed !important;
+        }
+
+        #left {
+            float: left;
+            width: 100px;
+        }
+
+        #right {
+            float: right;
+            width: 100px;
+        }
+
+        #center {
+            margin: 0 auto;
+            width: 100px;
+        }
+
+        @media print {
+            #source-html {
+                page-break-after: avoid;
+                page-break-before: avoid;
+            }
+        }
+    </style>
+
+</head>
+<body>
+    <!--<page>-->
+    <table class="table" style="margin: auto !important;">
+        <tbody>
+            <tr>
+                <td>
+                    <div class="container hidden-print">
+                        <div class="col-sm-7 col-md-9">
+
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3 col-md-2">
+                                <!--<button type="button" onclick="ExportToDoc();" class="customBtn custmoBtnReset" style="border-radius: 3px; margin-bottom: -.9em; margin-top: -15px; padding-bottom: 3px; padding-top: 3px;" title="Export to .doc">
+                                    <i class="fa fa-save"></i>&nbsp;Export to .doc
+                                </button>-->
+                            </div>
+                            <div class="col-sm-2 col-md-1">
+                                <button type="button" onclick="document.title = 'Bank Statement ' + getCurrentDateTime(); PrintPdf();" class="customBtn custmoBtnReset" style="border-radius: 3px; margin-bottom: -.9em; margin-top: -15px; padding-bottom: 3px; padding-top: 3px;" title="Print To .PDF">
+                                    <i class="fa fa-print"></i>&nbsp;Print
+                                </button>
+                            </div>
+
+
+                        </div>
+                        <br />
+                    </div>
+                    <div id="source-html">
+                        <table style="text-align: center;margin-left:auto;margin-right:auto;">
+
+                            <tr>
+                                <td>
+                                    <span style="font-size: 18px; line-height: 1; margin: 0; padding: 0;"><b>Statement of Account</b></span>
+                                    <br />
+                                    <span style="font-size: 16px; line-height: 1; margin: 0; padding: 0;"><b>{{BankStatementList[0].ReceiverBankAccountName}}</b></span>
+                                    <br />
+                                    <span style="font-size: .9em; line-height: 1; margin: 0; padding: 0;">{{BankStatementList[0].ReceiverBankAccountAddress}}</span>
+                                </td>
+                            </tr>
+                        </table>
+                        <br />
+                        <table width="100%">
+                            <tr>
+                                <td valign="top">
+                                    <span style="font-size: .9em; line-height: 1; margin: 0; padding: 0;">Bank Name </span>
+                                </td>
+                                <td valign="top">
+                                    <span style="font-size: .9em; line-height: 1; margin: 0; padding: 0;">: &emsp;</span>
+                                </td>
+                                <td valign="top">
+                                    <span style="font-size: .9em; line-height: 1; margin: 0; padding: 0;"><b>{{BankStatementList[0].ReceiverBankName}}</b></span>
+                                </td>
+
+
+                            </tr>
+                            <tr>
+                                <td valign="top">
+                                    <span style="font-size: .9em; line-height: 1; margin: 0; padding: 0; ">Branch Name </span>
+                                </td>
+                                <td valign="top">
+                                    <span style="font-size: .9em; line-height: 1; margin: 0; padding: 0;">: &emsp;</span>
+                                </td>
+                                <td valign="top">
+                                    <span style="font-size: .9em; line-height: 1; margin: 0; padding: 0;"><b>{{BankStatementList[0].ReceiverBankBranchName}}</b></span>
+                                </td>
+
+
+                            </tr>
+                            <tr>
+                                <td valign="top">
+                                    <span style="font-size: .9em; line-height: 1; margin: 0; padding: 0; ">Account No </span>
+                                </td>
+                                <td valign="top">
+                                    <span style="font-size: .9em; line-height: 1; margin: 0; padding: 0;">:&emsp;</span>
+                                </td>
+                                <td valign="top">
+                                    <span style="font-size: .9em; line-height: 1; margin: 0; padding: 0;"><b>{{BankStatementList[0].ReceiverBankAccountNo}}</b></span>
+                                </td>
+
+                                <td valign="top">
+                                    <span style="font-size: .9em; line-height: 1; margin: 0; padding: 0;">Print Date </span>
+                                </td>
+                                <td valign="top">
+                                    <span style="font-size: .9em; line-height: 1; margin: 0; padding: 0;">:&emsp;</span>
+                                </td>
+                                <td valign="top" style="text-align:right;">
+                                    <span style="font-size: .9em; line-height: 1; margin: 0; padding: 0;">{{PrintDate}}</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td valign="top" style="width:15%;">
+                                    <span style="font-size: .9em; line-height: 1; margin: 0; padding: 0;">Branch Address </span>
+                                </td>
+                                <td valign="top">
+                                    <span style="font-size: .9em; line-height: 1; margin: 0; padding: 0;">:&emsp;</span>
+                                </td>
+                                <td valign="top" style="width:40%;">
+                                    <span style="font-size: .9em; line-height: 1; margin: 0; padding: 0;">{{BankStatementList[0].ReceiverBankBranchAddress}}</span>
+                                </td>
+
+                                <td valign="top">
+                                    <span style="font-size: .9em; line-height: 1; margin: 0; padding: 0;">Period</span>
+                                </td>
+                                <td valign="top">
+                                    <span style="font-size: .9em; line-height: 1; margin: 0; padding: 0;">:&emsp;</span>
+                                </td>
+                                <td valign="top" style="text-align:right;">
+                                    <span style="font-size: .9em; line-height: 1; margin: 0; padding: 0;"><b>{{FromDate}} To {{ToDate}}</b></span>
+                                </td>
+                            </tr>
+                        </table>
+                        <br />
+                        <table id="MainTable" border="1" width="100%" align="center">
+                            <thead>
+                                <tr>
+                                    <th style="text-align: center; font-size: .8em;">SL</th>
+                                    <th style="text-align: center; font-size: .8em;">Payment No</th>
+                                    <th style="text-align: center; font-size: .8em;">Payment Date</th>
+                                    <th style="text-align: center; font-size: .8em;">Customer Name</th>
+                                    <!--<th style="text-align: center; font-size: .8em;">Bank Name</th>
+                                    <th style="text-align: center; font-size: .8em;">Account Name</th>
+                                    <th style="text-align: center; font-size: .8em;"> Account No</th>-->
+                                    <th style="text-align: center; font-size: .8em;">Payment Type Name</th>
+                                    <th style="text-align: center; font-size: .8em;">Receipt No</th>
+                                    <!--<th style="text-align: center; font-size: .8em;">Txn. No</th>-->
+                                    <th style="text-align: center; font-size: .8em;" ng-show="BankStatementList[0].ReceiverBankAccountId == 4255 || BankStatementList[0].ReceiverBankAccountId == 5260">Amount</th>
+                                    <th style="text-align: center; font-size: .8em;" ng-show="BankStatementList[0].ReceiverBankAccountId == 4255 || BankStatementList[0].ReceiverBankAccountId == 5260">Rate</th>
+                                    <th style="text-align: center; font-size: .8em;">Amount (BDT)</th>
+                                    <th style="text-align: center; font-size: .8em;">Remarks</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="aStatement in BankStatementList track by $index">
+                                    <td>
+                                        {{$index+1}}
+                                    </td>
+                                    <td style="text-align: center">
+                                        <span style="font-size: .9em;">{{aStatement.CompanyPaymentNo}}</span>
+                                    </td>
+                                    <td style="text-align: center">
+                                        <span style="font-size: .9em;">{{aStatement.PaymentDate}}</span>
+                                    </td>
+                                    <td style="text-align: center">
+                                        <span style="font-size: .9em;">{{aStatement.CompanyName}}</span>
+                                    </td>
+
+                                    <!--<td style="text-align: center">
+                                        <span style="font-size: .9em;">{{aStatement.CustomerBankName}}</span>
+                                    </td>
+                                    <td style="text-align: center">
+                                        <span style="font-size: .9em;">{{aStatement.CustomerBankAccountName}}</span>
+                                    </td>
+                                    <td style="text-align: center">
+                                        <span style="font-size: .9em;">{{aStatement.CustomerBankAccountNo}}</span>
+                                    </td>-->
+                                    <td style="text-align: center">
+                                        <span style="font-size: .9em;">{{aStatement.PaymentTypeName}}</span>
+                                    </td>
+                                    <td style="text-align: center">
+                                        <span style="font-size: .9em;">{{aStatement.ReceiptVoucherNo}}</span>
+                                    </td>
+                                    <!--<td style="text-align: center">
+                                        <span style="font-size: .9em;">{{aStatement.TransactionNo}}</span>
+                                    </td>-->
+                                    <td style="text-align: center" ng-show="BankStatementList[0].ReceiverBankAccountId == 4255 || BankStatementList[0].ReceiverBankAccountId == 5260">
+                                        <span style="font-size: .9em;">{{aStatement.PaidAmount}}  ({{aStatement.CurrencyName}})</span>
+                                    </td>
+                                    <td style="text-align: center" ng-show="BankStatementList[0].ReceiverBankAccountId == 4255 || BankStatementList[0].ReceiverBankAccountId == 5260">
+                                        <span style="font-size: .9em;">{{aStatement.ConversionRate}}</span>
+                                    </td>
+                                    <td style="text-align: center">
+                                        <span style="font-size: .9em;">{{aStatement.ConversionAmount}}</span>
+                                    </td>
+                                    <td style="text-align: center">
+                                        <span style="font-size: .9em;">{{aStatement.Remarks}}</span>
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td colspan="6" style="text-align: right;"><b>Total: </b></td>
+                                    <td style="text-align: center" ng-show="BankStatementList[0].ReceiverBankAccountId == 4255 || BankStatementList[0].ReceiverBankAccountId == 5260">
+                                        <span style="font-size: .9em;">{{TotalPaidAmount}}</span>
+                                    </td>
+                                    <td ng-show="BankStatementList[0].ReceiverBankAccountId == 4255 || BankStatementList[0].ReceiverBankAccountId == 5260"></td>
+                                    <td>{{TotalConversionAmount}}</td>
+                                    <td></td>
+                                </tr>
+
+                            </tbody>
+
+
+                        </table>
+                    </div>
+                    
+        </tbody>
+    </table>
+    <!--</page>-->
+
+
+
+    <script type="text/javascript">
+        $('#HtmlData').hide();
+
+        function PrintPdf() {
+
+            window.print();
+
+        }
+        jQuery(document).ready(function ($) {
+
+            $(".main-sidebar").attr("hidden", true);
+            $(".main-header").attr("hidden", true);
+            $(".main-footer").attr("hidden", true);
+            $("#Hidebr").attr("hidden", true);
+
+            $("div").removeClass("wrapper");
+            $("div").removeClass("content-wrapper");
+        });
+
+
+    </script>
+</body>
+
+</html>

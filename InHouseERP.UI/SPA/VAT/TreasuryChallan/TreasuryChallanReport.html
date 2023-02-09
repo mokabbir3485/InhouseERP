@@ -1,0 +1,270 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Treasury Challan</title>
+
+    <style type="text/css">
+        body {
+            font-family: 'SolaimanLipi', sans-serif;
+            font-size: 11px;
+            line-height: 12px;
+        }
+
+        .header {
+            text-align: center;
+            line-height: 10px;
+        }
+
+        .flexcontainer {
+            display: flex;
+            justify-content: space-between;
+        }
+
+
+        .ProductTable th {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+
+        .ProductTable td {
+           /* border: 1px solid black;
+            border-collapse: collapse;*/
+            padding: 5px;
+        }
+
+        @page {
+            size: A4 landscape;
+        }
+        u {
+            border-bottom: 1px dotted #000;
+            text-decoration: none;
+        }
+    </style>
+
+</head>
+
+<body>
+    <table style="width: 100%; font-size: 11px;">
+        <tbody>
+            <tr>
+                <td>
+                    <div class=" hidden-print">
+
+                        <div class="row">
+                            <div class="col-sm-2 col-md-2">
+                                <button type="button" onclick="document.title = 'Treasury Challan ' + getCurrentDateTime(); PrintPdf();" class="customBtn custmoBtnReset"
+                                        style="border-radius: 3px; margin-bottom: -.9em; margin-top: -15px; padding-bottom: 3px; padding-top: 3px;"
+                                        title="Export to .pdf">
+                                    <i class="fa fa-print"></i>&nbsp;Print
+                                </button>
+                            </div>
+
+
+                        </div>
+                        <hr />
+                    </div>
+                    <div style="display: flex;justify-content: center;align-items: center">
+
+                        <div>
+                            <p class="header" style="font-size:24px; font-weight:bold;">চালান ফরম</p>
+                            <p class="header" style="font-size:18px; font-weight:bold;"> টি,আর ফরম নং ৬(এস, আর ৩৭ দ্রষ্টব্য)</p>
+                            <p class="header">
+                                <span>চালান নং:&nbsp; <b><u>{{Vat_TDSList[0].ChallanNo}}</u></b> </span>&emsp;<span>তারিখ:&nbsp; <b><u>{{Vat_TDSList[0].ChallanDate}}</u></b> </span>
+                            </p>
+
+                            <p class="header">
+                                <span>বাংলাদেশ ব্যাংক/সোনালী ব্যাংকের&nbsp; <b><u>{{Vat_TDSList[0].Bank_District}}</u></b> </span>&emsp;<span>জেলা:&nbsp; <b><u>{{Vat_TDSList[0].Bank_Branch}}</u></b>  শাখায় টাকা জমা দেওয়ার চালান </span>
+                            </p>
+
+
+                        </div>
+                        <div style="position: absolute; right: 15px; top:0">
+                            <table border="1" style="text-align:center;">
+                                <tr>
+                                    <td style="width:100px; height: 30px;">১ম (মূল) কপি</td>
+                                    <td style="width:100px; height: 30px;">২য় কপি</td>
+                                    <td style="width:100px; height: 30px;">৩য় কপি</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="flexcontainer">
+                        <div style="text-align:center; padding-top: 10px;">কোড নং </div>
+                        <div>
+                            <table border="1" style="text-align:center;"><tr><td style="width:30px; height: 30px;"><b>{{Vat_TDSList[0].CodeNo[0]}}</b></td></tr></table>
+                        </div>
+                        <div>
+                            <table border="1" style="text-align:center;">
+                                <tr>
+                                    <td style="width:30px; height: 30px;"><b>{{Vat_TDSList[0].CodeNo[1]}}</b></td>
+                                    <td style="width:30px; height: 30px;"><b>{{Vat_TDSList[0].CodeNo[2]}}</b></td>
+                                    <td style="width:30px; height: 30px;"><b>{{Vat_TDSList[0].CodeNo[3]}}</b></td>
+                                    <td style="width:30px; height: 30px;"><b>{{Vat_TDSList[0].CodeNo[4]}}</b></td>
+                                </tr>
+                            </table>
+
+
+                        </div>
+                        <div>
+                            <table border="1" style="text-align:center;">
+                                <tr>
+                                    <td style="width:30px; height: 30px;"><b>{{Vat_TDSList[0].CodeNo[5]}}</b></td>
+                                    <td style="width:30px; height: 30px;"><b>{{Vat_TDSList[0].CodeNo[6]}}</b></td>
+                                    <td style="width:30px; height: 30px;"><b>{{Vat_TDSList[0].CodeNo[7]}}</b></td>
+                                    <td style="width:30px; height: 30px;"><b>{{Vat_TDSList[0].CodeNo[8]}}</b></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div>
+                            <table border="1" style="text-align:center;">
+                                <tr>
+                                    <td style="width:30px; height: 30px;"><b>{{Vat_TDSList[0].CodeNo[9]}}</b></td>
+                                    <td style="width:30px; height: 30px;"><b>{{Vat_TDSList[0].CodeNo[10]}}</b></td>
+                                    <td style="width:30px; height: 30px;"><b>{{Vat_TDSList[0].CodeNo[11]}}</b></td>
+                                    <td style="width:30px; height: 30px;"><b>{{Vat_TDSList[0].CodeNo[12]}}</b></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+
+
+
+                    </div>
+
+                    <br />
+                    <br />
+
+                    <table class="ProductTable table-hover" border="1" style="width: 100%; margin:auto">
+                        <thead>
+                            <tr>
+                                <th style="text-align:center; padding:5px;" colspan="4">জমা প্রদানকারী কর্তৃক পূরণ করিতে হইবে</th>
+                                <th style="text-align:center; padding:5px;" colspan="2">টাকার অংক</th>
+                                <th style="text-align:center; padding:5px;">বিভাগের নাম এবং চালানের পৃষ্ঠাংকনকারী কর্মকর্তার নাম, পদবি ও দপ্তর।*</th>
+                            </tr>
+                            <tr>
+                                <td style="text-align:center; padding:5px;">যাহার মারফত প্রদত্ত হইল তাহার নাম ও ঠিকানা।</td>
+                                <td style="text-align:center; padding:5px;">যে ব্যক্তির/প্রতিষ্ঠানের পক্ষ হইতে টাকা প্রদত্ত হইল তাহার নাম, পদবী ও ঠিকানা। </td>
+                                <td style="text-align:center; padding:5px;">কি বাবদ  জমা দেওয়া হইল তাহার বিবরণ।</td>
+                                <td style="text-align:center; padding:5px;">মুদ্রা ও নোটের বিবরণ/ড্রাফট , পে-অর্ডার  ও চেকের বিবরণ।</td>
+                                <td style="text-align:center; padding:5px;">টাকা</td>
+                                <td style="text-align:center; padding:5px;">পয়সা</td>
+                                <td style="text-align:center; padding:5px;">বিভাগের নাম এবং চালানের পৃষ্ঠাংকনকারী কর্মকর্তার নাম, পদবি ও দপ্তর।*</td>
+                            </tr>
+                        </thead>
+                        <tbody >
+
+                            <tr style="border-bottom:none;" ng-repeat="aVat_TDS in Vat_TDSList track by $index">
+                                <td  style="padding:5px;">
+                                    <span ng-if="$index < 1">
+                                        <span><b>{{aVat_TDS.EmployeeName}}</b></span>
+                                        <br />
+                                        <span>{{aVat_TDS.DesignationName}}</span>
+                                        <br />
+                                        <span>Cell: {{aVat_TDS.ContactNo}}</span>
+                                        <br />
+                                        <br />
+                                        <span>On behalf of</span><br />
+                                        <span><b>{{aVat_TDS.OrganizationName}}</b></span><br />
+                                        <span>{{aVat_TDS.OrganizationAddress}}</span><br />
+                                        <span>{{aVat_TDS.OrganizationTIN}}</span><br />
+                                    </span>
+                                    
+                                </td>
+                                <td style="padding: 5px; vertical-align: top;">
+                                    <span><b>{{aVat_TDS.SupplierName}}</b></span><br />
+                                    <span>{{aVat_TDS.SupplierAddress}}</span>
+                                    <span>Tel.# {{aVat_TDS.SupplierPhone}}</span>
+                                    <span>E-TIN.# {{aVat_TDS.SupplierETIN}}</span>
+                                    <span>BIN.# {{aVat_TDS.SupplierBIN}}</span>
+                                </td>
+                                <td style="text-align: center; vertical-align: top; padding: 5px;"><b>{{aVat_TDS.PaidFor}}</b></td>
+                                <td style="text-align: center; vertical-align: top; padding: 5px;"><b ng-if="$index < 1">{{aVat_TDS.PaymentTypeName}}</b></td>
+                                <td style="text-align:center; vertical-align: top; padding:5px;">{{aVat_TDS.VatTaxAmount}}</td>
+                                <td style="text-align: center; vertical-align: top; padding: 5px;">00</td>
+                                <td style="text-align: center; vertical-align: top; padding: 5px;"><span ng-if="$index < 1">{{aVat_TDS.SubmittedTo}}</span></td>
+                            </tr>
+
+                        </tbody>
+                        <tr>
+                            <td style="text-align: center; padding: 5px; border: 1px solid !important" colspan="3"></td>
+                            <td style="text-align: right; padding: 5px; border: 1px solid !important">মোট টাকা</td>
+                            <td style="text-align: center; padding: 5px; border: 1px solid !important">{{Vat_TDSList[0].TotalAmount}}</td>
+                            <td style="text-align: center; padding: 5px; border: 1px solid !important">00</td>
+                            <td style="text-align: center; padding: 5px; border: 1px solid !important"></td>
+                        </tr>
+                        <tr>
+                            <td style="padding:5px;" colspan="4">টাকা (কথায়):  <b>{{Vat_TDSList[0].TotalAmountInWords}}</b> </td>
+                            <td style="text-align: center; padding: 5px; vertical-align: bottom;" colspan="3" rowspan="3">
+                                <span>ম্যানেজার</span><br />
+                                <span>বাংলাদেশ ব্যাংক/সোনালী ব্যাংক লিমিটেড</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding:5px;" colspan="4"> টাকা পাওয়া গেল</td>
+                        </tr>
+                        <tr>
+                            <td style="padding:5px;" colspan="4">তারিখ:<u><b>{{Vat_TDSList[0].PaymentDate}}</b></u></td>
+                        </tr>
+                    </table>
+
+
+                    <br />
+                    <p>নোট: &emsp; ১। সংশ্লিষ্ট দপ্তরের সহিত যোগাযোগ করিয়া সঠিক কোড নম্বর জানিয়া লইবেন।   </p>
+                    <p>&emsp;&emsp;&emsp;&emsp;২। * যে সকল ক্ষেত্রে কর্মকর্তা কর্তৃক পৃষ্ঠাংকন প্রয়োজন, সে সকল ক্ষেত্রে প্রযোজ্য হইবে। </p>
+
+
+                </td>
+
+            </tr>
+        </tbody>
+    </table>
+</body>
+
+</html>
+<script>
+
+
+
+    jQuery(document).ready(function ($) {
+
+        $(".main-sidebar").attr("hidden", true);
+        $(".main-header").attr("hidden", true);
+        $(".main-footer").attr("hidden", true);
+        $("#Hidebr").attr("hidden", true);
+
+        $("div").removeClass("wrapper");
+        $("div").removeClass("content-wrapper");
+    });
+
+
+    function PrintPdf() {
+        window.print();
+    }
+
+</script>

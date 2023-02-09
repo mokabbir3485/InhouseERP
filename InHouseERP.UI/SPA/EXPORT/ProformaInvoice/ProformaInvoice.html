@@ -1,0 +1,1254 @@
+﻿<style type="text/css">
+    .red {
+        background: Yellow;
+    }
+
+    .noBorder {
+        border-color: transparent;
+        border-bottom-style: hidden;
+        border-right-style: hidden;
+        border-left-style: hidden;
+    }
+
+    .noBorderLast {
+        /*border-color: transparent;*/
+        border-bottom-style: hidden;
+        border-top-style: hidden;
+        /*border-right-style: hidden;*/
+        /*border-left-style: hidden;*/
+    }
+
+    #ImporterDiv .select2-container {
+        width: 310px !important;
+    }
+
+    #itemNameDiv .select2-container {
+        width: 675px !important;
+    }
+</style>
+<!--<div style="background-color: cornflowerblue; position: sticky; top: 0px; padding: 10px">
+
+</div>-->
+<form name="exportInvoiceForm" novalidate>
+
+    <div  ng-show="CreatePermission || RevisePermission">
+        <div class="col-md-12">
+            <div class="alert alert-info alert-dismissible fade in" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <div class="topInfo"> &nbsp; &#9755; <span style="color: red;">Red Icon</span> Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp; &#9755; Click On A Table Row To Update/Delete</div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h3 class="panel-title pull-left "><i class="fa fa-list"></i>&nbsp;Proforma Invoice{{Mood}}</h3>
+                    <div class="clearfix">
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="col-md-4">
+                                <div class="form-group tooltipAll" ng-class="{ 'has-error' : exportInvoiceForm.Exporter.$dirty && exportInvoiceForm.Exporter.$invalid }" title="Select Exporter">
+                                    <div class="input-group width-hundred-percent">
+                                        <select ng-model="ddlExporter" id="ddlExporter" name="Exporter" class="form-control selectMendatory tooltipAll" ng-options="exporter.ExporterName for exporter in ExporterList track by exporter.ExporterId " ng-change="GetExporterBankAccount()" title="Select Exporter" disabled required>
+                                            <option value="" label=" Exporter">Select Exporter</option>
+                                        </select>
+                                        <span class="help-block" ng-show="exportInvoiceForm.Exporter.$dirty && exportInvoiceForm.Exporter.$invalid">Exporter Name is required</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group tooltipAll" ng-class="{ 'has-error' : exportInvoiceForm.Importer.$dirty && exportInvoiceForm.Importer.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Importer">
+                                    <!--<div class="input-group width-hundred-percent">
+                                    <select ng-model="ddlImporter" id="Importer" name="Importer" class="form-control selectMendatory" ng-options="company.CompanyName for company in companyList track by company.CompanyId" ng-change="GetSalesOrderByCompany();" required>-->
+                                    <!--<option value="" label="Importer" hidden></option>-->
+                                    <!--</select>
+                                        <span class="help-block" ng-show="exportInvoiceForm.Importer.$dirty && exportInvoiceForm.Importer.$invalid">Importer Name is required</span>
+                                    </div>-->
+                                    <div id="ImporterDiv" class="input-group width-hundred-percent">
+                                        <select id="Importer" ng-model="ddlImporter" name="Importer" class="form-control selectMendatory" ng-options="company.CompanyName for company in companyList track by company.CompanyId" ng-change="GetSalesOrderByCompany(); CompanyBtn = 'Edit';">
+                                            <!--<option value="">Search for: Item Name ~ Description One ~ Description Two ~ Item Code ~ Pc(s) Per Roll ~ Roll Per Carton ~ Hs Code</option>-->
+                                            <option value=""></option>
+                                        </select>
+                                        <span class="help-block" ng-show="exportInvoiceForm.Importer.$dirty && exportInvoiceForm.Importer.$invalid">Importer is required</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--<div class="col-md-1" style="margin-left: -20px; width: 105px">
+                                <button id="btnAddCompany" class="customBtn custmoBtnReset tooltipAll" ng-click="EditCompany();" ng-disabled="isUpdate == 'update'" title="New Company">
+                                    <i class=" fa fa-plus-square"></i> {{CompanyBtn}}
+                                </button>
+                            </div>-->
+                            <div class="col-md-2">
+                                <div class="form-group tooltipAll" ng-class="{ 'has-error' :exportInvoiceForm.InvoiceDate.$invalid && exportInvoiceForm.InvoiceDate.$touched }" data-toggle="tooltip" data-placement="bottom" title="Invoice Date">
+                                    <div class="input-group ">
+                                        <input type="text" id="txtInvoiceDate" ng-model="exportInvoice.InvoiceDate" class="form-control" name="InvoiceDate" placeholder="Invoice Date" required readonly="readonly" />
+                                        <div class="input-group-addon" ng-click="CalendarOpenInvoiceDate()">
+                                            <span class="fa fa-calendar req-icon-color"></span>
+                                        </div>
+                                    </div>
+                                    <span class="help-block" style="display: block;" ng-if="exportInvoiceForm.InvoiceDate.$error.required && exportInvoiceForm.InvoiceDate.$touched">Invoice Date is required</span>
+                                </div>
+                            </div>
+                            <!--ng-init="exportInvoice.InvoiceDate=(Date() | date:'MMM dd, yyyy')"-->
+                            <div class="col-md-2">
+                                <div class="form-group tooltipAll" ng-class="{ 'has-error' : exportInvoiceForm.InvoiceType.$touched && exportInvoiceForm.InvoiceType.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Invoice Type">
+                                    <div class="input-group width-hundred-percent">
+                                        <select ng-model="ddlInvoiceType" name="InvoiceType" class="form-control selectMendatory" ng-options="invoice.PaymentProcessTypeName for invoice in InvoiceTypeList track by invoice.PaymentProcessTypeId" ng-change="exportInvoice.InvoiceType = ddlInvoiceType.PaymentProcessTypeName;exportInvoice.PaymentProcessTypeId  = ddlInvoiceType.PaymentProcessTypeId;GetEmail();invoiceTypeChange();" ng-disabled="!ddlImporter" required>
+                                            <option value="" label="Invoice Type" hidden></option>
+                                        </select>
+                                        <span class="help-block" ng-show="exportInvoiceForm.InvoiceType.$touched && exportInvoiceForm.InvoiceType.$invalid">Invoice Type is required</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+
+                            <div class="col-md-2">
+                                <div class="form-group tooltipAll" ng-class="{ 'has-error' : exportInvoiceForm.Factory.$touched && exportInvoiceForm.Factory.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Factory">
+                                    <div class="input-group width-hundred-percent">
+                                        <select ng-model="ddlFactory" name="Factory" id="txtFactory" class="form-control selectMendatory" ng-disabled="!exportInvoice.InvoiceDate" ng-options="exporter.ExporterAddress2 for exporter in ExporterList track by exporter.ExporterId " ng-change="GetInvoiceNo(); GetExporterBankAccount(); exportInvoice.Factory = ddlFactory.ExporterAddress2; exportInvoice.ExporterId = ddlFactory.ExporterId; exportInvoice.MasterContactNo = ddlFactory.ExporterId; exportInvoice.PlaceOfLoading = ddlFactory.ExporterAddress; disBank=false" required>
+                                            <option value="" label="Select Factory" hidden></option>
+                                        </select>
+                                        <span class="help-block" ng-show="exportInvoiceForm.Factory.$touched && exportInvoiceForm.Factory.$invalid">Factory Name is required</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group tooltipAll" ng-class="{ 'has-error' : exportInvoiceForm.ExporterBank.$touched && exportInvoiceForm.ExporterBank.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Exporter Bank">
+                                    <div class="input-group width-hundred-percent">
+                                        <select ng-model="ddlExporterBank" ng-disabled="disBank" name="ExporterBank" class="form-control selectMendatory" ng-options="exporter.BankNameBranch for exporter in ExporterBankList track by exporter.BankAccountId" ng-change="exportInvoice.ExporterBankId = ddlExporterBank.BankAccountId; " required>
+                                            <option value="" label=" Exporter Bank " hidden></option>
+                                        </select>
+                                        <span class="help-block" ng-show="exportInvoiceForm.ExporterBank.$dirty && exportInvoiceForm.ExporterBank.$invalid">Exporter Bank Name is required</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-5 nopadding">
+
+                                <div class="col-md-8 nopadding">
+                                    <div class="form-group tooltipAll" ng-class="{ 'has-error' : exportInvoiceForm.InvoiceNo.$invalid && exportInvoiceForm.InvoiceNo.$touched }" data-toggle="tooltip" data-placement="bottom" title="Invoice No">
+                                        <div class="input-group ">
+                                            <span class="input-group-addon">
+                                                <label style="line-height: 2px;">{{InvoiceNo1}}</label>
+                                            </span>
+                                            <input type="text" name="InvoiceNo" class="form-control " ng-model="InvoiceNo2" placeholder="Invoice No" maxlength="101" ng-maxlength="100" ng-disabled="!isInvoiceNo" required>
+                                        </div>
+                                        <span class="help-block" style="color: red; display: block;" ng-if="exportInvoiceForm.InvoiceNo.$error.required && exportInvoiceForm.InvoiceNo.$touched">Invoice No is required</span>
+                                        <span class="help-block" style="color: red; display: block;" ng-if="exportInvoiceForm.InvoiceNo.$error.maxlength">100 Character Max</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 nopadding">
+                                    <input type="text" name="InvoiceNo3" class="form-control tooltipAll" ng-model="exportInvoice.PINoPostfix" placeholder="PI No Postfix" title="PI No Postfix" maxlength="101" ng-maxlength="100" ng-disabled="!isInvoiceNo" required>
+                                </div>
+                            </div>
+
+                            <div class="col-md-2">
+                                <div class="row">
+                                    <div class="form-group col-md-6 tooltipAll" ng-class="{ 'has-error' : exportInvoiceForm.CheckBox.$invalid && exportInvoiceForm.CheckBox.$touched }" data-toggle="tooltip" data-placement="bottom" title="CheckBox">
+                                        <label class="switch">
+                                            <input type="checkbox" ng-click="hideButton()">
+                                            <span class="slider round"></span>
+                                        </label>
+                                        <span class="help-block" style="color: red; display: block;" ng-if="exportInvoiceForm.CheckBox.$error.required && exportInvoiceForm.CheckBox.$touched">Invoice No is required</span>
+                                        <span class="help-block" style="color: red; display: block;" ng-if="exportInvoiceForm.CheckBox.$error.maxlength">50 Character Max</span>
+                                    </div>
+                                    <div class="col-md-6"> Override</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+
+                            <div class="col-md-4">
+                                <div class="form-group tooltipAll" ng-class="{ 'has-error' : exportInvoiceForm.CompanyNameBilling.$invalid && exportInvoiceForm.CompanyNameBilling.$touched }" data-toggle="tooltip" data-placement="bottom" title="Importer Name Billing">
+                                    <div class="input-group ">
+                                        <input type="text" name="CompanyNameBilling" class="form-control " ng-model="exportInvoice.CompanyNameBilling" value="{{exportInvoice.CompanyNameBilling}}" placeholder="Importer Name Billing" maxlength="101" ng-maxlength="100" required>
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-text-width req-icon-color"></i>
+                                        </span>
+                                    </div>
+                                    <span class="help-block" style="color: red; display: block;" ng-if="exportInvoiceForm.CompanyNameBilling.$error.required && exportInvoiceForm.CompanyNameBilling.$touched">Importer Name Billing is required</span>
+                                    <span class="help-block" style="color: red; display: block;" ng-if="exportInvoiceForm.CompanyNameBilling.$error.maxlength">100 Character Max</span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-8">
+                                <div class="form-group tooltipAll" ng-class="{ 'has-error' : exportInvoiceForm.AddressBilling.$invalid && exportInvoiceForm.AddressBilling.$touched }" data-toggle="tooltip" data-placement="bottom" title="Importer Billing Address">
+                                    <div class="input-group ">
+                                        <input type="text" name="AddressBilling" class="form-control " ng-model="exportInvoice.AddressBilling" value="{{exportInvoice.AddressBilling}}" placeholder="Importer Billing Address" maxlength="400" ng-maxlength="400" required>
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-text-width req-icon-color"></i>
+                                        </span>
+                                    </div>
+                                    <span class="help-block" style="color: red; display: block;" ng-if="exportInvoiceForm.AddressBilling.$error.required && exportInvoiceForm.AddressBilling.$touched">Importer Billing Address is required</span>
+                                    <span class="help-block" style="color: red; display: block;" ng-if="exportInvoiceForm.AddressBilling.$error.maxlength">400 Character Max</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+
+                            <div class="col-md-4">
+                                <div class="form-group tooltipAll" ng-class="{ 'has-error' : exportInvoiceForm.CompanyNameDelivery.$invalid && exportInvoiceForm.CompanyNameDelivery.$touched }" data-toggle="tooltip" data-placement="bottom" title="Importer Name Delivery">
+                                    <div class="input-group ">
+                                        <input type="text" name="CompanyNameDelivery" class="form-control " ng-model="exportInvoice.CompanyNameDelivery" value="{{exportInvoice.CompanyNameDelivery}}" placeholder="Importer Name Delivery" maxlength="101" ng-maxlength="100" required>
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-text-width req-icon-color"></i>
+                                        </span>
+                                    </div>
+                                    <span class="help-block" style="color: red; display: block;" ng-if="exportInvoiceForm.CompanyNameDelivery.$error.required && exportInvoiceForm.CompanyNameDelivery.$touched">Importer Name Delivery is required</span>
+                                    <span class="help-block" style="color: red; display: block;" ng-if="exportInvoiceForm.CompanyNameDelivery.$error.maxlength">100 Character Max</span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-8">
+                                <div class="form-group tooltipAll" ng-class="{ 'has-error' : exportInvoiceForm.AddressDelivery.$invalid && exportInvoiceForm.AddressDelivery.$touched }" data-toggle="tooltip" data-placement="bottom" title="Importer Delivery Address">
+                                    <div class="input-group ">
+                                        <input type="text" name="AddressDelivery" class="form-control " ng-model="exportInvoice.AddressDelivery" value="{{exportInvoice.AddressDelivery}}" placeholder="Importer Delivery Address" maxlength="400" ng-maxlength="400" required>
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-text-width req-icon-color"></i>
+                                        </span>
+                                    </div>
+                                    <span class="help-block" style="color: red; display: block;" ng-if="exportInvoiceForm.AddressDelivery.$error.required && exportInvoiceForm.AddressDelivery.$touched">Importer Delivery Address is required</span>
+                                    <span class="help-block" style="color: red; display: block;" ng-if="exportInvoiceForm.AddressDelivery.$error.maxlength">400 Character Max</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="col-md-4">
+                                <div class="form-group tooltipAll" ng-class="{ 'has-error' : exportInvoiceForm.Email.$touched && exportInvoiceForm.Email.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Email">
+                                    <div class="input-group width-hundred-percent">
+                                        <select ng-model="ddlEmail" name="Email" class="form-control selectMendatory" ng-options="email.Email for email in EmailList track by email.EmployeeId" ng-change="exportInvoice.DocRefId = ddlEmail.EmployeeId;" required>
+                                            <option value="" label=" Referece Email " hidden></option>
+                                        </select>
+                                        <span class="help-block" ng-show="exportInvoiceForm.Email.$dirty && exportInvoiceForm.Email.$invalid">Email Name is required</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group tooltipAll" ng-class="{ 'has-error' : exportInvoiceForm.PlaceOfLoading.$invalid && exportInvoiceForm.PlaceOfLoading.$touched }" data-toggle="tooltip" data-placement="bottom" title="Place of Loading">
+                                    <div class="input-group ">
+                                        <input type="text" name="PlaceOfLoading" class="form-control" ng-model="exportInvoice.PlaceOfLoading" placeholder="Place Of Loading" maxlength="101" ng-maxlength="100">
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-text-width"></i>
+                                        </span>
+                                    </div>
+                                    <span class="help-block" style="color: red; display: block;" ng-if="exportInvoiceForm.PlaceOfLoading.$error.required && exportInvoiceForm.PlaceOfLoading.$touched">Place Of Loading is required</span>
+                                    <span class="help-block" style="color: red; display: block;" ng-if="exportInvoiceForm.PlaceOfLoading.$error.maxlength">100 Character Max</span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group tooltipAll" ng-class="{ 'has-error' : exportInvoiceForm.FinalDestination.$invalid && exportInvoiceForm.FinalDestination.$touched }" data-toggle="tooltip" data-placement="bottom" title="Final Destination">
+                                    <div class="input-group ">
+                                        <input type="text" name="FinalDestination" class="form-control" ng-model="exportInvoice.FinalDestination" placeholder="Final Destination" maxlength="101" ng-maxlength="100">
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-text-width"></i>
+                                        </span>
+                                    </div>
+                                    <span class="help-block" style="color: red; display: block;" ng-if="exportInvoiceForm.FinalDestination.$error.maxlength">100 Character Max</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="col-md-4">
+                                <div class="form-group tooltipAll" ng-class="{ 'has-error' : exportInvoiceForm.TypeOfCarrier.$invalid && exportInvoiceForm.TypeOfCarrier.$touched }" data-toggle="tooltip" data-placement="bottom" title="Type of Carrier">
+                                    <div class="input-group ">
+                                        <input type="text" name="TypeOfCarrier" class="form-control " ng-model="exportInvoice.TypeOfCarrier" placeholder="Type Of Carrier" maxlength="101" ng-maxlength="100">
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-text-width"></i>
+                                        </span>
+                                    </div>
+                                    <span class="help-block" style="color: red; display: block;" ng-if="exportInvoiceForm.TypeOfCarrier.$error.required && exportInvoiceForm.TypeOfCarrier.$touched">Type Of Carrier is required</span>
+                                    <span class="help-block" style="color: red; display: block;" ng-if="exportInvoiceForm.TypeOfCarrier.$error.maxlength">100 Character Max</span>
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="form-group tooltipAll" ng-class="{ 'has-error' : exportInvoiceForm.DescriptionOfGoods.$invalid && exportInvoiceForm.DescriptionOfGoods.$touched }" data-toggle="tooltip" data-placement="bottom" title="Description of Goods">
+                                    <div class="input-group ">
+                                        <input type="text" name="DescriptionOfGoods" class="form-control " ng-model="exportInvoice.DescriptionOfGoods" placeholder="Description Of Goods" maxlength="201" ng-maxlength="200">
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-text-width"></i>
+                                        </span>
+                                    </div>
+                                    <span class="help-block" style="color: red; display: block;" ng-if="exportInvoiceForm.DescriptionOfGoods.$error.required && exportInvoiceForm.DescriptionOfGoods.$touched">Description Of Goods is required</span>
+                                    <span class="help-block" style="color: red; display: block;" ng-if="exportInvoiceForm.DescriptionOfGoods.$error.maxlength">200 Character Max</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="panel-body">
+                            <div class="col-md-12">
+                                <div class="col-md-2">
+                                    <div class="pull-left">
+                                        <input type="checkbox" ng-model="exportInvoice.isPO" /><label>Show P.O Panel</label>
+                                    </div>
+                                </div>
+                                <div ng-show="exportInvoice.isPO">
+                                    <div class="col-md-4">
+                                        <div class="form-group tooltipAll" ng-class="{ 'has-error' :exportInvoiceForm.PONo.$invalid && exportInvoiceForm.PONo.$touched }" data-toggle="tooltip" data-placement="bottom" title="Purchase Order No.">
+                                            <div class="input-group ">
+                                                <input type="text" ng-model="POReference.PONo" id="PONo" class="form-control" name="PONo" placeholder="P.O No." ng-maxlength="100" />
+                                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                            </div>
+                                            <span class="help-block" ng-if="exportInvoiceForm.PONo.$error.maxlength">100 Character Max</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group tooltipAll" ng-class="{ 'has-error' :exportInvoiceForm.PO_Date.$invalid && exportInvoiceForm.PO_Date.$touched }" data-toggle="tooltip" data-placement="bottom" title="P.O Date">
+                                            <div class="input-group ">
+                                                <input type="text" id="txtPO_Date" name="PO_Date" ng-model="POReference.PODate" class="form-control" placeholder="P.O. Date" readonly />
+                                                <span class="input-group-addon" ng-click="CalendartxtPO_Date()" id="CalendartxtPODate"><i class="fa fa-calendar"></i></span>
+                                            </div>
+                                            <!--<span class="help-block" style="display: block;" ng-if="exportInvoiceForm.PO_Date.$error.required && exportInvoiceForm.PO_Date.$touched">P.O. Date is required</span>-->
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button id="btnAdd" class="customBtn custmoBtnReset tooltipAll" title="Add" ng-click="AddPOReference();" ng-disabled="!POReference.PONo || !POReference.PODate">
+                                            <i class=" fa fa-plus-square"></i>&nbsp;Add
+                                        </button>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="center">
+                                                <table class="responstable table-hover" style="width: 50%;  margin-left: auto; margin-right: auto;">
+                                                    <tbody>
+                                                        <tr class="t-head">
+                                                            <th class="t-cell-center">S/N</th>
+                                                            <th class="t-cell-center">PO No</th>
+                                                            <th class="t-cell-center" data-th="PO Date"><span>PO Date</span></th>
+                                                            <th class="t-cell-center">Remove</th>
+                                                        </tr>
+                                                        <tr class="HoverTable" ng-repeat="aPOReference in POReferencelist track by $index">
+                                                            <td class="t-cell-center">{{$index+1}}</td>
+                                                            <td class="t-cell-center">{{aPOReference.PONo}}</td>
+                                                            <td class="t-cell-center">{{aPOReference.PODate}}</td>
+                                                            <td class="t-cell-center">
+                                                                <button title="Remove" ng-click="removePOReference(aPOReference)">
+                                                                    <i class="fa fa-minus-square"></i>&nbsp;
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="fa fa-list"></i>&nbsp;Sales Order List</h3>
+                </div>
+                <div class="panel-footer" hidden="hidden">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <div class="form-group tooltipAll" data-toggle="tooltip" data-placement="bottom" title="From Date">
+                                <div class="input-group">
+                                    <input type="text" name="SalesFromDate" id="txtSalesFromDate" onkeydown="return false" ng-model="SalesFromDate" class="form-control " placeholder="From Date" readonly="readonly" />
+                                    <div class="input-group-addon" ng-click="CalendarOpenSalesFromDate()">
+                                        <span class="fa fa-calendar req-icon-color"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group tooltipAll" data-toggle="tooltip" data-placement="bottom" title="To Date">
+                                <div class="input-group">
+                                    <input type="text" name="SalesToDate" id="txtSalesToDate" onkeydown="return false" ng-model="SalesToDate" class="form-control " placeholder="To Date" readonly="readonly" />
+                                    <div class="input-group-addon" ng-click="CalendarOpenSalesToDate()">
+                                        <span class="fa fa-calendar req-icon-color"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group tooltipAll" data-toggle="tooltip" data-placement="bottom" title="Sales Order No">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" ng-model="SalesOrderNoSearch" placeholder="Sales Order No" maxlength="100">
+                                    <span class="input-group-addon ">
+                                        <i class="fa fa-search"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-sm-2 col-lg-2 col-xs-12" style="padding-left: 3%; padding-right: 3%;">
+                            <div class="row">
+                                <button id="btnSearch" class="customBtn custmoBtnSearch tooltipAll" title="Search" ng-click="SearchSalesOrder()">
+                                    <i class="fa fa-search-plus"></i>&nbsp;Search
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table class="responstable table-hover">
+                                <tbody>
+                                    <tr>
+                                        <th style="text-align: center;" width="10%">Chk</th>
+                                        <th class="t-cell-center">Sales Order No</th>
+                                        <th class="t-cell-center">Sales Order Date</th>
+                                        <th class="t-cell-center">Amount</th>
+                                        <th class="t-cell-center">Currency Type</th>
+                                        <th class="t-cell-center">SO.Type</th>
+                                    </tr>
+                                    <tr ng-show="SalesOrderList.length" class="HoverTable searchRow" ng-repeat="aSalesOrder in SalesOrderList">
+                                        <td style="text-align: center;">
+                                            <input type="checkbox" ng-model="aSalesOrder.IsChecked" name="CheckSalesOrder" ng-disabled="aSalesOrder.disabled" ng-click="SalesOrderCheck(aSalesOrder);">
+                                        </td>
+                                        <td class="t-cell-center">{{aSalesOrder.SalesOrderNo}}</td>
+                                        <td class="t-cell-center">{{aSalesOrder.SalesOrderDate}}</td>
+                                        <td class="t-cell-center">{{aSalesOrder.AmountWithCPT}}</td>
+                                        <td class="t-cell-center">{{aSalesOrder.CurrencyType}}</td>
+                                        <td class="t-cell-center">{{aSalesOrder.SalesOrderType}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td class="pull-right">{{totalAmount}} /=</td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="fa fa-list"></i>&nbsp;Item List for L/C Copy</h3>
+                </div>
+                <div class="panel-footer">
+                    <div class="row">
+                        <div class="col-md-8" hidden>
+                            <div class="form-group" ng-class="{ 'has-error' : exportInvoiceForm.ItemName.$invalid && exportInvoiceForm.ItemName.$touched }" data-toggle="tooltip" data-placement="bottom" title="Select Item">
+                                <div id="itemNameDiv" class="input-group width-hundred-percent">
+                                    <select id="itemNameDisable" ng-model="ad_Item.TempItemName" name="ItemName" class="form-control selectMendatory" ng-options="Item.TempItemName for Item in ItemSearchList track by Item.ItemId" ng-disabled="itemNameDisable" ng-change="ProductBtn = 'Edit Product';">
+                                        <!--<option value="">Search for: Item Name ~ Description One ~ Description Two ~ Item Code ~ Pc(s) Per Roll ~ Roll Per Carton ~ Hs Code</option>-->
+                                        <option value=""></option>
+                                    </select>
+                                    <span class="help-block" ng-show="exportInvoiceForm.ItemName.$dirty && exportInvoiceForm.ItemName.$invalid">ItemName is required</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-1 col-sm-1 col-lg-1 col-xs-12" hidden>
+                            <div class="form-group">
+                                <button id="importBtn" type="button" class="customBtn custmoBtnSearch" ng-click="ImportItem(ad_Item.TempItemName);" title="Import" ng-disabled="!ad_Item.TempItemName">{{btnImport}}</button>
+                            </div>
+                        </div>
+                        <div class="col-md-1" hidden>
+                            <!--<proforma-invoice-directive></proforma-invoice-directive>-->
+                            <button class="btn btn-danger tooltipAll" ng-click="ListClear();" title="Clear">
+                                <i class="fa fa-refresh"></i>Clear
+                            </button>
+                        </div>
+
+                        <div class="col-md-2 col-sm-2 col-lg-2 col-xs-12" hidden>
+                            <!--<div class="form-group">
+                                <button class="customBtn custmoBtnReset" ng-click="EditItem();" ng-disabled="!invoiceDetailList.length||isFinalized" title="Add Item">
+                                    <i class="fa fa-pencil-square"></i>&nbsp;{{ProductBtn}}
+                                </button>
+                            </div>-->
+                            <"f
+                            <div class="form-group">
+                                <button class="customBtn custmoBtnReset tooltipAll" ng-click="EditItem();" ng-disabled="!invoiceDetailList.length" title="Add Item">
+                                    <i class="fa fa-pencil-square"></i>&nbsp;{{ProductBtn}}
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-12 toolbar">
+                            <div class="col-md-8">
+                                <div class="row">
+                                    <div class="btn-toolbar ">
+                                        <div class="btn-group ">
+
+                                            <span ng-hide="!isFinalized">
+                                                <button ng-click="tableInsertCol()" ng-hide="isEnableIput"><i class="fa fa-plus-square" style="color: #E62F17;"></i>Add Column</button>
+                                                <button ng-click="tableRemoveCol()" ng-hide="isEnableIput"><i class="fa fa-trash" style="color: #E62F17;"></i>Remove Col</button>
+                                                <button ng-click="tableRemoveRow()" ng-hide="isEnableIput" title="Ctrl+BackSpace"><i class="fa fa-trash" style="color: #E62F17;"></i>Remove Item</button>
+                                                <button ng-click="tableInputDisable()"><i class="fa fa-pencil-square" style="color: #E62F17;"></i>Enable Edit</button>
+                                                <!--<button ng-click="showData()"><i class="fa fa-pencil-square" style="color: #E62F17;"></i>Show data</button>-->
+                                                <!--<button ng-click="tableInsertRow()"><i class="fa fa-plus-square" style="color: #4201FF;" aria-hidden="true"></i>Add Row</button>-->
+
+                                            </span>
+                                            <button id="btnItemReset" ng-click="restMergeInvoiceDetails()" title="Item Reset">
+                                                <i class="fa fa-refresh"></i>&nbsp;Item Reset
+                                            </button>
+                                            <!--<button ng-click="test()"><i class="fa fa-pencil-square" style="color: #E62F17;"></i>Add Row</button>
+                                            <button ng-click="CalnewTable()"><i class="fa fa-pencil-square" style="color: #E62F17;"></i>Cal new Table</button>-->
+
+
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <button class="customBtn custmoBtnReset tooltipAll" ng-click="Finalized();" ng-disabled="!invoiceDetailList.length" title="Finalized">
+                                            <i class=" fa fa-plus-square"></i>Finalized
+                                        </button>
+                                    </div>
+                                </div>
+                                <!--<div class="col-md-6">
+                                    <div class="form-group">
+                                        <button type="button" id="showiteminfo" ng-click="getItemInfo()" class="customBtn custmoBtnSearch" title="Toggle Packaging Info">
+                                            <i class="fa fa-refresh"></i>&nbsp;Package Info
+                                        </button>
+                                    </div>
+                                </div>-->
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="form-group" ng-class="{ 'has-error' : exportInvoiceForm.CheckBox.$invalid && exportInvoiceForm.CheckBox.$touched }" data-toggle="tooltip" data-placement="bottom" title="CheckBox">
+                                            <label class="switch">
+                                                <input type="checkbox" ng-model="IsOpeningPayment" ng-click="getItemInfo()">
+                                                <span class="slider round"></span>
+                                            </label>
+                                            <span><b>Package Info</b></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="result"> </div>
+
+
+                    <table id="mofiz" style="width: 100%;" border="1">
+                        <thead>
+                            <tr>
+                                <th ng-repeat="h in ItemTableHeaders track by $index" ng-if="$index > 0" class="t-cell-center">{{h}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="row in ItemTableDataRow track by $index">
+                                <td ng-trim="true" class="t-cell-center" ng-repeat="item in row track by $index" ng-if="$index > 0" contenteditable="false">
+                                    <!--<textarea class="t-cell-center" ng-model="item" ng-show="($index==3)" readonly="readonly" style="resize: none;"></textarea>
+                                    <textarea class="t-cell-center" ng-model="item" ng-show="($index==4)" style="resize: none;"></textarea>-->
+                                    <input class="t-cell-center" name="ItemBox" ng-init="GetItemValueForAmountCalculation(item, row, $index);" ng-change="GetChengedFieldValue(item, row, $index);" oninput="edValueKeyPress();" ng-model="item" ng-if="($index>=(row.length-3))" disabled />
+                                    <span ng-if="$index<(row.length-3)">{{item}}</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th class="t-cell-center" ng-repeat="f in ItemTableFooter track by $index" ng-if="$index > 0" contenteditable="false">{{f}}</th>
+                            </tr>
+                            <tr>
+                                <th class="t-cell-center" ng-repeat="CPT in ItemTableFooterForCPT track by $index" ng-if="$index > 0" contenteditable="false">{{CPT}}</th>
+                            </tr>
+                            <tr>
+                                <th class="t-cell-center" ng-repeat="CPTTotal in ItemTableFooterForCPTTotal track by $index" ng-if="$index > 0" contenteditable="false">
+                                    <input class="t-cell-center" id="txtTotalAmount" name="TotalAmount" ng-init="" ng-change="GetChengedFieldValue(CPTTotal, ItemTableFooterForCPTTotal, $index);" oninput="edValueKeyPress();" ng-model="CPTTotal" ng-if="($index>=(ItemTableFooterForCPTTotal.length-1))" disabled />
+                                    <span ng-if="$index<(ItemTableFooterForCPTTotal.length-1)">{{CPTTotal}}</span>
+                                </th>
+                            </tr>
+                        </tfoot>
+
+                    </table>
+                    <!--<table id="newTable" style="width: 100%;" border="1">
+                        <tbody>
+
+                        </tbody>
+                    </table>-->
+                </div>
+
+            </div>
+        </div>
+        <!--<div class="panel panel-info" ng-if="isInfoShow">-->
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-list"></i>&nbsp;Item Info</h3>
+            </div>
+            <div class="panel-footer">
+
+                <div class="row">
+
+                    <div class="col-md-12">
+
+                        <table border="1" style="width: 100%">
+
+                            <thead>
+
+                                <tr>
+                                    <th class="t-cell-center">Item ID</th>
+                                    <th class="t-cell-center">Sl No</th>
+
+                                    <th class="t-cell-center">Item Name</th>
+                                    <th class="t-cell-center">HS Code</th>
+                                    <th class="t-cell-center">Description Of Goods</th>
+                                    <th class="t-cell-center">Quantity</th>
+
+                                    <th class="t-cell-center">Pc / Roll</th>
+                                    <th class="t-cell-center">Roll / Carton</th>
+                                    <th class="t-cell-center">Unit / Carton</th>
+                                    <th class="t-cell-center">Roll Weight</th>
+                                    <th class="t-cell-center">Carton Weight</th>
+                                    <th class="t-cell-center">Carton Size</th>
+
+
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                <tr ng-repeat="anItem in invoiceDetailList" ng-click="GetitemId($index,anItem.SalesOrderId)" current-page="currentPage" total-items="total_count" ng-init="anItem.DescriptionOverride=anItem.ItemDescription; ">
+
+                                    <td class="t-cell-center">{{anItem.ItemId}}</td>
+                                    <td class="t-cell-center">{{$index+1}}</td> <!-- Slno-->
+
+                                    <td class="t-cell-center" style="text-align: center;">
+                                        <!-- if column header is item name then put value Item Name-->
+                                        {{anItem.ItemName}}
+                                        <div class="top_row">
+                                            HsCode-{{anItem.HsCode}}
+                                        </div>
+                                    </td>
+                                    <td class="t-cell-center" style="text-align: center;">
+                                        <!--<select ng-model="ddlHsCode" name="HSCode" id="cmbHSCode" ng-options="code.HsCode for code in HsCodeList track by code.HsCodeId" ng-change="anItem.HsCodeId=ddlHsCode.HsCodeId;anItem.HsCode=ddlHsCode.HsCode" required autofocus>-->
+                                        <select ng-model="anItem.ddlHsCode" name="HSCode" id="cmbHSCode" ng-options="code.HsCode for code in HsCodeList track by code.HsCodeId" ng-change="anItem.HsCode = anItem.ddlHsCode.HsCode; anItem.HsCodeId = anItem.ddlHsCode.HsCodeId; ChangeHSCode(anItem, $index);">
+                                            <option value="" label="Select HSCode"></option>
+                                        </select>
+                                    </td>
+
+                                    <td class="t-cell-center" style="text-align: center;">
+                                        <!-- if column header is item name then put value Item Name-->
+                                        {{anItem.ItemDescription}}
+                                        <div class="top_row">
+                                            ~ {{anItem.ItemDescriptionTwo}}
+                                        </div>
+                                    </td>
+
+
+
+                                    <td class="t-cell-center" style="text-align: center;">
+                                        {{anItem.Quantity}}
+                                    </td>
+                                    <td class="t-cell-center" style="text-align: center;">
+                                        <input class="t-cell-center" style="width:100px" type="number" ng-model="anItem.PcPerRoll" />
+
+                                        <!--{{anItem.PcPerRoll}}-->
+                                    </td>
+                                    <td class="t-cell-center" style="text-align: center;">
+                                        <input class="t-cell-center" style="width:100px" type="number" ng-model="anItem.RollPerCarton" />
+
+                                        <!--{{anItem.RollPerCarton}}-->
+                                    </td>
+                                    <td class="t-cell-center" style="text-align: center;">
+                                        <input class="t-cell-center" style="width:100px" type="number" ng-model="anItem.UnitPerCarton" />
+
+                                        <!--{{anItem.UnitPerCarton}}-->
+
+                                    </td>
+                                    <td class="t-cell-center" style="text-align: center;">
+                                        <input class="t-cell-center" style="width:100px" type="number" ng-model="anItem.RollWeight" />
+
+                                        <!--{{anItem.RollWeight}}-->
+                                    </td>
+                                    <td class="t-cell-center" style="text-align: center;">
+                                        <input class="t-cell-center" style="width:100px" type="number" ng-model="anItem.CartonWeight" />
+
+                                        <!--{{anItem.CartonWeight}}-->
+                                    </td>
+                                    <td style="text-align: center;">
+                                        <input class="t-cell-center" style="width:100px" type="text" ng-model="anItem.CartonSize" />
+
+                                        <!--{{anItem.CartonSize}}-->
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                            <!-- END OF DISABLE SECTION-->
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12" ng-if="IsTableShow">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="fa fa-list"></i>&nbsp;Previous Items Details </h3>
+                </div>
+                <div class="panel-body">
+                    <div class="col-md-12">
+                        <div class="row text-center">
+
+                            <div id="HtmlTable">
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h3 class="panel-title pull-left "><i class="fa fa-list"></i>&nbsp;Packing Info</h3>
+                    <div class="clearfix">
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="col-md-3">
+                                <button type="button" id="btnReset" ng-click="getPackingInfo()" class="customBtn custmoBtnSearch" title="Get Packing Info" style="margin-top: 23px">
+                                    <i class="fa fa-calculator"></i>&nbsp;Get Packing Info
+                                </button>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group tooltipAll" data-toggle="tooltip" data-placement="bottom" title="Total Carton">
+                                    <label>Total Carton:</label>
+                                    <div class="input-group ">
+                                        <input type="text" name="TotalCarton" class="form-control " ng-model="packingInfo.TotalCarton" placeholder="Total Carton" maxlength="10" ng-maxlength="9">
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-text-width"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group tooltipAll" data-toggle="tooltip" data-placement="bottom" title="Label Net Weight">
+                                    <label>Label Net Weight:</label>
+                                    <div class="input-group ">
+                                        <input type="text" name="LabelNetWeight" class="form-control " ng-model="packingInfo.LabelNetWeight" placeholder="Label Net Weight" maxlength="10" ng-maxlength="9">
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-text-width"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group tooltipAll" data-toggle="tooltip" data-placement="bottom" title="Label Gross Weight">
+                                    <label>Label Gross Weight:</label>
+                                    <div class="input-group ">
+                                        <input type="text" name="LabelGrossWeight" class="form-control " ng-model="packingInfo.LabelGrossWeight" placeholder="Label Gross Weight" maxlength="10" ng-maxlength="9">
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-text-width"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="col-md-3">
+                                <div class="form-group tooltipAll" data-toggle="tooltip" data-placement="bottom" title="Ribbon Net Weight">
+                                    <label>Ribbon Net Weight:</label>
+                                    <div class="input-group ">
+                                        <input type="text" name="RibonNetWeight" class="form-control " ng-model="packingInfo.RibonNetWeight" placeholder="Ribbon Net Weight" maxlength="10" ng-maxlength="9">
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-text-width"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group tooltipAll" data-toggle="tooltip" data-placement="bottom" title="Ribbon Gross Weight">
+                                    <label>Ribbon Gross Weight:</label>
+                                    <div class="input-group ">
+                                        <input type="text" name="RibonGrossWeight" class="form-control " ng-model="packingInfo.RibonGrossWeight" placeholder="Ribbon Gross Weight" maxlength="10" ng-maxlength="9">
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-text-width"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group tooltipAll" ng-class="{ 'has-error' : exportInvoiceForm.CartonMeasurement.$invalid && exportInvoiceForm.CartonMeasurement.$touched }" data-toggle="tooltip" data-placement="bottom" title="Carton Measurement">
+                                    <label>Carton Measurement:</label>
+                                    <div class="input-group ">
+                                        <input type="text" name="CartonMeasurement" class="form-control " ng-model="packingInfo.CartonMeasurement" placeholder="Carton Measurement" maxlength="201" ng-maxlength="200">
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-text-width"></i>
+                                        </span>
+                                    </div>
+                                    <span class="help-block" style="color: red; display: block;" ng-if="exportInvoiceForm.CartonMeasurement.$error.maxlength">200 Character Max</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h3 class="panel-title pull-left "><i class="fa fa-list"></i>&nbsp;Terms and Conditions</h3>
+                    <div class="panel-title pull-right">
+                        <button type="button" id="btnResetTerms" ng-click="resetTerms()" class="customBtn custmoBtnReset" style="border-radius: 3px; margin-bottom: -10px; margin-top: -15px; padding-bottom: 3px; padding-top: 3px;" title="Reset Terms and Conditions">
+                            <i class="fa fa-refresh"></i>&nbsp;Reset Terms
+                        </button>
+                    </div>
+                    <div class="clearfix">
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="container">
+                            <p type="text" name="TermsAndCondition" class="summernote">
+                                {{TermsAndConditionList}}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-5">
+                    <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 5%; padding-right: 7%;">
+                        <div class="row">
+                            <button ng-click="post()" id="btnSavePI" name="Save" class="customBtn custmoBtnSave tooltipAll" ng-disabled="(!ddlExporter
+
+                                                                                                                       || !exportInvoice.InvoiceDate
+                                                                                                                       || !ddlInvoiceType
+                                                                                                                       || !ddlExporterBank
+                                                                                                                       || !InvoiceNo2
+                                                                                                                       || !ddlFactory
+                                                                                                                       || !ddlEmail
+                                                                                                                       || !exportInvoice.CompanyNameBilling
+                                                                                                                       || !exportInvoice.AddressBilling
+                                                                                                                       || !exportInvoice.CompanyNameDelivery
+                                                                                                                       || !exportInvoice.AddressDelivery || !invoiceDetailList.length)"
+                                    title="Save">
+                                <i class="fa fa-floppy-o"></i>&nbsp;{{saveButtonLabel}}
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 6%; padding-right: 5%;">
+                        <div class="row">
+                            <button type="button" id="btnLockAndSubmit" name="LockAndSubmit" ng-click="lockAndSubmit()" class="customBtn custmoBtnReset" title="Lock And Submit" ng-disabled="(!ddlExporter
+
+                                                                                                                                                                    || !exportInvoice.InvoiceDate
+                                                                                                                                                                    || !ddlInvoiceType
+                                                                                                                                                                    || !ddlExporterBank
+                                                                                                                                                                    || !InvoiceNo2
+                                                                                                                                                                    || !ddlFactory
+                                                                                                                                                                    || !ddlEmail
+                                                                                                                                                                    || !exportInvoice.CompanyNameBilling
+                                                                                                                                                                    || !exportInvoice.AddressBilling
+                                                                                                                                                                    || !exportInvoice.CompanyNameDelivery
+                                                                                                                                                                    || !exportInvoice.AddressDelivery || !invoiceDetailList.length)">
+                                <i class="fa fa-floppy-o"></i>&nbsp;Lock & Submit
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 6%; padding-right: 5%;">
+                        <div class="row">
+                            <button type="button" id="btnReset" ng-click="resetForm()" class="btn btn-danger tooltipAll" title="Reset">
+                                <i class="fa fa-refresh"></i>&nbsp;Reset
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <br />
+    <div class="col-md-12" ng-show="ListViewPermission">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-search"></i>&nbsp;Proforma Invoice List</h3>
+            </div>
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <div class="input-group tooltipAll" data-toggle="tooltip" title="From Date">
+                                <input type="text" name="FromDate" id="txtFromDateForPI" ng-model="FromDate" class="form-control " placeholder="From Date" readonly />
+                                <span class="input-group-addon" ng-click="FormDateChangeForPI()" id="FormDateChange"><i class="fa fa-calendar req-icon-color"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group tooltipAll" data-toggle="tooltip" title="To Date">
+                                    <input type="text" name="ToDate" id="txtToDateForPI" ng-model="ToDate" class="form-control " placeholder="To Date" readonly />
+                                    <span class="input-group-addon" ng-click="ToDateChangeForPI()" id="ToDateChange"><i class="fa fa-calendar req-icon-color"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group tooltipAll" data-toggle="tooltip" title="Search Company / Invoice No  / SalesOrder No">
+                            <input type="text" class="form-control" id="textInvoiceNoAndCompany" ng-model="SearchInvoiceAndCompanyName" name="name" placeholder="Company Name / Invoice No / SalesOrder No" />
+                        </div>
+                    </div>
+                    <div class="col-md-2 col-sm-2 col-lg-2 col-xs-12" style="padding-right: 3%; padding-left: 3%;">
+                        <div class="row">
+                            <button id="btnSearch" class="customBtn custmoBtnSearch tooltipAll" title="Search" ng-click="InvoiceSearch();">
+                                <i class="fa fa-search-plus"></i>&nbsp;Search
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+
+                        <button id="btnSearch" style="width:100%" ng-click="reloadBtn()" class="btn btn-danger tooltipAll" title="Reload">
+                            <i class="fa fa-refresh"></i>&nbsp;Clear
+                        </button>
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="responstable table-hover">
+                            <tbody>
+                                <tr>
+                                    <th class="t-cell-center">S/N</th>
+                                    <!--<th class="t-cell-center">Type</th>-->
+                                    <th class="t-cell-center">Invoice No</th>
+                                    <th class="t-cell-center">Invoice Date</th>
+                                    <th class="t-cell-center">Importer</th>
+                                    <th class="t-cell-center">Sales Orders</th>
+                                    <th class="t-cell-center">Amount</th>
+                                    <th class="t-cell-center">Status</th>
+                                    <th class="t-cell-center">Action</th>
+                                </tr>
+                                <tr class="HoverTable searchRow" dir-paginate="aInvoiceOrder in InvoiceListPaged | itemsPerPage: PerPage" ng-click="" current-page="currentPage" total-items="total_count">
+                                    <td class="t-cell-center">{{$index + ((currentPage-1)*PerPage) + 1}}</td>
+                                    <!--<td class="t-cell-center">{{aInvoiceOrder.InvoiceType}}</td>-->
+                                    <td class="t-cell-center">{{aInvoiceOrder.InvoiceNo}}{{aInvoiceOrder.PINoPostfix}}</td>
+                                    <td class="t-cell-center">{{aInvoiceOrder.InvoiceDate}}</td>
+                                    <td class="t-cell-center">{{aInvoiceOrder.CompanyName}}</td>
+                                    <td class="t-cell-center">{{aInvoiceOrder.SalesOrderNos}}</td>
+                                    <td class="t-cell-center">{{aInvoiceOrder.AmountWithCPT}}</td>
+                                    <td class="t-cell-center">{{aInvoiceOrder.DocStatus}}</td>
+                                    <td class="t-cell-center">
+
+                                        <button ng-show="aInvoiceOrder.DocStatus == 'Draft'" class="btn btn-primary" id="btnLoadPI" ng-disabled="IsEdit" style="width:60%;margin:5px" ng-click="invoiceRowClick(aInvoiceOrder);">
+                                            <i title="Report" class="fa fa-edit" style="font-size:18px;"> </i> Edit
+                                        </button>
+
+                                        <button class="btn btn-primary" style="width: 60%; margin: 5px " ng-click="OpenPopupWindow(aInvoiceOrder.InvoiceId)">
+                                            <i title="Report" class="fa fa-print" style="font-size:18px;"> </i> Report
+                                        </button>
+
+                                        <button class="btn btn-primary" ng-if="aInvoiceOrder.DocStatus=='New Approved' ||
+                                                                      aInvoiceOrder.DocStatus=='Amendment Request Approved'"
+                                                style="width: 60%; margin: 5px " data-toggle="modal" data-backdrop="static" data-keyboard="false" ng-click="amendment.CompanyName=aInvoiceOrder.CompanyName;amendment.InvoiceNo = aInvoiceOrder.InvoiceNo;amendment.PINoPostfix = aInvoiceOrder.PINoPostfix;amendment.InvoiceDate = aInvoiceOrder.InvoiceDate;amendment.DocumentId = aInvoiceOrder.InvoiceId;stopPropagation();" data-target="#AmendmentModal">
+                                            Request for <br /> Amendment
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr class="t-foot" ng-show="total_count>PerPage">
+                                    <th colspan="8">
+                                        <dir-pagination-controls max-size="8"
+                                                                 direction-links="true"
+                                                                 boundary-links="true"
+                                                                 on-page-change="getData(newPageNumber)" style="text-align:center;">
+                                        </dir-pagination-controls>
+                                    </th>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="row pagination-footer">
+                            <div class="col-md-6">
+                                <span>Show </span><input class="input-pagesize" type="number" ng-maxlength="100" ng-minlength="1" width="1" ng-model="PerPage"> <span>Records </span>
+                            </div>
+                            <div class="col-md-6">
+                                <span class="pull-right">Showing {{((currentPage-1)*PerPage)+1}} to {{((currentPage-1) * PerPage) + SalesOrderListPaged.length}} of {{total_count}} Records</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</form>
+<form name="itemEntryTwoForm" novalidate>
+    <div id="itemModal" class="modal fade" ng-model="itemModal" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <!-- Modal content-->
+            <div class="modal-content" style="width: 906px" ;>
+                <div class="modal-header text-center" style="background-color: #3c8dbc; color: white;">
+                    <button type="button" class="close" style="color: red;" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">New Item</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="panel-body" style="margin-left: -15px; margin-right: -25px;">
+                        <!--<item-directive data="widget"></item-directive>-->
+
+                        <div class="modal-footer">
+                            <!--<button type="button" style="margin-top: 10px" class="btn btn-success" ng-click="SaveItem();" title="Save" data-dismiss="modal" ng-disabled="!ddlCategory || !ddlSubCategory || !ad_Item.ItemName || !ad_Item.ItemDescription || !ad_Item.ItemDescription || !ad_Item.ItemCode || !ddlItemUnit || !ddlHsCode">{{btnSaveItem}}</button>-->
+                            <button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="CloseItemModal();">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<form name="companyEntryForm" novalidate>
+    <!-- Modal -->
+    <div id="companyModal" class="modal fade" ng-model="companyModal" role="dialog">
+        <div class="modal-dialog modal-md">
+            <!-- Modal content-->
+            <div class="modal-content" style="width: 906px">
+                <div class="modal-header text-center" style=" background-color: #3c8dbc;color:white;">
+                    <button type="button" class="close" style="color:red;" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">{{CompanyBtn}}</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="panel-body" style="margin-right: auto; margin-left: auto; ">
+                        <!-- Include company  Directive-->
+
+                        <!--<company-directive></company-directive>-->
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <!--<button type="button" style="margin-top:10px" class="btn btn-success" ng-click="SaveItem();" ng-disabled="!ddlCategory || !ddlSubCategory || !ad_Item.ItemName || !ad_Item.ItemDescription || !ad_Item.ItemDescriptionTwo || !ad_Item.ItemCode || !ddlItemUnit || !ddlHsCode || !ad_Item.IsActive" title="save">Save</button>-->
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="CloseItemModal();">Close</button>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</form>
+<div class="modal fade" id="AmendmentModal" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Amendment Request</h4>
+            </div>
+
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-3">
+                    </div>
+                    <div class="col-md-9">
+                        <p>
+                            LC/SC No:
+                            {{amendment.CompanyName}} &nbsp;,&nbsp; &nbsp;
+                            Importer Name:
+                            {{amendment.InvoiceNo}}{{amendment.PINoPostfix}}
+                        </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <label>Amendment Reason</label>
+                    </div>
+                    <div class="col-md-9">
+                        <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Select Select Reason">
+                            <div class="input-group input-group-md ddl">
+                                <select ng-model="ddlAmendmentReason" id="ddlAmendmentReason" class="form-control selectMendatory" name="AmendmentReason" ng-options="reason.AmendmentReasonName for reason in AmendmentReasonList track by reason.AmendmentReasonId" ng-change="amendment.AmendmentReasonId = ddlAmendmentReason.AmendmentReasonId" autofocus required>
+                                    <option value="" label="Select Reason"></option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <label>Remarks</label>
+                    </div>
+                    <div class="col-md-9">
+                        <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Remarks">
+                            <div class="input-group ">
+                                <input type="text" name="Remarks" class="form-control" ng-model="amendment.RequestRemarks" placeholder="Remarks" maxlength="101" ng-maxlength="100" required>
+
+                                <span class="input-group-addon">
+                                    <i class="fa fa-text-width "></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                    </div>
+
+                    <div class="col-md-2">
+                        <button type="button" class="customBtn custmoBtnSave" data-dismiss="modal" ng-disabled="AmendmentRequestCheck || !ddlAmendmentReason" ng-click="postAmendmentRequest()"><i class="fa fa-floppy-o"></i>&nbsp;Request</button>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="button" class="customBtn custmoBtnDelete" data-dismiss="modal" ng-click="AmendmentRequestCheck=false"><i class="fa fa-refresh"></i>&nbsp;Cancel</button>
+                    </div>
+                </div>
+                <hr />
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    .toolbar {
+        border: 1px;
+        margin-bottom: 20px;
+    }
+
+    .icon-bar {
+        background-color: blue;
+        overflow: auto;
+        width: 100%;
+    }
+
+        .icon-bar a {
+            color: white;
+            float: left;
+            font-size: 36px;
+            padding: 1px 0;
+            text-align: center;
+            transition: all 0.3s ease;
+            width: 20%;
+        }
+
+            .icon-bar a:hover {
+                background-color: #7B048A;
+            }
+</style>
+<style>
+    input::-webkit-calendar-picker-indicator {
+        opacity: 0;
+    }
+
+
+    .red-cell {
+        background: #F00; /* Or some other color */
+    }
+</style>
+<script type="text/javascript">
+    $('.tooltipAll').tooltip({ boundary: 'window' })
+
+    $("#itemNameDisable").select2({
+        placeholder: "Search for: Item Name ~ Description One ~ Description Two ~ Item Code ~ Pc(s) Per Roll ~ Roll Per Carton ~ Hs Code",
+        theme: "classic",
+        dropdownAutoWidth: false
+    });
+    $("#Importer").select2({
+        placeholder: "Search for: Company Name",
+        theme: "classic",
+        dropdownAutoWidth: false
+    });
+
+    $('#spanInput').on('keyup', function () {
+        $('#hiddenInput').html($('#spanInput').val());
+    });
+    function RowSelect(e) {
+        $('.searchRow').css('background-color', '');
+        $(e).css('background-color', '#94d5ef');
+
+    }
+    function edValueKeyPress() {
+        var original = '';
+        $('#mofiz tbody tr td input.red').on('input', function () {
+            if ($(this).val().replace(/[^.]/g, "").length > 1) {
+                $(this).val(original);
+            } else {
+                original = $(this).val();
+            }
+        });
+    }
+
+    $("#itemNameDisable").keypress(function (event) {
+        if (event.keyCode === 13) {
+            $("#importBtn").click();
+            event.preventDefault();
+            return false;
+        }
+    });
+
+    $(document).ready(function () {
+        $('.summernote').summernote({
+            height: 300,
+            tabsize: 2,
+            width: 1010,
+
+            toolbar: [
+                ['style', ['bold', 'italic', 'underline', 'clear']],
+                ['font', ['strikethrough', 'superscript', 'subscript']],
+                ['fontname', ['fontname']],
+                ['table', ['table']],
+                ['insert', ['link', 'picture']],
+                ['view', ['fullscreen', 'codeview']],
+                ['fontsize', ['fontsize']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['height', ['height']]
+            ]
+
+        });
+
+    });
+
+</script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.addEventListener('copy', doCopy);
+        window.addEventListener('paste', doPaste);
+    });
+
+    function doCopy(ev) {
+        let selection = document.getSelection();
+        selection = selection.toString().toUpperCase();
+        console.log(selection);
+        ev.clipboardData.setData('text/plain', selection);
+
+        ev.preventDefault();
+    }
+
+    function doPaste(ev) {
+        let data = ev.clipboardData.getData('text/plain');
+        console.log(data);
+        let span = document.createElement('span');
+        span.textContent = data;
+
+        let selection = document.getSelection();
+        if (!selection.rangeCount) return false;
+        selection.deleteFromDocument();
+        selection.getRangeAt(0).insertNode(span);
+
+        ev.preventDefault();
+    }
+</script>

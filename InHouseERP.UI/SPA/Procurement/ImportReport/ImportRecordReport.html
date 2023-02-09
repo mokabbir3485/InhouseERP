@@ -1,0 +1,301 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+        body {
+            font-family: "Times New Roman", Times, serif;
+            color: #000000;
+            writing-mode: inherit;
+            width: 100%;
+            height: 100%;
+        }
+
+        #UpperTable td {
+            border: 1px solid black;
+            border-collapse: collapse;
+            padding: 5px;
+        }
+
+        .ProductTable th {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+
+        .ProductTable td {
+            border: 1px solid black;
+            border-collapse: collapse;
+            padding: 5px;
+        }
+
+        .footer {
+            position: fixed;
+            left: 29px;
+            bottom: 0px;
+        }
+
+        .flexcontainer {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        @media screen {
+            img {
+                height: 200px;
+                width: 300px;
+                margin-top: 0px;
+            }
+        }
+
+        @media print {
+            #LogoImg, img {
+                margin-top: -10px;
+            }
+
+            #PrintImg, img {
+                margin-top: -10px;
+                height: 200px;
+                width: 300px;
+            }
+
+            .page-break {
+                display: block;
+                page-break-before: always;
+            }
+
+            img {
+                height: 200px;
+                width: 300px;
+                margin-top: 60px;
+            }
+        }
+
+        @page {
+            size: landscape;
+            max-height: 100%;
+            max-width: 100%;
+            font-family: 'Times New Roman';
+        }
+
+      
+    </style>
+</head>
+<body>
+    <table style="width: 100%">
+        <tbody>
+            <tr>
+                <td>
+                    <div class=" hidden-print">
+                        <div class="col-sm-7 col-md-9">
+
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3 col-md-2">
+                                <!--<button type="button" onclick="ExportToDoc();" class="customBtn custmoBtnReset" style="border-radius: 3px; margin-bottom: -.9em; margin-top: -15px; padding-bottom: 3px; padding-top: 3px;" title="Export to .doc">
+                                    <i class="fa fa-save"></i>&nbsp;Export to .doc
+                                </button>-->
+                            </div>
+                            <div class="col-sm-2 col-md-1">
+                                <button type="button" onclick="document.title = 'Import Record ' + getCurrentDateTime(); PrintPdf();"  class="customBtn custmoBtnReset" style="border-radius: 3px; margin-bottom: -.9em; margin-top: -15px; padding-bottom: 3px; padding-top: 3px;" title="Export to .doc">
+                                    <i class="fa fa-print"></i>&nbsp;Print
+                                </button>
+                            </div>
+
+
+                        </div>
+                        <hr />
+                    </div>
+
+                    <div class="" id="source-html">
+                        <div>
+                            <!--<img id="LogoImg" style="width:65px;height:65px;border-radius:100%;margin-right:15px;" src="/UploadedImages/logo.jpg" />-->
+                            <p style="font-size: 25px; text-align: center; margin: 0px; padding: 0px;"> <b>Retail Technologies Limited</b></p>
+                            <!--<p style="font-size: 12px; text-align: center; margin-top: 10px; padding: 0px;margin-top:0px;">
+                                <b>
+                                    House #02,Road #01,Black #A
+                                    <br />
+                                    <b>
+                                        Nolvoge,Nishatnagagar,Turag, Dhaka
+                                    </b>
+                                </b>
+                            </p>-->
+                            <p style="font-size: 18px; text-align: center; margin-top: 10px; padding: 0px;margin-top:0px;font-weight:bold">{{ReportType}}</p>
+                          
+                            <p style="font-size: 18px; text-align: center; margin-top: 10px; padding: 0px;margin-top:0px;font-weight:bold">Import Record : {{ImportReportObj.FromDate}} - {{ImportReportObj.ToDate}}</p>
+
+                        </div>
+                     
+                        <br />
+                    
+
+                        <table class="table-responsive ProductTable table-hover" style="width: 100%;  margin-left: auto; margin-right: auto;margin-top:20px">
+                            <tbody>
+                          
+                                <tr>
+                                    <th rowspan="2"class="t-cell-center">S/N</th>
+                                    <th rowspan="2"class="t-cell-center">Shipper Name</th>
+                                    <th rowspan="2"class="t-cell-center">Invoice No</th>
+                                    <th rowspan="2"class="t-cell-center">Invoice Date</th>
+                                    <th rowspan="2"class="t-cell-center">LC/PO No</th>
+                                    <th rowspan="2" class="t-cell-center">LC/PO Date</th>
+                                    <th rowspan="2"class="t-cell-center">Name Of The Item</th>
+                                    <th colspan="2"class="t-cell-center" ng-if="ImportReportObj.Id == 2">Item</th>
+                                    <th rowspan="2"class="t-cell-center" ng-if="ImportReportObj.Id == 3">Kg & Unit</th>
+                                  
+                                    <th rowspan="2"class="t-cell-center" ng-if="ImportReportObj.Id == 1">Set</th>
+                                    
+                                    <th rowspan="2"class="t-cell-center">Bond No</th>
+                                    <th rowspan="2"class="t-cell-center">Bond Date</th>
+                                    <th rowspan="2"class="t-cell-center">Amount ($)</th>
+                                    <th rowspan="2"class="t-cell-center">Importer Permit No</th>
+                                    <th rowspan="2" class="t-cell-center">Importer Permit Date</th>
+                                    <th rowspan="2"class="t-cell-center">Bill of Entry NO</th>
+                                    <th rowspan="2" class="t-cell-center">Bill of Entry Date</th>
+                                    <th rowspan="2"class="t-cell-center">Remarks</th>
+                                </tr>
+                                <tr>
+                                    <th class="t-cell-center" ng-if="ImportReportObj.Id == 2">Roll</th>
+                                    <th class="t-cell-center" ng-if="ImportReportObj.Id == 2">Weight</th>
+                                </tr>
+                           
+                                <tr class="HoverTable" ng-repeat="impR in importRecordList">
+                                    <td>{{$index + 1}}</td>
+                                    <td>{{impR.SupplierName}}</td>
+                                    <td>{{impR.InvoiceNo}}</td>
+                                    <td>{{impR.InvoiceDate}}</td>
+                                    <td>{{impR.LCorPONo}}</td>
+                                    <td>{{impR.LCorPODate}}</td>
+                                    <td>
+                                       {{impR.ItemName}}
+                                    </td>
+                                    <td ng-if="ImportReportObj.Id == 2">{{impR.Qty}}</td>
+                                    <td ng-if="ImportReportObj.Id == 2">{{impR.PBQtyInKG}} </td>
+                                    <td ng-if="ImportReportObj.Id == 3">{{impR.PBQtyInKG}} </td>
+                                    <td ng-if="ImportReportObj.Id == 1">{{impR.Qty}} </td>
+
+                                    <td>{{impR.BondNo}}</td>
+                                    <td>{{impR.BondDate}}</td>
+                                    <td>{{impR.Amount}}</td>
+                                    <td>{{impR.ImportPermitNo}}</td>
+                                    <td>{{impR.ImportPermitDate}}</td>
+                                    <td>{{impR.BillOfEntryNo}}</td>
+                                    <td>{{impR.BillOfEntryDate}}</td>
+                                    <td>{{impR.Remarks}}</td>
+
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="7" style="text-align:right">Total</td>
+                                    <td ng-if="ImportReportObj.Id == 2">
+                                        {{TotaQty}}
+                                    </td>
+                                    <td ng-if="ImportReportObj.Id == 2">
+                                        {{totalCosQty}}
+                                    </td>
+                                    <td ng-if="ImportReportObj.Id == 2">
+                                    </td>
+                                    <td ng-if="ImportReportObj.Id == 2">
+                                        Total Amount(USD)
+                                    </td>
+                                    <td ng-if="ImportReportObj.Id == 2">
+                                       $ {{TotalAmount}}
+                                    </td>
+
+                                    <td ng-if="ImportReportObj.Id == 3">{{totalCosQty}}</td>
+
+                                    <td ng-if="ImportReportObj.Id == 1">
+                                        {{TotaQty}}
+                                    </td>
+
+                                    <td></td>
+                                    <td ng-if="ImportReportObj.Id == 3 ">
+                                        Total Amount(USD)
+                                    </td>
+                                    <td ng-if="ImportReportObj.Id == 3 ">
+                                        $ {{TotalAmount}}
+                                    </td>
+                                    <td ng-if="ImportReportObj.Id == 1 ">
+                                        Total Amount(USD)
+                                    </td>
+                                    <td ng-if="ImportReportObj.Id == 1">
+                                        {{TotalAmount}}
+                                    </td>
+
+                                    <td ng-if="ImportReportObj.Id == 3"></td>
+                                    <td ng-if="ImportReportObj.Id == 1"></td>
+                                    <td ng-if="ImportReportObj.Id == 1"></td>
+                                    <td ng-if="ImportReportObj.Id == 1"></td>
+                                    <td ng-if="ImportReportObj.Id == 2"></td>
+                                    <td ng-if="ImportReportObj.Id == 2"></td>
+                                    <td ng-if="ImportReportObj.Id == 3"></td>
+                                    <td ng-if="ImportReportObj.Id == 3"></td>
+                                    <td></td>
+                                    <td></td>
+
+
+
+
+                                </tr>
+                            </tfoot>
+                        </table>
+
+                        <table style="width: 100%; border:none;margin-top:10px;">
+                            <tr>
+                                <td style="width:30%">
+                                    Amount Chargeable (in words)
+                                </td>
+
+                                <td style="width:30%;text-align:right;">E & EO </td>
+                            </tr>
+                        </table>
+
+                        <table style="width: 100%; border:none;margin-top:5px;">
+                            <tr>
+                                <td style="width:30%">
+                                    <p style="font-weight:bold;font-size:14px;"> {{TotalAmmount}}Taka Only</p>
+                                </td>
+                                <td style="width:30%;text-align:right;"></td>
+                            </tr>
+
+                            <tr>
+                                <td></td>
+                                <td style="text-align:right;">
+                                    <p style="font-size:14px;font-weight:bold;">For {{localPBList[0].GroupName}}</p>
+                                    <div style="height:30px;">
+
+                                    </div>
+                                    <p style="font-size:12px;">Authority Signatory</p>
+                                </td>
+                            </tr>
+                        </table>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>
+<script>
+
+
+
+    jQuery(document).ready(function ($) {
+
+        $(".main-sidebar").attr("hidden", true);
+        $(".main-header").attr("hidden", true);
+        $(".main-footer").attr("hidden", true);
+        $("#br").attr("hidden", true);
+
+        $("div").removeClass("wrapper");
+        $("div").removeClass("content-wrapper");
+    });
+
+
+    function PrintPdf() {
+        window.print();
+    }
+
+</script>

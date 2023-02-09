@@ -1,0 +1,204 @@
+﻿<form name="FiscalYearEntryForm" novalidate>
+    <div class="col-md-12">
+        <div class="alert alert-info alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="topInfo"> &nbsp;  &#9755;&nbsp; <span style="color:red;">Red Icon</span> Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp; &#9755; Click On A Table Row To Update/Delete</div>
+        </div>
+    </div>
+    <div class="col-md-5" ng-show="CreatePermission || RevisePermission">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-share-alt"></i>&nbsp;Fiscal Year Entry </h3>
+            </div>
+
+            <div class="panel-body">
+                <div class="from-group tooltipAll" style="margin-bottom:2%" title="Branch Name">
+                    <select id="ddlBranch" ng-model="ddlBranch" style="width:100%" class="form-control selectMendatory" name="BranchName" ng-options="aBranch.BranchName for aBranch in Branchlist track by aBranch.BranchId" required>
+                        <option value="" label="Select Branch Name"></option>
+                    </select>
+                </div>
+
+                <div class="row">
+
+                    <div class="col-md-6">
+                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : FiscalYearEntryForm.FYFromDate.$invalid && FiscalYearEntryForm.FYFromDate.$touched }" data-toggle="tooltip" data-placement="bottom" title="From Date">
+                            <div class="input-group">
+                                <input type="text" id="textFYFromDate" name="FYFromDate" class="form-control" ng-model="ad_FiscalYear.FromDate" placeholder="From Date" maxlength="51" ng-maxlength="50" required readonly>
+                                <span class="input-group-addon" ng-click="CalendartextFYFromDate1()" id="textFYFromDate1"><i class="fa fa-calendar req-icon-color"></i></span>
+                            </div>
+                            <span class="help-block" ng-if="FiscalYearEntryForm.FYFromDate.$error.required && FiscalYearEntryForm.FYFromDate.$touched">From Date is required</span>
+                            <span class="help-block" ng-if="FiscalYearEntryForm.FYFromDate.$error.maxlength">50 Character Max</span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : FiscalYearEntryForm.FYToDate.$invalid && FiscalYearEntryForm.FYToDate.$touched }" data-toggle="tooltip" data-placement="bottom" title="To Date">
+                            <div class="input-group">
+                                <input type="text" id="textFYToDate" name="FYToDate" class="form-control" ng-model="ad_FiscalYear.ToDate" placeholder="To Date" ng-change="fiscalYearConcate()" maxlength="51" ng-maxlength="50" required readonly>
+                                <span class="input-group-addon" ng-click="CalendartextFYToDate1()" id="textFYToDate1"><i class="fa fa-calendar req-icon-color"></i></span>
+                            </div>
+                            <span class="help-block" ng-if="FiscalYearEntryForm.FYToDate.$error.required && FiscalYearEntryForm.FYToDate.$touched">To Date is required</span>
+                            <span class="help-block" ng-if="FiscalYearEntryForm.FYToDate.$error.maxlength">50 Character Max</span>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="form-group tooltipAll" ng-class="{ 'has-error' : FiscalYearEntryForm.FiscalYearName.$invalid && FiscalYearEntryForm.FiscalYearName.$touched }" data-toggle="tooltip" data-placement="bottom" title="Fiscal Year Name">
+                    <div class="input-group">
+                        <input type="text" id="txtFiscalYearName" name="FiscalYearName" class="form-control" ng-model="ad_FiscalYear.FiscalYearName" placeholder="Fiscal Year Name" maxlength="51" ng-maxlength="50" required>
+                        <span class="input-group-addon"><i class="fa fa-text-width" style="color:red"></i></span>
+                    </div>
+                    <span class="help-block" ng-if="FiscalYearEntryForm.FiscalYearName.$error.required && FiscalYearEntryForm.FiscalYearName.$touched">Fiscal Year Name is required</span>
+                    <span class="help-block" ng-if="FiscalYearEntryForm.FiscalYearName.$error.maxlength">50 Character Max</span>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="input-group">
+                        <label>Status: </label>
+                        &nbsp;&nbsp;
+                        <div class="radio-inline">
+                            <input type="radio" name="optionsRadios"
+                                    ng-value="true" ng-model="ad_FiscalYear.IsActive">
+                            Active
+                        </div>
+                        <div class="radio-inline">
+                            <input type="radio" name="optionsRadios"
+                                    ng-value="false" ng-model="ad_FiscalYear.IsActive"> Inactive
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <br />
+                    <div class=" row">
+                        <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 5%; padding-right: 7%;">
+                            <div class="row">
+                                <button ng-click="AddFiscalYear()" ng-disabled="!ad_FiscalYear.FromDate || !ad_FiscalYear.ToDate || !ad_FiscalYear.FiscalYearName" class="customBtn custmoBtnSave tooltipAll" >
+                                    <i class="fa fa-floppy-o"></i>&nbsp;{{Btn}}
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 6%; padding-right: 6%;">
+                            <div class="row">
+                                <button id="Button2" class="customBtn custmoBtnDelete tooltipAll" ng-click="reset()" title="Reset">
+                                    <i class="fa fa-refresh"></i>&nbsp;Reset
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-7" ng-show="ListViewPermission">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-list"></i>&nbsp;Fiscal Year List</h3>
+            </div>
+            <div class="panel-body custom-panal-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group tooltipAll" data-toggle="tooltip" title="Branch or Fiscal Year">
+                            <input type="text" class="form-control" id="textFiscalYear" ng-model="FiscalYear" ng-change="FiscalYearSearch();" name="name" placeholder="Branch or Fiscal Year" />
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <div class="row">
+                            <button id="btnSearch" ng-click="reloadBtn()" class="customBtn custmoBtnSearch tooltipAll" title="Reload">
+                                <i class="fa fa-refresh"></i>&nbsp;Clear
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="tbl-outer">
+                    <table class="responstable table-hover">
+
+                        <tbody>
+                            <tr class="t-head">
+                                <th>S/N</th>
+                                <th class="txt-center">Branch</th>
+                                <th class="txt-center"><span>Fiscal Year</span></th>
+                                <th class="txt-center"><span>From Date</span></th>
+                                <th class="txt-center"><span>To Date</span></th>
+                                <th class="txt-center">Status</th>
+                                <th class="txt-center">Action</th>
+                            </tr>
+                            <tr class="HoverTable" dir-paginate="aFiscalYearList in FiscalYearList | filter:q | itemsPerPage: PerPage" current-page="currentPage" total-items="total_count">
+                                <td>{{$index + ((currentPage-1)*PerPage) + 1}}</td>
+                                <td class="txt-center">{{aFiscalYearList.BranchName}}</td>
+                                <td class="txt-center">{{aFiscalYearList.FiscalYearName}}</td>
+                                <td class="txt-center">{{aFiscalYearList.FromDate}}</td>
+                                <td class="txt-center">{{aFiscalYearList.ToDate}}</td>
+                                <td class="txt-center">
+                                    <p ng-if="aFiscalYearList.IsActive==true">Active</p>
+                                    <p ng-if="aFiscalYearList.IsActive==false">InActive</p>
+                                </td>
+                                <td class="txt-center">
+                                    <i class="fa fa-edit text-primary" ng-click="getUpdateFiscalYear(aFiscalYearList)" style="font-size:20px;font-weight:bold;" title="Edit"> </i>
+                                </td>
+                            </tr>
+                            <tr class="t-foot" ng-show="total_count>PerPage">
+                                <th colspan="4">
+                                    <dir-pagination-controls max-size="8"
+                                                             direction-links="true"
+                                                             boundary-links="true"
+                                                             on-page-change="getData(newPageNumber)" style="text-align:center;">
+                                    </dir-pagination-controls>
+                                </th>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="row pagination-footer">
+                        <div class="col-md-6">
+                            <span>Show </span><input class="input-pagesize" type="number" ng-maxlength="100" ng-minlength="1" width="1" ng-model="PerPage"> <span>Records </span>
+                        </div>
+                        <div class="col-md-6">
+                            <span class="pull-right">Showing {{((currentPage-1)*PerPage)+1}} to {{((currentPage-1)*PerPage)+FiscalYearList.length}} of {{total_count}} Records</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script>
+    $('.tooltipAll').tooltip({ boundary: 'window' })
+    //var picker = new Pikaday({
+    //    field: document.getElementById('textFYFromDate'),
+    //    firstDay: 1,       
+    //    format: "DD/MM/YYYY",
+    //    minDate: new Date('1930-01-01'),
+    //    maxDate: new Date('2050-12-31'),
+    //    yearRange: [1930, 2050],
+    //    theme: 'blue-theme'
+       
+
+    //});
+    //document.getElementById("textFYFromDate1").addEventListener("click", function () {
+    //    picker.show();
+    //});
+
+
+    //var picker1= new Pikaday({
+    //    field: document.getElementById('textFYToDate'),
+    //    firstDay: 1,       
+    //    format: "DD/MM/YYYY",
+    //    minDate: new Date('1930-01-01'),
+    //    maxDate: new Date('2050-12-31'),
+    //    yearRange: [1930, 2050],
+    //    theme: 'blue-theme'
+    //});
+    //document.getElementById("textFYToDate1").addEventListener("click", function () {
+    //    picker.show();
+    //});
+
+
+</script>

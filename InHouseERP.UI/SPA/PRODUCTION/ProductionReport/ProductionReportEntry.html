@@ -1,0 +1,264 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+        body {
+            font-family: "Times New Roman", Times, serif;
+            color: #000000;
+            writing-mode: inherit;
+            width: 100%;
+            height: 100%;
+        }
+
+        #UpperTable td {
+            border: 1px solid black;
+            border-collapse: collapse;
+            padding: 5px;
+        }
+
+        .ProductTable th {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+
+        .ProductTable td {
+            border: 1px solid black;
+            border-collapse: collapse;
+            padding: 5px;
+        }
+
+        .footer {
+            position: fixed;
+            left: 29px;
+            bottom: 0px;
+        }
+
+        .flexcontainer {
+            display: flex;
+            justify-content: space-between;
+        }
+
+
+        @page {
+            size: A4;
+            max-height: 100%;
+            max-width: 100%;
+            font-family: 'Times New Roman';
+        }
+        @media print {
+            @page {
+                size: landscape
+            }
+            #PrintPreview{
+                margin-top:-80px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <table style="width: 100%">
+        <tbody>
+            <tr>
+                <td>
+                    <div class=" hidden-print">
+                        <div class="col-sm-7 col-md-9">
+
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3 col-md-2">
+                                <!--<button type="button" onclick="ExportToDoc();" class="customBtn custmoBtnReset" style="border-radius: 3px; margin-bottom: -.9em; margin-top: -15px; padding-bottom: 3px; padding-top: 3px;" title="Export to .doc">
+                                    <i class="fa fa-save"></i>&nbsp;Export to .doc
+                                </button>-->
+                            </div>
+                            <div class="col-sm-2 col-md-1">
+                                <button type="button" onclick="document.title = 'Production ' + getCurrentDateTime(); PrintPdf();"  class="customBtn custmoBtnReset" style="border-radius: 3px; margin-bottom: -.9em; margin-top: -15px; padding-bottom: 3px; padding-top: 3px;" title="Export to .doc">
+                                    <i class="fa fa-print"></i>&nbsp;Print
+                                </button>
+                            </div>
+
+
+                        </div>
+                        <hr />
+                    </div>
+
+                    <div class="" id="source-html">
+
+                        <div id="PrintPreview">
+                            <!--<img id="LogoImg" style="width:65px;height:65px;border-radius:100%;margin-right:15px;" src="/UploadedImages/logo.jpg" />-->
+
+
+
+                            <p style="font-size: 26px; text-align: center; margin: 0px; padding: 0px;"> <b>Retail Technologies Limited</b></p>
+                            <p style="font-size: 12px; text-align: center; margin-top: 0px; padding: 0px;">
+                                <b>
+                                    <!--House #02,Road #01,Black #A
+            <br />
+            <b>
+                Nolvoge,Nishatnagagar,Turag, Dhaka
+            </b>-->
+                                    <b>
+                                        Address :{{ProductionList[0].BranchAddress}}
+                                    </b>
+                                </b>
+                            </p>
+
+                            <table style="width:100%">
+                                <tr>
+                                    <td style="width:30%"></td>
+                                    <td style="width:40%">
+                                        <p style="font-size: 20px; text-align: center; margin: 0px; padding: 0px;">
+                                            <b>
+                                                <u>{{name}}</u> 
+                                            </b>
+                                        </p>
+                                    </td>
+                                    <td style="width:30%"></td>
+                                </tr>
+                            </table>
+
+                        </div>
+
+                        <table style="width:100%">
+                            <tr>
+                                <td style="width:78%">
+                                    <!--<p>From Department : {{ProductionList[0].FromDepartmentName}}</p>-->
+                                    <p>Production No : {{ProductionList[0].ProductionNo}}</p>
+                                    <p>Recived By : {{ProductionList[0].PreparedName}}</p>
+                                    <p >Store : {{ProductionList[0].FromDepartmentName}}</p>
+
+                                </td>
+                                <td style="width:22%;">
+                                    <!--<p>To Department : {{ProductionList[0].ToDepartmentName}}</p>-->
+                                    <p style="text-align: right"> Date: {{ProductionList[0].ProductionDate}}</p>
+                                    <p style="text-align: right">IWO No : {{ProductionList[0].InternalWorkOrderNo}}</p>
+                                    <p style="text-align: right">Customer Name : {{ProductionList[0].CompanyNameBilling}}</p>
+                                 
+                                  
+                                    <!--<p>Store :  {{ProductionList[0].FromDepartmentName}}</p>-->
+                                </td>
+                            </tr>
+                        </table>
+
+                        <table class="ProductTable" style="width: 100%;  margin-left: auto; margin-right: auto;margin-top:20px">
+                            <tbody>
+                                <tr>
+                                    <th style="text-align:center">SL No.</th>
+                                    <th style="text-align:center">Machine No</th>
+                                    <th style="text-align:center;width:25%" >Finished Item Name</th>
+                                    <th style="text-align:center;width:25%" >Brand Label Name</th>
+                                    <th style="text-align:center">Pcs/Roll</th>
+
+                                    <th style="text-align:center">Attainable Production Quantity</th>
+                                    <th style="text-align:center">Wastage Qty </th>
+                                    <th style="text-align:center">Good Production Qty</th>
+                                    <th style="text-align:center">Wastage Qty in (%)</th>
+                                    <th style="text-align: center; width: 30%">Raw Matrial Name</th>
+
+
+
+
+                                    <!--<th style="text-align:center">Production Unit</th>-->
+                                    <!--<th style="text-align:center">Production  In Roll</th>-->
+                                    <!--<th style="text-align:center">Wastage Unit</th>-->
+                                    <!--<th style="text-align:center">Wastage Finished Goods Qty</th>-->
+                                    <th style="text-align:center">Used Matrial Qty (Roll)</th>
+                                    <!--<th style="text-align:center">Used Matrial Length (Meter)</th>
+                                    <th style="text-align:center">Used Matrial Weight (KG)</th>
+                                    <th style="text-align:center">Used Matrial Area (Sqm)</th>-->
+                                    <!--<th style="text-align:center">Matrial Unit Cost</th>-->
+                                    <th style="text-align:center">Remarks</th>
+                                </tr>
+                                <tr ng-repeat="production in ProductionList track by $index">
+
+                                    <td>
+                                        {{$index +1}}
+                                    </td>
+                                    <td>
+                                        {{production.MachineName}}
+                                    </td>
+                                    <td style="width: 25%">{{production.ItemName}}</td>
+                                    <td class="text-center">{{production.LabelBrandName}}</td>
+                                    <td>{{production.QtyPerRoll}}</td>
+                                    <td>{{production.AttainableQty}} {{production.ProductionItemUnitname}}</td>
+
+
+                                    <td> {{production.WastageQty}}  {{production.WastageItemUnitName}}</td>
+                                    <td>{{production.ProductionQuantity}} {{production.ProductionItemUnitname}}</td>
+                                    <td> {{production.WastageQtyParcentage}} </td>
+
+
+
+                                    <td style="width: 30%">
+                                        {{production.RawMaterialItemName}}
+                                    </td>
+
+                                    <!--<td>{{production.ProductionItemUnitname}}</td>-->
+                                    <!--<td>{{production.ProductionQtyInRoll}}</td>-->
+                                    <td>
+                                        {{production.UsedMaterialQtyInRoll}}
+                                    </td>
+
+
+                                    <!--<td>{{production.UsedMaterialLengthinMeter}}</td>
+                                    <td>{{production.UsedMaterialWeigntInKg}}</td>
+                                    <td> {{production.UsedMaterialAreaInSqm}}</td>-->
+                                    <!--<td>{{production.UsedMaterialUnitCost}}</td>-->
+                                    <td>{{production.WastageRemarks}}</td>
+
+                                </tr>
+                                
+                               
+                            </tbody>
+                        </table>
+                        <p style="text-align:right;margin-top:5px;">E & OE</p>
+                        <table style="width:100%">
+                            <tr>
+                                <td style="width:80%">Recived in Good Condition</td>
+                                <td style="width:20%;text-align:right"><b>For</b> Retail Technologies Limited</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <br />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width:80%">
+                                    <p style="border:1px solid black;width:70%;font-size:12px;"></p>
+                                </td>
+                                <td style="width:20%;text-align:right;">
+                                    <p>Authority Signature</p>
+                                </td>
+                            </tr>
+                        </table>
+
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>
+<script>
+
+
+
+    jQuery(document).ready(function ($) {
+
+        $(".main-sidebar").attr("hidden", true);
+        $(".main-header").attr("hidden", true);
+        $(".main-footer").attr("hidden", true);
+        $("#br").attr("hidden", true);
+
+        $("div").removeClass("wrapper");
+        $("div").removeClass("content-wrapper");
+    });
+
+
+    function PrintPdf() {
+        window.print();
+    }
+
+</script>

@@ -1,0 +1,776 @@
+﻿<style>
+    #Selectbankddl {
+        width: 410px !important;
+    }
+</style>
+<style>
+    #OnlineDiv .select2-container {
+        width: 409px !important;
+    }
+
+    #bankddlWidth .select2-container {
+        width: 410px !important;
+    }
+</style>
+<form name="ManualSalesInvoiceForm" novalidate>
+    <div class="col-md-12">
+        <div class="alert alert-info alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="topInfo"> &nbsp; &#9755; <span style="color:red;">Red Icon</span> Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp;</div>
+        </div>
+    </div>
+    <div class="col-md-12" id="successMesg">
+    </div>
+    <div class="col-md-12" ng-show="CreatePermission || RevisePermission">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-md-4">
+                        <h3 class="panel-title pull-left "><i class="fa fa-list"></i>&nbsp;Manual Sales Invoice</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : ManualSalesInvoiceForm.Company.$dirty && ManualSalesInvoiceForm.Company.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Customer">
+                            <div class="input-group width-hundred-percent">
+                                <select id="ddlCompany" ng-model="ddlCompany" name="Company" class="form-control selectMendatory" ng-options="company.CompanyName for company in Companylist track by company.CompanyId" ng-change="GetCompanyBillingDeliveryAddress();GetSalesOrderDynamic(ddlCompany.CompanyId); pos_CompanySalesInvoice.CompanyId = ddlCompany.CompanyId" required placeholder="Select Customer">
+                                    <option value="">--- Select Customer ---</option>
+                                </select>
+                                <span class="help-block" ng-show="ManualSalesInvoiceForm.Company.$dirty && ManualSalesInvoiceForm.Company.$invalid">Company is required</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : ManualSalesInvoiceForm.SalesOrder.$dirty && ManualSalesInvoiceForm.SalesOrder.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Sales Order">
+                            <div class="input-group width-hundred-percent">
+                                <select id="ddlSalesOrder" ng-model="ddlSalesOrder" name="SalesOrder" class="form-control selectMendatory" ng-options="aSalesOrder.SalesOrderNo for aSalesOrder in SalesOrderList track by aSalesOrder.SalesOrderId" ng-change="pos_CompanySalesInvoice.SalesOrderId = ddlSalesOrder.SalesOrderId" required placeholder="Select Sales Order">
+                                    <option value="">--Sales Order--</option>
+                                </select>
+                                <span class="help-block" ng-show="ManualSalesInvoiceForm.SalesOrder.$dirty && ManualSalesInvoiceForm.SalesOrder.$invalid">SalesOrder is required</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : ManualSalesInvoiceForm.ManualInvoiceDate.$invalid && ManualSalesInvoiceForm.ManualInvoiceDate.$touched }" data-toggle="tooltip" data-placement="bottom" title="Sales Invoice Date">
+                            <div class="input-group">
+                                <input type="text" id="ManualInvoiceDate" ng-model="pos_CompanySalesInvoice.ManualInvoiceDate" name="ChequeDate" class="form-control datepicker" placeholder="Cheque Date" readonly />
+                                <span class="input-group-addon" ng-click="CalendarSalesInvoiceDate()" id="CalendarSalesInvoiceDate"><i class="fa fa-calendar" style="color:red;"></i></span>
+                            </div>
+                            <span class="help-block" style="display: block;" ng-if="ManualSalesInvoiceForm.ManualInvoiceDate.$error.required && ManualSalesInvoiceForm.ManualInvoiceDate.$touched">Sales Invoice Date is Required</span>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="input-group tooltipAll" title="Manual SalesInvoice No">
+                            <span class="input-group-addon">
+                                <label style="line-height: 2px;">{{ManualSalesInvoiceNo1}}</label>
+                            </span>
+                            <input type="number" name="InvoiceNo" class="form-control " ng-model="ManualSalesInvoiceNo2" placeholder="Manual SalesInvoice No" maxlength="101" ng-maxlength="100" ng-readonly="SaveBtn == 'Update'" required>
+                        </div>
+                        <span class="help-block" style="display: block; color:red" ng-if="ManualSalesInvoiceForm.ManualInvoiceNo.$error.required && ManualSalesInvoiceForm.ManualInvoiceNo.$touched">Sales Invoice is Required</span>
+                        <span class="help-block" style="display: block;color:red" ng-if="ManualSalesInvoiceForm.ManualInvoiceNo.$error.maxlength">200 Character Max</span>
+                    </div>
+                    <!--<div class="col-md-3">
+                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : ManualSalesInvoiceForm.ManualInvoiceNo.$invalid && ManualSalesInvoiceForm.ManualInvoiceNo.$touched }" data-toggle="tooltip" data-placement="bottom" title="Sales Invoice ">
+                            <div class="input-group ">
+                                <input type="text" name="ManualInvoiceNo" id="ManualInvoiceNo" class="form-control" ng-model="pos_CompanySalesInvoice.ManualInvoiceNo" placeholder="Sales Invoice No " maxlength="201" ng-maxlength="200" required readonly>
+                                <span class="input-group-addon"><i class="fa fa-text-width req-icon-color"></i></span>
+                            </div>
+                            <span class="help-block" style="display: block; color:red" ng-if="ManualSalesInvoiceForm.ManualInvoiceNo.$error.required && ManualSalesInvoiceForm.ManualInvoiceNo.$touched">Sales Invoice is Required</span>
+                            <span class="help-block" style="display: block;color:red" ng-if="ManualSalesInvoiceForm.ManualInvoiceNo.$error.maxlength">200 Character Max</span>
+                        </div>
+                    </div>-->
+                    <div class="col-md-3">
+                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : ManualSalesInvoiceForm.VatChallanNo.$invalid && ManualSalesInvoiceForm.VatChallanNo.$touched }" data-toggle="tooltip" data-placement="bottom" title="Vat Challan No">
+                            <div class="input-group ">
+                                <input type="text" id="txtVatChallanNo" name="VatChallanNo" class="form-control" ng-model="pos_CompanySalesInvoice.VatChallanNo" placeholder="Vat Challan No" maxlength="501" ng-maxlength="500" />
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block" style="display: block;" ng-if="ManualSalesInvoiceForm.VatChallanNo.$error.maxlength">500 Character Max</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : ManualSalesInvoiceForm.CompanyNameBilling.$invalid && ManualSalesInvoiceForm.CompanyNameBilling.$touched }" data-toggle="tooltip" data-placement="bottom" title="Customer Name Billing">
+                            <div class="input-group input-group-md ddl">
+                                <input type="text" list="NameBillingList" class="form-control selectMendatory" name="CompanyNameBilling" ng-model="pos_CompanySalesInvoice.CompanyNameBilling" placeholder="Customer Name Billing" required autocomplete="off" />
+                            </div>
+                            <datalist id="NameBillingList">
+                                <option ng-repeat="NameBilling in CompanyBillingAddressList" value="{{NameBilling.AddressCompanyName}}">
+                            </datalist>
+                            <span class="help-block" ng-show="ManualSalesInvoiceForm.CompanyNameBilling.$touched && ManualSalesInvoiceForm.CompanyNameBilling.$invalid">Customer Name Billing is required</span>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : ManualSalesInvoiceForm.AddressBilling.$invalid && ManualSalesInvoiceForm.AddressBilling.$touched }" data-toggle="tooltip" data-placement="bottom" title="Address Billing">
+                            <div class="input-group input-group-md ddl">
+                                <input type="text" list="AddressBillingList" class="form-control selectMendatory" name="AddressBilling" ng-model="pos_CompanySalesInvoice.AddressBilling" placeholder="Address Billing" required autocomplete="off" />
+                            </div>
+                            <datalist id="AddressBillingList">
+                                <option ng-repeat="AddressBilling in CompanyBillingAddressList" value="{{AddressBilling.Address}}">
+                            </datalist>
+                            <span class="help-block" ng-show="ManualSalesInvoiceForm.AddressBilling.$touched && ManualSalesInvoiceForm.AddressBilling.$invalid">Address Billing is required</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : ManualSalesInvoiceForm.PONo.$invalid && ManualSalesInvoiceForm.PONo.$touched }" data-toggle="tooltip" data-placement="bottom" title="PO No">
+                            <div class="input-group ">
+                                <input type="text" id="txtPONo" name="PONo" class="form-control" ng-model="pos_CompanySalesInvoice.PONo" placeholder="PO No" maxlength="501" ng-maxlength="500" />
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block" style="display: block;" ng-if="ManualSalesInvoiceForm.PONo.$error.maxlength">500 Character Max</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : ManualSalesInvoiceForm.PODate.$invalid && ManualSalesInvoiceForm.PODate.$touched }" data-toggle="tooltip" data-placement="bottom" title="PO Date(Ex: Apr 01, 2022)">
+                            <div class="input-group ">
+                                <input type="text" id="txtPODate" name="PODate" class="form-control" ng-model="pos_CompanySalesInvoice.PODate" placeholder="PO Date(Ex: Apr 01, 2022)" maxlength="501" ng-maxlength="500" />
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block" style="display: block;" ng-if="ManualSalesInvoiceForm.PODate.$error.maxlength">500 Character Max</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : ManualSalesInvoiceForm.PONo.$invalid && ManualSalesInvoiceForm.DeliveryNo.$touched }" data-toggle="tooltip" data-placement="bottom" title="Delivery No">
+                            <div class="input-group ">
+                                <input type="text" id="txtDeliveryNo" name="DeliveryNo" class="form-control" ng-model="pos_CompanySalesInvoice.DeliveryNo" placeholder="Delivery No" maxlength="501" ng-maxlength="500" />
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block" style="display: block;" ng-if="ManualSalesInvoiceForm.DeliveryNo.$error.maxlength">500 Character Max</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : ManualSalesInvoiceForm.DeliveryDate.$invalid && ManualSalesInvoiceForm.DeliveryDate.$touched }" data-toggle="tooltip" data-placement="bottom" title="Delivery Date(Ex: Apr 01, 2022)">
+                            <div class="input-group ">
+                                <input type="text" id="txtDeliveryDate" name="DeliveryDate" class="form-control" ng-model="pos_CompanySalesInvoice.DeliveryDate" placeholder="Delivery Date(Ex: Apr 01, 2022)" maxlength="501" ng-maxlength="500" />
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block" style="display: block;" ng-if="ManualSalesInvoiceForm.DeliveryDate.$error.maxlength">500 Character Max</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-2">
+                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : ManualSalesInvoiceForm.CurrencyType.$dirty && ManualSalesInvoiceForm.CurrencyType.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Currency Type">
+                            <div class="input-group width-hundred-percent">
+                                <select ng-model="ddlCurrency" name="CurrencyType" ng-disabled="IsItemList" class="form-control selectMendatory" ng-options="currency.CurrencyShort for currency in CurrencyList track by currency.CurrencyId" ng-change="pos_CompanySalesInvoice.CurrencyId = ddlCurrency.CurrencyId; setConversionRate(ddlCurrency.CurrencyId)" required>
+                                    <option value="" label="Currency Type" hidden></option>
+                                </select>
+                                <span class="help-block" ng-show="ManualSalesInvoiceForm.CurrencyType.$dirty && ManualSalesInvoiceForm.CurrencyType.$invalid">Currency is required</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : ManualSalesInvoiceForm.ConversionRate.$invalid && ManualSalesInvoiceForm.ConversionRate.$touched }" data-toggle="tooltip" data-placement="bottom" title="Conversion Rate">
+                            <div class="input-group ">
+                                <input type="number" name="ConversionRate" id="ConversionRate" class="form-control" ng-model="ConversionRate" placeholder="USD Rate" maxlength="101" ng-maxlength="100" ng-disabled="IsConversionRate || IsItemList" required>
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block" style="display: block;color:black" ng-if="ManualSalesInvoiceForm.ConversionRate.$error.maxlength">100 Character Max</span>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : ManualSalesInvoiceForm.Remarks.$invalid && ManualSalesInvoiceForm.Remarks.$touched }" data-toggle="tooltip" data-placement="bottom" title="Remarks">
+                            <div class="input-group ">
+                                <textarea type="text" cols="1" rows="1" id="txtRemarks" name="Remarks" class="form-control" ng-model="pos_CompanySalesInvoice.Remarks" placeholder="Remarks" maxlength="501" ng-maxlength="500"></textarea>
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block" style="display: block;" ng-if="ManualSalesInvoiceForm.Remarks.$error.maxlength">500 Character Max</span>
+                        </div>
+                    </div>
+                </div>
+
+                <hr />
+
+                <div class="panel-footer">
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div class="form-group tooltipAll" ng-class="{ 'has-error' : ManualSalesInvoiceForm.Item.$dirty && ManualSalesInvoiceForm.Item.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Company or Employee">
+                                <div class="input-group input-group-md ddl">
+                                    <select id="ddlItem" ng-model="ddlItemNameAll" name="Item" class="form-control selectMendatory" ng-options="aItem.Name for aItem in ItemList track by aItem.ItemId" ng-disabled="!ddlCompany" ng-change="GetCompanyWiseItemForSOByCompanyId(ddlItemNameAll.ItemId); " required>
+                                        <option value="" label="-- Select Item --"></option>
+                                    </select>
+                                    <span class="help-block" ng-show="ManualSalesInvoiceForm.Item.$dirty && ManualSalesInvoiceForm.Item.$invalid">Item is required</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3" hidden>
+                            <div class="form-group tooltipAll" ng-class="{ 'has-error' : ManualSalesInvoiceForm.ItemDescription.$dirty && ManualSalesInvoiceForm.ItemDescription.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Item Description">
+                                <div class="input-group">
+                                    <textarea type="text" id="txtItemDescription" ng-model="SalesInvoiceDetail.ItemDescription" name="Description" class="form-control" placeholder="Item Description"></textarea>
+                                    <span class="input-group-addon" style="color:red"><i class="fa fa-text-width" aria-hidden="true"></i></span>
+                                </div>
+                                <span class="help-block" ng-show="ManualSalesInvoiceForm.ItemDescription.$dirty && ManualSalesInvoiceForm.ItemDescription.$invalid">Item Description is required</span>
+                                <span class="help-block" ng-if="ManualSalesInvoiceForm.ItemDescription.$error.maxlength">15 Character Max</span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group tooltipAll" ng-class="{ 'has-error' : ManualSalesInvoiceForm.MaterialType.$dirty && ManualSalesInvoiceForm.MaterialType.$invalid }">
+                                <div class="input-group input-group-md ddl" data-toggle="tooltip" data-placement="bottom" title="Select Material Type">
+                                    <select ng-model="ddlMaterialType" class="form-control selectMendatory" name="MaterialType" id="cmbMaterialType" ng-options="MaterialType.MaterialType for MaterialType in MaterialTypeList track by MaterialType.MaterialTypeId" ng-change="SalesInvoiceDetail.MaterialTypeId = ddlMaterialType.MaterialTypeId;" required autofocus>
+                                        <option value="" label="Select Material Type"></option>
+                                    </select>
+                                </div>
+                                <span class="help-block" ng-show="ManualSalesInvoiceForm.MaterialType.$dirty && ManualSalesInvoiceForm.MaterialType.$invalid">Material Type is required</span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group tooltipAll" ng-class="{ 'has-error' : ManualSalesInvoiceForm.PcPerRoll.$dirty && ManualSalesInvoiceForm.PcPerRoll.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Pc(s) per Roll(s)">
+                                <div class="input-group">
+                                    <input type="text" id="txtUnitPackage" ng-model="SalesInvoiceDetail.PcPerRoll" name="PcPerRoll" class="form-control" placeholder="Pc per Roll" maxlength="15" ng-maxlength="14">
+                                    <span class="input-group-addon" style="color:red"><i class="fa fa-sort-numeric-asc" aria-hidden="true"></i></span>
+                                </div>
+                                <span class="help-block" ng-show="ManualSalesInvoiceForm.PcPerRoll.$dirty && ManualSalesInvoiceForm.PcPerRoll.$invalid">Pc(s) per Roll(s) is required</span>
+                                <span class="help-block" ng-if="ManualSalesInvoiceForm.PcPerRoll.$error.maxlength">15 Character Max</span>
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <div class="row">
+                                <div class="form-group tooltipAll" ng-class="{ 'has-error' : ManualSalesInvoiceForm.ddlMu.$dirty && ManualSalesInvoiceForm.ddlMu.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Unit">
+                                    <div class="input-group input-group-md ddl">
+                                        <select class="form-control selectMendatory" ng-model="ddlMu" name="ddlMu" ng-options="unit.UnitName for unit in ItemUnitlist track by unit.ItemUnitId" ng-change="SalesInvoiceDetail.ItemUnitId = ddlMu.ItemUnitId">
+                                            <!--<option value="" label="Unit"></option>-->
+                                        </select>
+                                    </div>
+                                    <span class="help-block" ng-show="ManualSalesInvoiceForm.ddlMu.$dirty && ManualSalesInvoiceForm.ddlMu.$invalid">Unit is required</span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-2">
+                            <div class="form-group tooltipAll" data-toggle="tooltip" data-placement="bottom" title="Quantity">
+                                <div class="input-group">
+                                    <input type="number" id="txtQuantity" class="form-control txt-center" ng-model="SalesInvoiceDetail.Quantity" ng-change="priceOrAmountChangeForQty(true)" placeholder="Quantity">
+                                    <span class="input-group-addon"><i class="fa fa-sort-numeric-asc" aria-hidden="true" style="color: red;"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group tooltipAll" data-toggle="tooltip" data-placement="bottom" title="Sale Price (Tk.)">
+                                <div class="input-group">
+                                    <input type="number" id="txtPrice" class="form-control txt-center" ng-model="SalesInvoiceDetail.UnitPrice" ng-disabled="!SalesInvoiceDetail.Quantity" ng-change="priceOrAmountChange(true)" placeholder="Price(Tk)" required>
+                                    <span class="input-group-addon"><i class="fa fa-qq" style="color:red;"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group tooltipAll" data-toggle="tooltip" data-placement="bottom" title="Vat Percentage">
+                                <div class="input-group">
+                                    <input type="number" id="txtVatPercentage" class="form-control txt-center" ng-model="SalesInvoiceDetail.VatPercentage" ng-disabled="!SalesInvoiceDetail.Quantity" ng-change="VatAmountCalculetion();" placeholder="Vat Percentage" required>
+                                    <span class="input-group-addon"><i style="color:black;"><b>%</b></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group tooltipAll" data-toggle="tooltip" data-placement="bottom" title="Vat Amount">
+                                <div class="input-group">
+                                    <input type="number" id="txtVatAmount" class="form-control txt-center" ng-model="SalesInvoiceDetail.VatAmount" ng-change="" placeholder="Vat Amount" readonly>
+                                    <span class="input-group-addon"><i class="fa fa-qq" style="color:black;"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group tooltipAll" data-toggle="tooltip" data-placement="bottom" title="Amount">
+                                <div class="input-group">
+                                    <input type="number" id="txtAmount" class="form-control txt-center" ng-model="SalesInvoiceDetail.Total" ng-change="priceChangeForAmount()" placeholder="Amount" autocomplete="off">
+                                    <span class="input-group-addon"><i class="fa fa-qq" style="color:red;"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <button id="btnAdd" class="customBtn custmoBtnReset tooltipAll" title="Add" name="AddDetail" ng-click="AddSalesInvoiceDetail()">
+                                <i class=" fa fa-plus-square"></i>&nbsp;{{AddProductLbl}}
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="responstable table-hover">
+                            <tr>
+                                <th>SL No.</th>
+                                <th class="t-cell-center">Item Description</th>
+                                <th class="t-cell-center">Pc Per Roll</th>
+                                <th class="t-cell-center">Quantity</th>
+                                <th class="t-cell-center">Unit Price</th>
+                                <th class="t-cell-center">Vat(%)</th>
+                                <th class="t-cell-center">Amount</th>
+                                <th class="t-cell-center" ng-hide="IsConversionRate">Amount BDT</th>
+                                <th class="t-cell-center">Action</th>
+
+                            </tr>
+                            <tbody>
+                                <tr class="HoverTable" ng-repeat="aSalesInvoiceDetail in SalesInvoiceDetailList track by $index">
+                                    <td class="t-cell-center">{{$index+1}}</td>
+                                    <td class="t-cell-center">
+                                        <textarea type="text" id="txtItemDescription" ng-model="aSalesInvoiceDetail.ItemDescription" name="Description" class="form-control" placeholder="Item Description"></textarea>
+                                    </td>
+                                    <td class="t-cell-center">{{aSalesInvoiceDetail.PcPerRoll}}</td>
+                                    <td class="t-cell-center">{{aSalesInvoiceDetail.Quantity}}</td>
+                                    <td class="t-cell-center">{{aSalesInvoiceDetail.UnitPrice}}</td>
+                                    <td class="t-cell-center">{{aSalesInvoiceDetail.VatPercentage}}</td>
+                                    <td class="t-cell-center">{{aSalesInvoiceDetail.Total}}</td>
+                                    <td class="t-cell-center" ng-hide="IsConversionRate">{{aSalesInvoiceDetail.AmountBDT}}</td>
+                                    <td class="t-cell-center">
+                                        <button title="Edit" ng-click="SelSalesInvoiceDetail(aSalesInvoiceDetail)">
+                                            <i class="fa fa-pencil"></i>
+                                        </button>
+                                        <button title="Remove" ng-click="RemoveSalesInvoiceDetail(aSalesInvoiceDetail);">
+                                            <i class="fa fa-minus-square"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="3" style="text-align:right;">Total: </td>
+                                    <td class="t-cell-center">{{TotalQuantity}}</td>
+                                    <td class="t-cell-center"></td>
+                                    <td class="t-cell-center"></td>
+                                    <td class="t-cell-center">{{TotalAmount}}</td>
+                                    <td class="t-cell-center" ng-hide="IsConversionRate">{{TotalAmountBDT}}</td>
+                                    <td class="t-cell-center">
+                                        <button title="Calculation" ng-click="AmountCalculation()">
+                                            <i class="fa fa-calculator"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tfoot>
+
+                        </table>
+
+                    </div>
+                </div>
+
+            </div>
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="col-md-2">
+                            <button ng-click="Save()" style="margin-left: -15px;width:100%" ng-disabled="AddProductLbl == 'Update' || !ddlCompany || !ddlSalesOrder" class="btn btn-success" title="Save">
+                                <i class="fa fa-floppy-o"></i>&nbsp;{{SaveBtn}}
+                            </button>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="button" style="width:100%" ng-click="Reset()" class="btn btn-danger tooltipAll" title="Reset">
+                                <i class="fa fa-refresh"></i>&nbsp;Reset
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12" ng-show="ListViewPermission">
+        <br />
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-list"></i>&nbsp;Sales Invoice List</h3>
+            </div>
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <div class="input-group tooltipAll" data-toggle="tooltip" title="From Date">
+                                <input type="text" name="FromDate" id="txtFromDateForSI" ng-model="FromDate" ng-change="CompanySalesInvoiceSearch();" class="form-control " placeholder="From Date" readonly />
+                                <span class="input-group-addon" ng-click="FormDateChangeForSI()" id="FormDateChange"><i class="fa fa-calendar req-icon-color"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group tooltipAll" data-toggle="tooltip" title="To Date">
+                                    <input type="text" name="ToDate" id="txtToDateForSI" ng-model="ToDate" ng-change="CompanySalesInvoiceSearch();" class="form-control " placeholder="To Date" readonly />
+                                    <span class="input-group-addon" ng-click="ToDateChangeForSI()" id="ToDateChange"><i class="fa fa-calendar req-icon-color"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group tooltipAll" data-toggle="tooltip" title="Search Company and Invoice No">
+                            <input type="text" class="form-control" id="textSearchCompanyName" ng-model="SearchCompanyName" ng-change="CompanySalesInvoiceSearch();" name="name" placeholder="Search Company Name" />
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+
+                        <button id="btnSearch" style="width:100%" ng-click="reloadBtn()" class="btn btn-danger tooltipAll" title="Reload">
+                            <i class="fa fa-refresh"></i>&nbsp;Clear
+                        </button>
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="responstable table-hover">
+                            <tbody>
+                                <tr class="t-head">
+                                    <th>S/N</th>
+                                    <th class="txt-center">Sales Invoice</th>
+                                    <th class="txt-center">Sales Order No</th>
+                                    <th class="txt-center">Customer Name</th>
+                                    <th class="txt-center">Sales Invoice Date</th>
+                                    <th class="txt-center">Remarks</th>
+                                    <th class="txt-center">Action</th>
+
+                                </tr>
+                                <tr class="HoverTable searchRow" dir-paginate="aCompanySalesInvoice in CompanySalesInvoiceListPaged | itemsPerPage: PerPage" ng-click="" current-page="currentPage" total-items="total_count">
+                                    <td class="t-cell-center">{{$index + ((currentPage-1)*PerPage) + 1}}</td>
+                                    <td class="txt-center">{{aCompanySalesInvoice.ManualInvoiceNo }}</td>
+                                    <td class="txt-center">{{aCompanySalesInvoice.SalesOrderNo }}</td>
+                                    <td class="txt-center">{{aCompanySalesInvoice.CompanyName }}</td>
+                                    <td class="txt-center">{{aCompanySalesInvoice.ManualInvoiceDate }}</td>
+                                    <td class="txt-center">{{aCompanySalesInvoice.Remarks }}</td>
+                                    <td class="t-cell-center">
+                                        <button class="btn btn-primary" style="font-size:13px; padding:12.5px"
+                                                ng-click="Edit(aCompanySalesInvoice)">
+                                            <i class="fa fa-print" style="font-size:18px"></i> Edit
+                                        </button>
+                                        <button class="btn btn-primary" style="font-size:13px; padding:12.5px"
+                                                ng-click="OpenPopupWindow(aCompanySalesInvoice, true)">
+                                            <i class="fa fa-print" style="font-size:18px"></i> Report
+                                        </button>
+                                    </td>
+
+                                </tr>
+                                <tr class="t-foot" ng-show="total_count>PerPage">
+                                    <th colspan="8">
+                                        <dir-pagination-controls max-size="8"
+                                                                 direction-links="true"
+                                                                 boundary-links="true"
+                                                                 on-page-change="getData(newPageNumber)" style="text-align:center;">
+                                        </dir-pagination-controls>
+                                    </th>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="row pagination-footer">
+                            <div class="col-md-6">
+                                <span>Show </span><input class="input-pagesize" type="number" ng-maxlength="100" ng-minlength="1" width="1" ng-model="PerPage"> <span>Records </span>
+                            </div>
+                            <div class="col-md-6">
+                                <span class="pull-right">Showing {{((currentPage-1)*PerPage)+1}} to {{((currentPage-1) * PerPage) + CompanySalesInvoiceListPaged.length}} of {{total_count}} Records</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<script>
+    $('.tooltipAll').tooltip({ boundary: 'window' });
+    $("#ddlCompany").select2({
+        selectOnClose: true,
+        theme: "classic",
+        //placeholder: 'Select a Company'
+    });
+    $("#ddlSalesOrder").select2({
+        selectOnClose: true,
+        theme: "classic",
+        //placeholder: 'Select a Company'
+    });
+
+    $("#bankddlReceiverOnlinePayment").select2({
+        placeholder: "Select Receiver Bank Name",
+        dropdownAutoWidth: false
+    });
+    $("#bankddlCompanyOnlinePayment").select2({
+        placeholder: "Select Customer Bank Name",
+        dropdownAutoWidth: false
+    });
+    $("#Selectbankddl").select2({
+        placeholder: "Select Customer Bank Name",
+        ///  theme: "classic"
+    });
+    $('#ddlItem').select2({
+        placeholder: "Search for: Item Name ~ Description ~ Item Code",
+        theme: "classic",
+        dropdownAutoWidth: false
+    });
+    $('#cmbMaterialType').select2({
+        placeholder: "Select Material Type",
+        theme: "classic",
+        dropdownAutoWidth: false
+    });
+    function RowSelect(e) {
+        $('.searchRow').css('background-color', '');
+        $(e).css('background-color', '#94d5ef');
+    }
+
+    //var picker1 = new Pikaday({
+    //    field: document.getElementById('txtFromDate1'),
+    //    firstDay: 6,
+    //    format: "DD/MM/YYYY",
+    //    minDate: new Date('1930-01-01'),
+    //    maxDate: new Date('2050-12-31'),
+    //    yearRange: [1930, 2050],
+    //    theme: 'blue-theme'
+    //});
+    //document.getElementById("calender1").addEventListener("click", function () {
+    //    picker1.show();
+    //});
+    var elements = document.getElementsByClassName("arrow-togglable");
+    var currentIndex = 0;
+
+    function newControl(e) {
+        elements = document.getElementsByClassName("arrow-togglable");
+        currentIndex = 0;
+        if (window.event.which == 40) {
+            currentIndex = ((currentIndex + 1) == elements.length) ? 0 : ++currentIndex;
+            elements[currentIndex].focus();
+        }
+        if (window.event.which == 38) {
+            currentIndex = (currentIndex == 0) ? elements.length - 1 : --currentIndex;
+            elements[currentIndex].focus();
+        }
+    }
+
+    function nextControlFromSugession(e) {
+        if (window.event.which == 40) {
+            currentIndex = ((currentIndex + 1) == elements.length) ? 0 : ++currentIndex;
+            elements[currentIndex].focus();
+        }
+        if (window.event.which == 38) {
+            currentIndex = (currentIndex == 0) ? elements.length - 1 : --currentIndex;
+            elements[currentIndex].focus();
+        }
+    }
+    function Hilitor2(id, tag) {
+        var targetNode = document.getElementById(id) || document.body;
+        var hiliteTag = tag || "EM";
+        var skipTags = new RegExp("^(?:" + hiliteTag + "|SCRIPT|FORM)$");
+        var colors = ["#ff6", "#a0ffff", "#9f9", "#f99", "#f6f"];
+        var wordColor = [];
+        var colorIdx = 0;
+        var matchRegex = "";
+        var openLeft = false;
+        var openRight = false;
+
+        this.setMatchType = function (type) {
+            switch (type) {
+                case "left":
+                    this.openLeft = false;
+                    this.openRight = true;
+                    break;
+
+                case "right":
+                    this.openLeft = true;
+                    this.openRight = false;
+                    break;
+
+                case "open":
+                    this.openLeft = this.openRight = true;
+                    break;
+
+                default:
+                    this.openLeft = this.openRight = false;
+
+            }
+        };
+
+        function addAccents(input) {
+            retval = input;
+            retval = retval.replace(/([ao])e/ig, "$1");
+            retval = retval.replace(/\\u00E[024]/ig, "a");
+            retval = retval.replace(/\\u00E7/ig, "c");
+            retval = retval.replace(/\\u00E[89AB]/ig, "e");
+            retval = retval.replace(/\\u00E[EF]/ig, "i");
+            retval = retval.replace(/\\u00F[46]/ig, "o");
+            retval = retval.replace(/\\u00F[9BC]/ig, "u");
+            retval = retval.replace(/\\u00FF/ig, "y");
+            retval = retval.replace(/\\u00DF/ig, "s");
+            retval = retval.replace(/a/ig, "([aÃ Ã¢Ã¤]|ae)");
+            retval = retval.replace(/c/ig, "[cÃ§]");
+            retval = retval.replace(/e/ig, "[eÃ¨Ã©ÃªÃ«]");
+            retval = retval.replace(/i/ig, "[iÃ®Ã¯]");
+            retval = retval.replace(/o/ig, "([oÃ´Ã¶]|oe)");
+            retval = retval.replace(/u/ig, "[uÃ¹Ã»Ã¼]");
+            retval = retval.replace(/y/ig, "[yÃ¿]");
+            retval = retval.replace(/s/ig, "(ss|[sÃŸ])");
+            return retval;
+        }
+
+        this.setRegex = function (input) {
+            input = input.replace(/\\([^u]|$)/g, "$1");
+            input = input.replace(/[^\w\\\s']+/g, "").replace(/\s+/g, "|");
+            input = input.replace(/^\||\|$/g, "");
+            input = addAccents(input);
+            if (input) {
+                var re = "(" + input + ")";
+                if (!this.openLeft) re = "(?:^|[\\b\\s])" + re;
+                if (!this.openRight) re = re + "(?:[\\b\\s]|$)";
+                matchRegex = new RegExp(re, "i");
+                return true;
+            }
+            return false;
+        };
+
+        this.getRegex = function () {
+            var retval = matchRegex.toString();
+            retval = retval.replace(/(^\/|\(\?:[^\)]+\)|\/i$)/g, "");
+            return retval;
+        };
+
+        // recursively apply word highlighting
+        this.hiliteWords = function (node) {
+            if (node === undefined || !node) return;
+            if (!matchRegex) return;
+            if (skipTags.test(node.nodeName)) return;
+
+            if (node.hasChildNodes()) {
+                for (var i = 0; i < node.childNodes.length; i++)
+                    this.hiliteWords(node.childNodes[i]);
+            }
+            if (node.nodeType == 3) { // NODE_TEXT
+                if ((nv = node.nodeValue) && (regs = matchRegex.exec(nv))) {
+                    if (!wordColor[regs[1].toLowerCase()]) {
+                        wordColor[regs[1].toLowerCase()] = colors[colorIdx++ % colors.length];
+                    }
+
+                    var match = document.createElement(hiliteTag);
+                    match.appendChild(document.createTextNode(regs[1]));
+                    match.style.backgroundColor = wordColor[regs[1].toLowerCase()];
+                    match.style.fontStyle = "inherit";
+                    match.style.color = "#000";
+
+                    var after;
+                    if (regs[0].match(/^\s/)) { // in case of leading whitespace
+                        after = node.splitText(regs.index + 1);
+                    } else {
+                        after = node.splitText(regs.index);
+                    }
+                    after.nodeValue = after.nodeValue.substring(regs[1].length);
+                    node.parentNode.insertBefore(match, after);
+                }
+            };
+        };
+
+        // remove highlighting
+        this.remove = function () {
+            var arr = document.getElementsByTagName(hiliteTag);
+            while (arr.length && (el = arr[0])) {
+                var parent = el.parentNode;
+                parent.replaceChild(el.firstChild, el);
+                parent.normalize();
+            }
+        };
+
+        // start highlighting at target node
+        this.apply = function (input) {
+            // this.remove();
+            if (input === undefined || !(input = input.replace(/(^\s+|\s+$)/g, ""))) return;
+            input = convertCharStr2jEsc(input);
+            if (this.setRegex(input)) {
+                this.hiliteWords(targetNode);
+            }
+        };
+
+        // added by Yanosh Kunsh to include utf-8 string comparison
+        function dec2hex4(textString) {
+            var hexequiv = new Array("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F");
+            return hexequiv[(textString >> 12) & 0xF] + hexequiv[(textString >> 8) & 0xF] + hexequiv[(textString >> 4) & 0xF] + hexequiv[textString & 0xF];
+        }
+
+        function convertCharStr2jEsc(str, cstyle) {
+            // Converts a string of characters to JavaScript escapes
+            // str: sequence of Unicode characters
+            var highsurrogate = 0;
+            var suppCP;
+            var pad;
+            var n = 0;
+            var outputString = '';
+            for (var i = 0; i < str.length; i++) {
+                var cc = str.charCodeAt(i);
+                if (cc < 0 || cc > 0xFFFF) {
+                    outputString += '!Error in convertCharStr2UTF16: unexpected charCodeAt result, cc=' + cc + '!';
+                }
+                if (highsurrogate != 0) { // this is a supp char, and cc contains the low surrogate
+                    if (0xDC00 <= cc && cc <= 0xDFFF) {
+                        suppCP = 0x10000 + ((highsurrogate - 0xD800) << 10) + (cc - 0xDC00);
+                        if (cstyle) {
+                            pad = suppCP.toString(16);
+                            while (pad.length < 8) {
+                                pad = '0' + pad;
+                            }
+                            outputString += '\\U' + pad;
+                        } else {
+                            suppCP -= 0x10000;
+                            outputString += '\\u' + dec2hex4(0xD800 | (suppCP >> 10)) + '\\u' + dec2hex4(0xDC00 | (suppCP & 0x3FF));
+                        }
+                        highsurrogate = 0;
+                        continue;
+                    } else {
+                        outputString += 'Error in convertCharStr2UTF16: low surrogate expected, cc=' + cc + '!';
+                        highsurrogate = 0;
+                    }
+                }
+                if (0xD800 <= cc && cc <= 0xDBFF) { // start of supplementary character
+                    highsurrogate = cc;
+                } else { // this is a BMP character
+                    switch (cc) {
+                        case 0:
+                            outputString += '\\0';
+                            break;
+                        case 8:
+                            outputString += '\\b';
+                            break;
+                        case 9:
+                            outputString += '\\t';
+                            break;
+                        case 10:
+                            outputString += '\\n';
+                            break;
+                        case 13:
+                            outputString += '\\r';
+                            break;
+                        case 11:
+                            outputString += '\\v';
+                            break;
+                        case 12:
+                            outputString += '\\f';
+                            break;
+                        case 34:
+                            outputString += '\\\"';
+                            break;
+                        case 39:
+                            outputString += '\\\'';
+                            break;
+                        case 92:
+                            outputString += '\\\\';
+                            break;
+                        default:
+                            if (cc > 0x1f && cc < 0x7F) {
+                                outputString += String.fromCharCode(cc);
+                            } else {
+                                pad = cc.toString(16).toUpperCase();
+                                while (pad.length < 4) {
+                                    pad = '0' + pad;
+                                }
+                                outputString += '\\u' + pad;
+                            }
+                    }
+                }
+            }
+            return outputString;
+        }
+    }
+</script>

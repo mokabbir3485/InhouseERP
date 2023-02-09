@@ -1,0 +1,84 @@
+﻿    <form name="companyEntryForm" novalidate>
+    <div class="col-md-12">
+        <div class="alert alert-info alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="topInfo"> &nbsp; &#9755; <span style="color:red;">Red Icon</span> Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp; &#9755; Click On A Table Row To Update/Delete</div>
+        </div>
+    </div>
+    <!-- Include Item  Directive-->
+
+    <company-directive ng-show="CreatePermission || RevisePermission"></company-directive>
+
+    <div class="col-md-12" ng-show="ListViewPermission">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-list"></i>&nbsp;Customer  List</h3>
+            </div>
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="input-group">
+                            <input type="text" class="form-control" ng-change="GetCompanySearch()" ng-model="SearchName" placeholder="Search By Customer Name" />
+                            <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body custom-panal-body">
+                <div class="tbl-outer">
+                    <table class="responstable table-hover">
+                        <tbody>
+                            <tr class="t-head">
+                                <th class="t-cell-center" width="5%">S/N</th>
+                                <th class="t-cell-center" data-th="Company  Details"><span>Name</span></th>
+                                <th class="t-cell-center" width="15%">Customer  Type</th>
+                                <th class="t-cell-center" width="10%">Customer Code</th>
+                                <th class="t-cell-center" width="15%">Payable</th>
+                                <th class="t-cell-center" width="10%">Status</th>
+                                <th class="txt-center">Action</th>
+                            </tr>
+                            <tr class="HoverTable" dir-paginate="aCompany in companyList | filter:q | itemsPerPage: PerPage" current-page="currentPage" total-items="total_count" >
+                                <td class="t-cell-center">{{$index + ((currentPage-1)*PerPage) + 1}}</td>
+                                <td class="t-cell-center">{{aCompany.CompanyName}}</td>
+                                <td class="t-cell-center">{{aCompany.CompanyTypeName}}</td>
+                                <td class="t-cell-center">{{aCompany.CompanyCode}}</td>
+                                <td class="t-cell-center">{{aCompany.IsPayable}}</td>
+                                <td class="t-cell-center">{{aCompany.IsActive}}</td>
+                                <td class="txt-center"><button ng-click="EditCompany(aCompany)">Edit</button></td>
+                            </tr>
+                            <tr class="t-foot" ng-show="total_count>PerPage">
+                                <th colspan="8">
+                                    <dir-pagination-controls max-size="8"
+                                                             direction-links="true"
+                                                             boundary-links="true"
+                                                             on-page-change="getData(newPageNumber)" style="text-align:center;">
+                                    </dir-pagination-controls>
+                                </th>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="row pagination-footer">
+                        <div class="col-md-6">
+                            <span>Show </span><input class="input-pagesize" type="number" ng-maxlength="100" ng-minlength="1" width="1" ng-model="PerPage"> <span>Records </span>
+                        </div>
+                        <div class="col-md-6">
+                            <span class="pull-right">Showing {{((currentPage-1)*PerPage)+1}} to {{((currentPage-1)*PerPage)+companyList.length}} of {{total_count}} Records</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<style>
+    .pika-label:nth-child(2) {
+        display: none;
+    }
+</style>
+
+<script>
+    $('.tooltipAll').tooltip({ boundary: 'window' })
+</script>

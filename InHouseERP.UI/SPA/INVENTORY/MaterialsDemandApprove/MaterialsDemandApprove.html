@@ -1,0 +1,82 @@
+﻿<form name="MaterialsDemandApproveForm" novalidate>
+    <div class="col-md-12">
+        <div class="alert alert-info alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="topInfo"> &nbsp; &#9755; <span style="color:red;">Red Icon</span> Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp; &#9755; Click On A Table Row To Update</div>
+        </div>
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-shield"></i>&nbsp;Materials Demand Approve</h3>
+                <div class="clearfix">
+                </div>
+            </div>
+            <div class="panel-body">
+                <ul class="nav nav-tabs">
+                    <li ng-show="ApprovedPermission" class="active" style="cursor:pointer;"><a data-toggle="tab" data-target="#NewApproval"><span><i class="fa fa-list"></i></span>&nbsp;New Approval</a></li>
+                    <!--<li ng-show="AmendmentApprovedPermission" style="cursor:pointer;"><a data-toggle="tab" data-target="#AmendmentRequest"><span><i class="fa fa-list"></i></span>&nbsp;Amendment Request</a></li>-->
+                </ul>
+                <div class="tab-content">
+                    <div ng-show="ApprovedPermission" id="NewApproval" class="tab-pane fade in active">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <table class="responstable table-hover">
+                                    <tbody>
+                                        <tr>
+                                            <th class="t-cell-center">S/N</th>
+                                            <th class="t-cell-center">Chk</th>
+                                            <th class="t-cell-center">Demand No</th>
+                                            <th class="t-cell-center">Demand Date</th>
+                                            <th class="t-cell-center">Branch Name</th>
+                                            <th class="t-cell-center">From Department</th>
+                                            <th class="t-cell-center">To Department</th>
+                                            
+                                            <th class="txt-center">Action</th>
+                                        </tr>
+                                        <tr class="HoverTable searchRow" ng-repeat="aDemand in MaterialsDemandList">
+                                            <td class="t-cell-center">{{$index+1}}</td>
+                                            <td class="t-cell-center">
+                                                <input type="checkbox" ng-model="aDemand.IsCheck"
+                                                       ng-click="SelectMaterialsDemandList(aDemand)" ng-checked="aDemand.IsCheck" />
+                                            </td>
+                                            <td class="t-cell-center">{{aDemand.MaterialsDemandNo}}</td>
+                                            <td class="t-cell-center">{{aDemand.DemandDate}}</td>
+                                            <td class="t-cell-center">{{aDemand.BranchName}}</td>
+                                            <td class="t-cell-center">{{aDemand.FromDepartmentName}}</td>
+                                            <td class="t-cell-center">{{aDemand.ToDepartmentName}}</td>
+                                            <td class="t-cell-center">
+                                                <button
+                                                        ng-click="OpenReport(aDemand)">
+                                                    <i title="Report" class="fa fa-print" style="font-size:18px;"> </i> Report
+                                                </button>
+                                            </td>
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <br />
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <button id="btnSave" style="width:100%;" class="btn btn-success" ng-click="SaveMaterialsDemandApprove()" ng-disabled="!MaterialsDemandApproveList.length > 0" title="Save">
+                                        <i class="fa fa-save"></i>&nbsp;Submit
+                                    </button>
+                                </div>
+                                <div class="col-md-2">
+                                    <button id="Button3" style="width:100%;" class="btn btn-danger" title="Reset" ng-click="ResetForm()">
+                                        <i class="fa fa-refresh"></i>&nbsp;Reset
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</form>

@@ -1,0 +1,144 @@
+﻿
+<style>
+
+</style>
+<form name="EmailSendForm" style="margin: 0 auto; width: 80%;" novalidate>
+
+    <div class="col-md-12">
+        <div class="alert alert-info alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="topInfo"> &nbsp; &#9755; <span style="color:red;">Red Icon</span> Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp; &#9755; Click On A Table Row To Email Send</div>
+        </div>
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-envelope"></i>&nbsp;{{message}}</h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-10">
+                        <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="To">
+                            <div class="input-group input-group-md ddl">
+                                <textarea type="text" name="ToEmail" rows="1" class="form-control" ng-model="EmailSendNotification.ToEmail" placeholder="To"></textarea>
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <i ng-show="!EmailCcHideAndShow" class="fa fa-plus-square" ng-click="hideCcBtnColapse()"></i><i ng-show="EmailCcHideAndShow" ng-click="hideCcBtnColapse()" class="fa fa-minus-square"></i>&nbsp;<b>Cc</b>
+                    </div>
+                    <div class="col-md-1">
+                        <i ng-show="!EmailBccHideAndShow" class="fa fa-plus-square" ng-click="hideBccBtnColapse()"></i><i ng-show="EmailBccHideAndShow" ng-click="hideBccBtnColapse()" class="fa fa-minus-square"></i>&nbsp;<b>Bcc</b>
+                    </div>
+                </div>
+                <div class="row" ng-show="EmailCcHideAndShow">
+                    <div class="col-md-10">
+                        <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Cc">
+                            <div class="input-group input-group-md ddl">
+                                <textarea type="text" name="CcEmail" rows="1" class="form-control" ng-model="EmailSendNotification.CcEmail" placeholder="Cc"></textarea>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row" ng-show="EmailBccHideAndShow">
+                    <div class="col-md-10">
+                        <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Bcc">
+                            <div class="input-group input-group-md ddl">
+                                <textarea type="text" name="BccEmail" rows="1" class="form-control" ng-model="EmailSendNotification.BccEmail" placeholder="Bcc"></textarea>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-10">
+                        <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Subject">
+                            <div class="input-group input-group-md ddl">
+                                <textarea type="text" name="SubjectEmail" rows="1" class="form-control" ng-model="EmailSendNotification.EmailSubject" placeholder="Subject"></textarea>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group" ng-class="{ 'has-error' : EmailSendForm.ComposeEmail.$invalid && EmailSendForm.ComposeEmail.$touched }" data-toggle="tooltip" data-placement="bottom" title="Compose Email">
+                            <p type="text" name="ComposeEmail" class="summernote">
+
+                            </p>
+                            <span class="help-block" style="display: block; color:red" ng-if="EmailSendForm.ComposeEmail.$error.required && EmailSendForm.ComposeEmail.$touched">Compose Email  is required</span>
+                            <span class="help-block" style="display: block;color:red" ng-if="EmailSendForm.ComposeEmail.$error.maxlength">100 Character Max</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-10">
+                        <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Compose">
+                            <div class="input-group input-group-md ddl">
+                                <!-- <textarea type="text" name="ComposeEmail" class="form-control" ng-model="ComposeEmail" placeholder="Compose"></textarea>-->
+                                <button class="btn btn-primary" name="btnSent" ng-click="SendBtn()" ng-disabled="!EmailSendNotification.ToEmail || !EmailSendNotification.EmailSubject">Send Email</button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+</form>
+<script>
+    $(document).ready(function () {
+        //$('.summernote').summernote({
+        //    height: 300,
+        //    tabsize: 2,
+        //    width: 1010,
+
+        //    toolbar: [
+        //        ['style', ['bold', 'italic', 'underline', 'clear']],
+        //        ['font', ['strikethrough', 'superscript', 'subscript']],
+        //        ['fontname', ['fontname']],
+        //        ['table', ['table']],
+        //        ['insert', ['link', 'picture']],
+        //        ['view', ['fullscreen', 'codeview']],
+        //        ['fontsize', ['fontsize']],
+        //        ['color', ['color']],
+        //        ['para', ['ul', 'ol', 'paragraph']],
+        //        ['height', ['height']]
+        //    ]
+
+        //});
+        $('.summernote').summernote({
+            height: 170,
+            tabsize: 2,
+            width: 670,
+            spellCheck: false,
+            disableGrammar: true,
+            //fontSizes: ['8', '9', '10', '11', '12', '14', '18', '24', '36', '48', '64', '82', '150'],
+                toolbar: [
+                    ['style', ['bold', 'italic', 'underline', 'clear']],
+                    ['font', ['strikethrough', 'superscript', 'subscript']],
+                    //['fontname', ['fontname']],
+                    //['table', ['table']],
+                    //['insert', ['link', 'picture']],
+                    ['view', ['fullscreen', 'codeview']],
+                    //['fontsize', ['fontsize']],
+                    //['color', ['color']],
+                    ['para', ['ul', 'ol']],
+                    //['height', ['height']]
+            ],
+            ///lineHeights: ['0.2', '0.3', '0.4', '0.5', '0.6', '0.8', '1.0', '1.2', '1.4', '1.5', '2.0', '3.0']
+
+            
+
+        });
+
+    });
+</script>

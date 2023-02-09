@@ -1,0 +1,129 @@
+﻿<form name="PurchaseOrderApproveForm" novalidate>
+    <div class="col-md-12">
+        <div class="alert alert-info alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="topInfo"> &nbsp; &#9755; <span style="color:red;">Red Icon</span> Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp; &#9755; Click On A Table Row To Update</div>
+        </div>
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-shield"></i>&nbsp;Purchase Order Approve</h3>
+                <div class="clearfix">
+                </div>
+            </div>
+            <div class="panel-body">
+                <ul class="nav nav-tabs">
+                    <li ng-show="LocalApprovedPermission" class="active" style="cursor:pointer;"><a data-toggle="tab" data-target="#LocalApproval"><span><i class="fa fa-list"></i></span>&nbsp;Local Purchase Order</a></li>
+                    <li ng-show="ImportApprovedPermission" style="cursor:pointer;"><a data-toggle="tab" data-target="#ImportApproval"><span><i class="fa fa-list"></i></span>&nbsp;Import Purchase Order</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div ng-show="LocalApprovedPermission" id="LocalApproval" class="tab-pane fade in active">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <table class="responstable table-hover">
+                                    <tbody>
+                                        <tr>
+                                            <th class="t-cell-center">S/N</th>
+                                            <th class="t-cell-center">Chk</th>
+                                            <th class="t-cell-center">Type</th>
+                                            <th class="t-cell-center">PO No</th>
+                                            <th class="t-cell-center">PO Date</th>
+                                            <th class="t-cell-center">Factory</th>
+                                            <th class="t-cell-center">Supplier Name</th>
+                                            <th class="t-cell-center">Prepared By</th>
+
+                                            <th class="txt-center">Action</th>
+                                        </tr>
+                                        <tr class="HoverTable searchRow" ng-repeat="aPurchaseOrder in LocalPurchaseOrderList">
+                                            <td class="t-cell-center">{{$index+1}}</td>
+                                            <td class="t-cell-center">
+                                                <input type="checkbox" ng-model="aPurchaseOrder.IsCheck"
+                                                       ng-click="SelectPurchaseOrderList(aPurchaseOrder)" ng-checked="aPurchaseOrder.IsCheck" />
+                                            </td>
+                                            <td class="t-cell-center">{{aPurchaseOrder.Type}}</td>
+                                            <td class="t-cell-center">{{aPurchaseOrder.PONo}}</td>
+                                            <td class="t-cell-center">{{aPurchaseOrder.PODate}}</td>
+                                            <td class="t-cell-center">{{aPurchaseOrder.BranchName}}</td>
+                                            <td class="t-cell-center">{{aPurchaseOrder.SupplierName}}</td>
+                                            <td class="t-cell-center">{{aPurchaseOrder.PreparedByName}}</td>
+                                            <td class="t-cell-center">
+                                                <button ng-click="OpenReport(aPurchaseOrder.POId, aPurchaseOrder.IsLocal)">
+                                                    <i title="Report" class="fa fa-print" style="font-size:18px;"> </i> Report
+                                                </button>
+                                            </td>
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div ng-show="ImportApprovedPermission" id="ImportApproval" class="tab-pane fade">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <table class="responstable table-hover">
+                                    <tbody>
+                                        <tr>
+                                            <th class="t-cell-center">S/N</th>
+                                            <th class="t-cell-center">Chk</th>
+                                            <th class="t-cell-center">Type</th>
+                                            <th class="t-cell-center">PO No</th>
+                                            <th class="t-cell-center">PO Date</th>
+                                            <th class="t-cell-center">Factory</th>
+                                            <th class="t-cell-center">Supplier Name</th>
+                                            <th class="t-cell-center">Prepared By</th>
+
+                                            <th class="txt-center">Action</th>
+                                        </tr>
+                                        <tr class="HoverTable searchRow" ng-repeat="aPurchaseOrder in ImportPurchaseOrderList">
+                                            <td class="t-cell-center">{{$index+1}}</td>
+                                            <td class="t-cell-center">
+                                                <input type="checkbox" ng-model="aPurchaseOrder.IsCheck"
+                                                       ng-click="SelectPurchaseOrderList(aPurchaseOrder)" ng-checked="aPurchaseOrder.IsCheck" />
+                                            </td>
+                                            <td class="t-cell-center">{{aPurchaseOrder.Type}}</td>
+                                            <td class="t-cell-center">{{aPurchaseOrder.ManualPONo}}</td>
+                                            <td class="t-cell-center">{{aPurchaseOrder.PODate}}</td>
+                                            <td class="t-cell-center">{{aPurchaseOrder.BranchName}}</td>
+                                            <td class="t-cell-center">{{aPurchaseOrder.SupplierName}}</td>
+                                            <td class="t-cell-center">{{aPurchaseOrder.PreparedByName}}</td>
+                                            <td class="t-cell-center">
+                                                <button ng-click="OpenReport(aPurchaseOrder.POId, aPurchaseOrder.IsLocal)">
+                                                    <i title="Report" class="fa fa-print" style="font-size:18px;"> </i> Report
+                                                </button>
+                                            </td>
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    
+                    <div class="col-md-12" ng-show="CreatePermission">
+                        <br />
+                        <div class="row">
+                            <div class="col-md-2">
+                                <button id="btnSave" style="width:100%;" class="btn btn-success" ng-click="SavePurchaseOrderApprove()"  title="Save">
+                                    <i class="fa fa-save"></i>&nbsp;Submit
+                                </button>
+                            </div>
+                            <div class="col-md-2">
+                                <button id="Button3" style="width:100%;" class="btn btn-danger" title="Reset" ng-click="ResetForm()">
+                                    <i class="fa fa-refresh"></i>&nbsp;Reset
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</form>

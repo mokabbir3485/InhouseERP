@@ -1,0 +1,193 @@
+﻿
+<form name="screenEntry">
+    <div class="col-md-3" ng-show="CreatePermission || RevisePermission">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-group"></i>&nbsp;Screen Entry</h3>
+            </div>
+            <div class="panel-body">
+                <div class="form-group tooltipAll" ng-class="{ 'has-error' : screenEntry.ddlModule.$dirty && screenEntry.ddlModule.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Module">
+                    <div class="input-group input-group-md ddl">
+                        <select ng-model="ddlModule" name="ddlModule" id="ddlModule" class="form-control selectMendatory" ng-change="Screen.ModuleId=ddlModule.ModuleId" ng-options="Module.ModuleName  for Module in ModuleList track by Module.ModuleId" required>
+                            <option value="" label="Module"></option>
+                        </select>
+                    </div>
+                    <span class="help-block" ng-show="screenEntry.ddlModule.$dirty && screenEntry.ddlModule.$invalid">Module is Required</span>
+                </div>
+                <div class="input-group">
+
+                </div>
+
+                <div class="form-group tooltipAll" ng-class="{ 'has-error' : screenEntry.ScreenName.$dirty && screenEntry.ScreenName.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Screen Name">
+                    <div class="input-group input-group-md ddl">
+                        <input type="text" id="tbxScreenName" name="ScreenName" class="form-control" ng-model="Screen.ScreenName" placeholder="Screen Name" required />
+                        <span class="input-group-addon"><i class="fa fa-pagelines req-icon-color"></i></span>
+                    </div>
+                    <span class="help-block" ng-show="screenEntry.ScreenName.$dirty && screenEntry.ScreenName.$invalid">Screen Name is Required</span>
+                </div>
+                <div class="form-group tooltipAll" ng-class="{ 'has-error' : screenEntry.Description.$dirty && screenEntry.Description.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Description">
+                    <div class="input-group input-group-md ddl">
+                        <input type="text" name="Description" id="tbxDescription" class="form-control" ng-model="Screen.Description" placeholder="Description" required />
+                        <span class="input-group-addon"><i class="fa fa-comments req-icon-color"></i></span>
+                    </div>
+                    <span class="help-block" ng-show="screenEntry.Description.$dirty && screenEntry.Description.$invalid">Description is Required</span>
+                </div>
+
+                <div class="form-group tooltipAll" ng-class="{ 'has-error' : screenEntry.ScreenUrl.$dirty && screenEntry.ScreenUrl.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Screen Url">
+                    <div class="input-group input-group-md ddl">
+                        <input type="text" id="tbxScreenUrl" name="ScreenUrl" class="form-control" ng-model="Screen.ScreenUrl" placeholder="Screen Url" required />
+                        <span class="input-group-addon"><i class="fa fa-link req-icon-color"></i></span>
+                    </div>
+                    <span class="help-block" ng-show="screenEntry.ScreenUrl.$dirty && screenEntry.ScreenUrl.$invalid">Screen Url is Required</span>
+                </div>
+
+                <div class="form-group tooltipAll" ng-class="{ 'has-error' : screenEntry.ImageUrl.$dirty && screenEntry.ImageUrl.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Image Url">
+                    <div class="input-group input-group-md ddl">
+                        <input type="text" id="tbxImageUrl" class="form-control" ng-model="Screen.ImageUrl" placeholder="Image URL" />
+                        <span class="input-group-addon"><i class="fa fa-file-image-o"></i></span>
+                    </div>
+                    <span class="help-block" ng-show="screenEntry.ImageUrl.$dirty && screenEntry.ImageUrl.$invalid">Image Url is Required</span>
+                </div>
+                <div class="form-group tooltipAll" ng-class="{ 'has-error' : screenEntry.MainTableName.$dirty && screenEntry.MainTableName.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Main Table Name">
+                    <div class="input-group input-group-md ddl">
+                        <input type="text" id="tbxImageUrl" name="MainTableName" class="form-control" ng-model="Screen.MainTableName" placeholder="Main Table Name" />
+                        <span class="input-group-addon"><i class="fa fa-table"></i></span>
+                    </div>
+                </div>
+
+                <div class="form-group tooltipAll" ng-class="{ 'has-error' : screenEntry.Sorting.$dirty && screenEntry.Sorting.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Sorting">
+                    <div class="input-group input-group-md ddl">
+                        <input type="text" id="tbxRSorting" name="Sorting" class="form-control" ng-model="Screen.Sorting" placeholder="Sorting" />
+                        <span class="input-group-addon"><i class="fa fa-repeat req-icon-color"></i></span>
+                    </div>
+                    <span class="help-block" ng-show="screenEntry.Sorting.$dirty && screenEntry.Sorting.$invalid">Sorting is Required</span>
+                </div>
+                <div class="form-group" ng-class="{ 'has-error' : screenEntry.ScreenFunction.$dirty && screenEntry.ScreenFunction.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Screen Function">
+                    <div class="input-group input-group-md ddl">
+                        <div id="selectFunction" ng-dropdown-multiselect=""
+                             options="example8data"
+                             selected-model="FunctionIdList"
+                             extra-settings="example8settings"
+                             translation-texts="FunctionPlaceholder">
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>Is Page: </label>
+                    &nbsp;&nbsp;
+                    <div class="radio-inline">
+                        <input type="radio" name="optionsRadios"
+                               ng-value="true" ng-model="Screen.IsPage">
+                        Active
+                    </div>
+                    <div class="radio-inline">
+                        <input type="radio" name="optionsRadios"
+                               ng-value="false" ng-model="Screen.IsPage"> Inactive
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="input-group">
+                            <button id="btnSave" class="btn btn-success" ng-click="PostScreen();" title="Save">
+                                <i class="fa fa-floppy-o"></i>&nbsp;Save
+                            </button>
+                        </div>
+                    </div>
+                    <!--<div class="col-md-4">
+            <div class="input-group">
+                <button id="btnDelete" class="btn btn-danger" title="Delete">
+                    <i class="fa fa-trash"></i>&nbsp;Delete
+                </button>
+            </div>
+        </div>-->
+                    <div class="col-md-4">
+                        <div class="input-group">
+                            <button id="btnClear" class="btn btn-primary" ng-click="resetForm();" title="Clear">
+                                <i class="fa fa-refresh"></i>&nbsp;Clear
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="col-md-9" ng-show="ListViewPermission">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-list"></i>&nbsp;Screen List</h3>
+            </div>
+            <div class="panel-body custom-panal-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group tooltipAll" data-toggle="tooltip" title="Screen Name">
+                            <input type="text" class="form-control" id="textScreenName" ng-model="ScreenName" ng-change="ScreenNameSearch();" name="name" placeholder="Screen Name" />
+                        </div>
+                    </div>
+                </div>
+                <div class="tbl-outer">
+                    <table class="responstable table-hover">
+                        <thead>
+                            <tr class="t-head">
+                                <th>S/N</th>
+                                <th>Module Name</th>
+                                <th>Screen Id</th>
+                                <th>Screen Name</th>
+                                <th>Description</th>
+                                <th>Screen Url</th>
+                                <th>Sorting</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="HoverTable" dir-paginate="Screen in Screenlist | filter:q | itemsPerPage: PerPage" current-page="currentPage" total-items="total_count">
+                                <td>{{$index + ((currentPage-1)*PerPage) + 1}}</td>
+                                <td>{{Screen.ModuleName}}</td>
+                                <td>{{Screen.ScreenId}}</td>
+                                <td>{{Screen.ScreenName}}</td>
+
+                                <td>{{Screen.Description}}</td>
+                                <td>{{Screen.ScreenUrl}}</td>
+                                <td>{{Screen.Sorting}}</td>
+                                <td>{{Screen.Status}}</td>
+                                <td>
+                                    <button ng-click="SelScreen(Screen)" title="Edit">
+                                        Edit
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr class="t-foot" ng-show="total_count>PerPage">
+                                <th colspan="10">
+                                    <dir-pagination-controls max-size="8"
+                                                             direction-links="true"
+                                                             boundary-links="true"
+                                                             on-page-change="getData(newPageNumber)" style="text-align:center;">
+                                    </dir-pagination-controls>
+                                </th>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="row pagination-footer">
+                        <div class="col-md-6">
+                            <span>Show </span><input class="input-pagesize" type="number" ng-maxlength="100" ng-minlength="1" width="1" ng-model="PerPage"> <span>Records </span>
+                        </div>
+                        <div class="col-md-6">
+                            <span class="pull-right">Showing {{((currentPage-1)*PerPage)+1}} to {{((currentPage-1)*PerPage)+Screenlist.length}} of {{total_count}} Records</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script>
+    $('.tooltipAll').tooltip({ boundary: 'window' })
+    $("#ddlModule").select2({
+        placeholder: "Search for: Module",
+        theme: "classic",
+        dropdownAutoWidth: false
+    });
+</script>

@@ -1,0 +1,808 @@
+﻿
+<style>
+    #BankDddlDiv .select2-container {
+        width: 100% !important;
+    }
+
+    .select2-container {
+        width: 100% !important;
+    }
+
+    #PayOrderDiv .select2-container {
+        width: 220px !important;
+    }
+
+    #OnlineDiv .select2-container {
+        width: 235px !important;
+    }
+
+    #ChequeDiv .select2-container {
+        width: 235px !important;
+    }
+
+    #cashDepositeDDl .select2-container {
+        width: 500px !important;
+    }
+
+    #supplierDiv .select2-container {
+        width: 230px !important;
+    }
+    #submitedBy .select2-container {
+        width: 220px !important;
+    }
+</style>
+<form name="cancelProcessEntryForm" novalidate>
+    <div class="col-md-12">
+        <div class="alert alert-info alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="topInfo"> &nbsp; &#9755; <span style="color:red;">Red Icon</span> Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp; &#9755; Click On A Table Row To Update/Delete</div>
+        </div>
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-share-alt"></i>&nbsp; Supplier VDS Issue</h3>
+            </div>
+
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-2">
+                        <div class="form-group" ng-class="{ 'has-error' : productionEntryForm.VDSIssueNo.$invalid && productionEntryForm.VDSIssueNo.$touched }" data-toggle="tooltip" data-placement="bottom">
+                            <div class="input-group">
+
+                                <input type="text" name="VDSIssueNo" id="ChallanNoText" ng-model="Vat_SupplierVatIssue.VDSIssueNo" class="form-control tooltipAll" placeholder="VDSIssueNo" title="VD SIssue No" readonly />
+                                <span class="input-group-addon"><i class="fa fa-text-width" style="color:red;"></i></span>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group" ng-class="{ 'has-error' : productionEntryForm.VDSIssueDate.$invalid && productionEntryForm.VDSIssueDate.$touched }" data-toggle="tooltip" data-placement="bottom">
+                            <div class="input-group">
+
+                                <input type="text" name="IssueDate" id="IssueDateText" ng-model="Vat_SupplierVatIssue.VDSIssueDate" class="form-control tooltipAll" placeholder="Issue Date" readonly title="Issue Date" />
+                                <span class="input-group-addon" id="IssueDate" ng-click="ChangeForIssueDate()"><i class="fa fa-calendar" style="color:red;"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <!--<div class="tooltipAll" title="Screen Name">
+        <div class="form-group " ng-class="{ 'has-error' : cancelProcessEntryForm.ddlscreen.$touched && cancelProcessEntryForm.ddlscreen.$invalid }">
+            <div class="input-group input-group-md ddl tooltipAll" id="supplierDiv" title="Supplier">
+                <select ng-model="ddlSupplier" id="ddlsupplier" class="form-control selectMendatory" ng-change="GetBySupplier(ddlSupplier)" name="ddlSupplier" ng-options="aSup.SupplierName for aSup in SupplierBillList track by aSup.SupplierId" required>
+                    <option value="">Select Supplier Name</option>
+                </select>
+            </div>
+
+        </div>
+    </div>-->
+                    <div class="col-md-2">
+                        <div class="form-group" ng-class="{ 'has-error' : productionEntryForm.ChallanNo.$invalid && productionEntryForm.ChallanNo.$touched }" data-toggle="tooltip" data-placement="bottom">
+                            <div class="input-group">
+
+                                <input type="text" name="ChallanNo" id="ChallanNoText" ng-model="Vat_SupplierVatIssue.ChallanNo" class="form-control tooltipAll" placeholder="ChallanNo" title="Challan No" />
+                                <span class="input-group-addon"><i class="fa fa-text-width" style="color:red;"></i></span>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group" ng-class="{ 'has-error' : productionEntryForm.ProductionDate.$invalid && productionEntryForm.ProductionDate.$touched }" data-toggle="tooltip" data-placement="bottom">
+                            <div class="input-group">
+
+                                <input type="text" name="IssueDate" id="ChallanNoDatetext" ng-model="Vat_SupplierVatIssue.ChallanDate" class="form-control tooltipAll" placeholder="ChallanDate" readonly title="Challan Date" />
+                                <span class="input-group-addon" id="ChallanNoDate" ng-click="ChangeForChallanDate()"><i class="fa fa-calendar req-icon-color"></i></span>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group" ng-class="{ 'has-error' : SupplierAitForm.supplier.$dirty && SupplierAitForm.supplier.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Supplier">
+                            <div class="input-group input-group-md ddl">
+                                <div id="selectSupplier" ng-dropdown-multiselect=""
+                                     options="example8data"
+                                     selected-model="SupplierIdList"
+                                     extra-settings="example8settings"
+                                     translation-texts="supplierPlaceholder" ng-required="false">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                   
+
+
+                    <div class="col-md-1">
+                        <button style="width:100%" class="btn btn-primary" ng-click="GetBySupplier()"> Load</button>
+                    </div>
+
+
+
+
+
+
+
+                </div>
+                <div class="row">
+
+                    <div class="col-md-3">
+                        <div class="form-group" ng-class="{ 'has-error' : productionEntryForm.Submitted_Bank.$invalid && productionEntryForm.Submitted_Bank.$touched }" data-toggle="tooltip" data-placement="bottom">
+                            <div class="input-group">
+                            <textarea cols="1" rows="1" name="Submitted_Bank" id="Submitted_Bank" ng-model="Vat_SupplierVatIssue.Submitted_Bank" class="form-control tooltipAll" placeholder="Submitted Bank" title="Submitted Bank">
+
+                              </textarea>
+                            <span class="input-group-addon"><i class="fa fa-text-width" style="color:red;"></i></span>
+                            <!--<input type="text" name="Submitted_Bank" id="Submitted_Bank" ng-model="Vat_SupplierVatIssue.Submitted_Bank" class="form-control tooltipAll" placeholder="Submitted Bank"  title="Submitted Bank" />-->
+                            <!--<span class="input-group-addon"><i class="fa fa-text-width req-icon-color"></i></span>-->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group" ng-class="{ 'has-error' : productionEntryForm.Bank_District.$invalid && productionEntryForm.Bank_District.$touched }" data-toggle="tooltip" data-placement="bottom">
+                            <div class="input-group">
+                            <textarea cols="1" rows="1" name="Bank_District" id="Bank_District" ng-model="Vat_SupplierVatIssue.Bank_District" class="form-control tooltipAll" placeholder="Bank District" title="Bank District">
+                             </textarea>
+                            <span class="input-group-addon"><i class="fa fa-text-width" style="color:red;"></i></span>
+                            <!--<span class="input-group-addon"><i class="fa fa-text-width req-icon-color"></i></span>-->
+                           </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group" ng-class="{ 'has-error' : productionEntryForm.Bank_District.$invalid && productionEntryForm.Bank_District.$touched }" data-toggle="tooltip" data-placement="bottom">
+                         <div class="input-group">
+                            <textarea cols="1" rows="1" name="Bank_District" id="Bank_District" ng-model="Vat_SupplierVatIssue.Bank_Branch" class="form-control tooltipAll" placeholder="Bank Branch" title="Bank Branch">
+
+                                </textarea>
+                        
+                            <span class="input-group-addon"><i class="fa fa-text-width req-icon-color"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group" ng-class="{ 'has-error' : productionEntryForm.CodeNo.$invalid && productionEntryForm.CodeNo.$touched }" data-toggle="tooltip" data-placement="bottom">
+                            <div class="input-group">
+                            <!--<textarea cols="1" rows="1" name="CodeNo" id="CodeNo" ng-model="Vat_SupplierVatIssue.CodeNo" class="form-control tooltipAll" placeholder="Account Code No" title=" Code No">
+
+    </textarea>-->
+
+                            <input name="CodeNo" id="CodeNo" class="form-control tooltipAll" placeholder="Account Code No" title=" Code No" ng-model="Vat_SupplierVatIssue.CodeNo" />
+                           
+                            <span class="input-group-addon"><i class="fa fa-text-width req-icon-color"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    
+
+
+
+                    <div class="col-md-3">
+                        <div class="form-group" ng-class="{ 'has-error' : productionEntryForm.ddlPreparedBy.$dirty && productionEntryForm.ddlPreparedBy.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Prepared By">
+                            <div class="submitedBy tooltipAll" title="Submited By" >
+                                <div class="input-group input-group-md ddl">
+                                    <select id="ddlPreparedBy" ng-model="ddlPreparedBy" class="form-control selectMendatory" name="ddlPreparedBy" ng-options="employee.FullName for employee in EmployeeList track by employee.EmployeeId" required>
+                                        <option value="">Submited By</option>
+                                    </select>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group" ng-class="{ 'has-error' : productionEntryForm.SubmittedTo.$invalid && productionEntryForm.SubmittedTo.$touched }" data-toggle="tooltip" data-placement="bottom">
+                            <div class="input-group">
+                                <textarea cols="2" rows="2" name="Bank_District" id="SubmittedTo" ng-model="Vat_SupplierVatIssue.SubmittedTo" class="form-control tooltipAll" placeholder="Submitted To" title="SubmittedTo To">
+
+                                </textarea>
+
+                                <span class="input-group-addon"><i class="fa fa-text-width req-icon-color"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group" ng-class="{ 'has-error' : productionEntryForm.PaidFor.$invalid && productionEntryForm.PaidFor.$touched }" data-toggle="tooltip" data-placement="bottom">
+                            <div class="input-group">
+                                <textarea cols="2" rows="2" name="PaidFor" id="PaidFor" ng-model="Vat_SupplierVatIssue.PaidFor" class="form-control tooltipAll" placeholder="Paid For" title="Paid For">
+
+                                </textarea>
+                                <span class="input-group-addon"><i class="fa fa-text-width req-icon-color"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group" ng-class="{ 'has-error' : productionEntryForm.Remarks.$invalid && productionEntryForm.Remarks.$touched }" data-toggle="tooltip" data-placement="bottom">
+                            <div class="input-group">
+                                <textarea cols="2" rows="2" name="Bank_District" id="Remarks" ng-model="Vat_SupplierVatIssue.Remarks" class="form-control tooltipAll" placeholder="Remarks" title="Remarks">
+
+                                </textarea>
+
+                                <span class="input-group-addon"><i class="fa fa-text-width "></i></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="responstable table-hover">
+                            <tbody>
+                                <tr>
+                                    <th class="t-cell-center">Check</th>
+                                    <th class="t-cell-center">S/N</th>
+                                    <th class="t-cell-center" style="width:30%">Supplier</th>
+                                    <th class="t-cell-center">PB No.</th>
+                                    <th class="t-cell-center">PB Date</th>
+                                    <th class="t-cell-center">Paid For</th>
+                                    <th class="t-cell-center" style="width:10%">Bill Amount</th>
+                                    <th class="t-cell-center" style="width:10%">VDS Amount</th>
+
+
+                                </tr>
+                                <tr class="HoverTable searchRow" ng-repeat="aPurchaseBill in SupplierBillList1">
+                                    <td class="t-cell-center">
+                                        <input type="checkbox" ng-click="CheckSupplierVatIssue(aPurchaseBill)" ng-model="aPurchaseBill.IsCheck" id="IsCheck" name="IsCheck" value="false">
+                                    </td>
+                                    <td class="t-cell-center">{{$index +1 }}</td>
+                                    <td class="t-cell-center" style="width:30%">{{aPurchaseBill.SupplierName}}</td>
+                                    <td class="t-cell-center">{{aPurchaseBill.PBNo}}</td>
+                                    <td class="t-cell-center">{{aPurchaseBill.PBDate}}</td>
+                                    <td class="t-cell-center">{{aPurchaseBill.PaidFor}}</td>
+                                    <td class="t-cell-center" style="width:10%">
+                                        <input type="text" name="BillAmount" id="BillAmount" ng-model="aPurchaseBill.BillAmount" class="form-control proToltipChange" placeholder="Bill Amount" title="Bill Amount" readonly />
+                                    </td>
+                                    <td class="t-cell-center" style="width:10%">
+                                        <input type="text" name="VDSAmount" id="VDSAmount" ng-disabled="!aPurchaseBill.IsCheck" ng-model="aPurchaseBill.VDSAmount" class="form-control proToltipChange" placeholder="VDS Amount" title="VDS Amount" />
+                                    </td>
+
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="panel panel-default">
+                        <div class="panel-heading" style="font-weight:bold;font-size:16px;">Payment </div>
+                        <div class="panel-body">
+                            <div class="row">
+                               
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group" ng-class="{ 'has-error' : productionEntryForm.TotalAmount.$invalid && productionEntryForm.TotalAmount.$touched }" data-toggle="tooltip" data-placement="bottom">
+                                        <div class="input-group">
+                                            <input type="number" name="Total Bill Amount" id="TotalAmount" ng-model="Vat_SupplierVatIssue.TotalVDSAmount" class="form-control tooltipAll" placeholder="Total VDS Amount" title="Total VDS Amount" readonly />
+                                            <span class="input-group-addon"><i class="fa fa-money"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                 <div class="col-md-3">
+                                  <div class="form-group" ng-class="{ 'has-error' : productionEntryForm.TotalAmount.$invalid && productionEntryForm.TotalAmount.$touched }" data-toggle="tooltip" data-placement="bottom">
+                                                <div class="input-group">
+                                                    <input type="number" name="VDS Amount" id="TotalAmount" ng-model="Vat_SupplierVatIssue.TotalAmount" class="form-control tooltipAll" placeholder="Total Amount" title="Total Amount" readonly />
+                                                    <span class="input-group-addon"><i class="fa fa-money"></i></span>
+                                                </div>
+
+                                  </div>
+                              
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <div class="form-group" ng-class="{ 'has-error' : CompanyPayment.PaymentName.$invalid && CompanyPayment.PaymentName.$touched }">
+                                            <div class="input-group width-hundred-percent tooltipAll" title="Payment Type">
+                                                <select id="ddlPaymentDropdwan" ng-model="ddlPayment" ng-disabled="LoaderEnable" name="PaymentName" class="form-control selectMendatory" ng-options="'['+payment.PaymentGroupName+'] : '+payment.PaymentTypeName for payment in  paymentTypelist track by payment.PaymentTypeId" ng-change="onChequeGetById(ddlPayment.PaymentTypeId,ddlPayment.PaymentGroupId);advancedAmountHide(ddlPayment);CheckAdvancedAmout(ddlPayment); " required>
+                                                    <option value="">-- Payment Type --</option>
+                                                </select>
+                                                <span class="help-block" style="display: block;" ng-if="CompanyPayment.PaymentName.$error.required  && CompanyPayment.PaymentName.$touched">Cheque is required</span>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+
+
+
+
+                                    <div class="{{ColDynamic}}" ng-show="ddlPayment.Code == 'csh'">
+                                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : CompanyPayment.Remarks.$invalid && CompanyPayment.Remarks.$touched }" data-toggle="tooltip" data-placement="bottom" title="Payment Receipt no...">
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" ng-model="Vat_SupplierVatIssue.MoneyReceiptNo" placeholder="Payment Receipt no..." />
+                                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                            </div>
+                                            <span class="help-block" ng-show="CompanyPayment.Remarks.$dirty && CompanyPayment.Remarks.$invalid">required</span>
+                                            <span class="help-block" ng-if="CompanyPayment.Remarks.$error.maxlength">50 Character Max</span>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="{{ColDynamic}}">
+                                            <div class="form-group tooltipAll" ng-class="{ 'has-error' : CompanyPayment.PaymentDate.$invalid && CompanyPayment.PaymentDate.$touched }" data-toggle="tooltip" data-placement="bottom" title="Payment Date">
+                                                <div class="input-group">
+
+                                                    <input type="text" name="PaymentDate" id="companyPaymentDate1" ng-model="Vat_SupplierVatIssue.PaymentDate" class="form-control " placeholder="Payment Date" readonly required />
+                                                    <span class="input-group-addon" ng-click="DateChangeForPaymentDate1()" id="DateChangeForPaymentDate1"><i class="fa fa-calendar req-icon-color"></i></span>
+
+                                                </div>
+
+                                                <span class="help-block" style="display: block;" ng-if="CompanyPayment.PaymentDate.$error.required && CompanyPayment.PaymentDate.$touched">Payment Date is required</span>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <!--<div class="col-md-3" ng-show="ddlPayment.Code == 'po'">
+                                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : CompanyPayment.PONo.$invalid && CompanyPayment.PONo.$touched }" data-toggle="tooltip" data-placement="bottom" title="Cheque Mode">
+                                            <div id="PayOrderDiv" class="input-group width-hundred-percent">
+
+                                                <select id="bankddlPayOrder" ng-model="ddlPayOrderBankAccount" name="ddlBankAccount" class="form-control selectMendatory" ng-options="bank.BankNameTemp for bank in CompanyBankAccountList track by bank.BankAccountId" ng-change="CustomerbankCheck(ddlCompanyBankAccount);Vat_SupplierVatIssue.CustomerBankAccountId = ddlPayOrderBankAccount.BankAccountId">
+                                                    <option value="">Bank Name : Not Found, Branch : Not Found , AccountNo : Not Found</option>
+                                                </select>
+                                                <span class="help-block" ng-show="CompanyPayment.ddlSupplier.$dirty && CompanyPayment.ddlSupplier.$invalid">Supplier is required</span>
+                                            </div>
+                                        </div>
+                                    </div>-->
+                                    <!--<div class="col-md-3" ng-show="ddlPayment.Code == 'chq'">
+                                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : CompanyPayment.ChequeType.$invalid && CompanyPayment.ChequeType.$touched }" data-toggle="tooltip" data-placement="bottom" title="Cheque Type">
+                                            <div class="input-group width-hundred-percent">
+                                                <select ng-model="ddlChequeType" ng-options="cheq.PaymentSubTypeName for cheq in ChequePaymentSubTypeList track by cheq.PaymentSubTypeId" name="ddlChequeType" class="form-control selectMendatory">
+                                                    <option value="">-- Cheque Type --</option>
+
+                                                </select>
+                                                <span class="help-block" ng-show="CompanyPayment.ChequeType.$dirty && CompanyPayment.ChequeType.$invalid">Supplier is required</span>
+                                            </div>
+                                        </div>
+                                    </div>-->
+
+                                    <!--<div class="col-md-3" ng-show="ddlPayment.Code == 'mb'">
+                                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : CompanyPayment.ddlServiceName.$invalid && CompanyPayment.ddlServiceName.$touched }" data-toggle="tooltip" data-placement="bottom" title="Service Name">
+                                            <div class="input-group width-hundred-percent">
+                                                <select id="ddlServiceName" ng-model="ddlServiceName" name="ddlServiceName" class="form-control selectNotMandetory" ng-options="service.PaymentSubTypeName for service in MobilePaymentSubTypeList track by service.PaymentSubTypeId" ng-change="Vat_SupplierVatIssue.MobileBankingServiceId = ddlServiceName.PaymentSubTypeId">
+                                                    <option value=""> --- Select Service Name --- </option>
+                                                </select>
+                                                <span class="help-block" ng-show="CompanyPayment.ddlServiceName.$dirty && CompanyPayment.ddlServiceName.$invalid">Service Name is required</span>
+                                            </div>
+                                        </div>
+                                    </div>-->
+
+                                    <!--<div class="col-md-3" ng-show="ddlPayment.Code=='eft' || ddlPayment.Code=='rtgs' || ddlPayment.Code == 'ddtt'">
+                                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : CompanyPayment.ddlBankAccount.$invalid && CompanyPayment.ddlBankAccount.$touched }" data-toggle="tooltip" data-placement="bottom" title="Payer Bank Account">
+                                            <div id="OnlineDiv" class="input-group width-hundred-percent">
+                                                <select id="bankddlReceiverOnlinePayment" ng-model="ddlReceiverBankAccount" name="ddlBankAccount" class="form-control selectMendatory" ng-options="bank.BankNameTemp for bank in ReceiverBankAccountList track by bank.BankAccountId" ng-change="Vat_SupplierVatIssue.ReceiverBankAccountId = ddlReceiverBankAccount.BankAccountId">
+                                                    <option value="">Bank Name : Not Found, Branch : Not Found , AccountNo : Not Found</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>-->
+
+                                </div>
+
+                            <div class="row" ng-show="ddlPayment.Code == 'mb'">
+                                <div class="col-md-3">
+                                    <div class="form-group tooltipAll" ng-class="{ 'has-error' : CompanyPayment.ddlServiceName.$invalid && CompanyPayment.ddlServiceName.$touched }" data-toggle="tooltip" data-placement="bottom" title="Service Name">
+                                        <div class="input-group width-hundred-percent">
+                                            <select id="ddlServiceName" ng-model="ddlServiceName" name="ddlServiceName" class="form-control selectNotMandetory" ng-options="service.PaymentSubTypeName for service in MobilePaymentSubTypeList track by service.PaymentSubTypeId" ng-change="Vat_SupplierVatIssue.MobileBankingServiceId = ddlServiceName.PaymentSubTypeId">
+                                                <option value=""> --- Select Service Name --- </option>
+                                            </select>
+                                            <span class="help-block" ng-show="CompanyPayment.ddlServiceName.$dirty && CompanyPayment.ddlServiceName.$invalid">Service Name is required</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group tooltipAll" ng-class="{ 'has-error' : CompanyPayment.MobileNo.$invalid && CompanyPayment.MobileNo.$touched }" data-toggle="tooltip" data-placement="bottom" title="Mobile No">
+                                        <div class="input-group">
+                                            <input type="text" id="txtMobileNo" name="MobileNo" class="form-control" ng-model="Vat_SupplierVatIssue.MobileNo" placeholder="Mobile No" maxlength="50" ng-maxlength="49">
+                                            <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                        </div>
+                                        <span class="help-block" ng-show="CompanyPayment.MobileNo.$dirty && CompanyPayment.MobileNo.$invalid">Mobile No is required</span>
+                                        <span class="help-block" ng-if="CompanyPayment.MobileNo.$error.maxlength">50 Character Max</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group tooltipAll" ng-class="{ 'has-error' : CompanyPayment.TransactionId.$invalid && CompanyPayment.TransactionId.$touched }" data-toggle="tooltip" data-placement="bottom" title="Transaction Id">
+                                        <div class="input-group">
+                                            <input type="text" id="txtTransactionId" name="TransactionId" class="form-control" ng-model="Vat_SupplierVatIssue.TransactionNo" placeholder="Transaction Id" maxlength="50" ng-maxlength="49">
+                                            <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                        </div>
+                                        <span class="help-block" ng-show="CompanyPayment.TransactionId.$dirty && CompanyPayment.Transaction.$invalid">Transaction Id is required</span>
+                                        <span class="help-block" ng-if="CompanyPayment.TransectionId.$error.maxlength">50 Character Max</span>
+                                    </div>
+                                </div>
+                            </div>
+                                <div ng-show="ddlPayment.Code == 'chq'">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group tooltipAll" ng-class="{ 'has-error' : CompanyPayment.ChequeType.$invalid && CompanyPayment.ChequeType.$touched }" data-toggle="tooltip" data-placement="bottom" title="Cheque Type">
+                                                <div class="input-group width-hundred-percent">
+                                                    <select ng-model="ddlChequeType" ng-options="cheq.PaymentSubTypeName for cheq in ChequePaymentSubTypeList track by cheq.PaymentSubTypeId" name="ddlChequeType" class="form-control selectMendatory">
+                                                        <option value="">-- Cheque Type --</option>
+
+                                                    </select>
+                                                    <span class="help-block" ng-show="CompanyPayment.ChequeType.$dirty && CompanyPayment.ChequeType.$invalid">Cheqe Type is required</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-md-3">
+                                            <div class="form-group tooltipAll" ng-class="{ 'has-error' : CompanyPayment.ddlBankAccount.$invalid && CompanyPayment.ddlBankAccount.$touched }" data-toggle="tooltip" data-placement="bottom" title="Payer Bank Account">
+                                                <div id="ChequeDiv" class="input-group width-hundred-percent">
+                                                    <select id="bankddlReceiverOnlinePaymentForCheque" ng-model="ddlReceiverBankAccount" name="ddlBankAccount" class="form-control selectMendatory" ng-options="bank.BankNameTemp for bank in ReceiverBankAccountList track by bank.BankAccountId" ng-change="Vat_SupplierVatIssue.ReceiverBankAccountId = ddlReceiverBankAccount.BankAccountId">
+                                                        <option value="">Bank Name : Not Found, Branch : Not Found , AccountNo : Not Found</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--<div class="col-md-3">
+                                            <div class="form-group tooltipAll" ng-class="{ 'has-error' : CompanyPayment.ddlBankAccount.$invalid && CompanyPayment.ddlBankAccount.$touched }" data-toggle="tooltip" data-placement="bottom" title="Supplier Bank Account">
+                                                <div id="ChequeDiv" class="input-group width-hundred-percent">
+                                                    <select id="bankddlCompanyOnlinePaymentForCheque" ng-model="ddlCompanyBankAccount" name="ddlBankAccount" class="form-control selectMendatory" ng-options="bank.BankNameTemp for bank in CompanyBankAccountList track by bank.BankAccountId" ng-change="CustomerbankCheck(ddlCompanyBankAccount);Vat_SupplierVatIssue.CustomerBankAccountId = ddlCompanyBankAccount.BankAccountId">
+                                                        <option value="">Bank Name : Not Found, Branch : Not Found , AccountNo : Not Found</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>-->
+                                        <div class="col-md-3">
+                                            <div class="form-group tooltipAll" ng-class="{ 'has-error' : CompanyPayment.ChequeDate.$invalid && CompanyPayment.ChequeDate.$touched }" data-toggle="tooltip" data-placement="bottom" title="Cheque Date">
+                                                <div class="input-group">
+
+                                                    <input type="text" name="ChequeDate" id="CompanytxtChequeDate" ng-model="Vat_SupplierVatIssue.ChequeDate" class="form-control " placeholder="Cheque Date" readonly required />
+                                                    <span class="input-group-addon" ng-click="DateChangeForChequeDate()" id="DateChangeForChequeDate"><i class="fa fa-calendar req-icon-color"></i></span>
+                                                </div>
+
+                                                <span class="help-block" style="display: block;" ng-if="CompanyPayment.ChequeDate.$error.required && CompanyPayment.ChequeDate.$touched">Cheque Date is required</span>
+                                            </div>
+
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group tooltipAll" ng-class="{ 'has-error' : CompanyPayment.ChequeNo.$invalid && CompanyPayment.ChequeNo.$touched }" data-toggle="tooltip" data-placement="bottom" title="Cheque No">
+                                                <div class="input-group">
+                                                    <input type="text" id="txtPONo" name="Pono" class="form-control" ng-model="Vat_SupplierVatIssue.ChequeNo" placeholder="Cheque No" maxlength="50" ng-maxlength="49">
+                                                    <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                                </div>
+                                                <span class="help-block" ng-show="CompanyPayment.ChequeNo.$dirty && CompanyPayment.ChequeNo.$invalid">PO No. is required</span>
+                                                <span class="help-block" ng-if="CompanyPayment.ChequeNo.$error.maxlength">50 Character Max</span>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                                <div class="row" ng-show="ddlPayment.Code == 'po'">
+                                    <div class="col-md-3" >
+                                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : CompanyPayment.PONo.$invalid && CompanyPayment.PONo.$touched }" data-toggle="tooltip" data-placement="bottom" title="Payer Bank">
+                                            <div id="PayOrderDiv" class="input-group width-hundred-percent">
+
+                                                <select id="bankddlPayOrder" ng-model="ddlPayOrderBankAccount" name="ddlBankAccount" class="form-control selectMendatory" ng-options="bank.BankNameTemp for bank in CompanyBankAccountList track by bank.BankAccountId" ng-change="CustomerbankCheck(ddlCompanyBankAccount);Vat_SupplierVatIssue.CustomerBankAccountId = ddlPayOrderBankAccount.BankAccountId">
+                                                    <option value="">Bank Name : Not Found, Branch : Not Found , AccountNo : Not Found</option>
+                                                </select>
+                                                <span class="help-block" ng-show="CompanyPayment.ddlSupplier.$dirty && CompanyPayment.ddlSupplier.$invalid">Supplier is required</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : CompanyPayment.ChequeDate.$invalid && CompanyPayment.ChequeDate.$touched }" data-toggle="tooltip" data-placement="bottom" title="Cheque Date">
+                                            <div class="input-group">
+
+                                                <input type="text" name="ChequeDate" id="CompanytxtPayOrderDate" ng-model="Vat_SupplierVatIssue.ChequeDate" class="form-control " placeholder="Pay Order Date" readonly required />
+                                                <span class="input-group-addon" ng-click="ChangePayOrderDate()" id="DateChangeForChequeDate"><i class="fa fa-calendar req-icon-color"></i></span>
+                                            </div>
+
+                                            <span class="help-block" style="display: block;" ng-if="CompanyPayment.ChequeDate.$error.required && CompanyPayment.ChequeDate.$touched">PB Date is required</span>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : CompanyPayment.ChequeNo.$invalid && CompanyPayment.ChequeNo.$touched }" data-toggle="tooltip" data-placement="bottom" title="Pay Order No">
+                                            <div class="input-group">
+                                                <input type="text" id="txtPONo" name="Pono" class="form-control" ng-model="Vat_SupplierVatIssue.ChequeNo" placeholder="Pay Order No" maxlength="50" ng-maxlength="49">
+                                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                            </div>
+                                            <span class="help-block" ng-show="CompanyPayment.ChequeNo.$dirty && CompanyPayment.ChequeNo.$invalid">Pay Order is required</span>
+                                            <span class="help-block" ng-if="CompanyPayment.ChequeNo.$error.maxlength">50 Character Max</span>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+                                <div class="row" ng-show="ddlPayment.Code=='eft' || ddlPayment.Code=='rtgs' || ddlPayment.Code == 'ddtt'">
+
+                                    <div class="col-md-3">
+                                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : CompanyPayment.ddlBankAccount.$invalid && CompanyPayment.ddlBankAccount.$touched }" data-toggle="tooltip" data-placement="bottom" title="Payer Bank Account">
+                                            <div id="OnlineDiv" class="input-group width-hundred-percent">
+                                                <select id="bankddlReceiverOnlinePayment" ng-model="ddlReceiverBankAccount" name="ddlBankAccount" class="form-control selectMendatory" ng-options="bank.BankNameTemp for bank in ReceiverBankAccountList track by bank.BankAccountId" ng-change="Vat_SupplierVatIssue.ReceiverBankAccountId = ddlReceiverBankAccount.BankAccountId">
+                                                    <option value="">Bank Name : Not Found, Branch : Not Found , AccountNo : Not Found</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--<div class="col-md-3">
+                                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : CompanyPayment.ddlBankAccount.$invalid && CompanyPayment.ddlBankAccount.$touched }" data-toggle="tooltip" data-placement="bottom" title="Payer Bank Account">
+                                            <div id="OnlineDiv" class="input-group width-hundred-percent">
+                                                <select id="bankddlCompanyOnlinePayment" ng-model="ddlCompanyBankAccount" name="ddlBankAccount" class="form-control selectMendatory" ng-options="bank.BankNameTemp for bank in CompanyBankAccountList track by bank.BankAccountId" ng-change="CustomerbankCheck(ddlCompanyBankAccount); Vat_SupplierVatIssue.CustomerBankAccountId = ddlCompanyBankAccount.BankAccountId">
+                                                    <option value="">Bank Name : Not Found, Branch : Not Found , AccountNo : Not Found</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>-->
+
+
+
+                                    <div class="col-md-3">
+                                        <div class="form-group" ng-class="{ 'has-error' : CompanyPayment.Branch.$invalid && CompanyPayment.Branch.$touched }">
+                                            <div class="input-group width-hundred-percent tooltipAll" title="From Bank Branch">
+                                                <input type="text" id="Branch" name="Branch" class="form-control" ng-model="Vat_SupplierVatIssue.FromBranch" placeholder="From Bank Branch">
+                                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : CompanyPayment.TransactionId.$invalid && CompanyPayment.TransactionId.$touched }" data-toggle="tooltip" data-placement="bottom" title="Transaction Id">
+                                            <div class="input-group">
+                                                <input type="text" id="txtTransactionId" name="TransactionId" class="form-control" ng-model="Vat_SupplierVatIssue.TransactionNo" placeholder="Transaction Id" maxlength="50" ng-maxlength="49">
+                                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                            </div>
+                                            <span class="help-block" ng-show="CompanyPayment.TransactionId.$dirty && CompanyPayment.Transaction.$invalid">Transaction Id is required</span>
+                                            <span class="help-block" ng-if="CompanyPayment.TransectionId.$error.maxlength">50 Character Max</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row" ng-show="ddlPayment.Code=='cd'">
+
+                                    <div class="col-md-6">
+                                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : CompanyPayment.ddlBankAccount.$invalid && CompanyPayment.ddlBankAccount.$touched }" data-toggle="tooltip" data-placement="bottom" title="Payer Bank Account">
+                                            <div id="cashDepositeDDl" class="input-group width-hundred-percent">
+                                                <select id="cashDepositebankddlReceiverOnlinePayment" ng-model="ddlReceiverBankAccount" name="ddlBankAccount" class="form-control selectMendatory" ng-options="bank.BankNameTemp for bank in ReceiverBankAccountList track by bank.BankAccountId" ng-change="Vat_SupplierVatIssue.ReceiverBankAccountId = ddlReceiverBankAccount.BankAccountId">
+                                                    <option value="">Bank Name : Not Found, Branch : Not Found , AccountNo : Not Found</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+
+                                        <div class="form-group" ng-class="{ 'has-error' : CompanyPayment.Branch.$invalid && CompanyPayment.Branch.$touched }">
+                                            <div class="input-group width-hundred-percent tooltipAll" title="From Bank Branch">
+                                                <input type="text" id="Branch" name="Branch" class="form-control" ng-model="Vat_SupplierVatIssue.FromBranch" placeholder="From Bank Branch">
+                                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                    </div>
+                </div>
+
+                <br />
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="tooltipAll" title="Save">
+                                    <div class="form-group ">
+                                        <button ng-click="SupplierVatSave()" style="width:100%" class="btn btn-success" ng-disabled="!Vat_SupplierVatIssue.VDSIssueDate || !Vat_SupplierVatIssue.ChallanNo || !Vat_SupplierVatIssue.ChallanDate ||!Vat_SupplierVatIssue.Submitted_Bank ||!Vat_SupplierVatIssue.Bank_District ||!Vat_SupplierVatIssue.Bank_Branch || ! Vat_SupplierVatIssue.CodeNo || !ddlPreparedBy ||!Vat_SupplierVatIssue.SubmittedTo ">Save </button>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-6">
+                                <div class="tooltipAll" title="Reset">
+                                    <div class="form-group ">
+                                        <button style="width:100%" ng-click="Reset()" class="btn btn-danger">Reset </button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+    <div class="col-md-12" >
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-list"></i>&nbsp;Supplier VDS Issue  List</h3>
+            </div>
+            <div class="panel-body custom-panal-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <div class="input-group proToltipChange" data-toggle="tooltip" title="From Date">
+
+                                <input type="text" name="FromDate" id="txtFromVDS" ng-model="FromDate" class="form-control " placeholder="From Date" readonly />
+                                <span class="input-group-addon" ng-click="FormDateChangeForVDS()" id="FormDateChangeForDelivery"><i class="fa fa-calendar req-icon-color"></i></span>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <div class="input-group proToltipChange" data-toggle="tooltip" title="To Date">
+                                <input type="text" name="ToDate" id="txtToDateForVDS" ng-model="ToDate" class="form-control " placeholder="To Date" readonly />
+                                <span class="input-group-addon" ng-click="ToDateChangeForVDS()" id="ToDateChangeForSO"><i class="fa fa-calendar req-icon-color"></i></span>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-group proToltipChange" data-toggle="tooltip" title="Search PB No">
+                            <input type="text" class="form-control" id="ProductionAndStore" ng-model="SearchProductionNoAndStore" name="name" placeholder="VDS Issue No" />
+                        </div>
+                    </div>
+
+
+
+                    <div class="col-md-3">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <button id="btnSearch" ng-click="SpplierVDSSearch();" style="width:100%" class="customBtn custmoBtnSearch proToltipChange" title="Search">
+                                    <i class="fa fa-search"></i>&nbsp;Search
+                                </button>
+                            </div>
+                            <div class="col-md-6">
+                                <button id="btnSearch" ng-click="reloadBtn()" style="width:100%" class="btn btn-danger proToltipChange" title="Clear">
+                                    <i class="fa fa-refresh"></i>&nbsp;Clear
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+                <table class="responstable table-hover">
+                    <tbody>
+                        <tr>
+                            <th>S/N</th>
+                            <th class="txt-center">VDS Issue No</th>
+                            <th class="txt-center">VDS Issue Date</th>
+                            <th class="txt-center">Challan No </th>
+
+                            <th class="txt-center">Challan Date</th>
+                            <th class="txt-center">Submitted Bank</th>
+                            <!--<th class="txt-center">Issue Date</th>-->
+                            <th class="txt-center">Bank Branch</th>
+                            <th class="txt-center">Code No</th>
+                            <th class="txt-center">Action</th>
+
+                        </tr>
+                        <tr class="HoverTable" dir-paginate="aCan in SupplierVdsIssueGetPagedlist | filter:q | itemsPerPage: PerPage" current-page="currentPage" total-items="total_count">
+                            <td>{{$index + ((currentPage-1)*PerPage) + 1}}</td>
+                            <td class="txt-center">{{aCan.VDSIssueNo}}</td>
+                            <td class="txt-center">{{aCan.VDSIssueDate}}</td>
+                            <td class="txt-center">{{aCan.ChallanNo}}</td>
+
+                            <td class="txt-center">{{aCan.ChallanDate}}</td>
+                            <td class="txt-center">{{aCan.Submitted_Bank }}</td>
+                            <!--<td class="txt-center">{{aCan.IssueDate }}</td>-->
+                            <td class="txt-center">{{aCan.Bank_Branch }}</td>
+                            <td class="txt-center">{{aCan.CodeNo }}</td>
+                            <td class="txt-center">
+                                <button ng-click="ReportView(aCan)">
+                                    <i class="TejariChallan"></i> Challan
+                                </button>
+                            </td>
+
+                        </tr>
+                        <tr class="t-foot" ng-show="total_count>PerPage">
+                            <th colspan="10">
+                                <dir-pagination-controls max-size="8"
+                                                         direction-links="true"
+                                                         boundary-links="true"
+                                                         on-page-change="getData(newPageNumber)" style="text-align:center;">
+                                </dir-pagination-controls>
+                            </th>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="row pagination-footer">
+                    <div class="col-md-6">
+                        <span>Show </span><input class="input-pagesize" type="number" ng-maxlength="100" ng-minlength="1" width="1" ng-model="PerPage"> <span>Records </span>
+                    </div>
+                    <div class="col-md-6">
+                        <span class="pull-right">Showing {{((currentPage-1)*PerPage)+1}} to {{((currentPage-1)*PerPage)+Branchlist.length}} of {{total_count}} Records</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</form>
+
+
+
+<script>
+    $('.tooltipAll').tooltip({ boundary: 'window' });
+
+    
+
+    $("#ddlPreparedBy").select2({
+        theme: "classic",
+      
+    });
+
+    $("#ddlPaymentDropdwan1").select2({
+        theme: "classic",
+        dropdownAutoWidth: false,
+
+    });
+
+    $("#ddlscreen").select2({
+     //   placeholder: "Select Screen Name",
+        theme: "classic",
+
+        // allowClear: true
+    });
+
+    $("#ddlsupplier").select2({
+        theme: "classic",
+       // placeholder: "Select Company Name",
+      //  allowClear: true,
+
+    });
+
+ 
+    $("#ddlpurchaseBill").select2({
+      //  placeholder: "Select Reason",
+        theme: "classic",
+        // allowClear: true
+
+    });
+
+    $("#bankddl").select2({
+        placeholder: "Select Customer Bank Name",
+        dropdownAutoWidth: false
+    });
+
+    $("#ChequeTypeSelect2").select2();
+    $("#localAndImportPBId").select2();
+
+    $("#bankddlPayOrder").select2({
+       // placeholder: "Select Customer Bank Name",
+        dropdownAutoWidth: false
+
+    });
+    $("#bankddlReceiverOnlinePayment").select2({
+       // placeholder: "Select Receiver Bank Name",
+        dropdownAutoWidth: false
+    });
+    $("#bankddlReceiverOnlinePaymentForCheque").select2({
+       // placeholder: "Select Receiver Bank Name",
+        dropdownAutoWidth: false
+    });
+
+    $("#cashDepositebankddlReceiverOnlinePayment").select2({
+       // placeholder: "Select Receiver Bank Name",
+        dropdownAutoWidth: false
+    });
+
+    $("#bankddlCompanyOnlinePayment").select2({
+       // placeholder: "Select Customer Bank Name",
+        dropdownAutoWidth: false
+    });
+    $("#bankddlCompanyOnlinePaymentForCheque").select2({
+       // placeholder: "Select Customer Bank Name",
+        dropdownAutoWidth: false
+    });
+    $("#ddlPaymentDropdwan").select2({
+        theme: "classic",
+        dropdownAutoWidth: false,
+
+    });
+
+
+
+</script>

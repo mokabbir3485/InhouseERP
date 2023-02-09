@@ -1,0 +1,273 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+        body {
+            font-family: "Times New Roman", Times, serif;
+            color: #000000;
+            width: 100%;
+            height: 100%;
+        }
+
+        #UpperTable td {
+            border: 1px solid black;
+            border-collapse: collapse;
+            padding: 5px;
+        }
+
+        .ProductTable th {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+
+        .ProductTable td {
+            border: 1px solid black;
+            border-collapse: collapse;
+            padding: 5px;
+        }
+
+        .footer {
+            position: fixed;
+            left: 29px;
+            bottom: 0px;
+        }
+        .flexcontainer {
+            display: flex;
+            justify-content: space-between;
+        }
+        @page {
+            size: A4 landscape;
+        }
+        /*Signature*/
+        @media screen {
+            div#footer_wrapper {
+                display: none;
+            }
+        }
+
+        @media print {
+            tfoot {
+                visibility: hidden;
+            }
+
+            div#footer_wrapper {
+                margin: 0px 2px 0px 7px;
+                position: fixed;
+                bottom: 10px;
+            }
+
+            div#footer_content {
+                font-weight: bold;
+            }
+        }
+
+
+
+    </style>
+</head>
+<body>
+    <div id="footer_wrapper">
+        <div id="footer_content">
+
+            <table style="width: 100%;">
+                <tbody>
+                    <tr>
+                        <td ng-hide="AttendanceSummaryWithOTList[0].FirstSignLabel == ''" width="500px" style="text-align:center;">
+                            <div>
+                                <span style="font-size: .9em; text-align: center;"><b>____________________________________________</b></span>
+                                <p style="font-size: .9em;text-align: center;"><b>{{AttendanceSummaryWithOTList[0].FirstSignLabel}}</b></p>
+                            </div>
+                        </td>
+                        <td ng-hide="AttendanceSummaryWithOTList[0].SecondSignLabel == ''" width="500px" style="text-align:center;">
+                            <div>
+                                <span style="font-size: .9em; text-align: center;"><b>____________________________________________</b></span>
+                                <p style="font-size: .9em;text-align: center;"><b>{{AttendanceSummaryWithOTList[0].SecondSignLabel}}</b></p>
+                            </div>
+                        </td>
+                        <td ng-hide="AttendanceSummaryWithOTList[0].ThirdSignLabel == ''" width="500px" style="text-align:center;">
+                            <div>
+                                <span style="font-size: .9em; text-align: center;"><b>____________________________________________</b></span>
+                                <p style="font-size: .9em;text-align: center;"><b>{{AttendanceSummaryWithOTList[0].ThirdSignLabel}}</b></p>
+                            </div>
+                        </td>
+                        <td ng-hide="AttendanceSummaryWithOTList[0].FourthSignLabel == ''" width="500px" style="text-align: center;">
+                            <div>
+                                <span style="font-size: .9em;text-align: center;"><b>____________________________________________</b></span>
+                                <p style="font-size: .9em;text-align: center;"><b>{{AttendanceSummaryWithOTList[0].FourthSignLabel}}</b></p>
+                            </div>
+                        </td>
+                        <td ng-hide="AttendanceSummaryWithOTList[0].FifthSignLabel == ''" width="500px" style="text-align: center;">
+                            <div>
+                                <span style="font-size: .9em;text-align: center;"><b>____________________________________________</b></span>
+                                <p style="font-size: .9em;text-align: center;"><b>{{AttendanceSummaryWithOTList[0].FifthSignLabel}}</b></p>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <table style="width: 100%">
+        <tbody>
+            <tr>
+                <td>
+                    <div class=" hidden-print">
+                        <div class="row">
+                            <div class="col-sm-3 col-md-2">
+
+                                <button type="button"  onclick="document.title='AttendanceSummaryWithOT'; PrintPdf();" class="customBtn custmoBtnReset" style="border-radius: 3px; margin-bottom: -.9em; margin-top: -15px; padding-bottom: 3px; padding-top: 3px;" title="Export to .doc">
+                                    <i class="fa fa-print"></i>&nbsp;Print
+                                </button>
+                            </div>
+                        </div>
+                        <hr />
+                    </div>
+
+                    <div id="source-html">
+                        <div>
+                            <img id="LogoImg" style="height:64px; width:100%;" src="/UploadedImages/rtlFullName.png" />
+                        </div>
+                        <br />
+                        <div valign="middle" align="center">
+                            <p style="font-size:20px; border: 1px solid #000000; width:260px; "><b>ATTENDANCE SUMMARY</b></p>
+                        </div>
+                        <biv class="flexcontainer">
+                            <div>
+                                <span> Branch: <b>{{AttendanceSummaryWithOTList[0].BranchName}}</b></span>
+                            </div>
+                            <div>
+                                <span> From: <b>{{AttendanceSummaryWithOTObj.FromDate}}</b></span><span>  To: <b>{{AttendanceSummaryWithOTObj.ToDate}}</b></span>
+                            </div>
+                            <div>
+                                <span>Print Date: {{PrintDate}}</span>
+                            </div>
+                        </biv>
+
+                        <table class="ProductTable table-hover" style="width: 100%;  margin:auto">
+                            <tbody>
+                                <tr>
+                                    <th class="t-cell-center">S/N</th>
+                                    <th class="t-cell-center">Employee</th>
+                                    <th class="t-cell-center">Department/Unit</th>
+                                    <th class="t-cell-center" ng-show="IsWithOT">Section</th>
+                                    <th class="t-cell-center">Designation</th>
+                                    <th class="t-cell-center">Working</th>
+                                    <th class="t-cell-center">Leave</th>
+                                    <th class="t-cell-center">Absent</th>
+                                    <th class="t-cell-center">Late In</th>
+                                    <th class="t-cell-center">Late In App</th>
+                                    <th class="t-cell-center">Half Day Late In</th>
+                                    <th class="t-cell-center">Half Day Late In App</th>
+                                    <th class="t-cell-center">Present</th>
+                                    <th class="t-cell-center">Worked</th>
+                                    <th class="t-cell-center" ng-show="IsWithOT">Total OT Hours</th>
+                                </tr>
+                                <tr class="HoverTable" ng-repeat="aAttendanceSummaryWithOT in AttendanceSummaryWithOTList track by $index">
+                                    <td class="t-cell-center">{{$index+1}}</td>
+                                    <td class="t-cell-center">{{aAttendanceSummaryWithOT.EmployeeName}}</td>
+                                    <td style="text-align:center">{{aAttendanceSummaryWithOT.DepartmentName}}</td>
+                                    <td style="text-align:center" ng-show="IsWithOT">{{aAttendanceSummaryWithOT.SectionName}}</td>
+                                    <td style="text-align:center">{{aAttendanceSummaryWithOT.DesignationName}}</td>
+                                    <td style="text-align:center">{{aAttendanceSummaryWithOT.Working}}</td>
+                                    <td style="text-align:center">{{aAttendanceSummaryWithOT.Leave}}</td>
+                                    <td style="text-align:center">{{aAttendanceSummaryWithOT.Absnt}}</td>
+                                    <td style="text-align:center">{{aAttendanceSummaryWithOT.LateIn}}</td>
+                                    <td style="text-align:center">{{aAttendanceSummaryWithOT.ApLateIn}}</td>
+                                    <td style="text-align:center">{{aAttendanceSummaryWithOT.HalfDayLateIn}}</td>
+                                    <td style="text-align:center">{{aAttendanceSummaryWithOT.ApHalfDayLateIn}}</td>
+                                    <td style="text-align:center">{{aAttendanceSummaryWithOT.Prsnt}}</td>
+                                    <td style="text-align:center">{{aAttendanceSummaryWithOT.Worked}}</td>
+                                    <td style="text-align:center" ng-show="IsWithOT">{{aAttendanceSummaryWithOT.TotalOtHour}}</td>
+                                    
+
+                                </tr>
+                            </tbody>
+                            <tfoot>
+
+                            </tfoot>
+                        </table>
+
+
+                        <div class="footer">
+                            <img id="LogoImg" style="height:20px; width:90%;" src="/UploadedImages/rtlAddress.png" />
+
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td>
+                    <br />
+                    <br />
+                    <br />
+                    <div>
+                        <table style="width: 100%;">
+                            <tbody>
+                                <tr class="flexcontainer">
+                                    <td ng-hide="AttendanceSummaryWithOTList[0].FirstSignLabel == ''">
+                                        <div>
+                                            <span style="font-size: .9em; text-align: center;"><b>____________________________________________</b></span>
+                                            <p style="font-size: .9em;text-align: center;"><b>{{AttendanceSummaryWithOTList[0].FirstSignLabel}}</b></p>
+                                        </div>
+                                    </td>
+                                    <td ng-hide="AttendanceSummaryWithOTList[0].SecondSignLabel == ''">
+                                        <div>
+                                            <span style="font-size: .9em;text-align: center;"><b>____________________________________________</b></span>
+                                            <p style="font-size: .9em;text-align: center;"><b>{{AttendanceSummaryWithOTList[0].SecondSignLabel}}</b></p>
+                                        </div>
+                                    </td>
+                                    <td ng-hide="AttendanceSummaryWithOTList[0].ThirdSignLabel == ''">
+                                        <div>
+                                            <span style="font-size: .9em; text-align: center;"><b>____________________________________________</b></span>
+                                            <p style="font-size: .9em;text-align: center;"><b>{{AttendanceSummaryWithOTList[0].ThirdSignLabel}}</b></p>
+                                        </div>
+                                    </td>
+                                    <td ng-hide="AttendanceSummaryWithOTList[0].FourthSignLabel == ''">
+                                        <div>
+                                            <span style="font-size: .9em;text-align: center;"><b>____________________________________________</b></span>
+                                            <p style="font-size: .9em;text-align: center;"><b>{{AttendanceSummaryWithOTList[0].FourthSignLabel}}</b></p>
+                                        </div>
+                                    </td>
+                                    <td ng-hide="AttendanceSummaryWithOTList[0].FifthSignLabel == ''">
+                                        <div>
+                                            <span style="font-size: .9em;text-align: center;"><b>____________________________________________</b></span>
+                                            <p style="font-size: .9em;text-align: center;"><b>{{AttendanceSummaryWithOTList[0].FifthSignLabel}}</b></p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+</body>
+</html>
+<script>
+
+
+
+    jQuery(document).ready(function ($) {
+
+        $(".main-sidebar").attr("hidden", true);
+        $(".main-header").attr("hidden", true);
+        $(".main-footer").attr("hidden", true);
+        $("#Hidebr").attr("hidden", true);
+
+        $("div").removeClass("wrapper");
+        $("div").removeClass("content-wrapper");
+    });
+
+
+    function PrintPdf() {
+        window.print();
+    }
+
+</script>

@@ -1,0 +1,591 @@
+﻿<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js" integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<form name="deliveryForm" novalidate>
+    <div class="col-md-12" ng-show="CreatePermission">
+        <div class="alert alert-info alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="topInfo"> &nbsp; &#9755; <span style="color:red;">Red Icon</span> Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp;</div>
+        </div>
+    </div>
+    <div class="col-md-12" id="successMesg">
+    </div>
+    <div class="col-md-12">
+        <div class="panel panel-info">
+            <div class="panel-heading" ng-show="CreatePermission || RevisePermission">
+                <div class="row panel-title">
+                    <div class="col-sm-6">
+                        <i class="fa fa-list"></i>&nbsp;<label style="font-weight:bold">Delivery</label>
+                    </div>
+                  
+                </div>
+               
+            </div>
+            <div class="panel-body" ng-show="CreatePermission || RevisePermission">
+                <div class="row">
+                    <div class="col-md-2">
+                        <div class="form-group" ng-class="{ 'has-error' : deliveryForm.deliveryDate.$invalid && deliveryForm.deliveryDate.$touched }" data-toggle="tooltip" data-placement="bottom">
+                            <div class="input-group">
+
+                                <input type="text" name="deliveryDate" id="txtDeliveryDate" ng-model="inv_StockDelivery.DeliveryDate" class="form-control deliveryToltipChange" placeholder="Delivery Date" title="Delivery Date" readonly />
+                                <span class="input-group-addon" ng-click="DateChangeForDelivery()" id="DateChangeForDelivery"><i class="fa fa-calendar req-icon-color"></i></span>
+                            </div>
+                            <span class="help-block" style="display: block;" ng-if="deliveryForm.deliveryDate.$error.required && deliveryForm.deliveryDate.$touched">Delivery Date is required</span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <div class="form-group" ng-class="{ 'has-error' : deliveryForm.DeliveryNo.$invalid && DeliveryNo.DeliveryId.$touched }">
+                            <div class="input-group">
+                                <input type="text" min="1" ng-model="inv_StockDelivery.DeliveryNo" id="deliveryNo" class="form-control deliveryToltipChange" name="DeliveryNo" placeholder="Delivery No" maxlength="21" ng-maxlength="20" readonly="readonly" disabled="disabled" title="Delivery No" />
+                                <span class="input-group-addon" style="color:red"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block" style="display: block;color:red" ng-if="deliveryForm.DeliveryNo.$error.maxlength">20 Character Max</span>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+
+                        <div class="deliveryToltipChange" title="Manual Delivery No">
+                            <div class="form-group " ng-class="{ 'has-error' : deliveryForm.ManualDeliveryNo.$invalid && deliveryForm.ManualDeliveryNo.$touched }" data-toggle="tooltip" data-placement="bottom">
+                                <div class="input-group input-group-md ddl">
+                                    <input type="text" list="NameDeliveryList" class="form-control selectMendatory" name="ManualDeliveryNo" ng-model="inv_StockDelivery.ManualDeliveryNo" placeholder="Manual Delivery No" required autocomplete="off" />
+                                </div>
+                                <datalist id="NameDeliveryList">
+                                    <option ng-repeat="manualDelivery in ManualDeliveryList" value="{{manualDelivery.ManualDeliveryNo}}">
+                                </datalist>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="from-group" ng-class="{'has-error' : deliveryForm.ddlStore.$dirty && deliveryForm.ddlStore.$invalid}" data-toggle="tooltip" data-placement="bottom">
+                            <div class="deliveryToltipChange" title="Delivery From Departemnt">
+                                <div class="input-group input-group-md ddl">
+                                    <select  ng-model="ddlStore" id="ddlStoreSelect2" class="form-control selectMendatory" name="ddlStore" ng-change="GetByStockFromDepartment(ddlStore); DetailEmpty(); inv_StockDelivery.DeliveryFromDepartmentId=ddlStore.DepartmentId;" ng-options="department.DepartmentName for department in Storelist track by department.DepartmentId" ng-disabled="DeliveryDetailList.length || btnSave == 'Update'" required>
+                                        <option value="" >Select Department</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!--<span class="help-block" ng-show="deliveryForm.ddlStore.$dirty && deliveryForm.ddlStore.$invalid">Select Store</span>-->
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group" ng-class="{ 'has-error' : deliveryForm.ddlDeliverydBy.$dirty && deliveryForm.ddlDeliverydBy.$invalid }" data-toggle="tooltip" data-placement="bottom">
+                            <div class="deliveryToltipChange" title="Deliveryd By">
+                                <div class="input-group input-group-md ddl">
+                                    <select ng-model="ddlDeliverydBy" id="ddlDeliverydBy" name="ddlDeliverydBy" class="form-control selectMendatory" ng-change="inv_StockDelivery.DeliverydById=ddlDeliverydBy.EmployeeId;inv_StockDelivery.DeliverydBy=ddlDeliverydBy.FullName" ng-options="employee.FullName +' ~ '+employee.DesignationName+' ~ '+employee.DepartmentName  for employee in employeeList track by employee.EmployeeId" required>
+                                        <option value="" >Deliveryd By</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <span class="help-block" ng-show="deliveryForm.ddlDeliverydBy.$dirty && deliveryForm.ddlDeliverydBy.$invalid">Delivery by is Required</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+
+                    <div class="col-md-2">
+                        <div class="form-group" ng-class="{ 'has-error' : deliveryForm.ddlSalesOrderType.$dirty && deliveryForm.ddlSalesOrderType.$invalid }" data-toggle="tooltip" data-placement="bottom">
+                            <div class="deliveryToltipChange" title="Select Type">
+                                <div class="input-group input-group-md ddl">
+                                    <select ng-disabled="btnSave == 'Update'" ng-model="ddlSalesOrderType" name="ddlSalesOrderType" class="form-control selectMendatory" ng-change="GetChange(ddlSalesOrderType.SalesOrderTypeId); GetTopSalesOrderDetailData(ddlSalesOrderType.SalesOrderType);" ng-options="SalesOrderType.SalesOrderType for SalesOrderType in SalesOrderTypeList track by SalesOrderType.SalesOrderTypeId" required>
+                                        <option value="" label="Select Type"></option>
+                                    </select>
+                                    <span class="help-block" ng-show="deliveryForm.ddlSalesOrderType.$dirty && deliveryForm.ddlSalesOrderType.$invalid">Type is required</span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-md-3" ng-show="ddlSalesOrderType.SalesOrderTypeId==2">
+                        <div class="form-group" ng-class="{ 'has-error' : deliveryForm.CommercialInvoice.$invalid && deliveryForm.CommercialInvoice.$touched }" data-toggle="tooltip" data-placement="bottom" title="Select Commercial Invoice No">
+                            <div class="deliveryToltipChange" title="Commercial Invoice No">
+                                <div class="input-group width-hundred-percent">
+                                    <select ng-model="ddlCommercialInvoiceForDelivery" ng-disabled="IsLocal || btnSave == 'Update'" style="width: 100%" id="ddlCommercialInvoiceAll" name="CommercialInvoice" class="form-control selectMendatory" ng-options="commercial.CompanyNameWithCiNum for commercial in CommercialInvoiceListForDelivery track by commercial.CiDcChallanId" required>
+                                        <option value="" label="Commercial Invoice No" hidden></option>
+                                    </select>
+                                    <span class="help-block" ng-show="deliveryForm.CommercialInvoice.$error.required && deliveryForm.CommercialInvoice.$touched">Commercial Invoice No is required</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-1" ng-show="ddlSalesOrderType.SalesOrderTypeId==2">
+                        <button class="btn btn-danger" ng-click="LoadAllList();" title="Clear">
+                            <i class="fa fa-recycle"></i>Clear
+                        </button>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="deliveryToltipChange" title="Sales Order No ~ Order Date ~ Customer Name ~Sales Order Type">
+                            <div id="SalesOrderDiv" class="input-group input-group-md ddl">
+                                <select ng-disabled="btnSave == 'Update'" ng-model="ddlSalesOrder" id="ddlSalesOrder" class="form-control selectMendatory" name="ddlStore" ng-change="GetSalesOrderDetails(ddlSalesOrder)" ng-options="so.SalesOrderNo+' ~ '+so.SalesOrderDate+' ~ '+so.CompanyName+' ~ '+so.SalesOrderType for so in StockDeliveryList  track by so.SalesOrderId" required>
+                                    <option value="">Sales Order No ~ Order Date ~ Customer Name ~Sales Order Type</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4" ng-show="ddlSalesOrderType.SalesOrderTypeId==1">
+                        <div class="form-group" ng-class="{'has-error':deliveryForm.Remarks.$invalid && deliveryForm.Remarks.$touched}" data-toggle="tooltip" data-placement="bottom">
+                            <div class="input-group">
+                                <textarea type="text" rows="1" id="txtRemarks" name="Remarks" class="form-control txt-center deliveryToltipChange" ng-model="inv_StockDelivery.Remarks" placeholder="Remarks"                    title="Remarks "></textarea>
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block " style="color:red;" ng-if="deliveryForm.Remarks.$error.maxlength">500 Character Max</span>
+                        </div>
+                    </div>
+                </div>
+                
+
+                <div class="row">
+                    <div class="col-md-7" ng-show="ddlSalesOrderType.SalesOrderTypeId==2">
+                        <div class="form-group" ng-class="{'has-error':deliveryForm.Remarks.$invalid && deliveryForm.Remarks.$touched}" data-toggle="tooltip" data-placement="bottom">
+                            <div class="input-group">
+                                <textarea type="text" rows="1" id="txtRemarks" name="Remarks" class="form-control txt-center deliveryToltipChange" ng-model="inv_StockDelivery.Remarks" placeholder="Remarks"  title="Remarks "></textarea>
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block " style="color:red;" ng-if="deliveryForm.Remarks.$error.maxlength">500 Character Max</span>
+                        </div>
+                    </div>
+                </div>
+                <!--<div class="row" ng-show="IsNonSO">
+        <div class="col-md-2">
+            <div class="form-group" ng-class="{ 'has-error' : deliveryForm.challanDate.$invalid && deliveryForm.challanDate.$touched }" data-toggle="tooltip" data-placement="bottom" title="Delivery Date">
+                <div class="input-group">
+                    <input type="text" name="challanDate" id="txtChallanDate" ng-blur="getMaxchallanNo()" ng-model="inv_StockDeliveryNonSO.DeliveryDate" onkeydown="return false" class="form-control datepicker" placeholder="Delivery Date" readonly="readonly" required />
+                    <span class="input-group-addon" id="calenderChallan"><i class="fa fa-calendar req-icon-color"></i></span>
+                </div>
+                <span class="help-block" style="display: block;" ng-if="deliveryForm.challanDate.$error.required && deliveryForm.challanDate.$touched">Delivery Date is required</span>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-group" ng-class="{ 'has-error' : deliveryForm.challanNo.$invalid && deliveryForm.challanNo.$touched }" data-toggle="tooltip" data-placement="bottom">
+                <div class="input-group ">
+                    <input type="text" min="1" ng-model="inv_StockDeliveryNonSO.DeliveryNo" id="challanNo" class="form-control deliveryToltipChange" name="challanNo" placeholder="Delivery No" maxlength="21" ng-maxlength="20" style="text-align:center" disabled title="Delivery No" />
+                </div>
+                <span class="help-block" style="display: block;color:red" ng-if="deliveryForm.challanNo.$error.maxlength">20 Character Max</span>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="from-group" ng-class="{'has-error' : deliveryForm.ddlChallanStore.$dirty && deliveryForm.ddlChallanStore.$invalid}" data-toggle="tooltip" data-placement="bottom" title="Delivery From Departemnt">
+                        <div class="input-group input-group-md ddl">
+                            <select ng-model="ddlChallanStore" class="form-control selectMendatory" name="ddlChallanStore" ng-change="inv_StockDeliveryNonSO.DeliveryFromDepartmentId=ddlChallanStore.DepartmentId;inv_StockDeliveryNonSO.DeliveryFromDepartmentName=ddlChallanStore.DepartmentName;" ng-options="department.DepartmentName for department in Storelist track by department.DepartmentId" required>
+                                <option value="" label="Select Store"></option>
+                            </select>
+                        </div>
+                        <span class="help-block" ng-show="deliveryForm.ddlChallanStore.$dirty && deliveryForm.ddlChallanStore.$invalid">Select Store</span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group" ng-class="{ 'has-error' : deliveryForm.ddlChallanBy.$dirty && deliveryForm.ddlChallanBy.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Delivery By">
+                        <div class="input-group input-group-md ddl">
+                            <select ng-model="ddlChallanBy" name="ddlChallanBy" class="form-control selectMendatory" ng-change="inv_StockDeliveryNonSO.DeliverydBy=ddlChallanBy.FullName" ng-options="employee.FullName  for employee in employeeList track by employee.EmployeeId" required>
+                                <option value="" label="Delivery By"></option>
+                            </select>
+                        </div>
+                        <span class="help-block" ng-show="deliveryForm.ddlChallanBy.$dirty && deliveryForm.ddlChallanBy.$invalid">Delivery by is Required</span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group" ng-class="{'has-error':deliveryForm.RcvBy.$invalid && deliveryForm.RcvBy.$touched}" data-toggle="tooltip" data-placement="bottom" title="Receive By ">
+                        <div class="input-group">
+                            <input type="text" id="txtRcvBy" name="RcvBy" class="form-control txt-center" ng-model="inv_StockDeliveryNonSO.ReceivedBy" placeholder="Receive By" maxlength="201" ng-maxlength="200">
+                            <span class="input-group-addon"><i class="fa fa-text-width req-icon-color"></i></span>
+                        </div>
+                        <span class="help-block " style="color:red;" ng-if="deliveryForm.RcvBy.$error.maxlength">200 Character Max</span>
+                        <span class="help-block" style="display: block;" ng-if="deliveryForm.RcvBy.$error.required && deliveryForm.RcvBy.$touched">Receive By is required</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>-->
+
+            </div>
+
+            <!--<div class="panel-footer" ng-show="CreatePermission || RevisePermission">
+              
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="responstable table-hover">
+                            <tbody>
+                                <tr>
+                                    <th class="t-cell-center">S/N</th>
+                                    <th class="t-cell-center">Order No</th>
+                                    <th class="t-cell-center">Order Date</th>
+                                    <th class="t-cell-center">Company Name</th>
+                                    <th class="t-cell-center">Type</th>
+                                    <th class="t-cell-center">Remanrks</th>-->
+                                    <!--<th class="t-cell-center">Actions</th>-->
+                                <!--</tr>
+                                <tr class="HoverTable searchRow" ng-repeat="aSaleOrder in StockDeliveryList | filter:SearchForDeliveryGrid" ng-click="GetSalesOrderDetails(aSaleOrder)" onclick="RowSelect(this)">
+                                    <td class="t-cell-center">{{$index+1}}</td>
+                                    <td class="t-cell-center">{{aSaleOrder.SalesOrderNo}}</td>
+                                    <td class="t-cell-center">{{aSaleOrder.SalesOrderDate}}</td>
+                                    <td class="t-cell-center">{{aSaleOrder.CompanyName}}</td>
+                                    <td class="t-cell-center">{{aSaleOrder.SalesOrderType}}</td>
+                                    <td class="t-cell-center">{{aSaleOrder.Remarks}}</td>
+
+                               
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+              
+            </div>-->
+            <div class="panel-body" >
+                <div class="row" ng-show="CreatePermission || RevisePermission">
+
+                    <div class="col-md-12" ng-show="!IsNonSO">
+                        <table class="responstable table-hover">
+                            <thead>
+                                <tr>
+                                    <th class="t-cell-center"></th>
+                                    <th class="t-cell-center">SL.No</th>
+
+                                    <th class="t-cell-center">Product Name</th>
+                                    <th class="t-cell-center">Item Code</th>
+                                    <th class="t-cell-center">Material Type</th>
+                                    <th class="t-cell-center">Label Brand Name</th>
+                                </tr>
+                            </thead>
+
+                            <tbody ng-repeat="inv_stockDeliveryDetailAdAttribute in inv_stockDeliveryDetailAttributeLst | orderBy: inv_stockDeliveryDetailAdAttribute.SalesOrderDetailId ">
+                                <!--ng-repeat="inv_stockDeliveryDetailAdAttribute in inv_stockDeliveryDetailAttributeLst | filter: { SalesOrderDetailId : inv_stockDeliveryDetail.SalesOrderDetailId }:true"-->
+                                <tr>
+                                    <td ng-click="$event.stopPropagation();" class="t-cell-center"><label><i ng-show="!inv_stockDeliveryDetail.DisplaySta" class="fa fa-plus-square"></i><i ng-show="inv_stockDeliveryDetail.DisplaySta" class="fa fa-minus-square"></i><input style="visibility:hidden;" type="checkbox" ng-model="inv_stockDeliveryDetail.DisplaySta" ng-disabled="btnSave == 'Update'" /></label></td>
+                                    <td class="t-cell-center">{{$index+1}}</td>
+
+                                    <td class="t-cell-center">
+                                        <!--{{inv_stockDeliveryDetailAdAttribute.Combination}}-->
+                                        <textarea style="width:100%;" rows="2" ng-model="inv_stockDeliveryDetailAdAttribute.Combination" name="Combination"></textarea>
+                                    </td>
+                                    <td class="t-cell-center">{{inv_stockDeliveryDetailAdAttribute.ItemCode}}</td>
+                                    <td class="t-cell-center">{{inv_stockDeliveryDetailAdAttribute.MaterialTypeName}}</td>
+                                    <td class="t-cell-center">{{inv_stockDeliveryDetailAdAttribute.LabelBrandName}}</td>
+                                </tr>
+                                <tr ng-click="$event.stopPropagation();" ng-show="inv_stockDeliveryDetail.DisplaySta ">
+                                    <td></td>
+                                    <td colspan="7">
+                                        <div>
+                                            <table class="responstable table-hover">
+                                                <tr>
+                                                    <!--<th style="text-align:center;" width="10%">Last Delivery</th>-->
+                                                    <!--<th class="t-cell-center" ng-repeat="AttributeName in inv_stockDeliveryDetail.HeaderOfAttribute">{{AttributeName}}</th>-->
+                                                    <th style="text-align:center;width:20%;">Stock Qty</th>
+                                                    <!--<th class="t-cell-center">{{inv_stockDeliveryDetailAdAttribute.OrderProQty}}</th>-->
+                                                    <th class="t-cell-center">Order Qty</th>
+                                                    <th class="t-cell-center">Delivered Qty</th>
+                                                    <th class="t-cell-center">Due Date</th>
+                                                    <th class="t-cell-center">Delivery Qty</th>
+                                                    <th class="t-cell-center">Qty InPcs</th>
+                                                    <th class="t-cell-center">Serial No</th>
+
+
+                                                    <th class="t-cell-center">Remove</th>
+                                                </tr>
+                                                <tr class="HoverTable">
+
+                                                    <td style="text-align:center;width:20%;">{{inv_stockDeliveryDetailAdAttribute.stockQtyItem}} {{inv_stockDeliveryDetailAdAttribute.StockUnitName}}</td>
+                                                    <td class="t-cell-center">{{inv_stockDeliveryDetailAdAttribute.OrderQty}} {{inv_stockDeliveryDetailAdAttribute.UnitName}}</td>
+                                                    <td class="t-cell-center">{{inv_stockDeliveryDetailAdAttribute.DeliveredQty}} {{inv_stockDeliveryDetailAdAttribute.UnitName}}</td>
+                                                    <td class="t-cell-center">{{inv_stockDeliveryDetailAdAttribute.DueDate}}</td>
+                                                    <td class="t-cell-center text-center">
+                                                        <input type="number" min="0" style="text-align:center" ng-change="SumAttQty(inv_stockDeliveryDetailAdAttribute)" ng-model="inv_stockDeliveryDetailAdAttribute.DeliveryQuantity" onclick="return this.select();" />
+                                                    </td>
+
+                                                    <td class="t-cell-center">{{inv_stockDeliveryDetailAdAttribute.DeliveryQuantityInPcs}}</td>
+                                                    <td style="width:50%;">
+
+
+                                                        <input type="text" ng-model="warrantyAndSerialNo" class="form-control" placeholder="Serial Number Search" />
+                                                        <span class="chk-box-alinment">
+
+                                                        </span>
+                                                        <label class="checkbox-inline" ng-repeat="serial in inv_stockDeliveryDetailAdAttribute.SerialList | filter:{SerialNo:warrantyAndSerialNo} track by $index ">
+                                                            <input type="checkbox" ng-model="serial.IsChecked" ng-click="CountCheckedDeliveryQuantity(inv_stockDeliveryDetailAdAttribute);" />{{serial.SerialNo}}
+                                                        </label>
+                                                    </td>
+                                                    <td>
+                                                        <button title="Remove" ng-click="RemoveItemAttr(inv_stockDeliveryDetailAdAttribute)">
+                                                            <i class="fa fa-minus-square"></i>&nbsp;Remove
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!--<div class="col-md-12" ng-show="IsNonSO">
+                        <table class="responstable table-hover">
+                            <tbody>
+                                <tr>
+                                    <th class="t-cell-center">S/N</th>
+                                    <th class="t-cell-center">Item Description</th>
+                                    <th class="t-cell-center">Item Remarks</th>
+                                    <th class="t-cell-center">Quantity</th>
+                                    <th class="t-cell-center">Remove</th>
+                                </tr>
+                                <tr class="HoverTable searchRow" ng-repeat="aDetail in StockDeliveryNonSODetailList">
+                                    <td class="t-cell-center">{{$index+1}}</td>
+                                    <td class="t-cell-center">{{aDetail.ItemDescription}}</td>
+                                    <td class="t-cell-center">{{aDetail.ItemRemarks}}</td>
+                                    <td class="t-cell-center">{{aDetail.DeliveryQuantity}}</td>
+                                    <td class="t-cell-center">
+                                        <button title="Remove" ng-click="removeItem(aDetail)">
+                                            <i class="fa fa-minus-square"></i>&nbsp;Remove
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>-->
+
+                  
+                    <div class="col-md-12">
+                        <br />
+                        <br />
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 5%; padding-right: 7%;">
+                                    <div class="row">
+                                        <button ng-show="!IsNonSO" id="btnSave" name="btnSave" class="customBtn custmoBtnSave" ng-click="SaveStockDelivery()" title="Save" ng-disabled="!inv_StockDelivery.DeliveryDate||!ddlStore || !inv_stockDeliveryDetailAttributeLst.length >0">
+                                            <i class="fa fa-save"></i>&nbsp;{{btnSave}}
+                                        </button>
+                                      
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 7%; padding-right: 5%;">
+                                    <div class="row">
+                                        <button id="Button3" class="btn btn-danger" title="Reset" ng-click="resetForm()">
+                                            <i class="fa fa-refresh"></i>&nbsp;Reset
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+
+
+
+                </div>
+                <div class="row"  ng-show="ListViewPermission">
+
+                    <div class="col-md-12">
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                <h3 class="panel-title pull-left "><i class="fa fa-check"></i>&nbsp;Delivery List</h3>
+                                <div class="clearfix">
+                                </div>
+                            </div>
+
+                            <div class="panel-footer">
+
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <div class="input-group deliveryToltipChange" data-toggle="tooltip" title="From Date">
+
+                                                <input type="text" name="FromDate" id="txtFromDateForDC" ng-model="FromDate" class="form-control " placeholder="From Date" readonly />
+                                                <span class="input-group-addon" ng-click="FormDateChangeForDelivery()" id="FormDateChangeForDelivery"><i class="fa fa-calendar req-icon-color"></i></span>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <div class="input-group deliveryToltipChange" data-toggle="tooltip" title="To Date">
+                                                <input type="text" name="ToDate" id="txtToDateForDC" ng-model="ToDate"  class="form-control " placeholder="To Date" readonly />
+                                                <span class="input-group-addon" ng-click="ToDateChangeForDelivery()" id="ToDateChangeForSO"><i class="fa fa-calendar req-icon-color"></i></span>
+                                            </div>
+
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <div class="form-group deliveryToltipChange" data-toggle="tooltip" title="Company Name / Order No And DElivery No...">
+                                            <input type="text" class="form-control" id="IWOAndCompany" ng-model="SearchDcOredrDcNoAndCompanyName"  name="name" placeholder="Company Name / Order No And DElivery No..." />
+                                        </div>
+                                    </div>
+
+                                    <!--<div class="col-md-2 text-right">
+                                        <button id="btnSearch" ng-click="reloadBtn()" class="btn btn-danger" style="width:100%" title="Reload">
+                                            <i class="fa fa-refresh"></i>&nbsp;Clear
+                                        </button>
+                                    </div>-->
+
+                                    <div class="col-md-3">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <button id="btnSearch" ng-click="DeliverySearch();" style="width:100%" class="customBtn custmoBtnSearch deliveryToltipChange" title="Search">
+                                                    <i class="fa fa-search"></i>&nbsp;Search
+                                                </button>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <button id="btnSearch" ng-click="reloadBtn()" class="btn btn-danger deliveryToltipChange" style="width:100%" title="Reload">
+                                                    <i class="fa fa-refresh"></i>&nbsp;Clear
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <hr />
+                                <table class="responstable table-hover table-bordered">
+                                    <tbody>
+                                        <tr>
+                                            <th class="t-cell-center">S/N</th>
+                                            <th class="t-cell-center">Delivery No</th>
+                                            <th class="t-cell-center">Delivery Date </th>
+                                            <th class="t-cell-center">Sales Order No</th>
+                                            <th class="t-cell-center">Customer Name</th>
+                                            <th class="t-cell-center">PO Attachment </th>
+
+                                            <th class="t-cell-center">Action</th>
+                                        </tr>
+                                        <tr class="HoverTable searchRow" dir-paginate="delivery in deliveryListForGrid | itemsPerPage: PerPage" current-page="currentPage" total-items="total_count" ng-click="getForIWODetailsUpdate(iwo)">
+                                            <td class="t-cell-center">{{$index + ((currentPage-1)*PerPage) + 1}}</td>
+                                            <td class="t-cell-center"><span>{{delivery.DeliveryNo}} <span ng-if="delivery.ManualDeliveryNumber"> ({{delivery.ManualDeliveryNumber}})</span></span>  </td>
+                                            <td class="t-cell-center">{{delivery.DeliveryDate}}</td>
+                                            <td class="t-cell-center">{{delivery.SalesOrderNo}}</td>
+                                            <td class="t-cell-center">{{delivery.CompanyName}}</td>
+                                            <td class="t-cell-center">
+                                                <!--href="../../../UploadedFiles/POAttachment/{{Attach}}"-->
+                                                <a ng-repeat="Attach in delivery.AttachmentNameFilter track by $index" download>
+                                                    <span>{{Attach}}<br /></span>
+                                                </a>
+                                                <!--{{delivery.AttachmentName}}-->
+                                            </td>
+
+
+
+                                            <td class="t-cell-center" style="width:10%">
+                                                <button style="margin: 2px; width: 95%; color: black;"
+                                                        ng-click="OpenReport(delivery.DeliveryId)">
+                                                    <i title="Report" class="fa fa-print" style="font-size:18px;"> </i> Report
+                                                </button>
+                                                <button ng-hide="delivery.IsCancelled == true"  style="margin: 2px; width: 95%; color: black;"
+                                                        ng-click="UpdateDelivery(delivery)">
+                                                    <i title="Edit" class="fa fa-edit" style="font-size:18px;"> </i>Edit
+                                                </button>
+                                                <button ng-show="delivery.IsCancelled == true" style="margin: 2px; width: 95%; color: red;" ng-disabled="delivery.IsCancelled">
+                                                    <strong>Cancelled</strong>
+                                                </button>
+
+                                            </td>
+
+
+                                        </tr>
+                                        <tr class="t-foot" ng-show="total_count>PerPage">
+                                            <th colspan="8">
+                                                <dir-pagination-controls max-size="8"
+                                                                         direction-links="true"
+                                                                         boundary-links="true"
+                                                                         on-page-change="getData(newPageNumber)" style="text-align:center;">
+                                                </dir-pagination-controls>
+                                            </th>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div class="row pagination-footer">
+                                    <div class="col-md-6">
+                                        <span>Show </span><input class="input-pagesize" type="number" ng-maxlength="100" ng-minlength="1" width="1" ng-model="PerPage"> <span>Records </span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <span class="pull-right">Showing {{((currentPage-1)*PerPage)+1}} to {{((currentPage-1) * PerPage) + SalesOrderListPaged.length}} of {{total_count}} Records</span>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+
+           
+
+        </div>
+    </div>
+    
+    <!--<pre>{{inv_stockDeliveryDetailAttributeLst | json}}</pre>-->
+</form>
+<script>
+
+    $('.deliveryToltipChange').tooltip({ boundary: 'window' })
+    $('.deliveryToltipChange').tooltip('enable')
+ 
+    $("#ddlCommercialInvoiceAll").select2({
+        placeholder: "Search for: Commercial Invoice No",
+        //theme: "classic"
+    });
+    $("#ddlStoreSelect2").select2({
+        theme: "classic"
+    });
+
+    $("#ddlDeliverydBy").select2({
+        theme: "classic"
+    });
+    $("#ddlSalesOrder").select2({
+        theme: "classic"
+    });
+
+    function RowSelect(e) {
+        $('.searchRow').css('background-color', '');
+        $(e).css('background-color', '#94d5ef');
+    }
+
+    //var picker = new Pikaday({
+    //    field: document.getElementById('txtDeliveryDate'),
+    //    firstDay: 1,
+    //    format: "DD/MM/YYYY",
+    //    minDate: new Date('1930-01-01'),
+    //    maxDate: new Date('2050-12-31'),
+    //    yearRange: [1930, 2050],
+    //    theme: 'blue-theme'
+    //});
+    //document.getElementById("calender1").addEventListener("click", function () {
+    //    picker.show();
+    //});
+
+
+    //var picker2 = new Pikaday({
+    //    field: document.getElementById('txtBillDate'),
+    //    firstDay: 1,
+    //    format: "DD/MM/YYYY",
+    //    minDate: new Date('1930-01-01'),
+    //    maxDate: new Date('2050-12-31'),
+    //    yearRange: [1930, 2050],
+    //    theme: 'blue-theme'
+    //});
+    //document.getElementById("calender2").addEventListener("click", function () {
+    //    picker2.show();
+    //});
+
+    //var picker3 = new Pikaday({
+    //    field: document.getElementById('txtChallanDate'),
+    //    firstDay: 1,
+    //    format: "DD/MM/YYYY",
+    //    minDate: new Date('1930-01-01'),
+    //    maxDate: new Date('2050-12-31'),
+    //    yearRange: [1930, 2050],
+    //    theme: 'blue-theme'
+    //});
+    //document.getElementById("calenderChallan").addEventListener("click", function () {
+    //    picker3.show();
+    //});
+
+    $(".selectWarrentyAndSerialNo").select2();
+</script>

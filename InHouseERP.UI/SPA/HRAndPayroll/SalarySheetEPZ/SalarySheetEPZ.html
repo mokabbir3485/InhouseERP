@@ -1,0 +1,355 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            color: #000000;
+            width: 100%;
+            height: 100%;
+        }
+        .TimeFont {
+            font-family: "Times New Roman", Times, serif;
+        }
+        /*.footer {
+            position: fixed;
+            left: 29px;
+            bottom: 0px;
+        }*/
+        /*.writing {
+            writing-mode: vertical-rl;
+        }*/
+
+        .flexcontainer {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        @page {
+            size: A4 landscape;
+        }
+
+
+        .rotate-table-grid tr, .rotate-table-grid td {
+            border: 1px solid;
+            position: relative;
+            font-weight: bold;
+        }
+
+            .rotate-table-grid td span {
+                transform-origin: 0 50%;
+                transform: rotate(-90deg);
+                white-space: nowrap;
+                position: absolute;
+                bottom: 0;
+                left: 50%;
+            }
+
+
+        /*Signature*/
+        @media screen {
+            div#footer_wrapper {
+                display: none;
+            }
+        }
+
+        @media print {
+            tfoot {
+                visibility: hidden;
+            }
+
+            div#footer_wrapper {
+                margin: 0px 2px 0px 7px;
+                position: fixed;
+                bottom: 10px;
+            }
+
+            div#footer_content {
+                font-weight: bold;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="footer_wrapper">
+        <div id="footer_content">
+            <table style="width: 100%;">
+                <tbody>
+                    <tr>
+                        <td ng-hide="SalarySheet[0].FirstSignLabel == ''" width="500px" style="text-align:center;">
+                            <div>
+                                <span style="font-size: 13px; text-align: center;"><b>____________________________</b></span>
+                                <p style="font-size: 13px;text-align: center;"><b>{{SalarySheet[0].FirstSignLabel}}</b></p>
+                            </div>
+                        </td>
+                        <td ng-hide="SalarySheet[0].SecondSignLabel == ''" width="500px" style="text-align:center;">
+                            <div>
+                                <span style="font-size: 13px; text-align: center;"><b>____________________________</b></span>
+                                <p style="font-size: 13px;text-align: center;"><b>{{SalarySheet[0].SecondSignLabel}}</b></p>
+                            </div>
+                        </td>
+                        <td ng-hide="SalarySheet[0].ThirdSignLabel == ''" width="500px" style="text-align:center;">
+                            <div>
+                                <span style="font-size: 13px; text-align: center;"><b>____________________________</b></span>
+                                <p style="font-size: 13px;text-align: center;"><b>{{SalarySheet[0].ThirdSignLabel}}</b></p>
+                            </div>
+                        </td>
+                        <td ng-hide="SalarySheet[0].FourthSignLabel == ''" width="500px" style="text-align: center;">
+                            <div>
+                                <span style="font-size: 13px;text-align: center;"><b>____________________________</b></span>
+                                <p style="font-size: 13px;text-align: center;"><b>{{SalarySheet[0].FourthSignLabel}}</b></p>
+                            </div>
+                        </td>
+                        <td ng-hide="SalarySheet[0].FifthSignLabel == ''" width="500px" style="text-align: center;">
+                            <div>
+                                <span style="font-size: 13px;text-align: center;"><b>____________________________</b></span>
+                                <p style="font-size: 13px;text-align: center;"><b>{{SalarySheet[0].FifthSignLabel}}</b></p>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <span style="font-size:.7em;">Powered By Retail Software Development</span>
+        </div>
+    </div>
+    <div id="source-html">
+        <table style="width: 100%; line-height: 1">
+            <tbody>
+                <tr>
+                    <td>
+                        <div class=" hidden-print">
+                            <div class="row">
+                                <div class="col-sm-3 col-md-2">
+
+                                    <button type="button" onclick="document.title='Salary Sheet EPZ'; PrintPdf();" class="customBtn custmoBtnReset" style="border-radius: 3px; margin-bottom: -.9em; margin-top: -15px; padding-bottom: 3px; padding-top: 3px;" title="Export to .doc">
+                                        <i class="fa fa-print"></i>&nbsp;Print
+                                    </button>
+                                </div>
+                            </div>
+                            <hr />
+                        </div>
+                        <!--<div class="TimeFont" valign="middle" align="center">
+                        <p style="font-size: 22px; line-height:.6"><b>Retail Technologies Limited</b></p>
+                        <p style="font-size: 14px; line-height: .6">{{HrSalarySheet.SalarySheetHeader1}}</p>
+                        <p style="font-size: 14px; line-height: .6">{{HrSalarySheet.SalarySheetHeader2}}</p>
+                        <p style="font-size: 14px; line-height: .6">{{HrSalarySheet.SalarySheetHeader3}}</p>
+                    </div>
+                    <div class="flexcontainer" style="font-size: 13px; margin-bottom:5px;">
+                        <div>
+                            <span> Branch: <b>{{SalarySheet[0].BranchName}}</b></span>
+                        </div>
+
+                        <div>
+                            <span>Print Date: {{PrintDate}}</span>
+                        </div>
+                    </div>-->
+
+                        <div class="flexcontainer" style="font-size: 13px; margin-bottom:5px;">
+                            <div>
+                                <br />
+                                <br />
+                                <br />
+                                <br />
+                                <span> Branch: <b>{{SalarySheet[0].BranchName}}</b></span>
+                            </div>
+                            <div class="TimeFont" valign="middle" align="center">
+                                <p style="font-size: 22px; line-height:.6"><b>Retail Technologies Limited</b></p>
+                                <p style="font-size: 14px; line-height: .6">{{HrSalarySheet.SalarySheetHeader1}}</p>
+                                <p style="font-size: 14px; line-height: .6">{{HrSalarySheet.SalarySheetHeader2}}</p>
+                                <p style="font-size: 14px; line-height: .6">{{HrSalarySheet.SalarySheetHeader3}}</p>
+                            </div>
+                            <div>
+                                <br />
+                                <br />
+                                <br />
+                                <br />
+                                <span>Print Date: {{PrintDate}}</span>
+                            </div>
+                        </div>
+
+                        <table border="1" style="width: 100%; font-size: 10px;">
+                            <thead>
+                                <tr>
+                                    <th style="text-align: center; padding: 4px;" colspan="4">Employee Details</th>
+                                    <th style="text-align: center;" colspan="3">Attendance</th>
+                                    <th style="text-align: center;" colspan="3">Leave</th>
+                                    <th style="text-align: center;" colspan="4">Wages/Salary</th>
+                                    <th style="text-align: center;" colspan="2">Other Allowance</th>
+
+                                    <th style="text-align: center;" colspan="3">Deduction</th>
+                                    <th></th>
+                                    <th style="text-align: center;" colspan="2">Mode of Payment</th>
+                                    <th style="text-align: center;" colspan="2">Net Payable</th>
+                                    <th></th>
+                                </tr>
+                                <tr>
+                                    <th style="text-align: center; padding: 4px;">ID.<br />No</th>
+                                    <th style="text-align: center; padding: 5px; width: 15%;">Name and Designation</th>
+                                    <th style="text-align: center;">Dept.</th>
+                                    <th style="text-align: center;">Joining<br /> Date</th>
+                                    <th style="text-align: center;">TD</th>
+                                    <th style="text-align: center;">HD</th>
+                                    <th style="text-align: center;">WD</th>
+                                    <th style="text-align: center;">CL</th>
+                                    <th style="text-align: center;">SL</th>
+                                    <th style="text-align: center;">EL</th>
+                                    <th style="text-align: center;">Gross<br /> Salary</th>
+                                    <th style="text-align: center;">Basic</th>
+                                    <th style="text-align: center;"> H.R<br /> (50% on<br /> Basic)</th>
+                                    <th style="text-align: center;">M.A<br /> 1450<br /> Fixed</th>
+                                    <th style="text-align: center;">L.A</th>
+                                    <th style="text-align: center;">C.A</th>
+                                    <th style="text-align: center;">Adv.<br /> Salary</th>
+                                    <th style="text-align: center;">Ab.D </th>
+                                    <th style="text-align: center;">PF</th>
+
+                                    <th class="t-cell-center">Adj.</th>
+                                    <th class="t-cell-center">Cash<br /> Payment</th>
+                                    <th class="t-cell-center">Bank<br /> Payment</th>
+                                    <th class="t-cell-center">BDT</th>
+                                    <th class="t-cell-center">USD <br />#<br />82.00</th>
+                                    <th class="t-cell-center" style="width: 10%;">Sign. on Stamp</th>
+
+
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                <tr ng-repeat="salary in SalarySheet ">
+                                    <td style="text-align: center; padding: 4px;">{{salary.EmployeeCode}}</td>
+                                    <td style="text-align:left; padding:5px; height:65px;"><span>{{salary.EmployeeName}}</span><br /><span>{{salary.DesignationName}}</span> </td>
+                                    <td style="text-align: center; padding: 4px;">{{salary.DepartmentName}}</td>
+                                    <td style="text-align:center;padding: 4px;">{{salary.JoiningDate}}</td>
+                                    <td style="text-align:center;padding: 4px;">{{salary.TotalDays}}</td>
+                                    <td style="text-align:center;padding: 4px;">{{salary.PublicHolidays}}</td>
+                                    <td style="text-align:center;padding: 4px;">{{salary.WorkingDays}}</td>
+                                    <td style="text-align:center;padding: 4px; width:2%;">{{salary.CasualLeave}}</td>
+                                    <td style="text-align: center; padding: 4px; width: 2%;">{{salary.SickLeave}}</td>
+                                    <td style="text-align: center; padding: 4px; width: 2%;">{{salary.EarnLeave}}</td>
+                                    <td style="text-align:right;padding-right: 4px;">{{salary.GrossSalary}}</td>
+                                    <td style="text-align:right;padding-right: 4px;">{{salary.BasicSalary}}</td>
+                                    <td style="text-align:right;padding-right: 4px;">{{salary.HouseRent}}</td>
+                                    <td style="text-align:right;padding-right: 4px;">{{salary.MedicalAllowance}}</td>
+                                    <td style="text-align:right;padding-right: 4px;">{{salary.LunchAllowance}}</td>
+                                    <td style="text-align:right;padding-right: 4px;">{{salary.ConveyanceAllowance}}</td>
+                                    <td style="text-align:right;padding-right: 4px;">{{salary.DeductionAdvanceSalary}}</td>
+                                    <td style="text-align:right;padding-right: 4px;">{{salary.DeductionAbsent}}</td>
+                                    <td style="text-align:right;padding-right: 4px;">{{salary.DeductionProvFund}}</td>
+                                    <td style="text-align:right;padding-right: 4px;">{{salary.OtherAddition}}</td>
+                                    <td style="text-align:right;padding-right: 4px;">{{salary.CashPayment}}</td>
+                                    <td style="text-align:right;padding-right: 4px;">{{salary.BankPayment}}</td>
+                                    <td style="text-align:right;padding-right: 4px;">{{salary.NetPaymentBDT}}</td>
+                                    <td style="text-align:right;padding-right: 4px;">{{salary.NetPaymentUSD}}</td>
+                                    <td></td>
+
+                                </tr>
+                                <tr>
+                                    <td colspan="10" class="" style="text-align:right">Total= </td>
+                                    <td style="text-align: right; padding: 4px;"><b>{{TotalGrossSalary}}</b></td>
+                                    <td style="text-align: right; padding: 4px;"><b>{{TotalBasicSalary}}</b></td>
+                                    <td style="text-align: right; padding: 4px;"><b>{{TotalHouseRent}}</b></td>
+                                    <td style="text-align: right; padding: 4px;"><b>{{TotalMedicalAllowance}}</b></td>
+                                    <td style="text-align: right; padding: 4px;"><b>{{TotalLunchAllowance}}</b></td>
+                                    <td style="text-align: right; padding: 4px;"><b>{{TotalConveyanceAllowance}}</b></td>
+                                    <td style="text-align: right; padding: 4px;"><b>{{TotalDeductionAdvanceSalary}}</b></td>
+                                    <td style="text-align: right; padding: 4px;"><b>{{TotalDeductionAbsent}}</b></td>
+                                    <td style="text-align: right; padding: 4px;"><b>{{TotalDeductionProvFund}}</b></td>
+
+
+                                    <td style="text-align: right; padding: 4px;"><b>{{TotalOtderAddition}}</b></td>
+                                    <td style="text-align: right; padding: 4px;"><b>{{TotalCashPayment}}</b></td>
+                                    <td style="text-align: right; padding: 4px;"><b>{{TotalBankPayment}}</b></td>
+                                    <td style="text-align: right; padding: 4px;"><b>{{TotalNetPaymentBDT}}</b></td>
+                                    <td style="text-align: right; padding: 4px;"><b>{{TotalNetPaymentUSD}}</b></td>
+                                    <td style="text-align: right; padding: 4px;"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td>
+                        <br />
+                        <br />
+                        <br />
+                        <div>
+                            <table style="width: 100%;">
+                                <tbody>
+                                    <tr class="flexcontainer">
+                                        <td ng-hide="SalarySheet[0].FirstSignLabel == ''">
+                                            <div>
+                                                <span style="font-size: 13px; text-align: center;"><b>____________________________</b></span>
+                                                <p style="font-size: 13px;text-align: center;"><b>{{SalarySheet[0].FirstSignLabel}}</b></p>
+                                            </div>
+                                        </td>
+                                        <td ng-hide="SalarySheet[0].SecondSignLabel == ''">
+                                            <div>
+                                                <span style="font-size: 13px;text-align: center;"><b>____________________________</b></span>
+                                                <p style="font-size: 13px;text-align: center;"><b>{{SalarySheet[0].SecondSignLabel}}</b></p>
+                                            </div>
+                                        </td>
+                                        <td ng-hide="SalarySheet[0].ThirdSignLabel == ''">
+                                            <div>
+                                                <span style="font-size: 13px; text-align: center;"><b>____________________________</b></span>
+                                                <p style="font-size: 13px;text-align: center;"><b>{{SalarySheet[0].ThirdSignLabel}}</b></p>
+                                            </div>
+                                        </td>
+                                        <td ng-hide="SalarySheet[0].FourthSignLabel == ''">
+                                            <div>
+                                                <span style="font-size: 13px;text-align: center;"><b>____________________________</b></span>
+                                                <p style="font-size: 13px;text-align: center;"><b>{{SalarySheet[0].FourthSignLabel}}</b></p>
+                                            </div>
+                                        </td>
+                                        <td ng-hide="SalarySheet[0].FifthSignLabel == ''">
+                                            <div>
+                                                <span style="font-size: 13px;text-align: center;"><b>____________________________</b></span>
+                                                <p style="font-size: 13px;text-align: center;"><b>{{SalarySheet[0].FifthSignLabel}}</b></p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+                        <span style="font-size:.7em;">Powered By Retail Software Development</span>
+                    </td>
+                </tr>
+
+            </tfoot>
+        </table>
+    </div>
+   
+</body>
+</html>
+<script>
+
+    var header_height = 0;
+    $('.rotate-table-grid td span').each(function () {
+        if ($(this).outerWidth() > header_height) header_height = $(this).outerWidth();
+    });
+
+    $('.rotate-table-grid td').height(header_height);
+
+
+    $('.fixed').css('height', '80px');
+    jQuery(document).ready(function ($) {
+
+        $(".main-sidebar").attr("hidden", true);
+        $(".main-header").attr("hidden", true);
+        $(".main-footer").attr("hidden", true);
+        $("#Hidebr").attr("hidden", true);
+
+        $("div").removeClass("wrapper");
+        $("div").removeClass("content-wrapper");
+    });
+
+
+    function PrintPdf() {
+        window.print();
+    }
+
+</script>
+

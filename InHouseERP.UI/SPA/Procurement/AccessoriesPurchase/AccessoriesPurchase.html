@@ -1,0 +1,672 @@
+﻿<style>
+    #Selectbankddl {
+        width: 410px !important;
+    }
+</style>
+<style>
+    #OnlineDiv .select2-container {
+        width: 409px !important;
+    }
+
+    #bankddlWidth .select2-container {
+        width: 410px !important;
+    }
+</style>
+<form name="AccessoriesPurchaseForm" novalidate>
+    <div class="col-md-12">
+        <div class="alert alert-info alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="topInfo"> &nbsp; &#9755; <span style="color:red;">Red Icon</span> Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp;</div>
+        </div>
+    </div>
+    <div class="col-md-12" id="successMesg">
+    </div>
+    <div class="col-md-12" ng-show="CreatePermission || RevisePermission">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-md-4">
+                        <h3 class="panel-title pull-left "><i class="fa fa-list"></i>&nbsp;Accessories Purchase</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    
+                    
+
+                    <div class="col-md-4">
+                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : AccessoriesPurchaseForm.ManualInvoiceDate.$invalid && AccessoriesPurchaseForm.ManualInvoiceDate.$touched }" data-toggle="tooltip" data-placement="bottom" title="Purchase Date">
+                            <div class="input-group">
+                                <input type="text" id="AccessoriesPurchaseDate" ng-model="proc_AccessoriesPurchase.PurchaseDate" name="AccessoriesPurchaseDate" class="form-control datepicker" placeholder="Purchase Date" readonly />
+                                <span class="input-group-addon" ng-click="CalendarAccessoriesPurchaseDate()" id="CalendarAccessoriesPurchaseDate"><i class="fa fa-calendar" style="color:red;"></i></span>
+                            </div>
+                            <span class="help-block" style="display: block;" ng-if="AccessoriesPurchaseForm.ManualInvoiceDate.$error.required && AccessoriesPurchaseForm.ManualInvoiceDate.$touched">Purchase Date is Required</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="input-group tooltipAll" title="Purchase No">
+                            <span class="input-group-addon">
+                                <label style="line-height: 2px;">{{PurchaseNo1}}</label>
+                            </span>
+                            <input type="number" name="InvoiceNo" class="form-control " ng-model="PurchaseNo2" placeholder="Accessories Purchase No" maxlength="101" ng-maxlength="100" ng-readonly="SaveBtn == 'Update'" required>
+                        </div>
+                        <span class="help-block" style="display: block; color:red" ng-if="AccessoriesPurchaseForm.PurchaseNo.$error.required && AccessoriesPurchaseForm.PurchaseNo.$touched">Purchase No is Required</span>
+                        <span class="help-block" style="display: block;color:red" ng-if="AccessoriesPurchaseForm.PurchaseNo.$error.maxlength">200 Character Max</span>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : AccessoriesPurchaseForm.ChallanNo.$invalid && AccessoriesPurchaseForm.ChallanNo.$touched }" data-toggle="tooltip" data-placement="bottom" title="Challan No">
+                            <div class="input-group ">
+                                <input type="text" id="txtChallanNo" name="ChallanNo" class="form-control" ng-model="proc_AccessoriesPurchase.ChallanNo" placeholder="Challan No" maxlength="501" ng-maxlength="500" />
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block" style="display: block;" ng-if="AccessoriesPurchaseForm.ChallanNo.$error.maxlength">500 Character Max</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : AccessoriesPurchaseForm.SupplierNameBilling.$invalid && AccessoriesPurchaseForm.SupplierNameBilling.$touched }" data-toggle="tooltip" data-placement="bottom" title="Supplier Name">
+                            <div class="input-group input-group-md ddl">
+                                <input type="text" list="NameBillingList" class="form-control selectMendatory" name="SupplierNameBilling" ng-model="proc_AccessoriesPurchase.SupplierName" placeholder="Supplier Name" required autocomplete="off" />
+                            </div>
+                            <datalist id="NameBillingList">
+                                <option ng-repeat="NameBilling in SupplierBillingAddressList  track by $index" value="{{NameBilling.SupplierName}}">
+                            </datalist>
+                            <span class="help-block" ng-show="AccessoriesPurchaseForm.SupplierNameBilling.$touched && AccessoriesPurchaseForm.SupplierNameBilling.$invalid">Supplier Name is required</span>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : AccessoriesPurchaseForm.AddressBilling.$invalid && AccessoriesPurchaseForm.AddressBilling.$touched }" data-toggle="tooltip" data-placement="bottom" title="Supplier Address">
+                            <div class="input-group input-group-md ddl">
+                                <input type="text" list="AddressBillingList" class="form-control selectMendatory" name="AddressBilling" ng-model="proc_AccessoriesPurchase.SupplierAddress" placeholder="Supplier Address" required autocomplete="off" />
+                            </div>
+                            <datalist id="AddressBillingList">
+                                <option ng-repeat="AddressBilling in SupplierBillingAddressList track by $index" value="{{AddressBilling.SupplierAddress}}">
+                            </datalist>
+                            <span class="help-block" ng-show="AccessoriesPurchaseForm.AddressBilling.$touched && AccessoriesPurchaseForm.AddressBilling.$invalid">Supplier Address is required</span>
+                        </div>
+                    </div>
+                </div>
+               
+
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : AccessoriesPurchaseForm.AdditionalDiscount.$invalid && AccessoriesPurchaseForm.AdditionalDiscount.$touched }" data-toggle="tooltip" data-placement="bottom" title="Additional Discount">
+                            <div class="input-group ">
+                                <input type="number" id="txtAdditionalDiscount" name="AdditionalDiscount" class="form-control" ng-model="proc_AccessoriesPurchase.AdditionalDiscount" placeholder="Additional Discount" maxlength="501" ng-maxlength="500" />
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block" style="display: block;" ng-if="AccessoriesPurchaseForm.AdditionalDiscount.$error.maxlength">500 Character Max</span>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : AccessoriesPurchaseForm.Remarks.$invalid && AccessoriesPurchaseForm.Remarks.$touched }" data-toggle="tooltip" data-placement="bottom" title="Remarks">
+                            <div class="input-group ">
+                                <textarea type="text" cols="1" rows="1" id="txtRemarks" name="Remarks" class="form-control" ng-model="proc_AccessoriesPurchase.Remarks" placeholder="Remarks" maxlength="501" ng-maxlength="500"></textarea>
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block" style="display: block;" ng-if="AccessoriesPurchaseForm.Remarks.$error.maxlength">500 Character Max</span>
+                        </div>
+                    </div>
+                </div>
+
+                <hr />
+
+                <div class="panel-footer">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group tooltipAll" ng-class="{ 'has-error' : AccessoriesPurchaseForm.ProductName.$invalid && AccessoriesPurchaseForm.ProductName.$touched }" data-toggle="tooltip" data-placement="bottom" title="Product Name">
+                                <div class="input-group input-group-md ddl">
+                                    <input type="text" list="ProductNameList" class="form-control selectMendatory" name="ProductName" ng-model="AccessoriesPurchaseDetail.ProductName" placeholder="Product Name" required autocomplete="off" />
+                                </div>
+                                <datalist id="ProductNameList">
+                                    <option ng-repeat="ProductName in ProductNameList  track by $index" value="{{ProductName.ProductName}}">
+                                </datalist>
+                                <span class="help-block" ng-show="AccessoriesPurchaseForm.ProductName.$touched && AccessoriesPurchaseForm.ProductName.$invalid">Product Name is required</span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2">
+                            <div class="form-group tooltipAll" ng-class="{ 'has-error' : AccessoriesPurchaseForm.UnitName.$invalid && AccessoriesPurchaseForm.UnitName.$touched }" data-toggle="tooltip" data-placement="bottom" title="Unit">
+                                <div class="input-group input-group-md ddl">
+                                    <input type="text" list="UnitNameList" class="form-control selectMendatory" name="UnitName" ng-model="AccessoriesPurchaseDetail.UnitName" placeholder="Unit" required autocomplete="off" />
+                                </div>
+                                <datalist id="UnitNameList">
+                                    <option ng-repeat="UnitName in UnitNameList  track by $index" value="{{UnitName.UnitName}}">
+                                </datalist>
+                                <span class="help-block" style="display: block;" ng-if="AccessoriesPurchaseForm.UnitName.$error.maxlength">500 Character Max</span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2">
+                            <div class="form-group tooltipAll" data-toggle="tooltip" data-placement="bottom" title="Quantity">
+                                <div class="input-group">
+                                    <input type="number" id="txtQuantity" class="form-control txt-center" ng-model="AccessoriesPurchaseDetail.Quantity" ng-change="priceOrAmountChangeForQty(true)" placeholder="Quantity">
+                                    <span class="input-group-addon"><i class="fa fa-sort-numeric-asc" aria-hidden="true" style="color: red;"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group tooltipAll" data-toggle="tooltip" data-placement="bottom" title="Unit Price (Tk.)">
+                                <div class="input-group">
+                                    <input type="number" id="txtPrice" class="form-control txt-center" ng-model="AccessoriesPurchaseDetail.UnitPrice" ng-disabled="!AccessoriesPurchaseDetail.Quantity" ng-change="priceOrAmountChange(true)" placeholder="Unit Price(Tk)" required>
+                                    <span class="input-group-addon"><i class="fa fa-qq" style="color:red;"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-2">
+                            <div class="form-group tooltipAll" data-toggle="tooltip" data-placement="bottom" title="Discount Amount">
+                                <div class="input-group">
+                                    <input type="number" id="txtDiscountAmount" class="form-control txt-center" ng-model="AccessoriesPurchaseDetail.DiscountAmount" ng-disabled="!AccessoriesPurchaseDetail.Quantity" ng-change="DiscountAmountCalculetion();" placeholder="Discount Amount">
+                                    <span class="input-group-addon"><i class="fa fa-qq" style="color:black;"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-2">
+                            <div class="form-group tooltipAll" data-toggle="tooltip" data-placement="bottom" title="Vat Amount">
+                                <div class="input-group">
+                                    <input type="number" id="txtVatAmount" class="form-control txt-center" ng-model="AccessoriesPurchaseDetail.VatAmount" ng-disabled="!AccessoriesPurchaseDetail.Quantity" ng-change="VatAmountCalculetion();" placeholder="Vat Amount">
+                                    <span class="input-group-addon"><i class="fa fa-qq" style="color:black;"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group tooltipAll" data-toggle="tooltip" data-placement="bottom" title="Amount">
+                                <div class="input-group">
+                                    <input type="number" id="txtAmount" class="form-control txt-center" ng-model="AccessoriesPurchaseDetail.Total" ng-change="priceChangeForAmount()" placeholder="Amount" autocomplete="off" readonly>
+                                    <span class="input-group-addon"><i class="fa fa-qq" style="color:red;"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <button id="btnAdd" class="customBtn custmoBtnReset tooltipAll" title="Add" name="AddDetail" ng-click="AddAccessoriesPurchaseDetail()">
+                                <i class=" fa fa-plus-square"></i>&nbsp;{{AddProductLbl}}
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="responstable table-hover">
+                            <tr>
+                                <th>SL No.</th>
+                                <th class="t-cell-center">Product Name</th>
+                                <th class="t-cell-center">Quantity</th>
+                                <th class="t-cell-center">Unit</th>
+                                <th class="t-cell-center">Unit Price</th>
+                                <th class="t-cell-center">Vat Amount</th>
+                                <th class="t-cell-center">Discount Amount</th>
+                                <th class="t-cell-center">Amount</th>
+                                <th class="t-cell-center">Action</th>
+
+                            </tr>
+                            <tbody>
+                                <tr class="HoverTable" ng-repeat="aAccessoriesPurchaseDetail in AccessoriesPurchaseDetailList track by $index">
+                                    <td class="t-cell-center">{{$index+1}}</td>
+                                    <td class="t-cell-center">
+                                        <textarea type="text" id="txtProductName" ng-model="aAccessoriesPurchaseDetail.ProductName" name="Description" class="form-control" placeholder="Product Name"></textarea>
+                                    </td>
+                                    <td class="t-cell-center">{{aAccessoriesPurchaseDetail.Quantity}}</td>
+                                    <td class="t-cell-center">{{aAccessoriesPurchaseDetail.UnitName}}</td>
+                                    <td class="t-cell-center">{{aAccessoriesPurchaseDetail.UnitPrice}}</td>
+                                    <td class="t-cell-center">{{aAccessoriesPurchaseDetail.VatAmount}}</td>
+                                    <td class="t-cell-center">{{aAccessoriesPurchaseDetail.DiscountAmount}}</td>
+                                    <td class="t-cell-center">{{aAccessoriesPurchaseDetail.Total}}</td>
+                                    <td class="t-cell-center">
+                                        <button title="Edit" ng-click="SelAccessoriesPurchaseDetail(aAccessoriesPurchaseDetail)">
+                                            <i class="fa fa-pencil"></i>
+                                        </button>
+                                        <button title="Remove" ng-click="RemoveAccessoriesPurchaseDetail(aAccessoriesPurchaseDetail);">
+                                            <i class="fa fa-minus-square"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="2" style="text-align:right;">Total: </td>
+                                    <td class="t-cell-center">{{TotalQuantity}}</td>
+                                    <td class="t-cell-center"></td>
+                                    <td class="t-cell-center"></td>
+                                    <td class="t-cell-center">{{TotalVatAmount}}</td>
+                                    <td class="t-cell-center">{{TotalDiscountAmount}}</td>
+                                    <td class="t-cell-center">{{TotalAmount}}</td>
+                                    <td class="t-cell-center">
+                                        <button title="Calculation" ng-click="AmountCalculation()">
+                                            <i class="fa fa-calculator"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tfoot>
+
+                        </table>
+
+                    </div>
+                </div>
+
+            </div>
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="col-md-2">
+                            <button ng-click="Save()" style="margin-left: -15px;width:100%" ng-disabled="AddProductLbl == 'Update'" class="btn btn-success" title="Save">
+                                <i class="fa fa-floppy-o"></i>&nbsp;{{SaveBtn}}
+                            </button>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="button" style="width:100%" ng-click="Reset()" class="btn btn-danger tooltipAll" title="Reset">
+                                <i class="fa fa-refresh"></i>&nbsp;Reset
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12" ng-show="ListViewPermission">
+        <br />
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-list"></i>&nbsp;Accessories Purchase List</h3>
+            </div>
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <div class="input-group tooltipAll" data-toggle="tooltip" title="From Date">
+                                <input type="text" name="FromDate" id="txtFromDateForSI" ng-model="FromDate" ng-change="SupplierAccessoriesPurchaseSearch();" class="form-control " placeholder="From Date" readonly />
+                                <span class="input-group-addon" ng-click="FormDateChangeForSI()" id="FormDateChange"><i class="fa fa-calendar req-icon-color"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group tooltipAll" data-toggle="tooltip" title="To Date">
+                                    <input type="text" name="ToDate" id="txtToDateForSI" ng-model="ToDate" ng-change="SupplierAccessoriesPurchaseSearch();" class="form-control " placeholder="To Date" readonly />
+                                    <span class="input-group-addon" ng-click="ToDateChangeForSI()" id="ToDateChange"><i class="fa fa-calendar req-icon-color"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group tooltipAll" data-toggle="tooltip" title="Search Challan No / Purchase No / Supplier Name">
+                            <input type="text" class="form-control" id="textSearchSupplierName" ng-model="SearchSupplierName" ng-change="SupplierAccessoriesPurchaseSearch();" name="name" placeholder="Search Challan No / Purchase No / Supplier Name" />
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+
+                        <button id="btnSearch" style="width:100%" ng-click="reloadBtn()" class="btn btn-danger tooltipAll" title="Reload">
+                            <i class="fa fa-refresh"></i>&nbsp;Clear
+                        </button>
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="responstable table-hover">
+                            <tbody>
+                                <tr class="t-head">
+                                    <th>S/N</th>
+                                    <th class="txt-center">Purchase No</th>
+                                    <th class="txt-center">Challan No</th>
+                                    <th class="txt-center">Supplier Name</th>
+                                    <th class="txt-center">Purchase Date</th>
+                                    <th class="txt-center">Remarks</th>
+                                    <th class="txt-center">Action</th>
+
+                                </tr>
+                                <tr class="HoverTable searchRow" dir-paginate="aSupplierAccessoriesPurchase in SupplierAccessoriesPurchaseListPaged | itemsPerPage: PerPage" ng-click="" current-page="currentPage" total-items="total_count">
+                                    <td class="t-cell-center">{{$index + ((currentPage-1)*PerPage) + 1}}</td>
+                                    <td class="txt-center">{{aSupplierAccessoriesPurchase.PurchaseNo }}</td>
+                                    <td class="txt-center">{{aSupplierAccessoriesPurchase.ChallanNo }}</td>
+                                    <td class="txt-center">{{aSupplierAccessoriesPurchase.SupplierName }}</td>
+                                    <td class="txt-center">{{aSupplierAccessoriesPurchase.PurchaseDate }}</td>
+                                    <td class="txt-center">{{aSupplierAccessoriesPurchase.Remarks }}</td>
+                                    <td class="t-cell-center">
+                                        <button 
+                                                ng-click="Edit(aSupplierAccessoriesPurchase)">
+                                            <i class="fa fa-print" style="font-size:18px"></i> Edit
+                                        </button>
+                                        <button
+                                                ng-click="OpenPopupWindow(aSupplierAccessoriesPurchase.PurchaseId)">
+                                            <i class="fa fa-print" style="font-size:18px"></i> Report
+                                        </button>
+                                    </td>
+
+                                </tr>
+                                <tr class="t-foot" ng-show="total_count>PerPage">
+                                    <th colspan="8">
+                                        <dir-pagination-controls max-size="8"
+                                                                 direction-links="true"
+                                                                 boundary-links="true"
+                                                                 on-page-change="getData(newPageNumber)" style="text-align:center;">
+                                        </dir-pagination-controls>
+                                    </th>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="row pagination-footer">
+                            <div class="col-md-6">
+                                <span>Show </span><input class="input-pagesize" type="number" ng-maxlength="100" ng-minlength="1" width="1" ng-model="PerPage"> <span>Records </span>
+                            </div>
+                            <div class="col-md-6">
+                                <span class="pull-right">Showing {{((currentPage-1)*PerPage)+1}} to {{((currentPage-1) * PerPage) + SupplierAccessoriesPurchaseListPaged.length}} of {{total_count}} Records</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<script>
+    $('.tooltipAll').tooltip({ boundary: 'window' });
+    $("#ddlSupplier").select2({
+        selectOnClose: true,
+        //placeholder: 'Select a Supplier'
+    });
+    $("#ddlSalesOrder").select2({
+        selectOnClose: true,
+        //placeholder: 'Select a Supplier'
+    });
+
+    $("#bankddlReceiverOnlinePayment").select2({
+        placeholder: "Select Receiver Bank Name",
+        dropdownAutoWidth: false
+    });
+    $("#bankddlSupplierOnlinePayment").select2({
+        placeholder: "Select Customer Bank Name",
+        dropdownAutoWidth: false
+    });
+    $("#Selectbankddl").select2({
+        placeholder: "Select Customer Bank Name",
+        ///  theme: "classic"
+    });
+    $('#ddlItem').select2({
+        placeholder: "Search for: Item Name ~ Description ~ Item Code",
+        theme: "classic",
+        dropdownAutoWidth: false
+    });
+    $('#cmbMaterialType').select2({
+        placeholder: "Select Material Type",
+        theme: "classic",
+        dropdownAutoWidth: false
+    });
+    function RowSelect(e) {
+        $('.searchRow').css('background-color', '');
+        $(e).css('background-color', '#94d5ef');
+    }
+
+    //var picker1 = new Pikaday({
+    //    field: document.getElementById('txtFromDate1'),
+    //    firstDay: 6,
+    //    format: "DD/MM/YYYY",
+    //    minDate: new Date('1930-01-01'),
+    //    maxDate: new Date('2050-12-31'),
+    //    yearRange: [1930, 2050],
+    //    theme: 'blue-theme'
+    //});
+    //document.getElementById("calender1").addEventListener("click", function () {
+    //    picker1.show();
+    //});
+    var elements = document.getElementsByClassName("arrow-togglable");
+    var currentIndex = 0;
+
+    function newControl(e) {
+        elements = document.getElementsByClassName("arrow-togglable");
+        currentIndex = 0;
+        if (window.event.which == 40) {
+            currentIndex = ((currentIndex + 1) == elements.length) ? 0 : ++currentIndex;
+            elements[currentIndex].focus();
+        }
+        if (window.event.which == 38) {
+            currentIndex = (currentIndex == 0) ? elements.length - 1 : --currentIndex;
+            elements[currentIndex].focus();
+        }
+    }
+
+    function nextControlFromSugession(e) {
+        if (window.event.which == 40) {
+            currentIndex = ((currentIndex + 1) == elements.length) ? 0 : ++currentIndex;
+            elements[currentIndex].focus();
+        }
+        if (window.event.which == 38) {
+            currentIndex = (currentIndex == 0) ? elements.length - 1 : --currentIndex;
+            elements[currentIndex].focus();
+        }
+    }
+    function Hilitor2(id, tag) {
+        var targetNode = document.getElementById(id) || document.body;
+        var hiliteTag = tag || "EM";
+        var skipTags = new RegExp("^(?:" + hiliteTag + "|SCRIPT|FORM)$");
+        var colors = ["#ff6", "#a0ffff", "#9f9", "#f99", "#f6f"];
+        var wordColor = [];
+        var colorIdx = 0;
+        var matchRegex = "";
+        var openLeft = false;
+        var openRight = false;
+
+        this.setMatchType = function (type) {
+            switch (type) {
+                case "left":
+                    this.openLeft = false;
+                    this.openRight = true;
+                    break;
+
+                case "right":
+                    this.openLeft = true;
+                    this.openRight = false;
+                    break;
+
+                case "open":
+                    this.openLeft = this.openRight = true;
+                    break;
+
+                default:
+                    this.openLeft = this.openRight = false;
+
+            }
+        };
+
+        function addAccents(input) {
+            retval = input;
+            retval = retval.replace(/([ao])e/ig, "$1");
+            retval = retval.replace(/\\u00E[024]/ig, "a");
+            retval = retval.replace(/\\u00E7/ig, "c");
+            retval = retval.replace(/\\u00E[89AB]/ig, "e");
+            retval = retval.replace(/\\u00E[EF]/ig, "i");
+            retval = retval.replace(/\\u00F[46]/ig, "o");
+            retval = retval.replace(/\\u00F[9BC]/ig, "u");
+            retval = retval.replace(/\\u00FF/ig, "y");
+            retval = retval.replace(/\\u00DF/ig, "s");
+            retval = retval.replace(/a/ig, "([aÃ Ã¢Ã¤]|ae)");
+            retval = retval.replace(/c/ig, "[cÃ§]");
+            retval = retval.replace(/e/ig, "[eÃ¨Ã©ÃªÃ«]");
+            retval = retval.replace(/i/ig, "[iÃ®Ã¯]");
+            retval = retval.replace(/o/ig, "([oÃ´Ã¶]|oe)");
+            retval = retval.replace(/u/ig, "[uÃ¹Ã»Ã¼]");
+            retval = retval.replace(/y/ig, "[yÃ¿]");
+            retval = retval.replace(/s/ig, "(ss|[sÃŸ])");
+            return retval;
+        }
+
+        this.setRegex = function (input) {
+            input = input.replace(/\\([^u]|$)/g, "$1");
+            input = input.replace(/[^\w\\\s']+/g, "").replace(/\s+/g, "|");
+            input = input.replace(/^\||\|$/g, "");
+            input = addAccents(input);
+            if (input) {
+                var re = "(" + input + ")";
+                if (!this.openLeft) re = "(?:^|[\\b\\s])" + re;
+                if (!this.openRight) re = re + "(?:[\\b\\s]|$)";
+                matchRegex = new RegExp(re, "i");
+                return true;
+            }
+            return false;
+        };
+
+        this.getRegex = function () {
+            var retval = matchRegex.toString();
+            retval = retval.replace(/(^\/|\(\?:[^\)]+\)|\/i$)/g, "");
+            return retval;
+        };
+
+        // recursively apply word highlighting
+        this.hiliteWords = function (node) {
+            if (node === undefined || !node) return;
+            if (!matchRegex) return;
+            if (skipTags.test(node.nodeName)) return;
+
+            if (node.hasChildNodes()) {
+                for (var i = 0; i < node.childNodes.length; i++)
+                    this.hiliteWords(node.childNodes[i]);
+            }
+            if (node.nodeType == 3) { // NODE_TEXT
+                if ((nv = node.nodeValue) && (regs = matchRegex.exec(nv))) {
+                    if (!wordColor[regs[1].toLowerCase()]) {
+                        wordColor[regs[1].toLowerCase()] = colors[colorIdx++ % colors.length];
+                    }
+
+                    var match = document.createElement(hiliteTag);
+                    match.appendChild(document.createTextNode(regs[1]));
+                    match.style.backgroundColor = wordColor[regs[1].toLowerCase()];
+                    match.style.fontStyle = "inherit";
+                    match.style.color = "#000";
+
+                    var after;
+                    if (regs[0].match(/^\s/)) { // in case of leading whitespace
+                        after = node.splitText(regs.index + 1);
+                    } else {
+                        after = node.splitText(regs.index);
+                    }
+                    after.nodeValue = after.nodeValue.substring(regs[1].length);
+                    node.parentNode.insertBefore(match, after);
+                }
+            };
+        };
+
+        // remove highlighting
+        this.remove = function () {
+            var arr = document.getElementsByTagName(hiliteTag);
+            while (arr.length && (el = arr[0])) {
+                var parent = el.parentNode;
+                parent.replaceChild(el.firstChild, el);
+                parent.normalize();
+            }
+        };
+
+        // start highlighting at target node
+        this.apply = function (input) {
+            // this.remove();
+            if (input === undefined || !(input = input.replace(/(^\s+|\s+$)/g, ""))) return;
+            input = convertCharStr2jEsc(input);
+            if (this.setRegex(input)) {
+                this.hiliteWords(targetNode);
+            }
+        };
+
+        // added by Yanosh Kunsh to include utf-8 string comparison
+        function dec2hex4(textString) {
+            var hexequiv = new Array("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F");
+            return hexequiv[(textString >> 12) & 0xF] + hexequiv[(textString >> 8) & 0xF] + hexequiv[(textString >> 4) & 0xF] + hexequiv[textString & 0xF];
+        }
+
+        function convertCharStr2jEsc(str, cstyle) {
+            // Converts a string of characters to JavaScript escapes
+            // str: sequence of Unicode characters
+            var highsurrogate = 0;
+            var suppCP;
+            var pad;
+            var n = 0;
+            var outputString = '';
+            for (var i = 0; i < str.length; i++) {
+                var cc = str.charCodeAt(i);
+                if (cc < 0 || cc > 0xFFFF) {
+                    outputString += '!Error in convertCharStr2UTF16: unexpected charCodeAt result, cc=' + cc + '!';
+                }
+                if (highsurrogate != 0) { // this is a supp char, and cc contains the low surrogate
+                    if (0xDC00 <= cc && cc <= 0xDFFF) {
+                        suppCP = 0x10000 + ((highsurrogate - 0xD800) << 10) + (cc - 0xDC00);
+                        if (cstyle) {
+                            pad = suppCP.toString(16);
+                            while (pad.length < 8) {
+                                pad = '0' + pad;
+                            }
+                            outputString += '\\U' + pad;
+                        } else {
+                            suppCP -= 0x10000;
+                            outputString += '\\u' + dec2hex4(0xD800 | (suppCP >> 10)) + '\\u' + dec2hex4(0xDC00 | (suppCP & 0x3FF));
+                        }
+                        highsurrogate = 0;
+                        continue;
+                    } else {
+                        outputString += 'Error in convertCharStr2UTF16: low surrogate expected, cc=' + cc + '!';
+                        highsurrogate = 0;
+                    }
+                }
+                if (0xD800 <= cc && cc <= 0xDBFF) { // start of supplementary character
+                    highsurrogate = cc;
+                } else { // this is a BMP character
+                    switch (cc) {
+                        case 0:
+                            outputString += '\\0';
+                            break;
+                        case 8:
+                            outputString += '\\b';
+                            break;
+                        case 9:
+                            outputString += '\\t';
+                            break;
+                        case 10:
+                            outputString += '\\n';
+                            break;
+                        case 13:
+                            outputString += '\\r';
+                            break;
+                        case 11:
+                            outputString += '\\v';
+                            break;
+                        case 12:
+                            outputString += '\\f';
+                            break;
+                        case 34:
+                            outputString += '\\\"';
+                            break;
+                        case 39:
+                            outputString += '\\\'';
+                            break;
+                        case 92:
+                            outputString += '\\\\';
+                            break;
+                        default:
+                            if (cc > 0x1f && cc < 0x7F) {
+                                outputString += String.fromCharCode(cc);
+                            } else {
+                                pad = cc.toString(16).toUpperCase();
+                                while (pad.length < 4) {
+                                    pad = '0' + pad;
+                                }
+                                outputString += '\\u' + pad;
+                            }
+                    }
+                }
+            }
+            return outputString;
+        }
+    }
+</script>

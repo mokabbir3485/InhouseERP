@@ -1,0 +1,428 @@
+﻿<style>
+    #sortable tbody tr:nth-child(1) {
+        counter-reset: rowNumber;
+    }
+
+    #sortable tbody tr {
+        counter-increment: rowNumber;
+    }
+
+        #sortable tbody tr td:first-child::before {
+            content: counter(rowNumber);
+            min-width: 1em;
+            margin-right: 0.5em;
+        }
+
+    .btn-load {
+        width: auto !important;
+    }
+</style>
+<form name="EmailNotificationSetupForm" novalidate>
+    <div class="col-md-12">
+        <div class="alert alert-info alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="topInfo"> &nbsp; &#9755; <span style="color:red;">Red Icon</span> Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp;</div>
+        </div>
+    </div>
+    <div class="col-md-12" id="successMesg">
+    </div>
+    <div class="col-md-12">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-md-4">
+                        <h3 class="panel-title pull-left "><i class="fa fa-list"></i>&nbsp;Email Notification Setup</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group" ng-class="{ 'has-error' : EmailNotificationSetupForm.ReportName.$invalid && EmailNotificationSetupForm.ReportName.$touched }" data-toggle="tooltip" data-placement="bottom" title="Report Name">
+                            <div class="input-group width-hundred-percent">
+                                <select id="ddlReportName" ng-model="ddlReportName" name="ReportName" class="form-control selectMendatory" ng-options="Report.ReportName for Report in ReportNameForNotificationList track by Report.ReportId" ng-change="ResetEmailNotificationSetupDetail()">
+                                    <option value="">Select Report Name</option>
+                                </select>
+                                <span class="help-block" ng-show="EmailNotificationSetupForm.ReportName.$dirty && EmailNotificationSetupForm.ReportName.$invalid">Report Name is required</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="col-md-5 col-sm-5 col-lg-5 col-xs-12" style="padding-left: 5%; padding-right: 7%;">
+                            <div class="row">
+                                <button ng-click="ReportNotificationDetail_Get(ddlReportName.ReportCode)" ng-disabled="!ddlReportName" id="Button5" class="btn btn-primary" title="Load Email Notification Setup Detail">
+                                    Load
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="fa fa-file-text-o">&nbsp;</i>Email Notification Setup Detail</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="col-md-3">
+                                <div class="form-group" ng-class="{ 'has-error' : EmailNotificationSetupForm.ddlEmployee.$dirty && EmailNotificationSetupForm.ddlEmployee.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Reference">
+                                    <div class="input-group input-group-md ddl">
+                                        <select ng-model="ddlEmployee" name="ddlEmployee" id="ddlEmployee" class="form-control selectMendatory" ng-disabled="IsDisable" ng-multiple="true" ng-change="EmailNotificationSetupDetail.EmployeeId = ddlEmployee.EmployeeId;EmailNotificationSetupDetail.UserName = ddlEmployee.FullName;EmailNotificationSetupDetail.EmailId = ddlEmployee.Email; EmailNotificationSetupDetail.IsActive = 1;" ng-options="employee.FullName  for employee in employeeList track by employee.EmployeeId" required>
+                                            <option value="">Select Employee</option>
+                                        </select>
+                                    </div>
+                                    <span class="help-block" ng-show="EmailNotificationSetupForm.ddlEmployee.$dirty && EmailNotificationSetupForm.ddlPreparedBy.$invalid">Reference is Required</span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="User Name">
+                                    <div class="input-group ">
+                                        <input type="text" name="UserName" class="form-control" ng-model="EmailNotificationSetupDetail.UserName"  ng-disabled="IsDisable"  placeholder="User Name" maxlength="500" ng-maxlength="500" required>
+                                        <span class="input-group-addon"><i class="fa fa-text-width req-icon-color"></i></span>
+                                    </div>
+                                    <span class="help-block" style="display: block;color:red" ng-if="EmailNotificationSetupForm.UserName.$error.maxlength">500 Character Max</span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group" ng-class="{ 'has-error' : EmailNotificationSetupForm.EmailId.$invalid && EmailNotificationSetupForm.EmailId.$touched }" data-toggle="tooltip" data-placement="bottom" title="Email Address">
+                                    <div class="input-group ">
+                                        <input type="text" name="EmailId" class="form-control" ng-model="EmailNotificationSetupDetail.EmailId"  ng-disabled="IsDisable"  placeholder="Email Address" maxlength="500" ng-maxlength="500" required>
+                                        <span class="input-group-addon"><i class="fa fa-text-width req-icon-color"></i></span>
+                                    </div>
+                                    <span class="help-block" style="display: block; color:red" ng-if="EmailNotificationSetupForm.EmailId.$error.required && EmailNotificationSetupForm.EmailId.$touched">Email Address is required</span>
+                                    <span class="help-block" style="display: block;color:red" ng-if="EmailNotificationSetupForm.EmailId.$error.maxlength">500 Character Max</span>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group" ng-class="{ 'has-error' : EmailNotificationSetupForm.IsActive.$invalid && EmailNotificationSetupForm.IsActive.$touched }" data-toggle="tooltip" data-placement="bottom" title="Email Address">
+                                    <div class="input-group ">
+                                        <input type="radio" name="IsActive" ng-value="true"  ng-disabled="IsDisable"  ng-model="EmailNotificationSetupDetail.IsActive" />&nbsp Active
+                                        <input type="radio" name="IsActive" ng-value="false"  ng-disabled="IsDisable"  ng-model="EmailNotificationSetupDetail.IsActive" />&nbsp Inactive                                        
+                                    </div>
+                                    <span class="help-block" style="display: block; color:red" ng-if="EmailNotificationSetupForm.IsActive.$error.required && EmailNotificationSetupForm.IsActive.$touched">Is Active is required</span>
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                                <div class="col-md-5 col-sm-5 col-lg-5 col-xs-12" style="padding-left: 5%; padding-right: 7%;">
+                                    <div class="row">
+                                        <button ng-click="AddEmailNotificationSetupDetail()" id="Button5" class="btn btn-primary" ng-disabled="!EmailNotificationSetupDetail.UserName || !EmailNotificationSetupDetail.EmailId || IsDisable" title="Add">
+                                            Add
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table id="sortable" class="responstable table-hover">
+                                <thead>
+                                    <tr>
+                                        <th class="t-cell-center">S/N</th>
+                                        <th class="t-cell-center">User Name</th>
+                                        <th class="t-cell-center">Email Address</th>
+                                        <th class="t-cell-center">Active Status</th>
+                                        <th class="t-cell-center">Remove</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-show="EmailNotificationSetupDetaillist.length" class="HoverTable searchRow" ng-repeat="aEmailNotificationSetupDetail in EmailNotificationSetupDetaillist" onclick="RowSelect(this)">
+                                        <td class="t-cell-center"></td>
+                                        <td class="t-cell-center"><input ng-model="aEmailNotificationSetupDetail.UserName" style="width:200px;"/></td>
+                                        <td class="t-cell-center"><input ng-model="aEmailNotificationSetupDetail.EmailId" style="width:200px;"/></td>
+                                        <td class="t-cell-center">
+                                            <!--<input ng-model="aEmailNotificationSetupDetail.IsActive" />-->
+                                            <input type="radio" name="{{aEmailNotificationSetupDetail.NotificationReportDetailId}}" ng-value="true" ng-model="aEmailNotificationSetupDetail.IsActive" />&nbsp Active
+                                            <input type="radio" name="{{aEmailNotificationSetupDetail.NotificationReportDetailId}}" ng-value="false" ng-model="aEmailNotificationSetupDetail.IsActive" />&nbsp Inactive
+                                        </td>
+                                        <td class="t-cell-center">
+                                            <button title="Remove" ng-click="removeEmailNotificationSetupDetail(aEmailNotificationSetupDetail)">
+                                                <i class="fa fa-minus-square"></i>&nbsp;
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="col-md-4">
+                            <button ng-click="Save()" style="margin-left: -15px;" ng-disabled="!EmailNotificationSetupDetaillist.length || !ddlReportName" class="customBtn custmoBtnSave" title="Save">
+                                <i class="fa fa-floppy-o"></i>&nbsp;Save
+                            </button>
+                        </div>
+                        <div class="col-md-4">
+                            <button type="button" ng-click="Reset()" class="customBtn custmoBtnReset" title="Reset">
+                                <i class="fa fa-refresh"></i>&nbsp;Reset
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</form>
+<script>
+    $("#ddlReportName").select2();
+    $("#ddlEmployee").select2();
+    function RowSelect(e) {
+        $('.searchRow').css('background-color', '');
+        $(e).css('background-color', '#94d5ef');
+    }
+
+
+
+    function newControl(e) {
+        elements = document.getElementsByClassName("arrow-togglable");
+        currentIndex = 0;
+        if (window.event.which == 40) {
+            currentIndex = ((currentIndex + 1) == elements.length) ? 0 : ++currentIndex;
+            elements[currentIndex].focus();
+        }
+        if (window.event.which == 38) {
+            currentIndex = (currentIndex == 0) ? elements.length - 1 : --currentIndex;
+            elements[currentIndex].focus();
+        }
+    }
+
+    function nextControlFromSugession(e) {
+        if (window.event.which == 40) {
+            currentIndex = ((currentIndex + 1) == elements.length) ? 0 : ++currentIndex;
+            elements[currentIndex].focus();
+        }
+        if (window.event.which == 38) {
+            currentIndex = (currentIndex == 0) ? elements.length - 1 : --currentIndex;
+            elements[currentIndex].focus();
+        }
+    }
+    function Hilitor2(id, tag) {
+        var targetNode = document.getElementById(id) || document.body;
+        var hiliteTag = tag || "EM";
+        var skipTags = new RegExp("^(?:" + hiliteTag + "|SCRIPT|FORM)$");
+        var colors = ["#ff6", "#a0ffff", "#9f9", "#f99", "#f6f"];
+        var wordColor = [];
+        var colorIdx = 0;
+        var matchRegex = "";
+        var openLeft = false;
+        var openRight = false;
+
+        this.setMatchType = function (type) {
+            switch (type) {
+            case "left":
+                this.openLeft = false;
+                this.openRight = true;
+                break;
+
+            case "right":
+                this.openLeft = true;
+                this.openRight = false;
+                break;
+
+            case "open":
+                this.openLeft = this.openRight = true;
+                break;
+
+            default:
+                this.openLeft = this.openRight = false;
+
+            }
+        };
+
+        function addAccents(input) {
+            retval = input;
+            retval = retval.replace(/([ao])e/ig, "$1");
+            retval = retval.replace(/\\u00E[024]/ig, "a");
+            retval = retval.replace(/\\u00E7/ig, "c");
+            retval = retval.replace(/\\u00E[89AB]/ig, "e");
+            retval = retval.replace(/\\u00E[EF]/ig, "i");
+            retval = retval.replace(/\\u00F[46]/ig, "o");
+            retval = retval.replace(/\\u00F[9BC]/ig, "u");
+            retval = retval.replace(/\\u00FF/ig, "y");
+            retval = retval.replace(/\\u00DF/ig, "s");
+            retval = retval.replace(/a/ig, "([aÃ Ã¢Ã¤]|ae)");
+            retval = retval.replace(/c/ig, "[cÃ§]");
+            retval = retval.replace(/e/ig, "[eÃ¨Ã©ÃªÃ«]");
+            retval = retval.replace(/i/ig, "[iÃ®Ã¯]");
+            retval = retval.replace(/o/ig, "([oÃ´Ã¶]|oe)");
+            retval = retval.replace(/u/ig, "[uÃ¹Ã»Ã¼]");
+            retval = retval.replace(/y/ig, "[yÃ¿]");
+            retval = retval.replace(/s/ig, "(ss|[sÃŸ])");
+            return retval;
+        }
+
+        this.setRegex = function (input) {
+            input = input.replace(/\\([^u]|$)/g, "$1");
+            input = input.replace(/[^\w\\\s']+/g, "").replace(/\s+/g, "|");
+            input = input.replace(/^\||\|$/g, "");
+            input = addAccents(input);
+            if (input) {
+                var re = "(" + input + ")";
+                if (!this.openLeft) re = "(?:^|[\\b\\s])" + re;
+                if (!this.openRight) re = re + "(?:[\\b\\s]|$)";
+                matchRegex = new RegExp(re, "i");
+                return true;
+            }
+            return false;
+        };
+
+        this.getRegex = function () {
+            var retval = matchRegex.toString();
+            retval = retval.replace(/(^\/|\(\?:[^\)]+\)|\/i$)/g, "");
+            return retval;
+        };
+
+        // recursively apply word highlighting
+        this.hiliteWords = function (node) {
+            if (node === undefined || !node) return;
+            if (!matchRegex) return;
+            if (skipTags.test(node.nodeName)) return;
+
+            if (node.hasChildNodes()) {
+                for (var i = 0; i < node.childNodes.length; i++)
+                    this.hiliteWords(node.childNodes[i]);
+            }
+            if (node.nodeType == 3) { // NODE_TEXT
+                if ((nv = node.nodeValue) && (regs = matchRegex.exec(nv))) {
+                    if (!wordColor[regs[1].toLowerCase()]) {
+                        wordColor[regs[1].toLowerCase()] = colors[colorIdx++ % colors.length];
+                    }
+
+                    var match = document.createElement(hiliteTag);
+                    match.appendChild(document.createTextNode(regs[1]));
+                    match.style.backgroundColor = wordColor[regs[1].toLowerCase()];
+                    match.style.fontStyle = "inherit";
+                    match.style.color = "#000";
+
+                    var after;
+                    if (regs[0].match(/^\s/)) { // in case of leading whitespace
+                        after = node.splitText(regs.index + 1);
+                    } else {
+                        after = node.splitText(regs.index);
+                    }
+                    after.nodeValue = after.nodeValue.substring(regs[1].length);
+                    node.parentNode.insertBefore(match, after);
+                }
+            };
+        };
+
+        // remove highlighting
+        this.remove = function () {
+            var arr = document.getElementsByTagName(hiliteTag);
+            while (arr.length && (el = arr[0])) {
+                var parent = el.parentNode;
+                parent.replaceChild(el.firstChild, el);
+                parent.normalize();
+            }
+        };
+
+        // start highlighting at target node
+        this.apply = function (input) {
+            // this.remove();
+            if (input === undefined || !(input = input.replace(/(^\s+|\s+$)/g, ""))) return;
+            input = convertCharStr2jEsc(input);
+            if (this.setRegex(input)) {
+                this.hiliteWords(targetNode);
+            }
+        };
+
+        // added by Yanosh Kunsh to include utf-8 string comparison
+        function dec2hex4(textString) {
+            var hexequiv = new Array("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F");
+            return hexequiv[(textString >> 12) & 0xF] + hexequiv[(textString >> 8) & 0xF] + hexequiv[(textString >> 4) & 0xF] + hexequiv[textString & 0xF];
+        }
+
+        function convertCharStr2jEsc(str, cstyle) {
+            // Converts a string of characters to JavaScript escapes
+            // str: sequence of Unicode characters
+            var highsurrogate = 0;
+            var suppCP;
+            var pad;
+            var n = 0;
+            var outputString = '';
+            for (var i = 0; i < str.length; i++) {
+                var cc = str.charCodeAt(i);
+                if (cc < 0 || cc > 0xFFFF) {
+                    outputString += '!Error in convertCharStr2UTF16: unexpected charCodeAt result, cc=' + cc + '!';
+                }
+                if (highsurrogate != 0) { // this is a supp char, and cc contains the low surrogate
+                    if (0xDC00 <= cc && cc <= 0xDFFF) {
+                        suppCP = 0x10000 + ((highsurrogate - 0xD800) << 10) + (cc - 0xDC00);
+                        if (cstyle) {
+                            pad = suppCP.toString(16);
+                            while (pad.length < 8) {
+                                pad = '0' + pad;
+                            }
+                            outputString += '\\U' + pad;
+                        } else {
+                            suppCP -= 0x10000;
+                            outputString += '\\u' + dec2hex4(0xD800 | (suppCP >> 10)) + '\\u' + dec2hex4(0xDC00 | (suppCP & 0x3FF));
+                        }
+                        highsurrogate = 0;
+                        continue;
+                    } else {
+                        outputString += 'Error in convertCharStr2UTF16: low surrogate expected, cc=' + cc + '!';
+                        highsurrogate = 0;
+                    }
+                }
+                if (0xD800 <= cc && cc <= 0xDBFF) { // start of supplementary character
+                    highsurrogate = cc;
+                } else { // this is a BMP character
+                    switch (cc) {
+                    case 0:
+                        outputString += '\\0';
+                        break;
+                    case 8:
+                        outputString += '\\b';
+                        break;
+                    case 9:
+                        outputString += '\\t';
+                        break;
+                    case 10:
+                        outputString += '\\n';
+                        break;
+                    case 13:
+                        outputString += '\\r';
+                        break;
+                    case 11:
+                        outputString += '\\v';
+                        break;
+                    case 12:
+                        outputString += '\\f';
+                        break;
+                    case 34:
+                        outputString += '\\\"';
+                        break;
+                    case 39:
+                        outputString += '\\\'';
+                        break;
+                    case 92:
+                        outputString += '\\\\';
+                        break;
+                    default:
+                        if (cc > 0x1f && cc < 0x7F) {
+                            outputString += String.fromCharCode(cc);
+                        } else {
+                            pad = cc.toString(16).toUpperCase();
+                            while (pad.length < 4) {
+                                pad = '0' + pad;
+                            }
+                            outputString += '\\u' + pad;
+                        }
+                    }
+                }
+            }
+            return outputString;
+        }
+    }
+</script>

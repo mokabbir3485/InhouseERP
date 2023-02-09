@@ -1,0 +1,165 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mother Jumbo Issue Report</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 16px;
+            /*width: 850px;
+            margin: 0 auto;*/
+        }
+
+        table {
+            border-collapse: collapse;
+        }
+
+        @page {
+            size: A4;
+            /*margin:0;*/
+        }
+    </style>
+</head>
+
+<body>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="hidden-print">
+                <div class="col-sm-7 col-md-9">
+
+                </div>
+                <div class="row">
+                    <div class="col-sm-2 col-md-1">
+                        <button type="button"  onclick="document.title = 'Jumbo Issue ' + getCurrentDateTime(); PrintPdf();"  class="customBtn custmoBtnReset" style="border-radius: 3px; margin-bottom: -.9em; margin-top: -15px; padding-bottom: 3px; padding-top: 3px;" title="Print To .PDF">
+                            <i class="fa fa-print"></i>&nbsp;Print
+                        </button>
+                    </div>
+
+                    <div class="col-sm-3 col-md-2">
+                        <!--<button type="button" onclick="ExportToDoc();" class="customBtn custmoBtnReset" style="border-radius: 3px; margin-bottom: -.9em; margin-top: -15px; padding-bottom: 3px; padding-top: 3px;" title="Export to .doc">
+                            <i class="fa fa-save"></i>&nbsp;Export to .doc
+                        </button>-->
+                    </div>
+                </div>
+                <br />
+            </div>
+        </div>
+    </div>
+
+    <table id="heading" style="text-align: center;margin-left:auto;margin-right:auto;">
+
+        <tr>
+            <td>
+                <img style="height: 80px; width: 80px; padding: 5px" src="../../../UploadedImages/logo.jpg" />
+            </td>
+            <td>
+                <p style="font-size: 30px;line-height: 1; margin : 0; padding : 0 ; font-weight: bold;"><strong>Retail Technologies Limited</strong></p>
+                <p style="font-size: 14px; line-height: 1.5; margin : 0; padding : 0 ;">
+                    Address: House- B142 (First Floor), Road-22, New DOHS,
+                    Mohakhali, Dhaka-1206
+                </p>
+                <p style="font-size: 18px; line-height: 1; margin: 0; padding: 0;"><i><u><b>Mother Jumbo Issue Report</b></u></i></p>
+            </td>
+        </tr>
+    </table>
+    <br />
+    <table border="1" width="100%" style="padding:5px;">
+        <thead>
+            <tr>
+                <th style="padding: 5px;">Mother Jumbo Issue No</th>
+                <td>
+                    <p style="font-size: .9em; line-height: 1; font-weight: bold; padding:5px;">{{JumboStockIssueObj.JIssueNo}}</p>
+                </td>
+                <th style="padding: 5px;">Mother Jumbo Issue Date</th>
+                <td>
+                    <p style="font-size: .9em; line-height: 1; font-weight: bold; padding:5px;">{{JumboStockIssueObj.JIssueDate}}</p>
+                </td>
+            </tr>
+            <tr>
+                <th style="padding: 5px;">Issued By Name</th>
+                <td>
+                    <p style="font-size: .9em; line-height: 1; font-weight: bold; padding:5px;">{{JumboStockIssueObj.IssuedByName}}</p>
+                </td>
+                <th style="padding: 5px;">Deparment Name</th>
+                <td>
+                    <p style="font-size: .9em; line-height: 1; font-weight: bold; padding:5px;">{{JumboStockIssueObj.DepartmentName}}</p>
+                </td>
+            </tr>
+            <tr>
+                <th style="padding: 5px;">Jumbo Name</th>
+                <td>
+                    <p style="font-size: .9em; font-weight: bold; padding:5px;">{{JumboStockIssueObj.JumboItemName}}</p>
+                </td>
+                <th style="padding: 5px;">Material Type Code</th>
+                <td>
+                    <p style="font-size: .9em; line-height: 1; font-weight: bold; padding:5px;">{{JumboStockIssueObj.MaterialTypeCode}}</p>
+                </td>
+            </tr>
+            <tr>
+                <th style="padding: 5px;">Issued Jumbo Roll Qty</th>
+                <td>
+                    <p style="font-size: .9em; line-height: 1; font-weight: bold; padding:5px;">{{JumboStockIssueObj.IssuedJumboRollQty}}</p>
+                </td>
+                <th style="padding: 5px;">Jumbo Wastage In (mm)</th>
+                <td>
+                    <p style="font-size: .9em; font-weight: bold; padding:5px;">{{JumboStockIssueObj.JumboWastageInMM}}</p>
+                </td>
+            </tr>
+            
+        </thead>
+    </table>
+    <br>
+    <table style="text-align:center; font-weight: bold;" border="1" width="100%">
+        <thead>
+            <tr>
+                <td>SL.No</td>
+                <td>Material Name</td>
+                <td>Material Qty</td>
+                <td>Unit</td>
+                <td>Material Unit Price</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="aJumboStockIssueDetail in JumboStockIssueDetailList track by $index">
+                <td>
+                    <p style="font-size: .9em;   margin : 0;  padding : 0 ;">{{$index + 1}}</p>
+                </td>
+                <td>
+                    <p style="font-size: .9em;  margin : 0;  padding : 0 ;">{{aJumboStockIssueDetail.RawItemName}}</p>
+                </td>
+                <td>
+                    <p style="font-size: .9em;   margin : 0;  padding : 0 ;">{{aJumboStockIssueDetail.IssuedRawMatQty}}</p>
+                </td>
+                <td>
+                    <p style="font-size: .9em;   margin : 0;  padding : 0 ;">{{aJumboStockIssueDetail.RawItemUnitName}}</p>
+                </td>
+                <td>
+                    <p style="font-size: .9em;   margin : 0;  padding : 0 ;">{{aJumboStockIssueDetail.IssuedRawMatUnitPrice}}</p>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <script>
+        function PrintPdf() {
+
+            window.print();
+
+        }
+        jQuery(document).ready(function ($) {
+
+            $(".main-sidebar").attr("hidden", true);
+            $(".main-header").attr("hidden", true);
+            $(".main-footer").attr("hidden", true);
+            $("#Hidebr").attr("hidden", true);
+
+            $("div").removeClass("wrapper");
+            $("div").removeClass("content-wrapper");
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,1287 @@
+﻿
+<form name="consumptionCertificateForm" novalidate>
+
+    <div class="col-md-12">
+        <div class="alert alert-info alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="topInfo"> &nbsp; &#9755; <span style="color:red;">Red Icon</span> Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp; &#9755; Click On A Table Row To Update/Delete</div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title pull-left "><i class="fa fa-list"></i>&nbsp;Post CI Process</h3>
+                <div class="clearfix">
+                </div>
+            </div>
+            <br />
+            <div class="panel-body">
+                <ul class="nav nav-tabs">
+                    <li class="active" style="cursor:pointer;"><a data-toggle="tab" data-target="#ConsumptionCertificate"><span><i class="fa fa-list"></i></span>&nbsp;Consumption Certificate</a></li>
+                    <li style="cursor:pointer;"><a data-toggle="tab" data-target="#ChallanGate"><span><i class="fa fa-list"></i></span>&nbsp;Challan Gate</a></li>
+                    <li style="cursor:pointer;"><a data-toggle="tab" data-target="#TruckChallan"><span><i class="fa fa-list"></i></span>&nbsp;Truck Challan</a></li>
+                    <li style="cursor:pointer;"><a data-toggle="tab" data-target="#ExportDocs"><span><i class="fa fa-list"></i></span>&nbsp;Export Docs</a></li>
+                    <li style="cursor:pointer;"><a data-toggle="tab" data-target="#othersReports"><span><i class="fa fa-list"></i></span>&nbsp;Others Report </a></li>
+                </ul>
+                <div class="tab-content">
+                    <!-- Abir -->
+                    <div>
+
+                    </div>
+                    <div id="ConsumptionCertificate" class="tab-pane fade in active">
+                        <div class="col-md-12 tabBorder">
+                            <div id="overlayCC">
+                                <br />
+                                <div class="panel panel-info">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title"><i class="fa fa-file-text"></i>&nbsp;Consumption Certificate</h3>
+                                    </div>
+                                    <div class="panel-footer">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="col-md-5">
+                                                    <div class="form-group tooltipAll" ng-class="{ 'has-error' : consumptionCertificateForm.CommercialInvoice.$invalid && consumptionCertificateForm.CommercialInvoice.$touched }" data-toggle="tooltip" data-placement="bottom" title="Select Commercial Invoice No">
+                                                        <div class="input-group width-hundred-percent">
+                                                            <select ng-model="ddlConsumptionCertificate" ng-disabled="disDDLForCC" name="ddlCommercialInvoiceCC" style="width: 100%" id="ddlCommercialInvoiceCC" class="form-control selectMendatory" ng-options="commercial.CompanyNameWithCINo for commercial in consuptionCertificateForddl track by commercial.CommercialInvoiceId" ng-change="GetDescriptionOfGoods(ddlConsumptionCertificate.CommercialInvoiceId);ConsumptionCertificate.CommercialInvoiceId = ddlConsumptionCertificate.CommercialInvoiceId">
+                                                                <option value="" label="Commercial Invoice No" hidden></option>
+                                                            </select>
+                                                            <span class="help-block" ng-show="consumptionCertificateForm.CommercialInvoice.$error.required && consumptionCertificateForm.CommercialInvoice.$touched">Commercial Invoice No is required</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                        <div class="row">
+                                            <hr />
+
+                                            <div class="col-md-12">
+                                                <div class="col-md-3">
+                                                    <div class="form-group tooltipAll" ng-class="{ 'has-error' : consumptionCertificateForm.StatementNo.$invalid && consumptionCertificateForm.StatementNo.$touched }" data-toggle="tooltip" data-placement="bottom" title="Statement No">
+                                                        <div class="input-group ">
+                                                            <input type="text" name="StatementNo" class="form-control" ng-model="ConsumptionCertificate.StatementNo" placeholder="Statement No" maxlength="51" ng-maxlength="50" required>
+                                                            <span class="input-group-addon"><i class="fa fa-text-width req-icon-color"></i></span>
+                                                        </div>
+                                                        <span class="help-block" style="display: block; color:red" ng-if="consumptionCertificateForm.StatementNo.$error.required && consumptionCertificateForm.StatementNo.$touched">Statement No is required</span>
+                                                        <span class="help-block" style="display: block;color:red" ng-if="consumptionCertificateForm.StatementNo.$error.maxlength">50 Character Max</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group tooltipAll" ng-class="{ 'has-error' :consumptionCertificateForm.StatementDate.$invalid && consumptionCertificateForm.StatementDate.$touched }" data-toggle="tooltip" data-placement="bottom" title="Statement Entry Date">
+                                                        <div class="input-group ">
+                                                            <input type="text" id="txtStatementDate" ng-model="ConsumptionCertificate.StatementDate" class="form-control" name="StatementDate" placeholder="Statement Date" required readonly />
+                                                            <div class="input-group-addon" ng-click="CalendarOpenStatementDate()" id="CalendarOpenStatementDate">
+                                                                <span class="fa fa-calendar req-icon-color"></span>
+                                                            </div>
+
+                                                        </div>
+                                                        <span class="help-block" style="display: block;" ng-if="consumptionCertificateForm.StatementDate.$error.required && consumptionCertificateForm.StatementDate.$touched">Statement Date is required</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group tooltipAll" ng-class="{ 'has-error' : consumptionCertificateForm.BillOfEntryNo.$invalid && consumptionCertificateForm.BillOfEntryNo.$touched }" data-toggle="tooltip" data-placement="bottom" title="Bill Of Entry No">
+                                                        <div class="input-group ">
+                                                            <input type="text" name="BillOfEntryNo" class="form-control" ng-model="ConsumptionCertificate.BillOfEntryNo" placeholder="Bill Of Entry No" maxlength="51" ng-maxlength="50">
+                                                            <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                                        </div>
+                                                        <!--<span class="help-block" style="display: block; color:red" ng-if="consumptionCertificateForm.BillOfEntryNo.$error.required && consumptionCertificateForm.BillOfEntryNo.$touched">Bill Of Entry No is required</span>-->
+                                                        <span class="help-block" style="display: block;color:red" ng-if="consumptionCertificateForm.BillOfEntryNo.$error.maxlength">50 Character Max</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group tooltipAll" ng-class="{ 'has-error' :consumptionCertificateForm.BillOfEntryDate.$invalid && consumptionCertificateForm.BillOfEntryDate.$touched }" data-toggle="tooltip" data-placement="bottom" title="Bill Of Entry Date">
+                                                        <div class="input-group ">
+                                                            <input type="text" id="txtBillOfEntryDate" ng-model="ConsumptionCertificate.BillOfEntryDate" class="form-control" name="BillOfEntryDate" placeholder="Bill Date" readonly />
+                                                            <div class="input-group-addon" ng-click="CalendarOpenBillOfEntryDate()">
+                                                                <span class="fa fa-calendar"></span>
+                                                            </div>
+                                                        </div>
+                                                        <span class="help-block" style="display: block;" ng-if="consumptionCertificateForm.BillOfEntryDate.$error.required && consumptionCertificateForm.BillOfEntryDate.$touched">BillOfEntry Date is required</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="col-md-3">
+                                                    <div class="form-group tooltipAll" ng-class="{ 'has-error' : consumptionCertificateForm.EpzPermissionNo.$invalid && consumptionCertificateForm.EpzPermissionNo.$touched }" data-toggle="tooltip" data-placement="bottom" title="DEPZ Permission">
+                                                        <div class="input-group ">
+                                                            <input type="text" name="EpzPermissionNo" class="form-control" ng-model="ConsumptionCertificate.EpzPermissionNo" placeholder="DEPZ Permission" maxlength="51" ng-maxlength="50">
+                                                            <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                                        </div>
+                                                        <!--<span class="help-block" style="display: block; color:red" ng-if="consumptionCertificateForm.EpzPermissionNo.$error.required && consumptionCertificateForm.EpzPermissionNo.$touched">DEPZ is required</span>-->
+                                                        <span class="help-block" style="display: block;color:black" ng-if="consumptionCertificateForm.EpzPermissionNo.$error.maxlength">50 Character Max</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group tooltipAll" ng-class="{ 'has-error' :consumptionCertificateForm.EpzPermissionDate.$invalid && consumptionCertificateForm.EpzPermissionDate.$touched }" data-toggle="tooltip" data-placement="bottom" title="DEPZ Date">
+                                                        <div class="input-group ">
+                                                            <input type="text" id="txtEpzPermissionDate" ng-model="ConsumptionCertificate.EpzPermissionDate" class="form-control" name="EpzPermissionDate" placeholder="DEPZ Date" readonly />
+                                                            <div class="input-group-addon" ng-click="CalendarOpenDEPZDate()">
+                                                                <span class="fa fa-calendar"></span>
+                                                            </div>
+                                                        </div>
+                                                        <!--<span class="help-block" style="display: block;" ng-if="consumptionCertificateForm.EpzPermissionDate.$error.required && consumptionCertificateForm.EpzPermissionDate.$touched">DEPZ Date is required</span>-->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br />
+                                <div class="panel panel-info">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title"><i class="fa fa-file-text"></i>&nbsp;Description of Export Goods</h3>
+                                    </div>
+
+                                    <div class="panel-footer">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <table class="responstable table-hover">
+                                                    <tbody>
+                                                        <tr>
+                                                            <th class="t-cell-center">S/N</th>
+                                                            <th class="t-cell-center">Item</th>
+                                                            <th class="t-cell-center">Quantity Description</th>
+                                                            <th class="t-cell-center">Quantity</th>
+                                                            <th class="t-cell-center">Unit</th>
+                                                            <th class="t-cell-center">Amount</th>
+                                                        </tr>
+                                                        <tr class="HoverTable searchRow" ng-repeat="aExportGood in ExportGoodslist">
+                                                            <td class="t-cell-center">{{$index + 1}}</td>
+                                                            <!--<td class="t-cell-center">{{aExportGood.ItemName}}</td>-->
+                                                            <td class="t-cell-center">
+                                                                <input ng-model="aExportGood.ItemName" />
+                                                            </td>
+                                                            <!--<td class="t-cell-center">{{aExportGood.QtyDescription}}</td>-->
+                                                            <td class="t-cell-center">
+                                                                <input ng-model="aExportGood.QtyDescription" />
+                                                            </td>
+                                                            <td class="t-cell-center">{{aExportGood.Quantity}}</td>
+                                                            <td class="t-cell-center">{{aExportGood.UnitPrice}}</td>
+                                                            <td class="t-cell-center">{{aExportGood.Amount}}</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br />
+                                <div class="panel panel-info">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title"><i class="fa fa-file-text"></i>&nbsp;Raw Materials</h3>
+                                    </div>
+                                    <div class="panel-footer">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <div class="form-group tooltipAll" ng-class="{ 'has-error' : consumptionCertificateForm.ImportBondNo.$invalid && consumptionCertificateForm.ImportBondNo.$touched }" data-toggle="tooltip" data-placement="bottom" title="Import Bond No">
+                                                    <div class="input-group ">
+                                                        <input type="text" name="ImportBondNo" class="form-control" ng-model="RawMaterial.ImportBondNo" placeholder="Import Bond No" maxlength="101" ng-maxlength="100" required>
+                                                        <span class="input-group-addon"><i class="fa fa-text-width req-icon-color"></i></span>
+                                                    </div>
+                                                    <span class="help-block" style="display: block; color:red" ng-if="consumptionCertificateForm.ImportBondNo.$error.required && consumptionCertificateForm.ImportBondNo.$touched">Import Bond No is required</span>
+                                                    <span class="help-block" style="display: block;color:red" ng-if="consumptionCertificateForm.ImportBondNo.$error.maxlength">100 Character Max</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="form-group tooltipAll" ng-class="{ 'has-error' : consumptionCertificateForm.PreviousBalance.$invalid && consumptionCertificateForm.PreviousBalance.$touched }" data-toggle="tooltip" data-placement="bottom" title="Previous Balance">
+                                                    <div class="input-group">
+                                                        <input type="number" id="txtPreviousBalance" class="form-control txt-center" ng-model="RawMaterial.PreviousBalance" ng-change="raMatrialSubstraction()" placeholder="Previous Balance" required>
+                                                        <span class="input-group-addon"><i class="fa fa-qq" style="color:red;"></i></span>
+                                                    </div>
+                                                    <span class="help-block" style="display: block; color:red" ng-if="consumptionCertificateForm.PreviousBalance.$error.required && consumptionCertificateForm.PreviousBalance.$touched">Previous Balance is required</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="form-group tooltipAll" ng-class="{ 'has-error' : consumptionCertificateForm.ExportQty.$invalid && consumptionCertificateForm.ExportQty.$touched }" data-toggle="tooltip" data-placement="bottom" title="Export Qty">
+                                                    <div class="input-group">
+                                                        <input type="number" id="txtExportQty" class="form-control txt-center" ng-model="RawMaterial.ExportQty" ng-change="raMatrialSubstraction()" placeholder="ExportQty" required>
+                                                        <span class="input-group-addon"><i class="fa fa-qq" style="color:red;"></i></span>
+                                                    </div>
+                                                    <span class="help-block" style="display: block; color:red" ng-if="consumptionCertificateForm.ExportQty.$error.required && consumptionCertificateForm.ExportQty.$touched">Export Quantity is required</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="form-group tooltipAll" ng-class="{ 'has-error' : consumptionCertificateForm.ClosingBalance.$invalid && consumptionCertificateForm.ClosingBalance.$touched }" data-toggle="tooltip" data-placement="bottom" title="Closing Balance">
+                                                    <div class="input-group">
+                                                        <input type="text" id="txtClosingBalance" class="form-control txt-center" ng-model="RawMaterial.ClosingBalance" placeholder="Closing Balance" required readonly>
+                                                        <span class="input-group-addon"><i class="fa fa-qq" style="color:red;"></i></span>
+                                                    </div>
+                                                    <span class="help-block" style="display: block; color:red" ng-if="consumptionCertificateForm.ClosingBalance.$error.required && consumptionCertificateForm.ClosingBalance.$touched">Closing Balance is required</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="col-md-5 col-sm-5 col-lg-5 col-xs-12" style="padding-left: 5%; padding-right: 7%;">
+                                                    <div class="row">
+                                                        <button ng-click="AddRawMaterials();" name="addRaw" ng-disabled="!RawMaterial.ImportBondNo || !RawMaterial.PreviousBalance || !RawMaterial.ExportQty || !RawMaterial.ClosingBalance" id="Button5" class="customBtn custmoBtnSave" title="Add">
+                                                            <i class="fa fa-plus-square"></i>&nbsp;Add
+                                                        </button>
+                                                        <!---->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="panel-footer">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <table class="responstable table-hover">
+                                                    <tbody>
+                                                        <tr>
+                                                            <th class="t-cell-center">S/N</th>
+                                                            <th class="t-cell-center">Import Bond No</th>
+                                                            <th class="t-cell-center">Pre Balance</th>
+                                                            <th class="t-cell-center">Exp Quantity</th>
+                                                            <th class="t-cell-center">Closing Balance</th>
+                                                            <th class="t-cell-center">Remove</th>
+                                                        </tr>
+                                                        <tr ng-show="RawMateriallist.length" class="HoverTable searchRow" ng-repeat="aRawMaterial in RawMateriallist" onclick="RowSelect(this)" ng-click="GetSalesOrderDetails(aSalesOrder);">
+                                                            <td class="t-cell-center">{{$index + 1}}</td>
+                                                            <td class="t-cell-center"><input ng-model="aRawMaterial.ImportBondNo" /></td>
+                                                            <td class="t-cell-center"><input ng-model="aRawMaterial.PreviousBalance" /></td>
+                                                            <td class="t-cell-center"><input ng-model="aRawMaterial.ExportQty" /></td>
+                                                            <td class="t-cell-center"><input ng-model="aRawMaterial.ClosingBalance" /></td>
+                                                            <td class="t-cell-center">
+                                                                <button class="btn btn-primary " style="font-size:12px;margin-top:8px;" ng-click="RawMatrialSRemove(aRawMaterial.ConsumptionCertificateRawMaterialsId)">
+                                                                    <i class="fa fa fa-minus-square"></i> Remove
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 5%; padding-right: 7%;">
+                                            <div class="row">
+                                                <!--ng-disabled=""-->
+                                                <button ng-click="SaveConsumptionCertificate()" name="SaveCC" ng-disabled="!RawMateriallist.length || !ddlConsumptionCertificate || !ConsumptionCertificate.StatementNo || !ConsumptionCertificate.StatementDate" id="btnSaveCC" class="customBtn custmoBtnSave" title="Save">
+                                                    <i class="fa fa-floppy-o"></i>&nbsp;Save
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 6%; padding-right: 5%;">
+                                            <div class="row">
+                                                <button type="button" id="ResetCommercialOrdersBtn" style="width:100%" ng-click="ResetCommercialOrders()" class="btn btn-danger" title="Reset">
+                                                    <i class="fa fa-refresh"></i>&nbsp;Reset
+                                                </button>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <br />
+                                <div class="panel panel-info">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title"><i class="fa fa-list"></i>&nbsp;Consumption Certificate List</h3>
+                                    </div>
+                                    <div class="panel-footer">
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <div class="input-group tooltipAll" data-toggle="tooltip" title="From Date">
+                                                        <input type="text" name="FromDate" id="txtFromDateForCC" ng-model="FromDateCC" class="form-control " placeholder="From Date" readonly />
+                                                        <span class="input-group-addon" ng-click="FormDateChangeForCC()" id="FormDateChange"><i class="fa fa-calendar req-icon-color"></i></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <div class="input-group tooltipAll" data-toggle="tooltip" title="To Date">
+                                                            <input type="text" name="ToDate" id="txtToDateForCC" ng-model="ToDateCC" class="form-control " placeholder="To Date" readonly />
+                                                            <span class="input-group-addon" ng-click="ToDateChangeForCC()" id="ToDateChange"><i class="fa fa-calendar req-icon-color"></i></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group tooltipAll" data-toggle="tooltip" title="Search Company and Invoice No">
+                                                    <input type="text" class="form-control" id="textInvoiceNoAndCompany" ng-model="SearchInvoiceAndCompanyNameCC" name="name" placeholder="Company Name / Invoice No" />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2 col-sm-2 col-lg-2 col-xs-12" style="padding-right: 3%; padding-left: 3%;">
+                                                <div class="row">
+                                                    <button id="btnSearch" class="customBtn custmoBtnSearch tooltipAll" title="Search" ng-click="ConsumptionCertificateSearch();">
+                                                        <i class="fa fa-search-plus"></i>&nbsp;Search
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                             
+                                                    <button id="btnSearch" ng-click="reloadBtnCC()" style="width:100%;" class="btn btn-danger tooltipAll" title="Reload">
+                                                        <i class="fa fa-refresh"></i>&nbsp;Clear
+                                                    </button>
+                                            
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="panel-footer">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <table class="responstable table-hover">
+                                                    <tbody>
+                                                        <tr class="t-head">
+                                                            <th>S/N</th>
+                                                            <th class="txt-center">CI No</th>
+                                                            <th class="txt-center">CI Date</th>
+                                                            <th class="txt-center">Company Name</th>
+                                                            <th class="txt-center">Statement No</th>
+                                                            <th class="txt-center">Statement Date</th>
+                                                            <th class="txt-center">Action</th>
+                                                        </tr>
+                                                        <tr class="HoverTable searchRow" dir-paginate="aConsumptionCertificate in ConsumptionCertificateListPaged | itemsPerPage: PerPageCC" pagination-id="DeliveryChallan" ng-click="" current-page="currentPageCC" total-items="total_countCC">
+                                                            <td class="t-cell-center">{{$index + ((currentPageCC-1)*PerPageCC) + 1}}</td>
+                                                            <td class="txt-center">{{aConsumptionCertificate.CommercialInvoiceNo }}</td>
+                                                            <td class="txt-center">{{aConsumptionCertificate.CommercialInvoiceDate }}</td>
+                                                            <td class="txt-center">{{aConsumptionCertificate.CompanyNameBilling }}</td>
+                                                            <td class="txt-center">{{aConsumptionCertificate.StatementNo }}</td>
+                                                            <td class="txt-center">{{aConsumptionCertificate.StatementDate }}</td>
+
+                                                            <td class="t-cell-center">
+                                                                <button class="btn btn-primary " id="btnLoadCC" ng-disabled="disDDLForCC" style="font-size:12px;margin-top:8px;" ng-click="UpdateConsumptionCertificateDetails(aConsumptionCertificate);GetRawMetrialUpdateBtn(aConsumptionCertificate.CommercialInvoiceId);GetDescriptionOfGoodsUpdate(aConsumptionCertificate.ConsumptionCertificateId )">
+                                                                    <i title="Report" class="fa fa-edit" style="font-size:18px;"> </i> Edit
+                                                                </button>
+                                                                <button class="btn btn-primary " style="font-size:12px;margin-top:8px;" ng-click="OpenReportsForConsumptionCertificate(aConsumptionCertificate.CommercialInvoiceId)">
+                                                                    <i title="Report" class="fa fa-print" style="font-size:18px;"> </i> CC Report
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                        <tr class="t-foot" ng-show="total_countCC>PerPageCC">
+                                                            <th colspan="8">
+                                                                <dir-pagination-controls max-size="8"
+                                                                                         direction-links="true"
+                                                                                         boundary-links="true"
+                                                                                         on-page-change="getDataCC(newPageNumber)" style="text-align:center;"
+                                                                                         pagination-id="DeliveryChallan">
+                                                                </dir-pagination-controls>
+                                                            </th>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                                <div class="row pagination-footer">
+                                                    <div class="col-md-6">
+                                                        <span>Show </span><input class="input-pagesize" type="number" ng-maxlength="100" ng-minlength="1" width="1" ng-model="PerPageCC"> <span>Records </span>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <span class="pull-right">Showing {{((currentPageCC-1)*PerPageCC)+1}} to {{((currentPageCC-1) * PerPageCC) + ConsumptionCertificateListPaged.length}} of {{total_countCC}} Records</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <!-- Abir -->
+                    <div id="TruckChallan" class="tab-pane fade">
+                        <div class="col-md-12 tabBorder">
+                            <div id="overlayTC">
+                                <br />
+                                <div class="panel panel-info">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title"><i class="fa fa-file-text"></i>&nbsp;Truck Challan</h3>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="col-md-5">
+                                                <div class="form-group tooltipAll" ng-class="{ 'has-error' : consumptionCertificateForm.CommercialInvoice.$invalid && consumptionCertificateForm.CommercialInvoice.$touched }" data-toggle="tooltip" data-placement="bottom" title="Select Commercial Invoice No">
+                                                    <div class="input-group width-hundred-percent">
+                                                        <select ng-model="ddlConsCommercialInvoiceForTC" style="width: 100%" id="ddlCommercialInvoiceTC" name="CommercialInvoice" class="form-control selectMendatory" ng-options="commercial.CompanyNameWithCINo for commercial in CommercialInvoiceListForTC track by commercial.CommercialInvoiceId" ng-change="exp_CommercialInvoice.CommercialInvoiceId = ddlConsCommercialInvoiceForTC.CommercialInvoiceId;" ng-disabled="disDDLForTC" required>
+                                                            <option value="" label="Commercial Invoice No" hidden></option>
+                                                        </select>
+                                                        <span class="help-block" ng-show="consumptionCertificateForm.CommercialInvoice.$error.required && consumptionCertificateForm.CommercialInvoice.$touched">Commercial Invoice No is required</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="form-group tooltipAll" ng-class="{ 'has-error' : consumptionCertificateForm.TruckNo.$invalid && consumptionCertificateForm.TruckNo.$touched }" data-toggle="tooltip" data-placement="bottom" title="Transport No">
+                                                    <div class='input-group'>
+                                                        <input type="text" ng-model="exp_TruckChallan.TruckNo" maxlength="50" name="TruckNo" id="txtTruckRegNo" class="form-control " placeholder="Transport No" ng-maxlength="49" required />
+                                                        <span class="input-group-addon"><i class="fa fa-text-width" style="color:red;"></i></span>
+                                                    </div>
+                                                    <span class="help-block" style="display: block;" ng-if="consumptionCertificateForm.TruckNo.$error.required && consumptionCertificateForm.TruckNo.$touched">Transport no is required</span>
+                                                    <span class="help-block" ng-if="consumptionCertificateForm.TruckNo.$error.maxlength">50 Character Max</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="form-group tooltipAll" ng-class="{ 'has-error' : consumptionCertificateForm.TCFooter1.$invalid && consumptionCertificateForm.TCFooter1.$touched }" data-toggle="tooltip" data-placement="bottom" title="TC Footer 1">
+                                                    <div class='input-group'>
+                                                        <textarea type="text" ng-model="exp_TruckChallan.TCFooter1" name="TCFooter1" id="txtTCFooter1" class="form-control " placeholder="FEIGHT / TC Footer 1" ng-maxlength="400" />
+                                                        <span class="input-group-addon"><i class="fa fa-text-width" style="color:black;"></i></span>
+                                                    </div>
+                                                    <span class="help-block" style="display: block;" ng-if="consumptionCertificateForm.TCFooter1.$error.required && consumptionCertificateForm.TCFooter1.$touched">TC Footer 1 is required</span>
+                                                    <span class="help-block" ng-if="consumptionCertificateForm.TCFooter1.$error.maxlength">400 Character Max</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group tooltipAll" ng-class="{ 'has-error' : consumptionCertificateForm.TCFooter2.$invalid && consumptionCertificateForm.TCFooter2.$touched }" data-toggle="tooltip" data-placement="bottom" title="TC Footer 2">
+                                                    <div class='input-group'>
+                                                        <textarea type="text" ng-model="exp_TruckChallan.TCFooter2" name="TCFooter2" id="txtTCFooter2" class="form-control " placeholder="TC Footer 2" ng-maxlength="400" />
+                                                        <span class="input-group-addon"><i class="fa fa-text-width" style="color:black;"></i></span>
+                                                    </div>
+                                                    <span class="help-block" style="display: block;" ng-if="consumptionCertificateForm.TCFooter2.$error.required && consumptionCertificateForm.TCFooter2.$touched">TC Footer 2 is required</span>
+                                                    <span class="help-block" ng-if="consumptionCertificateForm.TCFooter2.$error.maxlength">400 Character Max</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group tooltipAll" ng-class="{ 'has-error' : consumptionCertificateForm.TCFooter3.$invalid && consumptionCertificateForm.TCFooter3.$touched }" data-toggle="tooltip" data-placement="bottom" title="TC Footer 3">
+                                                    <div class='input-group'>
+                                                        <textarea type="text" ng-model="exp_TruckChallan.TCFooter3" name="TCFooter3" id="txtTCFooter3" class="form-control " placeholder="TC Footer 3" ng-maxlength="400" />
+                                                        <span class="input-group-addon"><i class="fa fa-text-width" style="color:black;"></i></span>
+                                                    </div>
+                                                    <span class="help-block" style="display: block;" ng-if="consumptionCertificateForm.TCFooter3.$error.required && consumptionCertificateForm.TCFooter3.$touched">TC Footer 3 is required</span>
+                                                    <span class="help-block" ng-if="consumptionCertificateForm.TCFooter3.$error.maxlength">400 Character Max</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+
+                                            <div class="col-md-4">
+                                                <div class="form-group tooltipAll" ng-class="{ 'has-error' : consumptionCertificateForm.TCFooter4.$invalid && consumptionCertificateForm.TCFooter4.$touched }" data-toggle="tooltip" data-placement="bottom" title="TC Footer 4">
+                                                    <div class='input-group'>
+                                                        <textarea type="text" ng-model="exp_TruckChallan.TCFooter4" name="TCFooter4" id="txtTCFooter4" class="form-control " placeholder="TC Footer 4" ng-maxlength="400" />
+                                                        <span class="input-group-addon"><i class="fa fa-text-width" style="color:black;"></i></span>
+                                                    </div>
+                                                    <span class="help-block" style="display: block;" ng-if="consumptionCertificateForm.TCFooter4.$error.required && consumptionCertificateForm.TCFooter4.$touched">TC Footer 4 is required</span>
+                                                    <span class="help-block" ng-if="consumptionCertificateForm.TCFooter4.$error.maxlength">400 Character Max</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group tooltipAll" ng-class="{ 'has-error' : consumptionCertificateForm.TCFooter5.$invalid && consumptionCertificateForm.TCFooter5.$touched }" data-toggle="tooltip" data-placement="bottom" title="TC Footer 5">
+                                                    <div class='input-group'>
+                                                        <textarea type="text" ng-model="exp_TruckChallan.TCFooter5" name="TCFooter5" id="txtTCFooter5" class="form-control " placeholder="TC Footer 5" ng-maxlength="400" />
+                                                        <span class="input-group-addon"><i class="fa fa-text-width" style="color:black;"></i></span>
+                                                    </div>
+                                                    <span class="help-block" style="display: block;" ng-if="consumptionCertificateForm.TCFooter5.$error.required && consumptionCertificateForm.TCFooter5.$touched">TC Footer 5 is required</span>
+                                                    <span class="help-block" ng-if="consumptionCertificateForm.TCFooter5.$error.maxlength">400 Character Max</span>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 5%; padding-right: 7%;">
+                                            <div class="row">
+                                                <button id="btnSaveTC" class="customBtn custmoBtnSave" name="SaveTC" ng-click="SaveTruckChallan()" title="Save" ng-disabled="!ddlConsCommercialInvoiceForTC || !exp_TruckChallan.TruckNo">
+                                                    <!--!ddlCommercialInvoice || !exp_CommercialInvoice.DcGateNo|| !exp_CommercialInvoice.VehicleRegNo-->
+                                                    <i class="fa fa-save"></i>&nbsp;{{button}}
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 7%; padding-right: 5%;">
+                                            <div class="row">
+                                                <button id="btnResetForTC" class="btn btn-danger" style="width:100%" title="Reset" ng-click="resetTruckChallanForm()">
+                                                    <i class="fa fa-refresh"></i>&nbsp;Reset
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+
+                            <div>
+                                <br />
+                                <div class="panel panel-info">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title"><i class="fa fa-list"></i>&nbsp;Truck Challan List</h3>
+                                    </div>
+                                    <div class="panel-footer">
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <div class="input-group tooltipAll " data-toggle="tooltip" title="From Date">
+                                                        <input type="text" name="FromDate" id="txtFromDateForTC" ng-model="FromDateTC" class="form-control " placeholder="From Date" readonly />
+                                                        <span class="input-group-addon" ng-click="FormDateChangeForTC()" id="FormDateChange"><i class="fa fa-calendar req-icon-color"></i></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <div class="input-group tooltipAll" data-toggle="tooltip" title="To Date">
+                                                            <input type="text" name="ToDate" id="txtToDateForTC" ng-model="ToDateTC" class="form-control " placeholder="To Date" readonly />
+                                                            <span class="input-group-addon" ng-click="ToDateChangeForTC()" id="ToDateChange"><i class="fa fa-calendar req-icon-color"></i></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group tooltipAll" data-toggle="tooltip" title="Search Company and Invoice No">
+                                                    <input type="text" class="form-control" id="textInvoiceNoAndCompany" ng-model="SearchInvoiceAndCompanyNameTC" name="name" placeholder="Company Name / Invoice No" />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2 col-sm-2 col-lg-2 col-xs-12" style="padding-right: 3%; padding-left: 3%;">
+                                                <div class="row">
+                                                    <button id="btnSearch" class="customBtn custmoBtnSearch tooltipAll" title="Search" ng-click="TruckChallanSearch();">
+                                                        <i class="fa fa-search-plus"></i>&nbsp;Search
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                              
+                                                    <button id="btnSearch" ng-click="reloadBtnTC()" style="width:100%" class="btn btn-danger tooltipAll" title="Reload">
+                                                        <i class="fa fa-refresh"></i>&nbsp;Clear
+                                                    </button>
+                                            
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="panel-footer">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <table class="responstable table-hover">
+                                                    <tbody>
+                                                        <tr class="t-head">
+                                                            <th>S/N</th>
+                                                            <th class="txt-center">CI No</th>
+                                                            <th class="txt-center">CI Date</th>
+                                                            <th class="txt-center">Company Name</th>
+                                                            <th class="txt-center">Truck No</th>
+                                                            <th class="txt-center">Action</th>
+                                                        </tr>
+                                                        <tr class="HoverTable searchRow" dir-paginate="aTruckChallan in TruckChallanListPaged | itemsPerPage: PerPageTC" pagination-id="TruckChallan" ng-click="" current-page="currentPageTC" total-items="total_countTC">
+                                                            <td class="t-cell-center">{{$index + ((currentPageTC-1)*PerPageTC) + 1}}</td>
+                                                            <td class="txt-center">{{aTruckChallan.CommercialInvoiceNo }}</td>
+                                                            <td class="txt-center">{{aTruckChallan.CommercialInvoiceDate }}</td>
+                                                            <td class="txt-center">{{aTruckChallan.CompanyNameBilling }}</td>
+                                                            <td class="txt-center">{{aTruckChallan.TruckNo }}</td>
+                                                            <td class="t-cell-center">
+                                                                <button class="btn btn-primary " style="font-size:12px;margin-top:8px;" ng-click="UpdateTruckChallanDetails(aTruckChallan);">
+                                                                    <i title="Report" class="fa fa-edit" style="font-size:18px;"> </i> Edit
+                                                                </button>
+                                                                <button class="btn btn-primary " style="font-size:12px;margin-top:8px;" ng-click="TrackChalanBtn(aTruckChallan.CommercialInvoiceId)">
+                                                                    <i title="Report" class="fa fa-print" style="font-size:18px;"> </i> TC Report
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                        <tr class="t-foot" ng-show="total_countTC>PerPageTC">
+                                                            <th colspan="8">
+                                                                <dir-pagination-controls max-size="8"
+                                                                                         direction-links="true"
+                                                                                         boundary-links="true"
+                                                                                         on-page-change="getDataTC(newPageNumber)" style="text-align:center;"
+                                                                                         pagination-id="TruckChallan">
+                                                                </dir-pagination-controls>
+                                                            </th>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                                <div class="row pagination-footer">
+                                                    <div class="col-md-6">
+                                                        <span>Show </span><input class="input-pagesize" type="number" ng-maxlength="100" ng-minlength="1" width="1" ng-model="PerPageTC"> <span>Records </span>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <span class="pull-right">Showing {{((currentPageTC-1)*PerPageTC)+1}} to {{((currentPageTC-1) * PerPageTC) + TruckChallanListPaged.length}} of {{total_countTC}} Records</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="ChallanGate" class="tab-pane fade">
+                        <div class="col-md-12 tabBorder">
+                            <div id="overlayDC">
+                                <br />
+                                <div class="panel panel-info">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title"><i class="fa fa-file-text"></i>&nbsp;Delivery Challan Gate</h3>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="col-md-5">
+                                                <div class="form-group tooltipAll" ng-class="{ 'has-error' : consumptionCertificateForm.CommercialInvoice.$invalid && consumptionCertificateForm.CommercialInvoice.$touched }" data-toggle="tooltip" data-placement="bottom" title="Select Commercial Invoice No">
+                                                    <div class="input-group width-hundred-percent">
+                                                        <select ng-model="ddlConsCommercialInvoiceForDC" ng-disabled="disDDLForDC" name="CommercialInvoiceForDC" style="width: 100%" id="ddlCommercialInvoiceDC" class="form-control selectMendatory" ng-options="commercial.CompanyNameWithCINo for commercial in CommercialInvoiceListForDC track by commercial.CommercialInvoiceId" ng-change="exp_DeliveryChallan.CommercialInvoiceId = ddlConsCommercialInvoiceForDC.CommercialInvoiceId;" required>
+                                                            <option value="" label="Commercial Invoice No" hidden></option>
+                                                        </select>
+                                                        <span class="help-block" ng-show="consumptionCertificateForm.CommercialInvoice.$error.required && consumptionCertificateForm.CommercialInvoice.$touched">Commercial Invoice No is required</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="form-group tooltipAll" ng-class="{ 'has-error' : consumptionCertificateForm.DcGateNo.$invalid && consumptionCertificateForm.DcGateNo.$touched }" data-toggle="tooltip" data-placement="bottom" title="Challan No">
+                                                    <div class="input-group">
+                                                        <input type="text" ng-model="exp_DeliveryChallan.DcGateNo" maxlength="50" id="txtDcGateNo" name="DcGateNo" class="form-control" placeholder="Challan No" ng-blur="CheckDuplicateDcGateNo()" ng-change="foundChange()" ng-maxlength="49" required />
+                                                        <span class="input-group-addon"><i class="fa fa-text-width" style="color:red;"></i></span>
+                                                    </div>
+                                                    <span class="help-block" style="display: block;" ng-if="consumptionCertificateForm.DcGateNo.$error.required && consumptionCertificateForm.DcGateNo.$touched">Challan no is required</span>
+                                                    <span class="help-block" ng-if="consumptionCertificateForm.DcGateNo.$error.maxlength">50 Character Max</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group tooltipAll" ng-class="{ 'has-error' : consumptionCertificateForm.VehicleRegNo.$invalid && consumptionCertificateForm.VehicleRegNo.$touched }" data-toggle="tooltip" data-placement="bottom" title="Transport No">
+                                                    <div class='input-group'>
+                                                        <input type="text" ng-model="exp_DeliveryChallan.VehicleRegNo" maxlength="50" name="VehicleRegNo" id="txtVehicleRegNo" class="form-control " placeholder="Transport No" ng-blur="CheckDuplicateVehicleRegNo()" ng-maxlength="49" required />
+                                                        <span class="input-group-addon"><i class="fa fa-text-width" style="color:red;"></i></span>
+                                                    </div>
+                                                    <span class="help-block" style="display: block;" ng-if="consumptionCertificateForm.VehicleRegNo.$error.required && consumptionCertificateForm.VehicleRegNo.$touched">Transport no is required</span>
+                                                    <span class="help-block" ng-if="consumptionCertificateForm.VehicleRegNo.$error.maxlength">50 Character Max</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!--end-->
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 5%; padding-right: 7%;">
+                                            <div class="row">
+                                                <button id="btnSaveDC" class="customBtn custmoBtnSave" name="SaveDC" ng-click="SaveDeliveryChallan()" title="Save" ng-disabled="!exp_DeliveryChallan.DcGateNo ||!exp_DeliveryChallan.VehicleRegNo||!ddlConsCommercialInvoiceForDC">
+                                                    <!--!ddlCommercialInvoice || !exp_CommercialInvoice.DcGateNo|| !exp_CommercialInvoice.VehicleRegNo-->
+                                                    <i class="fa fa-save"></i>&nbsp;{{button}}
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 7%; padding-right: 5%;">
+                                            <div class="row">
+                                                <button id="btnResetForDC" class="btn btn-danger" title="Reset" ng-click="resetChallanGateForm()">
+                                                    <i class="fa fa-refresh"></i>&nbsp;Reset
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <br />
+                                <div class="panel panel-info">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title"><i class="fa fa-list"></i>&nbsp;Delivery Challan List</h3>
+                                    </div>
+                                    <div class="panel-footer">
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <div class="input-group tooltipAll" data-toggle="tooltip" title="From Date">
+                                                        <input type="text" name="FromDate" id="txtFromDateForDC" ng-model="FromDateDC" class="form-control " placeholder="From Date" readonly />
+                                                        <span class="input-group-addon" ng-click="FormDateChangeForDC()" id="FormDateChange"><i class="fa fa-calendar req-icon-color"></i></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <div class="input-group tooltipAll" data-toggle="tooltip" title="To Date">
+                                                            <input type="text" name="ToDate" id="txtToDateForDC" ng-model="ToDateDC" class="form-control " placeholder="To Date" readonly />
+                                                            <span class="input-group-addon" ng-click="ToDateChangeForDC()" id="ToDateChange"><i class="fa fa-calendar req-icon-color"></i></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group tooltipAll" data-toggle="tooltip" title="Search Company and Invoice No">
+                                                    <input type="text" class="form-control" id="textInvoiceNoAndCompany" ng-model="SearchInvoiceAndCompanyNameDC" name="name" placeholder="Company Name / Invoice No" />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2 col-sm-2 col-lg-2 col-xs-12" style="padding-right: 3%; padding-left: 3%;">
+                                                <div class="row">
+                                                    <button id="btnSearch" class="customBtn custmoBtnSearch tooltipAll"   title="Search" ng-click="DeliveryChallanSearch();">
+                                                        <i class="fa fa-search-plus"></i>&nbsp;Search
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="row">
+                                                    <button id="btnSearch" ng-click="reloadBtnDC()" class="btn btn-danger tooltipAll" style="width:100%" title="Reload">
+                                                        <i class="fa fa-refresh"></i>&nbsp;Clear
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="panel-footer">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <table class="responstable table-hover">
+                                                    <tbody>
+                                                        <tr class="t-head">
+                                                            <th>S/N</th>
+                                                            <th class="txt-center">CI No</th>
+                                                            <th class="txt-center">CI Date</th>
+                                                            <th class="txt-center">Company Name</th>
+                                                            <th class="txt-center">Challan No</th>
+                                                            <th class="txt-center">Transport No</th>
+                                                            <th class="txt-center">Action</th>
+                                                        </tr>
+                                                        <tr class="HoverTable searchRow" dir-paginate="aDeliveryChallan in DeliveryChallanListPaged | itemsPerPage: PerPageDC" pagination-id="DeliveryChallan" ng-click="" current-page="currentPageDC" total-items="total_countDC">
+                                                            <td class="t-cell-center">{{$index + ((currentPageDC-1)*PerPageDC) + 1}}</td>
+                                                            <td class="txt-center">{{aDeliveryChallan.CommercialInvoiceNo }}</td>
+                                                            <td class="txt-center">{{aDeliveryChallan.CommercialInvoiceDate }}</td>
+                                                            <td class="txt-center">{{aDeliveryChallan.CompanyNameBilling }}</td>
+                                                            <td class="txt-center">{{aDeliveryChallan.DcGateNo }}</td>
+                                                            <td class="txt-center">{{aDeliveryChallan.VehicleRegNo }}</td>
+                                                            <td class="t-cell-center">
+                                                                <button class="btn btn-primary" style="font-size:12px;margin-top:8px;"
+                                                                        ng-click="UpdateDeliveryGet(aDeliveryChallan)">
+                                                                    <i title="Report" class="fa fa-edit" style="font-size:18px;"> </i> Edit
+                                                                </button>
+                                                                <button class="btn btn-primary" style="font-size:12px;margin-top:8px;"
+                                                                        ng-click="DeliveryChalanOneBtnTable(aDeliveryChallan.CommercialInvoiceId)">
+                                                                    <i title="Report" class="fa fa-print" style="font-size:18px;"> </i> DC Report
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                        <tr class="t-foot" ng-show="total_countDC>PerPageDC">
+                                                            <th colspan="8">
+                                                                <dir-pagination-controls max-size="8"
+                                                                                         direction-links="true"
+                                                                                         boundary-links="true"
+                                                                                         on-page-change="getDataDC(newPageNumber)" style="text-align:center;"
+                                                                                         pagination-id="DeliveryChallan">
+                                                                </dir-pagination-controls>
+                                                            </th>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                                <div class="row pagination-footer">
+                                                    <div class="col-md-6">
+                                                        <span>Show </span><input class="input-pagesize" type="number" ng-maxlength="100" ng-minlength="1" width="1" ng-model="PerPageDC"> <span>Records </span>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <span class="pull-right">Showing {{((currentPageDC-1)*PerPageDC)+1}} to {{((currentPageDC-1) * PerPageDC) + DeliveryChallanListPaged.length}} of {{total_countDC}} Records</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div id="ExportDocs" class="tab-pane fade">
+                        <div class="col-md-12 tabBorder">
+                            <div id="overlayBD">
+                                <br />
+                                <div class="panel panel-info">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title pull-left "><i class="fa fa-file-text-o"></i>&nbsp;Bank Document{{Mood}}</h3>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                    <div class="panel-body">
+
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="col-md-5">
+                                                    <div class="form-group tooltipAll" ng-class="{ 'has-error' : consumptionCertificateForm.CommercialInvoice.$invalid && consumptionCertificateForm.CommercialInvoice.$touched }" data-toggle="tooltip" data-placement="bottom" title="Select Commercial Invoice No">
+                                                        <div class="input-group width-hundred-percent">
+                                                            <select ng-model="ddlCommercialInvoiceForBankDoc" style="width: 100%" id="ddlCommercialInvoiceBD" name="CommercialInvoice" class="form-control selectMendatory" ng-options="InvoiceNo.CompanyNameWithCINo for InvoiceNo in CommercialInvoiceForBankDocList track by InvoiceNo.CommercialInvoiceId" ng-change="BankDocument.CommercialInvoiceId = ddlCommercialInvoiceForBankDoc.CommercialInvoiceId; GetBankDocumentlistByBankAccountId();" ng-disabled="disDDLForBD" required>
+                                                                <option value="" label="Commercial Invoice No"></option>
+                                                            </select>
+                                                            <span class="help-block" ng-show="consumptionCertificateForm.CommercialInvoice.$error.required && consumptionCertificateForm.CommercialInvoice.$touched">Commercial Invoice No is required</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="col-md-5">
+                                                    <div class="form-group tooltipAll" ng-class="{ 'has-error' : consumptionCertificateForm.BankApplicationTo.$invalid && consumptionCertificateForm.BankApplicationTo.$touched }" data-toggle="tooltip" data-placement="bottom" title="Bank Application To">
+                                                        <div class="input-group ">
+                                                            <input type="text" name="BankApplicationTo" class="form-control" ng-model="BankDocument.BankApplicationTo" placeholder="Bank Application To" maxlength="101" ng-maxlength="100" required>
+                                                            <span class="input-group-addon"><i class="fa fa-text-width req-icon-color"></i></span>
+                                                        </div>
+                                                        <span class="help-block" style="display: block; color:red" ng-if="consumptionCertificateForm.BankApplicationTo.$error.required && consumptionCertificateForm.BankApplicationTo.$touched">Bank Application is required</span>
+                                                        <span class="help-block" style="display: block;color:red" ng-if="consumptionCertificateForm.BankApplicationTo.$error.maxlength">100 Character Max</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-5">
+                                                    <div class="form-group tooltipAll" ng-class="{ 'has-error' : consumptionCertificateForm.BankDocumentToDepartment.$invalid && consumptionCertificateForm.BankDocumentToDepartment.$touched }" data-toggle="tooltip" data-placement="bottom" title="BankDocument To Department">
+                                                        <div class="input-group ">
+                                                            <input type="text" name="BankDocumentToDepartment" class="form-control" ng-model="BankDocument.BankDocumentToDepartment" placeholder="BankDoc. To Department" maxlength="51" ng-maxlength="50" required>
+                                                            <span class="input-group-addon"><i class="fa fa-text-width req-icon-color"></i></span>
+                                                        </div>
+                                                        <span class="help-block" style="display: block; color:red" ng-if="consumptionCertificateForm.BankDocumentToDepartment.$error.required && consumptionCertificateForm.BankDocumentToDepartment.$touched">BankDocument To Department is required</span>
+                                                        <span class="help-block" style="display: block;color:red" ng-if="consumptionCertificateForm.BankDocumentToDepartment.$error.maxlength">50 Character Max</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <div class="form-group" ng-class="{ 'has-error' :consumptionCertificateForm.AppDate.$invalid && consumptionCertificateForm.AppDate.$touched }" data-toggle="tooltip" data-placement="bottom" title="Application Date">
+                                                        <div class="input-group tooltipAll" data-toggle="tooltip" title="Application Date">
+                                                            <input type="text" id="txtApplicationDate" ng-model="BankDocument.AppDate" class="form-control" name="AppDate" placeholder="App. Date" maxlength="40" readonly />
+
+                                                            <span class="input-group-addon" ng-click="CalendarApplication()" id="calenderLCSC"><i class="fa fa-calendar req-icon-color"></i></span>
+                                                        </div>
+                                                        <span class="help-block" style="display: block;" ng-if="consumptionCertificateForm.AppDate.$error.required && consumptionCertificateForm.AppDate.$touched">A Date is required</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel panel-info">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title"><i class="fa fa-file-text-o">&nbsp;</i>Bank Document Detail</h3>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="col-md-3">
+                                                    <div class="form-group" ng-class="{ 'has-error' : consumptionCertificateForm.NameOfDocument.$invalid && consumptionCertificateForm.NameOfDocument.$touched }" data-toggle="tooltip" data-placement="bottom" title="Name Of Document">
+                                                        <div class="input-group ">
+                                                            <input type="text" name="NameOfDocument" class="form-control" ng-model="BankDocumentDetail.NameOfDocument" placeholder="Name Of Document" maxlength="101" ng-maxlength="100" required>
+                                                            <input style="display:none;" type="text" name="NameOfDocumentHidden" id="txtNameOfDocumentHidden" class="form-control">
+                                                            <span class="input-group-addon"><i class="fa fa-text-width req-icon-color"></i></span>
+                                                        </div>
+                                                        <span class="help-block" style="display: block; color:red" ng-if="consumptionCertificateForm.NameOfDocument.$error.required && consumptionCertificateForm.NameOfDocument.$touched">Name Of Document is required</span>
+                                                        <span class="help-block" style="display: block;color:red" ng-if="consumptionCertificateForm.NameOfDocument.$error.maxlength">100 Character Max</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <div class="form-group tooltipAll" data-toggle="tooltip" data-placement="bottom" title="Origin Set">
+                                                        <div class="input-group ">
+                                                            <input type="text" name="OriginSet" class="form-control" ng-model="BankDocumentDetail.OriginSet" placeholder="Origin Set" maxlength="51" ng-maxlength="50" required>
+                                                            <input style="display:none;" type="text" name="OriginSetHidden" id="txtOriginSetHidden" class="form-control">
+                                                            <span class="input-group-addon"><i class="fa fa-text-width req-icon-color"></i></span>
+                                                        </div>
+                                                        <span class="help-block" style="display: block;color:red" ng-if="consumptionCertificateForm.OriginSet.$error.maxlength">50 Character Max</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <div class="form-group tooltipAll" ng-class="{ 'has-error' : consumptionCertificateForm.Sets.$invalid && consumptionCertificateForm.Sets.$touched }" data-toggle="tooltip" data-placement="bottom" title="Sets">
+                                                        <div class="input-group ">
+                                                            <input type="text" name="Sets" class="form-control" ng-model="BankDocumentDetail.Sets" placeholder="Sets" maxlength="11" ng-maxlength="10" required>
+                                                            <input style="display:none;" type="text" name="SetsHidden" id="txtSetsHidden" class="form-control" ng-model="BankDocumentDetail.Sets">
+                                                            <span class="input-group-addon"><i class="fa fa-text-width req-icon-color"></i></span>
+                                                        </div>
+                                                        <span class="help-block" style="display: block; color:red" ng-if="consumptionCertificateForm.Sets.$error.required && consumptionCertificateForm.Sets.$touched">Sets is required</span>
+                                                        <span class="help-block" style="display: block;color:red" ng-if="consumptionCertificateForm.Sets.$error.maxlength">10 Character Max</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <div class="input-group">
+                                                        <input type="number" name="SerialNumber" class="form-control tooltipAll" ng-model="SN" placeholder="Serial Number" title="Serial Number" maxlength="100" ng-maxlength="99" />
+                                                        <span class="input-group-addon"><i class="fa fa-qq" style="color:red;"></i></span>
+                                                    </div>
+                                                    <span class="help-block" ng-if="BankDocumentEntry.SerialNumber.$error.required && BankDocumentEntry.SerialNumber.$touched">Serial Number is required</span>
+                                                    <span class="help-block" ng-if="BankDocumentEntry.SerialNumber.$error.maxlength">100 Character Max</span>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="col-md-5 col-sm-5 col-lg-5 col-xs-12" style="padding-left: 5%; padding-right: 7%;">
+                                                        <div class="row">
+                                                            <button ng-hide="hideAddBtn" name="addBD" ng-click="AddBankDocumentDetail()" id="Button5" class="customBtn custmoBtnSave" ng-disabled="!BankDocumentDetail.NameOfDocument || !BankDocumentDetail.Sets" title="Add">
+                                                                <i class="fa fa-floppy-o"></i>&nbsp;Add
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="panel-footer">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <table id="sortable" class="responstable table-hover">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="t-cell-center">S/N</th>
+                                                            <th class="t-cell-center">Name of document</th>
+                                                            <th class="t-cell-center">Original Set</th>
+                                                            <th class="t-cell-center">Set</th>
+                                                            <th class="t-cell-center">Remove</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr ng-show="BankDocumentlist.length" class="HoverTable searchRow" ng-repeat="aBankDocument in BankDocumentlist" onclick="RowSelect(this)">
+                                                            <td class="t-cell-center"></td>
+                                                            <td class="t-cell-center"><input ng-model="aBankDocument.NameOfDocument" /></td>
+                                                            <td class="t-cell-center"><input ng-model="aBankDocument.OriginSet" /></td>
+                                                            <td class="t-cell-center"><input ng-model="aBankDocument.Sets" /></td>
+                                                            <td class="t-cell-center">
+                                                                <button title="Remove" ng-click="removeDocumentName(aBankDocument)">
+                                                                    <i class="fa fa-minus-square"></i>&nbsp;
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 5%; padding-right: 7%;">
+                                            <div class="row">
+                                                <button ng-click="SaveBankDocuments()" name="SaveBD" id="btnSaveBD" class="customBtn custmoBtnSave" ng-disabled="!ddlCommercialInvoiceForBankDoc || !BankDocument.BankApplicationTo || !BankDocument.BankDocumentToDepartment || !BankDocumentlist.length || !BankDocument.AppDate" title="Save">
+                                                    <i class="fa fa-floppy-o"></i>&nbsp;Save
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 6%; padding-right: 5%;">
+                                            <div class="row">
+                                                <button type="button" id="btnResetForBD" style="width:100%" ng-click="ResetBankDetailForm()" class="btn btn-danger" title="Reset">
+                                                    <i class="fa fa-refresh"></i>&nbsp;Reset
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <br />
+                                <div class="panel panel-info">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title"><i class="fa fa-list"></i>&nbsp;Bank Document List</h3>
+                                    </div>
+                                    <div class="panel-footer">
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <div class="input-group tooltipAll" data-toggle="tooltip" title="From Date">
+                                                        <input type="text" name="FromDate" id="txtFromDateForBD" ng-model="FromDateBD" class="form-control " placeholder="From Date" readonly />
+                                                        <span class="input-group-addon" ng-click="FormDateChangeForBD()" id="FormDateChange"><i class="fa fa-calendar req-icon-color"></i></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <div class="input-group tooltipAll" data-toggle="tooltip" title="To Date">
+                                                            <input type="text" name="ToDate" id="txtToDateForBD" ng-model="ToDateBD" class="form-control " placeholder="To Date" readonly />
+                                                            <span class="input-group-addon" ng-click="ToDateChangeForBD()" id="ToDateChange"><i class="fa fa-calendar req-icon-color"></i></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group tooltipAll" data-toggle="tooltip" title="Search Company and Invoice No">
+                                                    <input type="text" class="form-control" id="textInvoiceNoAndCompany" ng-model="SearchInvoiceAndCompanyNameBD" name="name" placeholder="Company Name / Invoice No" />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2 col-sm-2 col-lg-2 col-xs-12" style="padding-right: 3%; padding-left: 3%;">
+                                                <div class="row">
+                                                    <button id="btnSearch" class="customBtn custmoBtnSearch tooltipAll" title="Search" ng-click="BankDocumentSearch();">
+                                                        <i class="fa fa-search-plus"></i>&nbsp;Search
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                             
+                                                    <button id="btnSearch" ng-click="reloadBtnBD()" style="width:100%" class="btn btn-danger tooltipAll" title="Reload">
+                                                        <i class="fa fa-refresh"></i>&nbsp;Clear
+                                                    </button>
+                                               
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="panel-footer">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <table class="responstable table-hover">
+                                                    <tbody>
+                                                        <tr class="t-head">
+                                                            <th>S/N</th>
+                                                            <th class="txt-center">CI No</th>
+                                                            <th class="txt-center">CI Date</th>
+                                                            <th class="txt-center">Company Name</th>
+                                                            <th class="t-cell-center">Bank Name</th>
+
+                                                            <th class="t-cell-center">App Date</th>
+                                                            <th class="txt-center">Action</th>
+                                                        </tr>
+                                                        <tr class="HoverTable searchRow" dir-paginate="aBankDocument in BankDocumentListPaged | itemsPerPage: PerPageBD" pagination-id="BankDocument" ng-click="" current-page="currentPageBD" total-items="total_countBD">
+                                                            <td class="t-cell-center">{{$index + ((currentPageBD-1)*PerPageBD) + 1}}</td>
+                                                            <td class="txt-center">{{aBankDocument.CommercialInvoiceNo }}</td>
+                                                            <td class="txt-center">{{aBankDocument.CommercialInvoiceDate }}</td>
+                                                            <td class="txt-center">{{aBankDocument.CompanyNameBilling }}</td>
+                                                            <td class="t-cell-center">{{aBankDocument.BankName}}</td>
+
+                                                            <td class="t-cell-center">{{aBankDocument.AppDate}}</td>
+                                                            <td class="t-cell-center">
+                                                                <button class="btn btn-primary" ng-disabled="IsEdit" id="btnLoadBD" ng-click="UpdateBankDocument(aBankDocument)">
+                                                                    <i title="Report" class="fa fa-edit" style="font-size:18px;"> </i>  Edit
+                                                                </button>
+                                                                <button class="btn btn-primary" ng-click="bankDocumentBtn(aBankDocument.CommercialInvoiceId)">
+                                                                    <i title="Report" class="fa fa-print" style="font-size:18px;"> </i> BD Report
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                        <tr class="t-foot" ng-show="total_countBD>PerPageBD">
+                                                            <th colspan="8">
+                                                                <dir-pagination-controls max-size="8"
+                                                                                         direction-links="true"
+                                                                                         boundary-links="true"
+                                                                                         on-page-change="getDataBD(newPageNumber)" style="text-align:center;"
+                                                                                         pagination-id="BankDocument">
+                                                                </dir-pagination-controls>
+                                                            </th>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                                <div class="row pagination-footer">
+                                                    <div class="col-md-6">
+                                                        <span>Show </span><input class="input-pagesize" type="number" ng-maxlength="100" ng-minlength="1" width="1" ng-model="PerPageBD"> <span>Records </span>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <span class="pull-right">Showing {{((currentPageBD-1)*PerPageBD)+1}} to {{((currentPageBD-1) * PerPageBD) + BankDocumentListPaged.length}} of {{total_countBD}} Records</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div id="othersReports" class="tab-pane fade">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <p style="font-size:22px;font-weight:bold;">
+                                    <span><i class="fa fa-list "></i></span>&nbsp; Reports List
+                                </p>
+
+                            </div>
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="col-md-5">
+                                                <div class="form-group tooltipAll" ng-class="{ 'has-error' : consumptionCertificateForm.CommercialInvoice.$invalid && consumptionCertificateForm.CommercialInvoice.$touched }" data-toggle="tooltip" data-placement="bottom" title="Select Commercial Invoice No">
+                                                    <div class="input-group width-hundred-percent">
+                                                        <select ng-model="ddlConsCommercialInvoiceForReport" style="width: 100%" id="ddlCommercialInvoiceAll" name="CommercialInvoice" class="form-control selectMendatory" ng-options="commercial.CompanyNameWithCiNum for commercial in CommercialInvoiceListForReport track by commercial.CommercialInvoiceId" ng-change="exp_CommercialInvoice.CommercialInvoiceId = ddlConsCommercialInvoiceForReport.CommercialInvoiceId;" required>
+                                                            <option value="" label="Commercial Invoice No" hidden></option>
+                                                        </select>
+                                                        <span class="help-block" ng-show="consumptionCertificateForm.CommercialInvoice.$error.required && consumptionCertificateForm.CommercialInvoice.$touched">Commercial Invoice No is required</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-4 col-md-2"></div>
+
+                                    <div class="col-8 col-md-6">
+                                        <table class="table table-bordered" style="text-align:center;">
+                                            <tr>
+                                                <td style="text-align:justify;">
+                                                    <p style="font-weight:bold;font-size:16px;">
+                                                        1. Certificate Of Origin
+                                                    </p>
+                                                </td>
+
+                                                <td>
+
+                                                    <button class="btn btn-primary" style="font-size:13px; padding:12.5px"
+                                                            ng-click="CofOriginDdl(ddlConsCommercialInvoiceForReport)">
+                                                        <i title="Report" class="fa fa-print" style="font-size:18px;"> </i>   Report
+                                                    </button>
+
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td style="text-align:justify;">
+                                                    <p style="font-weight:bold;font-size:16px;">
+                                                        2. Certificate Of Origin PreInspection
+                                                    </p>
+                                                </td>
+
+                                                <td>
+
+                                                    <button class="btn btn-primary" style="font-size:13px; padding:12.5px"
+                                                            ng-click="CertificateOfPreInspectionBtn(ddlConsCommercialInvoiceForReport)">
+                                                        <i title="Report" class="fa fa-print" style="font-size:18px;"> </i>   Report
+                                                    </button>
+
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td style="text-align:justify;">
+                                                    <p style="font-weight:bold;font-size:16px;">
+                                                        3. Beneficiary's Certificate
+                                                    </p>
+                                                </td>
+
+                                                <td>
+                                                    <button class="btn btn-primary" style="font-size:13px; padding:12.5px"
+                                                            ng-click="BinificaryCertificateBtn(ddlConsCommercialInvoiceForReport.CommercialInvoiceId)">
+                                                        <i title="Report" class="fa fa-print" style="font-size:18px;"> </i>  Report
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:justify;">
+                                                    <p style="font-weight:bold;font-size:16px;">
+                                                        4. Bill Of exchange 1
+                                                    </p>
+                                                </td>
+
+                                                <td>
+                                                    <button class="btn btn-primary" style="font-size:13px; padding:12.5px"
+                                                            ng-click="BillOfExchangeCertificateBtn(ddlConsCommercialInvoiceForReport.CommercialInvoiceId)">
+                                                        <i title="Report" class="fa fa-print" style="font-size:18px;"> </i>  Report
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:justify;">
+                                                    <p style="font-weight:bold;font-size:16px;">
+                                                        5. Bill Of exchange 2
+                                                    </p>
+                                                </td>
+
+                                                <td>
+                                                    <button class="btn btn-primary" style="font-size:13px; padding:12.5px"
+                                                            ng-click="BillOfExchange2CertificateBtn(ddlConsCommercialInvoiceForReport.CommercialInvoiceId)">
+                                                        <i title="Report" class="fa fa-print" style="font-size:18px;"> </i>  Report
+                                                    </button>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td style="text-align:justify;">
+                                                    <p style="font-weight:bold;font-size:16px;">
+                                                        6.  Delivery Chalan One
+                                                    </p>
+                                                </td>
+
+                                                <td>
+                                                    <button class="btn btn-primary" style="font-size:13px; padding:12.5px"
+                                                            ng-click="DeliveryChalanTwoBtn(ddlConsCommercialInvoiceForReport.CommercialInvoiceId)">
+                                                        <i title="Report" class="fa fa-print" style="font-size:18px;"> </i>  Report
+                                                    </button>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td style="text-align:justify;">
+                                                    <p style="font-weight:bold;font-size:16px;">
+                                                        7. Packing List
+                                                    </p>
+                                                </td>
+
+                                                <td>
+                                                    <button class="btn btn-primary" style="font-size:13px; padding:12.5px"
+                                                            ng-click="PackingListBtn(ddlConsCommercialInvoiceForReport.CommercialInvoiceId)">
+                                                        <i title="Report" class="fa fa-print" style="font-size:18px;"> </i> Report
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:justify;">
+                                                    <p style="font-weight:bold;font-size:16px;">
+                                                        8. Packing Document Report
+                                                    </p>
+                                                </td>
+
+                                                <td>
+                                                    <button class="btn btn-primary" style="font-size:13px; padding:12.5px"
+                                                            ng-click="PackingDocumentReportBtn(ddlConsCommercialInvoiceForReport.CommercialInvoiceId)">
+                                                        <i title="Report" class="fa fa-print" style="font-size:18px;"> </i> Report
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <!--<tr>
+                                                <td style="text-align:justify;">
+                                                    <p style="font-weight:bold;font-size:16px;">
+                                                        9. Label Export Report
+                                                    </p>
+                                                </td>
+
+                                                <td>
+                                                    <button class="btn btn-success" style="font-size:13px; padding:12.5px"
+                                                            ng-click="LabelRibbonExportReportBtn(ddlConsCommercialInvoiceForReport)">
+                                                        Report
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:justify;">
+                                                    <p style="font-weight:bold;font-size:16px;">
+                                                        9. Bond Import Export Balance Report
+                                                    </p>
+                                                </td>
+
+                                                <td>
+                                                    <button class="btn btn-success" style="font-size:13px; padding:12.5px"
+                                                            ng-click="BondImportExportBalanceReportBtn(ddlConsCommercialInvoiceForReport)">
+                                                        Report
+                                                    </button>
+                                                </td>
+                                            </tr>-->
+                                            
+                                        </table>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+<script>
+
+
+    $("#ddlCommercialInvoiceAll").select2({
+        placeholder: "Search for: Commercial Invoice No",
+        theme: "classic"
+    });
+    $("#ddlCommercialInvoiceCC").select2({
+        placeholder: "Search for: Commercial Invoice No",
+        theme: "classic"
+    });
+    $("#ddlCommercialInvoiceTC").select2({
+        placeholder: "Search for: Commercial Invoice No",
+        theme: "classic"
+    });
+    $("#ddlCommercialInvoiceBD").select2({
+        placeholder: "Search for: Commercial Invoice No",
+        theme: "classic"
+    });
+    $("#ddlCommercialInvoiceDC").select2({
+        placeholder: "Search for: Commercial Invoice No",
+        theme: "classic"
+    });
+    function RowSelect(e) {
+        $('.searchRow').css('background-color', '');
+        $(e).css('background-color', '#94d5ef');
+    }
+
+    //$('#sortable tbody').sortable();
+
+</script>

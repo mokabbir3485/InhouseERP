@@ -1,0 +1,379 @@
+﻿
+<style>
+    #BankDddlDiv .select2-container {
+        width: 100% !important;
+    }
+
+    .select2-container {
+        width: 100% !important;
+    }
+
+    #PayOrderDiv .select2-container {
+        width: 220px !important;
+    }
+
+    #OnlineDiv .select2-container {
+        width: 235px !important;
+    }
+
+    #ChequeDiv .select2-container {
+        width: 235px !important;
+    }
+
+    #cashDepositeDDl .select2-container {
+        width: 500px !important;
+    }
+
+    #supplierDiv .select2-container {
+        width: 230px !important;
+    }
+
+    #submitedBy .select2-container {
+        width: 220px !important;
+    }
+</style>
+<form name="cancelProcessEntryForm" novalidate>
+    <div class="col-md-12">
+        <div class="alert alert-info alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="topInfo"> &nbsp; &#9755; <span style="color:red;">Red Icon</span> Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp; &#9755; Click On A Table Row To Update/Delete</div>
+        </div>
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-share-alt"></i>&nbsp; Mushak 6.6</h3>
+            </div>
+
+            <div class="panel-body">
+
+                <div class="row">
+                    <div class="col-md-2">
+                        <div class="form-group" ng-class="{ 'has-error' : productionEntryForm.IssueNo.$invalid && productionEntryForm.VDSIssueNo.$touched }" data-toggle="tooltip" data-placement="bottom">
+                            <div class="input-group">
+
+                                <input type="text" name="VDSIssueNo" id="ChallanNoText" ng-model="MushakData.IssueNo" class="form-control tooltipAll" placeholder="VDSIssueNo" title="VD SIssue No" readonly />
+                                <span class="input-group-addon"><i class="fa fa-text-width" style="color:red;"></i></span>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group" ng-class="{ 'has-error' : productionEntryForm.IssueDate.$invalid && productionEntryForm.IssueDate.$touched }" data-toggle="tooltip" data-placement="bottom">
+                            <div class="input-group">
+
+                                <input type="text" name="IssueDate" id="IssueDateText" ng-model="MushakData.IssueDate" class="form-control tooltipAll" placeholder="Issue Date" readonly title="Issue Date" />
+                                <span class="input-group-addon" id="IssueDate" ng-click="ChangeForIssueDate()"><i class="fa fa-calendar req-icon-color"></i></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-group" ng-class="{ 'has-error' : productionEntryForm.ddlPreparedBy.$dirty && productionEntryForm.ddlPreparedBy.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Prepared By">
+                            <div class="submitedBy" title="Submited By">
+                                <div class="input-group input-group-md ddl">
+                                    <select id="ddlPreparedBy" ng-model="ddlPreparedBy" class="form-control selectMendatory" name="ddlPreparedBy" ng-options="employee.FullName for employee in EmployeeList track by employee.EmployeeId" required>
+                                        <option value="">Submited By</option>
+                                    </select>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : productionEntryForm.supplier.$dirty && productionEntryForm.supplier.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Supplier">
+                            <div class="input-group input-group-md ddl">
+                                <select id="ddlSupplier1" ng-model="ddlSupplier" name="supplier" class="form-control selectMendatory" ng-options="supplier.SupplierName for supplier in supplierList track by supplier.SupplierId" ng-change="GetBySupplier(ddlSupplier)" required>
+                                    <option value="" >-- Supplier --</option>
+                                </select>
+                                <span class="help-block" ng-show="productionEntryForm.supplier.$dirty && productionEntryForm.supplier.$invalid">Supplier Name is required</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+              
+
+                <div class="row">
+
+                   
+                    
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="responstable table-hover">
+                            <tbody>
+                                <tr>
+                                    <th class="t-cell-center">Check</th>
+                                    <th class="t-cell-center">S/N</th>
+                                    <th class="t-cell-center" style="width:30%">Supplier</th>
+                                    <th class="t-cell-center">PB No.</th>
+                                    <th class="t-cell-center">Tr ChallanNo</th>
+                                    <th class="t-cell-center">Tr Challan Date</th>
+                               
+                                    <th class="t-cell-center" style="width:10%">Bill Amount</th>
+                                    <th class="t-cell-center" style="width:10%">VAT Amount</th>
+                                    <th class="t-cell-center" style="width:10%">VDS Amount</th>
+
+
+                                </tr>
+                                <tr class="HoverTable searchRow" ng-repeat="aPurchaseBill in SupplierBillList1">
+                                    <td class="t-cell-center">
+                                        <input type="checkbox" ng-click="CheckSupplierVatIssue(aPurchaseBill)" ng-model="aPurchaseBill.IsCheck" id="IsCheck" name="IsCheck" value="false">
+                                    </td>
+                                    <td class="t-cell-center">{{$index +1 }}</td>
+                                    <td class="t-cell-center" style="width:30%">{{aPurchaseBill.SupplierName}}</td>
+                                    <td class="t-cell-center">{{aPurchaseBill.PBNo}}</td>
+                                    <td class="t-cell-center">{{aPurchaseBill.TrChallanNo}}</td>
+                                    <td class="t-cell-center">{{aPurchaseBill.TrChallanDate}}</td>
+
+                                    <td class="t-cell-center" style="width:10%">
+                                        <input type="text" name="BillAmount" id="BillAmount" disabled ng-model="aPurchaseBill.TotalBillAmount" class="form-control proToltipChange" placeholder="Bill Amount" title="Bill Amount" readonly />
+                                    </td>
+                                    <td class="t-cell-center" style="width:10%">
+                                        <input type="text" name="BillAmount" id="BillAmount" disabled ng-model="aPurchaseBill.TotalVATAmount" class="form-control proToltipChange" placeholder="Bill Amount" title="Bill Amount" readonly />
+                                    </td>
+                                    <td class="t-cell-center" style="width:10%">
+                                        <input type="text" name="VDSAmount" id="VDSAmount" disabled ng-model="aPurchaseBill.TotalVDSAmount" class="form-control proToltipChange" placeholder="VDS Amount" title="VDS Amount" />
+                                    </td>
+
+                                </tr>
+
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td ></td>
+                                    <td colspan="5" style="text-align:right">Total :</td>
+
+                                    <td class="t-cell-center">{{TempTotalBillAmount}}</td>
+                                    <td class="t-cell-center">{{TempTotalVATAmount}}</td>
+                                    <td class="t-cell-center">{{TempTotalVDSAmount}}</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+
+                <br />
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="tooltipAll" title="Save">
+                                    <div class="form-group ">
+                                        <button ng-click="MusukSave()" style="width:100%" class="btn btn-success" ng-disabled="!MushakData.IssueDate||!ddlSupplier ||!ddlPreparedBy  ">Save </button>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-6">
+                                <div class="tooltipAll" title="Reset">
+                                    <div class="form-group ">
+                                        <button style="width:100%" ng-click="Reset()" class="btn btn-danger">Reset </button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-list"></i>&nbsp;Mushak List</h3>
+            </div>
+            <div class="panel-body custom-panal-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <div class="input-group proToltipChange" data-toggle="tooltip" title="From Date">
+
+                                <input type="text" name="FromDate" id="txtFromVDS" ng-model="FromDate" class="form-control " placeholder="From Date" readonly />
+                                <span class="input-group-addon" ng-click="FormDateChangeForVDS()" id="FormDateChangeForDelivery"><i class="fa fa-calendar req-icon-color"></i></span>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <div class="input-group proToltipChange" data-toggle="tooltip" title="To Date">
+                                <input type="text" name="ToDate" id="txtToDateForVDS" ng-model="ToDate" class="form-control " placeholder="To Date" readonly />
+                                <span class="input-group-addon" ng-click="ToDateChangeForVDS()" id="ToDateChangeForSO"><i class="fa fa-calendar req-icon-color"></i></span>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-group proToltipChange" data-toggle="tooltip" title="Search Issue No">
+                            <input type="text" class="form-control" id="ProductionAndStore" ng-model="SearchProductionNoAndStore" name="name" placeholder="Issue No" />
+                        </div>
+                    </div>
+
+
+
+                    <div class="col-md-3">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <button id="btnSearch" ng-click="SpplierVDSSearch();" style="width:100%" class="customBtn custmoBtnSearch proToltipChange" title="Search">
+                                    <i class="fa fa-search"></i>&nbsp;Search
+                                </button>
+                            </div>
+                            <div class="col-md-6">
+                                <button id="btnSearch" ng-click="reloadBtn()" style="width:100%" class="btn btn-danger proToltipChange" title="Clear">
+                                    <i class="fa fa-refresh"></i>&nbsp;Clear
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+                <table class="responstable table-hover">
+                    <tbody>
+                        <tr>
+                            <th>S/N</th>
+                            <th class="txt-center">Supplier Name</th>
+                            <th class="txt-center">Issue No</th>
+                            <th class="txt-center">Issue Date</th>
+                           
+                            <th class="txt-center">Action</th>
+
+                        </tr>
+                        <tr class="HoverTable" dir-paginate="aCan in MushakIssueGetPagedlist | filter:q | itemsPerPage: PerPage" current-page="currentPage" total-items="total_count">
+                            <td>{{$index + ((currentPage-1)*PerPage) + 1}}</td>
+                            <td class="txt-center">{{aCan.SupplierName }}</td>
+                            <td class="txt-center">{{aCan.IssueNo}}</td>
+                            <td class="txt-center">{{aCan.IssueDate}}</td>
+
+
+
+
+                            <td class="txt-center">
+                                <button ng-click="ReportView(aCan)">
+                                    <i class="TejariChallan"></i> Mushak 6.6
+                                </button>
+                            </td>
+
+                        </tr>
+                        <tr class="t-foot" ng-show="total_count>PerPage">
+                            <th colspan="10">
+                                <dir-pagination-controls max-size="8"
+                                                         direction-links="true"
+                                                         boundary-links="true"
+                                                         on-page-change="getData(newPageNumber)" style="text-align:center;">
+                                </dir-pagination-controls>
+                            </th>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="row pagination-footer">
+                    <div class="col-md-6">
+                        <span>Show </span><input class="input-pagesize" type="number" ng-maxlength="100" ng-minlength="1" width="1" ng-model="PerPage"> <span>Records </span>
+                    </div>
+                    <div class="col-md-6">
+                        <span class="pull-right">Showing {{((currentPage-1)*PerPage)+1}} to {{((currentPage-1)*PerPage)+Branchlist.length}} of {{total_count}} Records</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</form>
+
+
+
+<script>
+    $('.tooltipAll').tooltip({ boundary: 'window' });
+
+
+
+    $("#ddlPreparedBy").select2({
+        theme: "classic",
+
+    });
+
+    $("#ddlPaymentDropdwan1").select2({
+        theme: "classic",
+        dropdownAutoWidth: false,
+
+    });
+
+    $("#ddlscreen").select2({
+     //   placeholder: "Select Screen Name",
+        theme: "classic",
+
+        // allowClear: true
+    });
+
+    $("#ddlSupplier1").select2({
+        theme: "classic",
+       // placeholder: "Select Company Name",
+      //  allowClear: true,
+
+    });
+
+
+    $("#ddlpurchaseBill").select2({
+      //  placeholder: "Select Reason",
+        theme: "classic",
+        // allowClear: true
+
+    });
+
+    $("#bankddl").select2({
+        placeholder: "Select Customer Bank Name",
+        dropdownAutoWidth: false
+    });
+
+    $("#ChequeTypeSelect2").select2();
+    $("#localAndImportPBId").select2();
+
+    $("#bankddlPayOrder").select2({
+       // placeholder: "Select Customer Bank Name",
+        dropdownAutoWidth: false
+
+    });
+    $("#bankddlReceiverOnlinePayment").select2({
+       // placeholder: "Select Receiver Bank Name",
+        dropdownAutoWidth: false
+    });
+    $("#bankddlReceiverOnlinePaymentForCheque").select2({
+       // placeholder: "Select Receiver Bank Name",
+        dropdownAutoWidth: false
+    });
+
+    $("#cashDepositebankddlReceiverOnlinePayment").select2({
+       // placeholder: "Select Receiver Bank Name",
+        dropdownAutoWidth: false
+    });
+
+    $("#bankddlCompanyOnlinePayment").select2({
+       // placeholder: "Select Customer Bank Name",
+        dropdownAutoWidth: false
+    });
+    $("#bankddlCompanyOnlinePaymentForCheque").select2({
+       // placeholder: "Select Customer Bank Name",
+        dropdownAutoWidth: false
+    });
+    $("#ddlPaymentDropdwan").select2({
+        theme: "classic",
+        dropdownAutoWidth: false,
+
+    });
+
+
+
+</script>

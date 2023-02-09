@@ -1,0 +1,140 @@
+﻿<style>
+    .responstable th:nth-child(2) {
+        width: 10% !important;
+    }
+    #OnlineDiv .select2-container {
+        width: 323px !important;
+    }
+
+</style>
+<form name="ReceivableReportsUIForm" novalidate>
+
+    <div class="col-md-4">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-group"></i>&nbsp;Reports </h3>
+            </div>
+            <div class="panel-body">
+
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="radio-inline" ng-show="BankStatement">
+                            <label>
+                                <input type="radio" name="BankStatementReport" value="BankStatementReport" ng-model="ReceivableReportsUI">{{BankStatementName}}
+                            </label>
+                        </div>
+                    </div>
+                    <!--<div class="row">
+                        <div class="radio-inline" ng-show="SalesProductivity">
+                            <label>
+                                <input type="radio" name="salesProductivityReport" value="SalesProductivityReport" ng-model="ProductionReportsUI">{{SalesProductivityReportName}}
+
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="radio-inline" ng-show="CIF">
+                            <label>
+                                <input type="radio" name="CIFReport" value="CIFReport" ng-model="ProductionReportsUI">{{CIFReportName}}
+
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="radio-inline" ng-show="CompanyPaymentStatus">
+                            <label>
+                                <input type="radio" name="CompanyPaymentStatusReport" value="CompanyPaymentStatusReport" ng-model="ProductionReportsUI">{{CompanyPaymentStatusReportName}}
+
+                            </label>
+                        </div>
+                    </div>-->
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-list"></i>&nbsp;Report Parameters</h3>
+            </div>
+            <div class="panel-body custom-panal-body">
+
+                <div class="row">
+                    <div class="col-md-6" ng-show="ReceivableReportsUI=='BankStatementReport'" ng-hide="">
+                        <div class="form-group " ng-class="{ 'has-error' : ReceivableReportsUIForm.FromDate.$invalid && ReceivableReportsUIForm.FromDate.$touched }" data-toggle="tooltip" data-placement="bottom" title="From Date">
+                            <div class='input-group'>
+                                <input type="text" name="FromDate" id="txtFromDate" onkeydown="return false" ng-model="FromDate" class="form-control " ng-change="BankStatementReportDate.FromDate = FromDate" placeholder="From Date" readonly />
+                                <span class="input-group-addon" id="FormDate" ng-click="FormDateChange()"><i class="fa fa-calendar"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6" ng-show="ReceivableReportsUI=='BankStatementReport'" ng-hide="">
+                        <div class="form-group" ng-class="{ 'has-error' : ReceivableReportsUIForm.ToDate.$invalid && ReceivableReportsUIForm.ToDate.$touched }" data-toggle="tooltip" data-placement="bottom" title="To Date">
+                            <div class='input-group'>
+                                <input type="text" name="ToDate" id="txtToDate" ng-model="ToDate" class="form-control " ng-change="BankStatementReportDate.ToDate = ToDate" placeholder="To Date" readonly />
+                                <span class="input-group-addon" id="ToDate" ng-click="ToDateChange()"><i class="fa fa-calendar"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : CompanyPayment.ddlBankAccount.$invalid && CompanyPayment.ddlBankAccount.$touched }" data-toggle="tooltip" data-placement="bottom" title="Receiver Bank Account">
+                            <div id="ddlReceiverBankAccount" class="input-group width-hundred-percent">
+                                <select id="bankddlReceiverBankAccount" ng-model="ddlReceiverBankAccount" name="ddlReceiverBankAccount" class="form-control selectMendatory" ng-options="bank.BankNameTemp for bank in ReceiverBankAccountList track by bank.BankAccountId" ng-change="BankStatementReportDate.BankAccountId = ddlReceiverBankAccount.BankAccountId">
+                                    <option value="">Bank Name : Not Found, Branch : Not Found , AccountNo : Not Found</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+                <div class="row" ng-show="ReceivableReportsUI == 'BankStatementReport'">
+                    <div class="col-md-4">
+                        <button id="Button1" class="customBtn custmoBtnSave tooltipAll" ng-click="ReceivableReportsUIButton()" title="Report View">
+
+                            <i class="fa fa-floppy-o"></i>&nbsp;View Report
+                        </button>
+
+                    </div>
+                    <div class="col-md-4" ng-show="ReceivableReportsUI == 'BankStatementReport'">
+                        <button id="Button1" class="btn btn-danger tooltipAll" ng-click="ResetButton()" title="Reset Button">
+
+                            Reset
+                        </button>
+                    </div>
+                    <div class="col-md-4">
+
+                    </div>
+
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+
+</form>
+
+<script>
+    $('.tooltipAll').tooltip({ boundary: 'window' })
+    $("#bankddlReceiverBankAccount").select2({
+        placeholder: "Select Receiver Bank Name",
+        theme: "classic",
+        dropdownAutoWidth: false
+    });
+    function RowSelect(e) {
+        $('.searchRow').css('background-color', '');
+        $(e).css('background-color', '#94d5ef');
+    }
+
+</script>

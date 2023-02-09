@@ -1,0 +1,1277 @@
+﻿<style>
+    .smallAddonSize {
+        padding: 3px 3px !important;
+        font-size: 9px !important;
+    }
+
+    .selectWidthForThisPage {
+        width: 158px !important;
+    }
+
+    .upload-btn-wrapper {
+        position: relative;
+        overflow: hidden;
+        display: inline-block;
+        float: left;
+    }
+
+    .btnFile {
+        border: 2px solid gray;
+        color: gray;
+        background-color: white;
+        padding: 1px 10px;
+        /*border-radius: 8px;*/
+        font-size: 18px;
+        font-weight: bold;
+       /*  width:100%*/
+    }
+
+    .upload-btn-wrapper input[type=file] {
+        font-size: 100px;
+        position: absolute;
+        left: 0;
+        top: 0;
+        opacity: 0;
+    }
+
+    option {
+        padding: 10px;
+    }
+
+    #SelectDDL {
+        height: 200px;
+    }
+
+    /*Loading*/
+
+   
+</style>
+
+<!--<link href="../../../Content/select.css" rel="stylesheet" />
+<script src="../../../Scripts/select.js"></script>-->
+
+
+<!--<link href="../../../Content/bootstrap-datepicker.css" rel="stylesheet" />
+<script src="../../../Scripts/bootstrap-datepicker.js"></script>-->
+<form name="internalWorkOrderForm" novalidate>
+
+    <div class="col-md-12">
+        <div class="alert alert-info alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="topInfo"> &nbsp; &#9755; <span style="color:red;">Red Icon</span> Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp; &#9755; Click On A Table Row To Update/Delete</div>
+        </div>
+    </div>
+    <div class="col-md-12" >
+        <div class="panel panel-info">
+            <div class="panel-heading" ng-show="CreatePermission">
+                <h3 class="panel-title pull-left "><i class="fa fa-list"></i>&nbsp;Internal Work Order </h3>
+                <div class="clearfix">
+                </div>
+            </div>
+
+          
+                <div class="panel-footer" ng-show="CreatePermission">
+                    <!--<ui-select allow-free-text="true" id="refundClear" ng-model="ddlSupplier" ng-change="rcv_SupplierRefund.SupplierId=ddlSupplier.SupplierId; rcv_SupplierRefund.SupplierName=ddlSupplier.SupplierName; test(ddlSupplier);" title="Select Supplier">
+                        <ui-select-match placeholder="Select Supplier...">{{$select.selected.SupplierName}}</ui-select-match>
+                        <ui-select-choices repeat="supplier in supplierList | filter: $select.search">
+                            <div ng-bind-html="supplier.SupplierName | highlight: $select.search"></div>
+                        </ui-select-choices>
+                    </ui-select>-->
+
+                    <div class="row">
+                        <!--<div class="col-md-4">
+        <select  class="form-control" ng-model="ddlInternalWorkOrder" ng-options="Company for Company.CompanyNameOnBill in IwoDdlFilterList "></select>
+    </div>-->
+                        <div class="col-md-5">
+                            <div class="IwoToltipChange" title="Select Customer">
+                                <div class="input-group input-group-md ddl " data-toggle="tooltip" data-placement="bottom" >
+                                    <select ng-model="ddlInternalWorkOrder" class="form-control " name="ddlInternalWorkOrder" id="iwCompany" ng-options="Company.CompanyName  for Company in IwoDdlFilterList track by Company.CompanyId" ng-change="CompanyLoadForGridIwo(Company.CompanyId=ddlInternalWorkOrder.CompanyId);">
+                                        <!--<option value="" label=""> </option>-->
+                                    </select>
+                                </div>
+
+                            </div>
+                           
+
+                        </div>
+
+                        <div class="col-md-5">
+                            <div class="IwoToltipChange" title="Select SalesOrder">
+                                <div class="input-group input-group-md ddl" data-toggle="tooltip" data-placement="bottom" >
+                                    <select class="form-control selectMendatory" ng-model="ddlSalesOrder" ng-disabled="!ddlInternalWorkOrder" name="ddlSalesOrder" ng-change="getWorkOrderDetails(ddlSalesOrder)" ng-options="iwo.SalesOrderNo for iwo  in iwolist track by iwo.SalesOrderId" id="IwFilterSalesOrder">
+                                        <option value="" label="Select SO No"> </option>
+                                    </select>
+                                    <!--<span class="input-group-addon"><i class="fa fa-caret-down"></i></span>-->
+                                </div>
+                            </div>
+                           
+
+
+                        </div>
+                        <div class="col-md-2">
+                        <button class="btn btn-primary" name="ReportId" style="width:100%" ng-disabled="!ddlSalesOrder" ng-click="OpenSalesOrderReport()">
+                            <i class="fa fa-print"></i> Report
+                        </button>
+                        </div>
+                    </div>
+
+                    <!--<div class="row">
+                        <div class="col-md-12">
+                            <table class="responstable table-hover">
+                                <tbody>
+                                    <tr>
+                                        <th class="t-cell-center">S/N</th>
+                                        <th class="t-cell-center">Order No</th>
+                                        <th class="t-cell-center">Order Date</th>
+                                        <th class="t-cell-center">Company Name</th>
+                                        <th class="t-cell-center">Sales Person</th>
+                                        <th class="t-cell-center">Remanrks</th>
+                                    </tr>
+                                    <tr ng-show="iwolist.length" class="HoverTable searchRow" ng-repeat="iwo in iwolist" onclick="RowSelect(this)" ng-click="getWorkOrderDetails(iwo);">
+                                        <td class="t-cell-center">{{$index+1}}</td>
+                                        <td class="t-cell-center">{{iwo.SalesOrderNo}}</td>
+                                        <td class="t-cell-center">{{iwo.SalesOrderDate}}</td>
+                                        <td class="t-cell-center">{{iwo.CompanyName}}</td>
+                                        <td class="t-cell-center">{{iwo.RefEmployeeName}}</td>
+                                        <td class="t-cell-center">{{iwo.Remarks}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>-->
+                </div>
+                <div class="panel-body" ng-show="CreatePermission">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group" ng-class="{ 'has-error' : internalWorkOrderForm.InternalWorkOrderNo.$invalid && internalWorkOrderForm.InternalWorkOrderNo.$touched }" data-toggle="tooltip" data-placement="bottom" >
+                                <div class="IwoToltipChange" title="Internal Work Order No.">
+                                    <div class="input-group ">
+                                        <input type="text" min="0" id="InternalWorkOrderNo" name="InternalWorkOrderNo" class="form-control " ng-model="internalWorkOrder.InternalWorkOrderNo" ng-change="CheckDuplicateIWONo(internalWorkOrder.InternalWorkOrderNo)" placeholder="IWO No" maxlength="21" ng-maxlength="20" required readonly="readonly" disabled="disabled" >
+                                        <span class="input-group-addon"><i class="fa fa-text-width req-icon-color"></i></span>
+                                    </div>
+                                </div>
+                              
+                                <span class="help-block" style="display: block; color:red" ng-if="internalWorkOrderForm.InternalWorkOrderNo.$error.required && internalWorkOrderForm.InternalWorkOrderNo.$touched">IWO No is Required</span>
+                                <span class="help-block" style="display: block;color:red" ng-if="internalWorkOrderForm.InternalWorkOrderNo.$error.maxlength">20 Character Max</span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group" ng-class="{ 'has-error' : internalWorkOrderForm.InternalWorkOrderDate.$invalid && internalWorkOrderForm.InternalWorkOrderDate.$touched }" data-toggle="tooltip" data-placement="bottom" title="IWO Date">
+                                <div class="form-group">
+                                    <div class="input-group " data-toggle="tooltip" title="Internal Work Order Date">
+                                        <input type="text" name="InternalWorkOrderDate" id="txtInternalWorkOrderDate" ng-model="internalWorkOrder.InternalWorkOrderDate" ng-change="" class="form-control " placeholder="Internal Work Order Date" readonly />
+                                        <span class="input-group-addon" ng-click="DateChangeForInternalWorkOrderDate();" id="txtInternalWorkOrderDate2"><i class="fa fa-calendar-times-o" style="color:red"></i></span>
+                                    </div>
+                                </div>
+                                <span class="help-block" style="display: block;" ng-if="internalWorkOrderForm.InternalWorkOrderDate.$error.required && internalWorkOrderForm.InternalWorkOrderDate.$touched">IWO Date is required</span>
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-3">
+                            <div class="form-group" ng-class="{ 'has-error' : internalWorkOrderForm.ddlPreparedBy.$dirty && internalWorkOrderForm.ddlPreparedBy.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Prepared By">
+                                <div class="input-group input-group-md ddl IwoToltipChange" title="Receive By">
+                                    <select id="ddlPreparedBy" ng-model="ddlPreparedBy" ng-disabled="isDisableDDl" class="form-control selectMendatory" name="ddlPreparedBy" ng-options="employee.FullName +' ~ '+employee.DesignationName+' ~ '+employee.DepartmentName for employee in EmployeeList track by employee.EmployeeId" required>
+                                        <option value="" label="Receive By"></option>
+                                    </select>
+                                </div>
+                                <span class="help-block" ng-show="internalWorkOrderForm.ddlPreparedBy.$dirty && internalWorkOrderForm.ddlPreparedBy.$invalid">Prepared By is Required</span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="from-group" ng-class="{'has-error' : internalWorkOrderForm.ddlStore.$dirty && internalWorkOrderForm.ddlStore.$invalid}" data-toggle="tooltip" data-placement="bottom" title="Select Department For IWO">
+                                <div class="input-group input-group-md ddl IwoToltipChange" title="Department For IWO">
+                                    <select id="ddlStoreSelect2" ng-model="ddlStore"  class="form-control selectMendatory" name="ddlStore" ng-options="department.DepartmentName for department in Storelist track by department.DepartmentId" ng-change="departmentForIwoSet(department.DepartmentId=ddlStore.DepartmentId); getWorkOrderDetailsDDL()">
+                                        <option value="" label="Select Department For IWO"></option>
+                                    </select>
+                                </div>
+                                <span class="help-block" ng-show="internalWorkOrderForm.ddlStore.$dirty && internalWorkOrderForm.ddlStore.$invalid">Select Department For IWO</span>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group" ng-class="{ 'has-error' : internalWorkOrderForm.PlaceOfDelivery.$invalid && internalWorkOrderForm.PlaceOfDelivery.$touched }" data-toggle="tooltip" data-placement="bottom" title="Place Of Delivery">
+                                <div class="input-group ">
+                                    <!--<input type="text" min="0" id="txtPlaceOfDelivery" name="PlaceOfDelivery" class="form-control" ng-model="internalWorkOrder.PlaceOfDelivery" placeholder="Place Of Delivery" maxlength="200" ng-maxlength="200" required>-->
+                                    <textarea ng-model="internalWorkOrder.PlaceOfDelivery" placeholder="Place Of Delivery" class="form-control IwoToltipChange" title="Place Of Delivery" readonly></textarea>
+                                    <span class="input-group-addon"><i class="fa fa-text-width req-icon-color"></i></span>
+                                </div>
+                               
+
+                                <span class="help-block" style="display: block; color:red" ng-if="internalWorkOrderForm.PlaceOfDelivery.$error.required && internalWorkOrderForm.PlaceOfDelivery.$touched">Place Of Delivery is Required</span>
+                                <span class="help-block" style="display: block;color:red" ng-if="internalWorkOrderForm.PlaceOfDelivery.$error.maxlength">50 Character Max</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group" ng-class="{ 'has-error' : internalWorkOrderForm.Remarks.$invalid &amp;&amp; internalWorkOrderForm.Remarks.$touched }" data-toggle="tooltip" data-placement="bottom" title="Special Instruction">
+                                <div class="input-group ">
+                                    <!--<input type="text" id="txtRemarks" name="txtRemarks" class="form-control ng-pristine ng-valid ng-empty ng-valid-maxlength ng-touched" ng-model="internalWorkOrder.Remarks" placeholder="Special Instruction" maxlength="501" ng-maxlength="500" style="">-->
+                                    <textarea ng-model="internalWorkOrder.Remarks" placeholder="Special Instruction" class="form-control IwoToltipChange" title="Special Instruction"></textarea>
+                                    <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row" ng-show="PurchaseOrderlist.length > 0">
+                        <div class="col-md-2">
+                        </div>
+                        <div class="col-md-8">
+                            <table class="responstable table-hover">
+                                <tr>
+                                    <th class="t-cell-center">SL.No</th>
+                                    <th class="t-cell-center">PO NO</th>
+                                    <th class="t-cell-center">PO Date</th>
+                                    <th class="t-cell-center" style="width:50%">Attachment</th>
+                                    <!--<th class="t-cell-center">Action</th>-->
+
+                                </tr>
+                                <tr ng-repeat="PObj in PurchaseOrderlist ">
+                                    <td class="t-cell-center">{{$index+1}}</td>
+                                    <td class="t-cell-center">{{PObj.PONo}}</td>
+                                    <td class="t-cell-center">{{PObj.PODate}}</td>
+                                    <td class="t-cell-center" style="width:50%">
+
+                                     
+
+                                        <a ng-repeat="PoFile in PObj.POArrayList"  style="color:black;" href="../../../UploadedFiles/POAttachment/{{PoFile}}" download><u>{{PoFile}}</u> </a>
+                                  
+
+                                        <!--<div id="downLoadFilePopup">
+                                            <a ng-click="downLoadFilePopupBtn()">{{PObj.AttachmentName}}<br /></a>
+                                            <a hidden id="PoDownloadId"  href="../../../UploadedFiles/SampleFiles/{{PObj.AttachmentName}}" download>
+                                                <span><u>{{Attach}}<br /></u></span>
+                                            </a>
+
+                                        </div>-->
+
+                                    </td>
+                                    <!--<td class="t-cell-center">
+                                        <button title="Remove" ng-click="RemovePo(PObj)">
+                                            <i class="fa fa-minus-square"></i>&nbsp;Remove
+                                        </button>
+                                    </td>-->
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-md-2">
+                        </div>
+                    </div>
+
+                </div>
+                <div class="panel-footer" ng-show="CreatePermission">
+                    <div class="row" ng-show="ItemResetForSo">
+                        <div class="col-md-9">
+
+                        </div>
+                        <div class="col-md-3">
+                            <button class="btn btn-danger IwoToltipChange" id="ResetForItem" name="ItemresetBtn" style="width:100%" ng-click="IWOItemResetWithGetSOItemLoad()" title="Item Load Form Sales Order">Item Load Form Sales Order</button>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table class="responstable table-hover">
+                                <tr>
+                                    <th class="t-cell-center"></th>
+                                    <th class="t-cell-center">SL.No</th>
+                                    <th class="t-cell-center">Product Type</th>
+                                    <th class="t-cell-center">Name</th>
+                                    <th class="t-cell-center">Paper Type</th>
+                                    <th class="t-cell-center">Unit</th>
+                                    <th class="t-cell-center">Order Qty</th>
+
+
+                                    <th class="t-cell-center">Action</th>
+                                </tr>
+                                <tbody ng-repeat="inv_InternalOrderDetail in inv_InternalOrderDetailListItem">
+
+                                    <tr>
+                                        <!--ng-click="$event.stopPropagation();"-->
+                                        <td class="t-cell-center"  ng-click="CheckToltip()"><label><i ng-show="!inv_InternalOrderDetail.DisplaySta" ng-click="itemIdGet(inv_InternalOrderDetail)" class="fa fa-plus-square"></i><i ng-show="inv_InternalOrderDetail.DisplaySta" class="fa fa-minus-square"></i><input style="visibility:hidden;" type="checkbox" ng-model="inv_InternalOrderDetail.DisplaySta" /></label></td>
+                                        <td class="t-cell-center">{{$index+1}}</td>
+                                        <td class="t-cell-center">{{inv_InternalOrderDetail.CategoryName}}</td>
+                                        <td class="t-cell-center">{{inv_InternalOrderDetail.ItemName}}</td>
+                                        <!--<td class="t-cell-center">{{inv_InternalOrderDetail.Barcode}}</td>-->
+                                    <td class="t-cell-center">
+                                        {{inv_InternalOrderDetail.PaperTypeName}}
+                                       
+                                    </td>
+                                        <td class="t-cell-center">{{inv_InternalOrderDetail.UnitName}}</td>
+                                        <td class="t-cell-center">
+                                            <div class="input-group" data-toggle="tooltip" data-placement="bottom" title="Order Qty" style="width:100%">
+                                                <input type="number" min="0" class="form-control" ng-model="inv_InternalOrderDetail.OrderQty" placeholder="Order Qty" style="text-align:center" readonly />
+                                            </div>
+                                        </td>
+                                        <td class="t-cell-center" style="width:100px">
+                                            <button title="Remove" ng-click="RemoveProduct(inv_InternalOrderDetail)">
+                                                <i class="fa fa-minus-square"></i>&nbsp;Remove
+                                            </button>
+
+                                        </td>
+
+                                    </tr>
+                                    <tr ng-click="$event.stopPropagation();" ng-show="inv_InternalOrderDetail.DisplaySta">
+                                        <td></td>
+                                        <td colspan="12" id="IWODetailsTable">
+                                            <div ng-if="inv_InternalOrderDetail.CategoryName=='Finished Goods' && inv_InternalOrderDetail.SubCategoryName!='Barcode Ribbon (R)'">
+                                               
+                                                <div class="row" >
+                                                    <div class="col-md-2">
+                                                        <div class="IwoToltipChange" title="Select Core">
+                                                            <select id="ddlItemCore" ng-model="inv_InternalOrderDetail.ddlCore" style="text-align: center; width: 25%" class="form-control  selectWidthForThisPage " name="ddlCore" data-toggle="tooltip" data-placement="bottom" >
+                                                                <option value="" label="--Select Core--"></option>
+                                                                <option value="12.5" label="12.5"></option>
+                                                                <option value="25" label="25"></option>
+                                                                <option value="40" label="40"></option>
+                                                                <option value="76" label="76"></option>
+                                                            </select>
+
+                                                        </div>
+                                                       
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <div class="IwoToltipChange" title="Select Roll Direction">
+                                                            <select id="ddlRollDirection" ng-model="inv_InternalOrderDetail.ddlRollDirection" style="text-align: center;width:100%" class="form-control  selectWidthForThisPage IwoToltipChange" name="ddlRollDirection" data-toggle="tooltip" data-placement="bottom" ng-change="VisibilityOfSuggession=false; QtyPerRollSearch=[]">
+                                                                <option value="" label="--Direction--"></option>
+                                                                <option value="Regular" label="R"></option>
+                                                                <option value="Face In" label="FI"></option>
+                                                                <option value="Face Out" label="FO"></option>
+                                                                <option value="Clock Wise" label="CW"></option>
+                                                                <option value="Anti Clock Wise" label="ACW"></option>
+                                                                <option value="As Per Approved Sample" label="AsPerApprovedSample"></option>
+                                                                <option value="Sheet Format" label="SheetFormat"></option>
+                                                            </select>
+                                                        </div>
+                                                        
+
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <div class="IwoToltipChange" title=" Shape">
+                                                            <select id="Radius" ng-model="inv_InternalOrderDetail.Radius" name="Radius" style="text-align: center; width: 80%" class="form-control  selectWidthForThisPage " data-toggle="tooltip" data-placement="bottom" >
+                                                                <option value="" label="--Shape--"></option>
+                                                                <option value="Radius Or Corner" label="Radius Or Corner"></option>
+                                                                <option value="Round" label="Round"></option>
+                                                                <option value="Square" label="Square"></option>
+
+
+                                                            </select>
+                                                        </div>
+                                                      
+                                                    </div>
+
+                                                    <div class="col-md-2">
+                                                        
+                                                        <input  style="text-align: center;width:99%" type="text" ng-model="inv_InternalOrderDetail.Color" name="name" class="form-control IwoToltipChange" placeholder="Color" title="Color" />
+                                                    </div>
+
+                                                    <div class="col-md-2">
+                                                        <input  style="text-align: center;" type="text" name="name" ng-model="inv_InternalOrderDetail.Ups" class="form-control IwoToltipChange" placeholder="UPS" title="Ups" />
+
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <div class="input-group-btn search-panel IwoToltipChange" title="Qty Per Roll">
+                                                            <input type="text" onkeydown="newControl(this)" id="SearchTextBox" ng-model="inv_InternalOrderDetail.QtyPerRoll" ng-change="QtyPerRollTextChange(inv_InternalOrderDetail.QtyPerRoll)" autocomplete="off" class="form-control arrow-togglable" placeholder="Type Qty Per Roll" style="text-align:center" readonly />
+                                                            <div id="SearchResultsQPR">
+                                                                <ul ng-show="inv_InternalOrderDetail.QtyPerRoll.length && VisibilityOfSuggession" style="z-index: 9 !important; position: absolute; list-style-type: none; padding: 0; background-color: #ede9e9;">
+                                                                    <li ng-repeat="aQty in QtyPerRollSearch" ng-bind-html-unsafe="aQty.Qty">
+                                                                        <button ng-click="inv_InternalOrderDetail.QtyPerRoll = aQty.Qty; QtyPerRollSuggestionClick()" onkeydown="nextControlFromSugession(this)" class="form-control arrow-togglable">
+                                                                            {{aQty.Qty}}
+                                                                        </button>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                                <br />
+                                                   
+                                                <div class="row">
+                                                    <div class="col-md-3">
+
+                                                        <div class="form-group">
+                                                            <div class="input-group " data-toggle="tooltip" title="Delivery Date">
+                                                                <input type="text" id="" name="DeliveryDate" ng-model="inv_InternalOrderDetail.DeliveryDate" ng-change="" class="form-control txtDeliveryDateForIWO" placeholder="Delivery Date" readonly />
+                                                                <span class="input-group-addon" ng-click="DeliveryDateChangeForIWO();" id="txtToDateForIWO2"><i class="fa fa-calendar-times-o" style="color:red"></i></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        <textarea  cols="2" rows="1" class="form-control IwoToltipChange" ng-model="inv_InternalOrderDetail.DetailRemarks" placeholder="Remarks" title="Remarks"></textarea>
+                                                    </div>
+
+                                                    
+                                                  
+                                                </div>
+                                                <hr />
+                                                <div class="row">
+
+                                                    <div class="col-md-2">
+                                                        <div class="upload-btn-wrapper text-justify">
+                                                            <button ng-disabled="!inv_InternalOrderDetail.ShowImg" class="btnFile">Upload a file</button>
+                                                            <input ng-disabled="!inv_InternalOrderDetail.ShowImg" ng-model="inv_InternalOrderDetail.ArtWork" class="form-control hideView" select-ng-files type="file" name="image_{{inv_InternalOrderDetail.ItemId}}" id="image_{{$index}}" onchange="angular.element(this).scope().SelectFile(this);" multiple />
+                                                        </div>
+                                                        <br />
+                                                        <br />
+                                                        <input class="customBtn custmoBtnSave ng-binding" type="submit" ng-click="ClearImage($index)" value="Clear" />
+                                                    </div>
+                                                    <!--<div class="col-md-2">
+                                                      
+                                                    </div>-->
+
+                                                    <div class="col-md-10">
+
+                                                        <p style="width:100%;text-align:left;font-weight:bold;font-size:16px;margin-left:10px;">File List</p>
+                                                        <p style="width: 100%; text-align: left; margin-left: 10px;" id="imageNameList_{{$index}}"></p>
+                                                        <span>
+
+
+                                                            <input style="border: none; display: none; width: 50%; padding: 10px; text-align: left; margin-left: 10px;" type="text" name="imageName_{{inv_InternalOrderDetail.ItemId}}" id="imageName_{{$index}}" />
+
+                                                        </span>
+
+                                                        <input type="text" style="border: none; display: none; padding: 10px; height: 10%; text-align: left; margin-left: 10px; " name="imageUpdateName_{{inv_InternalOrderDetail.ItemId}}" id="imageUpdateName_{{$index}}" value="{{inv_InternalOrderDetail.thumb}}" />
+                                                        <span id="imageNameFilterList_{{$index}}" style="width: 80%; text-align: left; line-height: 15px; margin-left: 10px;" ng-repeat="obj in inv_InternalOrderDetail.imageTextShowArray track by $index">
+
+                                                            <u>
+                                                                <a href="../../../UploadedFiles/ArtWork/{{obj}}" target="_blank">
+                                                                   
+                                                                    <span> {{obj}} </span> <span ng-if="obj">   ,  </span>
+                                                                </a>
+                                                                
+                                                            </u>
+
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                    <!--<table id="IWODetailsTable" class="responstable table-hover">-->
+                                                    <!--<tr>
+        <td class="t-cell-center" style="width:25%">
+
+
+
+        </td>
+        <td class="t-cell-center">
+
+
+        </td>
+        <td class="t-cell-center" style="align-content:center">
+
+            <div class="row">
+                <div class="col-md-6">
+
+                </div>
+                <div class="col-md-6">
+
+                </div>
+
+            </div>
+            <br />
+
+
+
+
+        </td>
+
+    </tr>-->
+                                                    <!--<tr>
+        <td colspan="8">
+            <div class="row">
+
+                <div class="col-md-12">
+                    <div class="panel panel-info">
+
+                        <div class="panel-body">
+
+                            <div class="row">
+                                <div class="col-md-6">
+
+                                </div>
+                                <div class="col-md-3">
+
+
+
+                                </div>-->
+                                                    <!--<div class="col-md-8">
+    <div id="InserTImage">
+
+    <br />
+
+    <img ng-if="!inv_InternalOrderDetail.thumb" src="../../../UploadedFiles/SampleFiles/empty.png" style="border-radius: 5px 5px 5px 5px ;" width="200" height="155" class=" ng-pristine ng-untouched ng-valid ng-empty" />
+
+    <div class="form-inline" ng-show="inv_InternalOrderDetail.ArtWork">
+        <img ng-repeat="img in inv_InternalOrderDetail.thumb" src="{{inv_InternalOrderDetail.ArtWork}}" style="border-radius: 5px 5px 5px 5px ;padding:5px" width="80" height="100" class=" ng-pristine ng-untouched ng-valid ng-empty" ng-src="{{img.src}}" />
+    </div>
+
+    <div class="form-inline" ng-show="!inv_InternalOrderDetail.ArtWork" ng-if="isUpdateImage">
+        <img ng-repeat="img in inv_InternalOrderDetail.ArtWork" src="../../../UploadedFiles/ArtWork/{{img}}" style="border-radius: 5px 5px 5px 5px ;padding:5px" width="200" height="200" class=" ng-pristine ng-untouched " />
+    </div>
+
+    <div class="form-inline" ng-show="!inv_InternalOrderDetail.ShowImg">
+        <img ng-repeat="img in inv_InternalOrderDetail.ArtWork" src="../../../UploadedFiles/ArtWork/{{img}}" style="border-radius: 5px 5px 5px 5px ;padding:5px" width="80" height="100" class=" ng-pristine ng-untouched " />
+
+    </div>
+
+
+    <br />
+
+
+
+    </div>
+
+
+
+    </div>-->
+                                                    <!--</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </td>
+
+        </tr>
+
+
+
+
+
+
+
+    </table>-->
+                                                </div>
+                                                <!--<div class="row">
+                                                    <div class="col-md-4">
+
+                                                    </div>
+                                                </div>-->
+                                            <div>
+                                                <table id="IWODetailsTable" class="responstable table-hover">
+                                                    <tr ng-if="inv_InternalOrderDetail.CategoryName!='Finished Goods' || inv_InternalOrderDetail.SubCategoryName==='Barcode Ribbon (R)'">
+                                                        <td class="t-cell-center">
+                                                            <table style="width:100%;">
+                                                                <tr>
+                                                                    <th colspan="3">Delivary Date</th>
+                                                                    <th style="text-align:center;">Stock Available</th>
+
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td colspan="3">
+                                                                        <div class="input-group" data-toggle="tooltip" data-placement="bottom" title="Delivery of Date" style="width: 100%;">
+
+                                                                            <input type="text" name="DeliveryDate" style="text-align:center" ng-model="inv_InternalOrderDetail.DeliveryDate" ng-blur="CheckValidityForDeliveryDate(inv_InternalOrderDetail)" class="form-control datepicker DeliveryDatePicker" placeholder="DD/MM/YYYYY" readonly />
+                                                                        </div>
+
+                                                                    </td>
+
+                                                                    <td>
+
+                                                                        <table style="width:100%;border:none;">
+                                                                            <tr>
+                                                                                <td style="text-align:justify;width:40%;border-right:none;">
+                                                                                    <p ng-repeat="store in inv_InternalOrderDetail.DepartmentName">
+                                                                                        {{store.DepartmentName}}
+                                                                                    </p>
+                                                                                </td>
+                                                                                <td>
+
+                                                                                    <p ng-repeat="store in inv_InternalOrderDetail.CurrentQuantity">
+                                                                                        {{store.CurrentQuantity}}
+
+                                                                                    </p>
+                                                                                </td>
+                                                                            </tr>
+
+                                                                        </table>
+
+                                                                    </td>
+
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <br />
+
+                    <div class="row" style="height:60px;">
+
+                        <div class="col-md-4">
+                            <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 5%; padding-right: 7%;">
+                                <div class="row">
+                                    <button id="iwoSaveDisable" class="btn btn-success" name="saveIwo" ng-click="saveInternalWorkOrder()" title="Save" ng-disabled="!internalWorkOrder.InternalWorkOrderDate ||!internalWorkOrder.InternalWorkOrderNo||!internalWorkOrder.PlaceOfDelivery || !ddlInternalWorkOrder || !ddlStore ">
+                                        <i class="fa fa-save"></i>&nbsp;{{btnSave}}
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 7%; padding-right: 5%;">
+                                <div class="row">
+                                    <button id="Button3" class="btn btn-danger" title="Reset" ng-click="resetForm()">
+                                        <i class="fa fa-refresh"></i>&nbsp;Reset
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+   
+
+            <div class="row" ng-show="ListView">
+                <div class="col-md-12">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <h3 class="panel-title pull-left "><i class="fa fa-check"></i>&nbsp;Internal Work Order List </h3>
+                            <div class="clearfix">
+                            </div>
+                        </div>
+
+
+
+                        <div class="panel-footer">
+
+
+                            <div class="row">
+                                <div class="col-md-3">
+
+
+                                    <div class="form-group">
+                                        <div class="form-group">
+                                            <div class="input-group " data-toggle="tooltip" title="From Date">
+                                                <input type="text" name="FromDate" id="txtFromDateForIWO" ng-model="FromDate" ng-change="" class="form-control " placeholder="From Date" readonly />
+                                                <span class="input-group-addon" ng-click="FromDateChangeForIWO();" id="txtToDateForIWO2"><i class="fa fa-calendar-times-o"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <div class="input-group " data-toggle="tooltip" title="To Date">
+                                            <input type="text" name="ToDate" id="txtToDateForIWO" ng-model="ToDate" ng-change="" class="form-control " placeholder="To Date" readonly />
+                                            <span class="input-group-addon" ng-click="ToDateChangeForIWO();" id="txtToDateForIWO2"><i class="fa fa-calendar-times-o"></i></span>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-group" data-toggle="tooltip" title="Search Company and Sales Order No">
+                                        <input type="text" class="form-control" id="IWOAndCompany" ng-model="SearchIWOAndCompanyName"  name="name" placeholder="Company Name / IWO NO..." />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <button id="btnSearch" ng-click="searchBtn()" style="width:100%" class="customBtn custmoBtnSearch tooltipAll" title="Search">
+                                                <i class="fa fa-refresh"></i>&nbsp;Search
+                                            </button>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <button id="btnSearch" ng-click="reloadBtn()" style="width:100%" class="btn btn-danger" title="Reload">
+                                                <i class="fa fa-refresh"></i>&nbsp;Clear
+                                            </button>
+                                        </div>
+                                    </div>
+                                 
+
+                                 
+
+                                </div>
+
+                            </div>
+
+                            <hr />
+                            <table class="responstable table-hover ">
+                                <tbody>
+                                    <tr>
+                                        <th class="t-cell-center" style="width:5%">S/N</th>
+                                        <th class="t-cell-center" style="width:10%">IWO No</th>
+                                        <th class="t-cell-center" style="width:8%">IWO Date</th>
+                                        <th class="t-cell-center" style="width:5%">Factory</th>
+                                        <th class="t-cell-center" style="width:10%">Customer Name</th>
+                                        <th class="t-cell-center" style="width:10%">Prepared By</th>
+
+                                        <th class="t-cell-center" style="width:10%">Art Work Attachment</th>
+                                        <th class="t-cell-center" style="width: 20%">PO Attachment</th>
+
+                                        <th class="t-cell-center"  style="width:15%">Doc Status</th>
+                                        <th class="t-cell-center" style="width:18%">Action</th>
+                                    </tr>
+                                    <tr class="HoverTable searchRow" dir-paginate="iwo in iwoListPaged | itemsPerPage: PerPage" current-page="currentPage" total-items="total_count">
+                                        <td class="t-cell-center">{{$index + ((currentPage-1)*PerPage) + 1}}</td>
+                                        <td class="t-cell-center">{{iwo.InternalWorkOrderNo}}</td>
+                                        <td class="t-cell-center">{{iwo.InternalWorkOrderDate}}</td>
+                                        <td class="t-cell-center">{{iwo.FactoryName}}</td>
+                                        <td class="t-cell-center">{{iwo.CompanyNameOnBill}}</td>
+                                        <td class="t-cell-center">{{iwo.PreparedByName}}</td>
+
+                                        <td class="t-cell-center" style="width:20%">
+                                            <span ng-repeat="obj in iwo.ArtWorkFilter track by $index">
+                                                <a href="../../../UploadedFiles/ArtWork/{{obj}}" target="_blank">
+                                                    <u> {{obj}}</u>
+                                                </a>
+                                            </span>
+
+                                        </td>
+                                        <td class="t-cell-center" style="width:20%">
+                                            <span ng-repeat="obj2 in iwo.PoListFilter track by $index">
+                                                <!--href="../../../UploadedFiles/POAttachment/{{obj2}}"-->
+                                                <a href="" target="_blank">
+                                                    {{obj2}}
+                                                </a>
+                                            </span>
+
+                                        </td>
+                                        <td class="t-cell-center">
+                                            {{iwo.DocStatus}}
+
+
+                                        </td>
+                                        <td >
+
+                                            <button style="margin: 2px;width:95%" ng-if="iwo.DocStatusId==1" ng-click="getForIWODetailsUpdate(iwo)">
+                                                Edit
+                                            </button>
+                                            <button ng-show="iwo.IsCancelled == true" style="margin: 2px; width: 95%; color: red;" ng-disabled="iwo.IsCancelled"
+                                                   >
+                                                <strong>Cancelled</strong>
+                                            </button>
+
+                                            <button style="margin: 2px;" data-toggle="modal" ng-if="iwo.DocStatusId== 2 || iwo.DocStatusId==4" ng-click="GetAmendment(iwo);stopPropagation()" data-target="#AmendmentModal">
+                                                Request for  Amendment
+                                            </button>
+
+
+                                            <button style="margin: 2px;width:95%" ng-click="OpenReport(iwo.InternalWorkOrderId)">
+                                                Report
+
+                                            </button>
+
+
+                                        </td>
+
+                                        <!--<td class="t-cell-center">
+                                            <button class="btn btn-primary" style="font-size:13px; padding:12.5px;width:80px;"
+                                                     ng-if="iwo.DocStatusId==1" ng-click="getForIWODetailsUpdate(iwo)">
+                                                Edit
+                                            </button>
+                                            <button class="btn btn-primary" style="font-size:11px;width:80px;" data-toggle="modal" ng-if="iwo.DocStatusId== 2 || iwo.DocStatusId==4" ng-click="GetAmendment(iwo);stopPropagation()" data-target="#AmendmentModal">
+                                                Request for <br /> Amendment
+                                            </button>
+                                            <button class="btn btn-primary" style="font-size: 13px; padding: 12.5px; width: 80px;"
+                                                   ng-click="OpenReport(iwo.InternalWorkOrderId)">
+                                                Report
+                                            </button>
+                                        </td>-->
+
+
+                                    </tr>
+                                    <tr class="t-foot" ng-show="total_count>PerPage">
+                                        <th colspan="10">
+                                            <dir-pagination-controls max-size="8"
+                                                                     direction-links="true"
+                                                                     boundary-links="true"
+                                                                     on-page-change="getData(newPageNumber)" style="text-align:center;">
+                                            </dir-pagination-controls>
+                                        </th>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="row pagination-footer">
+                                <div class="col-md-6">
+                                    <span>Show </span><input class="input-pagesize" type="number" ng-maxlength="100" ng-minlength="1" width="1" ng-model="PerPage"> <span>Records </span>
+                                </div>
+                                <div class="col-md-6">
+                                    <span class="pull-right">Showing {{((currentPage-1)*PerPage)+1}} to {{((currentPage-1) * PerPage) + SalesOrderListPaged.length}} of {{total_count}} Records</span>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+   
+
+ 
+</form>
+
+<div class="modal fade" id="ImagePreview" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog " role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div style="width:100%;height:100%;" id="ImageId2">
+                            <img id="imgFram" style="border-radius: 5px 5px 5px 5px ;height:300px;width:100%" class=" ng-pristine ng-untouched ng-valid ng-empty">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="AmendmentModal" role="dialog" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Amendment Request</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-3">
+
+                    </div>
+                    <div class="col-md-9">
+                        <p>
+                            Internal Work Order No :
+                            {{PaymentProcessForAmendment.InternalWorkOrderNo}} &nbsp;,&nbsp; &nbsp;
+                            Company Name :
+                            {{PaymentProcessForAmendment.CompanyName }}
+                        </p>
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <label>Amendment Reason</label>
+                    </div>
+                    <div class="col-md-9">
+                        <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Select Select Reason">
+                            <div class="input-group input-group-md ddl">
+                                <select ng-model="ddlAmendmentReason" id="ddlAmendmentReason" class="form-control selectMendatory" name="AmendmentReason" ng-options="reason.AmendmentReasonName for reason in AmendmentReasonList track by reason.AmendmentReasonId" ng-change="exp_AmendmentRequest.AmendmentReasonId = ddlAmendmentReason.AmendmentReasonId" autofocus required>
+                                    <option value="" label="Select Reason"></option>
+                                </select>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <label>Remarks</label>
+                    </div>
+                    <div class="col-md-9">
+                        <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Remarks">
+                            <div class="input-group ">
+                                <textarea class="form-control" ng-model="exp_AmendmentRequest.RequestRemarks" placeholder="Enter">
+
+                                </textarea>
+                                <!--<input type="text" name="Remarks" class="form-control" ng-model="exp_AmendmentRequest.RequestRemarks" placeholder="Remarks" maxlength="101" ng-maxlength="100" required>-->
+                                <span class="input-group-addon"><i class="fa fa-text-width req-icon-color"></i></span>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+
+                        </div>
+
+                        <div class="col-md-2">
+                            <button type="button" class="customBtn custmoBtnReset" data-dismiss="modal" ng-disabled="AmendmentRequestCheck || !ddlAmendmentReason" ng-click="SaveAmendmentRequest();"><i class="fa fa-floppy-o"></i>&nbsp;Request</button>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="button" class="customBtn custmoBtnDelete" data-dismiss="modal" ng-click="AmendmentRequestCheck=false"><i class="fa fa-refresh"></i>&nbsp;Cancel</button>
+                        </div>
+                    </div>
+                    <hr />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    $(document).click(function (evt) {
+        $(".txtDeliveryDateForIWO").datepicker({
+            dateFormat: "M dd, yy",
+            changeMonth: true,
+            changeYear: true,
+        });
+
+        $scope.DeliveryDateChangeForIWO = function () {
+            $(".txtDeliveryDateForIWO").focus();
+
+        }
+    });
+    $('.IwoToltipChange').tooltip('enable')
+    $('.IwoToltipChange').tooltip({ boundary: 'window' })
+    $("#iwCompany").select2({
+        placeholder: "Select Customer",
+        theme: "classic"
+       
+    });
+
+    //document.getElementById("Preview").addEventListener("click", function () {
+    //    alert('Ok');
+    //});
+    $("#ddlPreparedBy").select2({
+
+        placeholder: "Receive By",
+        theme: "classic"
+    });
+    //$("#ddlStoreSelect2").select2({
+
+    //    placeholder: "Select Department For IWO",
+    //    theme: "classic"
+    //});
+
+    $("#IwFilterSalesOrder").select2({
+        placeholder: "Select SO No",
+        theme: "classic"
+    });
+
+    $(".ItemName").select2({
+        placeholder: "Item Name",
+        theme: "classic"
+    });
+
+    // $('.ItemName').select2('enable');
+    // $('.ItemName').select2('enable', true);
+    //$("#ddlItem").select2({
+    //    placeholder: "--Select Item--"
+    //});
+
+
+    function RowSelect(e) {
+        $('.searchRow').css('background-color', '');
+        $(e).css('background-color', '#94d5ef');
+    }
+
+    //var IWOpicker = new Pikaday({
+    //    field: document.getElementById('txtInternalWorkDate'),
+    //    firstDay: 1,
+    //    format: "DD/MM/YYYY",
+    //    minDate: new Date('1930-01-01'),
+    //    maxDate: new Date('2050-12-31'),
+    //    yearRange: [1930, 2050],
+    //    theme: 'blue-theme'
+    //});
+    //document.getElementById("txtInternalWorkDate1").addEventListener("click", function () {
+    //    IWOpicker.show();
+    //});
+
+
+
+
+
+    //var Topicker = new Pikaday({
+    //    field: document.getElementById('txtToDateForIWO'),
+    //    firstDay: 1,
+    //    format: "DD/MM/YYYY",
+    //    minDate: new Date('1930-01-01'),
+    //    maxDate: new Date('2050-12-31'),
+    //    yearRange: [1930, 2050],
+    //    theme: 'blue-theme'
+    //});
+    //document.getElementById("txtToDateForIWO1").addEventListener("click", function () {
+    //    Topicker.show();
+    //});
+
+    //var Formpicker = new Pikaday({
+    //    field: document.getElementById('txtFromDateForIWO'),
+    //    firstDay: 1,
+    //    format: "DD/MM/YYYY",
+    //    minDate: new Date('1930-01-01'),
+    //    maxDate: new Date('2050-12-31'),
+    //    yearRange: [1930, 2050],
+    //    theme: 'blue-theme'
+    //});
+    //document.getElementById("txtFromDateForIWO1").addEventListener("click", function () {
+    //    Formpicker.show();
+    //});
+
+    //$("#Preview").on("change", function () {
+
+
+
+    //    var maxWidth = 5000;
+    //    var maxHeight = 5000;
+
+    //    var input = $(this);
+
+    //    var preview = $("#preview");
+
+    //    var image_preview = $("#image-preview");
+
+    //    fileOnSelect(input, maxWidth, maxHeight, preview, image_preview);
+    //});
+
+
+    var elements = document.getElementsByClassName("arrow-togglable");
+    var currentIndex = 0;
+
+    function newControl(e) {
+        elements = document.getElementsByClassName("arrow-togglable");
+        currentIndex = 0;
+        if (window.event.which == 40) {
+            currentIndex = ((currentIndex + 1) == elements.length) ? 0 : ++currentIndex;
+            elements[currentIndex].focus();
+        }
+        if (window.event.which == 38) {
+            currentIndex = (currentIndex == 0) ? elements.length - 1 : --currentIndex;
+            elements[currentIndex].focus();
+        }
+    }
+
+    function nextControlFromSugession(e) {
+        if (window.event.which == 40) {
+            currentIndex = ((currentIndex + 1) == elements.length) ? 0 : ++currentIndex;
+            elements[currentIndex].focus();
+        }
+        if (window.event.which == 38) {
+            currentIndex = (currentIndex == 0) ? elements.length - 1 : --currentIndex;
+            elements[currentIndex].focus();
+        }
+    }
+
+    function Hilitor2(id, tag) {
+        var targetNode = document.getElementById(id) || document.body;
+        var hiliteTag = tag || "EM";
+        var skipTags = new RegExp("^(?:" + hiliteTag + "|SCRIPT|FORM)$");
+        var colors = ["#ff6", "#a0ffff", "#9f9", "#f99", "#f6f"];
+        var wordColor = [];
+        var colorIdx = 0;
+        var matchRegex = "";
+        var openLeft = false;
+        var openRight = false;
+
+        this.setMatchType = function (type) {
+            switch (type) {
+                case "left":
+                    this.openLeft = false;
+                    this.openRight = true;
+                    break;
+
+                case "right":
+                    this.openLeft = true;
+                    this.openRight = false;
+                    break;
+
+                case "open":
+                    this.openLeft = this.openRight = true;
+                    break;
+
+                default:
+                    this.openLeft = this.openRight = false;
+
+            }
+        };
+
+        function addAccents(input) {
+            retval = input;
+            retval = retval.replace(/([ao])e/ig, "$1");
+            retval = retval.replace(/\\u00E[024]/ig, "a");
+            retval = retval.replace(/\\u00E7/ig, "c");
+            retval = retval.replace(/\\u00E[89AB]/ig, "e");
+            retval = retval.replace(/\\u00E[EF]/ig, "i");
+            retval = retval.replace(/\\u00F[46]/ig, "o");
+            retval = retval.replace(/\\u00F[9BC]/ig, "u");
+            retval = retval.replace(/\\u00FF/ig, "y");
+            retval = retval.replace(/\\u00DF/ig, "s");
+            retval = retval.replace(/a/ig, "([aÃ Ã¢Ã¤]|ae)");
+            retval = retval.replace(/c/ig, "[cÃ§]");
+            retval = retval.replace(/e/ig, "[eÃ¨Ã©ÃªÃ«]");
+            retval = retval.replace(/i/ig, "[iÃ®Ã¯]");
+            retval = retval.replace(/o/ig, "([oÃ´Ã¶]|oe)");
+            retval = retval.replace(/u/ig, "[uÃ¹Ã»Ã¼]");
+            retval = retval.replace(/y/ig, "[yÃ¿]");
+            retval = retval.replace(/s/ig, "(ss|[sÃŸ])");
+            return retval;
+        }
+
+        this.setRegex = function (input) {
+            input = input.replace(/\\([^u]|$)/g, "$1");
+            input = input.replace(/[^\w\\\s']+/g, "").replace(/\s+/g, "|");
+            input = input.replace(/^\||\|$/g, "");
+            input = addAccents(input);
+            if (input) {
+                var re = "(" + input + ")";
+                if (!this.openLeft) re = "(?:^|[\\b\\s])" + re;
+                if (!this.openRight) re = re + "(?:[\\b\\s]|$)";
+                matchRegex = new RegExp(re, "i");
+                return true;
+            }
+            return false;
+        };
+
+        this.getRegex = function () {
+            var retval = matchRegex.toString();
+            retval = retval.replace(/(^\/|\(\?:[^\)]+\)|\/i$)/g, "");
+            return retval;
+        };
+
+        // recursively apply word highlighting
+        this.hiliteWords = function (node) {
+            if (node === undefined || !node) return;
+            if (!matchRegex) return;
+            if (skipTags.test(node.nodeName)) return;
+
+            if (node.hasChildNodes()) {
+                for (var i = 0; i < node.childNodes.length; i++)
+                    this.hiliteWords(node.childNodes[i]);
+            }
+            if (node.nodeType == 3) { // NODE_TEXT
+                if ((nv = node.nodeValue) && (regs = matchRegex.exec(nv))) {
+                    if (!wordColor[regs[1].toLowerCase()]) {
+                        wordColor[regs[1].toLowerCase()] = colors[colorIdx++ % colors.length];
+                    }
+
+                    var match = document.createElement(hiliteTag);
+                    match.appendChild(document.createTextNode(regs[1]));
+                    match.style.backgroundColor = wordColor[regs[1].toLowerCase()];
+                    match.style.fontStyle = "inherit";
+                    match.style.color = "#000";
+
+                    var after;
+                    if (regs[0].match(/^\s/)) { // in case of leading whitespace
+                        after = node.splitText(regs.index + 1);
+                    } else {
+                        after = node.splitText(regs.index);
+                    }
+                    after.nodeValue = after.nodeValue.substring(regs[1].length);
+                    node.parentNode.insertBefore(match, after);
+                }
+            };
+        };
+
+        // remove highlighting
+        this.remove = function () {
+            var arr = document.getElementsByTagName(hiliteTag);
+            while (arr.length && (el = arr[0])) {
+                var parent = el.parentNode;
+                parent.replaceChild(el.firstChild, el);
+                parent.normalize();
+            }
+        };
+
+        // start highlighting at target node
+        this.apply = function (input) {
+            // this.remove();
+            if (input === undefined || !(input = input.replace(/(^\s+|\s+$)/g, ""))) return;
+            input = convertCharStr2jEsc(input);
+            if (this.setRegex(input)) {
+                this.hiliteWords(targetNode);
+            }
+        };
+
+        // added by Yanosh Kunsh to include utf-8 string comparison
+        function dec2hex4(textString) {
+            var hexequiv = new Array("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F");
+            return hexequiv[(textString >> 12) & 0xF] + hexequiv[(textString >> 8) & 0xF] + hexequiv[(textString >> 4) & 0xF] + hexequiv[textString & 0xF];
+        }
+
+        function convertCharStr2jEsc(str, cstyle) {
+            // Converts a string of characters to JavaScript escapes
+            // str: sequence of Unicode characters
+            var highsurrogate = 0;
+            var suppCP;
+            var pad;
+            var n = 0;
+            var outputString = '';
+            for (var i = 0; i < str.length; i++) {
+                var cc = str.charCodeAt(i);
+                if (cc < 0 || cc > 0xFFFF) {
+                    outputString += '!Error in convertCharStr2UTF16: unexpected charCodeAt result, cc=' + cc + '!';
+                }
+                if (highsurrogate != 0) { // this is a supp char, and cc contains the low surrogate
+                    if (0xDC00 <= cc && cc <= 0xDFFF) {
+                        suppCP = 0x10000 + ((highsurrogate - 0xD800) << 10) + (cc - 0xDC00);
+                        if (cstyle) {
+                            pad = suppCP.toString(16);
+                            while (pad.length < 8) {
+                                pad = '0' + pad;
+                            }
+                            outputString += '\\U' + pad;
+                        } else {
+                            suppCP -= 0x10000;
+                            outputString += '\\u' + dec2hex4(0xD800 | (suppCP >> 10)) + '\\u' + dec2hex4(0xDC00 | (suppCP & 0x3FF));
+                        }
+                        highsurrogate = 0;
+                        continue;
+                    } else {
+                        outputString += 'Error in convertCharStr2UTF16: low surrogate expected, cc=' + cc + '!';
+                        highsurrogate = 0;
+                    }
+                }
+                if (0xD800 <= cc && cc <= 0xDBFF) { // start of supplementary character
+                    highsurrogate = cc;
+                } else { // this is a BMP character
+                    switch (cc) {
+                        case 0:
+                            outputString += '\\0';
+                            break;
+                        case 8:
+                            outputString += '\\b';
+                            break;
+                        case 9:
+                            outputString += '\\t';
+                            break;
+                        case 10:
+                            outputString += '\\n';
+                            break;
+                        case 13:
+                            outputString += '\\r';
+                            break;
+                        case 11:
+                            outputString += '\\v';
+                            break;
+                        case 12:
+                            outputString += '\\f';
+                            break;
+                        case 34:
+                            outputString += '\\\"';
+                            break;
+                        case 39:
+                            outputString += '\\\'';
+                            break;
+                        case 92:
+                            outputString += '\\\\';
+                            break;
+                        default:
+                            if (cc > 0x1f && cc < 0x7F) {
+                                outputString += String.fromCharCode(cc);
+                            } else {
+                                pad = cc.toString(16).toUpperCase();
+                                while (pad.length < 4) {
+                                    pad = '0' + pad;
+                                }
+                                outputString += '\\u' + pad;
+                            }
+                    }
+                }
+            }
+            return outputString;
+        }
+    }
+</script>
+
+
+

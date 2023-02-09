@@ -1,0 +1,339 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+
+        body {
+            font-family: "Times New Roman", Times, serif;
+            color: #000000;
+            writing-mode: inherit;
+            width: 100%;
+            height: 100%;
+        }
+
+        #UpperTable td {
+            border: 1px solid black;
+            border-collapse: collapse;
+            padding: 5px;
+        }
+
+        .ProductTable th {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+
+        .ProductTable td {
+            border: 1px solid black;
+            border-collapse: collapse;
+            padding: 5px;
+        }
+
+        .footer {
+            position: fixed;
+            left: 29px;
+            bottom: 0px;
+        }
+
+        .flexcontainer {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        @media screen {
+            img {
+                height: 200px;
+                width: 300px;
+                margin-top: 0px;
+            }
+        }
+
+        @media print {
+            #LogoImg, img {
+                margin-top: -10px;
+            }
+
+            #PrintImg, img {
+                margin-top: -10px;
+                height: 200px;
+                width: 300px;
+            }
+
+            .page-break {
+                display: block;
+                page-break-before: always;
+            }
+
+            img {
+                height: 200px;
+                width: 300px;
+                margin-top: 60px;
+            }
+        }
+
+        @page {
+            size: A4;
+            max-height: 100%;
+            max-width: 100%;
+            font-family: 'Times New Roman';
+        }
+    </style>
+</head>
+<body>
+    <table style="width: 100%">
+        <tbody>
+            <tr>
+                <td>
+                    <div class=" hidden-print">
+                        <div class="col-sm-7 col-md-9">
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3 col-md-2">
+                                <!--<button type="button" onclick="ExportToDoc();" class="customBtn custmoBtnReset" style="border-radius: 3px; margin-bottom: -.9em; margin-top: -15px; padding-bottom: 3px; padding-top: 3px;" title="Export to .doc">
+                                    <i class="fa fa-save"></i>&nbsp;Export to .doc
+                                </button>-->
+                            </div>
+                            <div class="col-sm-2 col-md-1">
+                                <button type="button"  onclick="document.title = 'Customer Payment ' + getCurrentDateTime(); PrintPdf();"  class="customBtn custmoBtnReset" style="border-radius: 3px; margin-bottom: -.9em; margin-top: -15px; padding-bottom: 3px; padding-top: 3px;" title="Export to .doc">
+                                    <i class="fa fa-print"></i>&nbsp;Print
+                                </button>
+                            </div>
+
+                        </div>
+                        <hr />
+                    </div>
+                    <div class="" id="source-html">
+
+                        <div>
+
+                            <table id="heading" style="text-align: center;margin-left:auto;margin-right:auto;">
+
+                                <tr>
+                                    <td>
+                                        <!--<img style="height: 80px; width: 80px; padding: 5px" src="../../../UploadedImages/logo.jpg" />-->
+                                    </td>
+                                    <td>
+                                        <p style="font-size: 30px;line-height: 1; margin : 0; padding : 0 ; font-weight: bold;"><strong>Retail Technologies Limited</strong></p>
+                                        <p style="font-size: 14px; line-height: 1.5; margin : 0; padding : 0 ;">
+                                            Address: Flat- 22 A, Navana Tower, 45 Gulshan1, Dhaka-1212
+                                        </p>
+
+                                        <p style="font-size: 25px; text-align: center; margin: 0px; padding: 0px;"> <b> <u>{{ReportName}}</u></b></p>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!--<img id="LogoImg" style="width:65px;height:65px;border-radius:100%;margin-right:15px;" src="/UploadedImages/logo.jpg" />-->
+                            <!--<table style="width:100%">
+            <tr>
+                <td style="width:30%"></td>
+                <td style="width:40%">
+                    <p style="font-size: 25px; text-align: center; margin: 0px; padding: 0px;border:1px solid black;"> <b>{{ReportName}}</b></p>
+                </td>
+                <td style="width:30%"></td>
+            </tr>
+        </table>-->
+
+
+                        </div>
+
+                        <table style="width:100%">
+                            <tr>
+                                <td style="width:80%">
+                                </td>
+                                <td style="width:20%;text-align:right;">Date : {{toDate}}</td>
+                            </tr>
+                        </table>
+                        <table class="ProductTable" style="width: 100%;  margin-left: auto; margin-right: auto;margin-top:20px">
+
+                        
+                            <tr>
+                                <th>Customer Name</th>
+                                <td>{{companyPaymentlistFilterData[0].CompanyName}}</td>
+
+
+
+                            </tr>
+                            <!--<tr>
+        <th>Sales Invoice No</th>
+        <td contenteditable="true">-->
+                            <!--{{companyPaymentlistFilterData[0].SalesInvoiceNo}}-->
+                            <!--<span ng-repeat="sales in companyPaymentlistFilterData">-->
+                            <!--{{companyPaymentlistFilterData[0].SalesInvoiceNo}}--> <!--<span ng-if="sales.SalesInvoiceNo">,</span>-->
+                            <!--</span>-->
+                            <!--</td>
+
+
+
+    </tr>-->
+                            <tr>
+                                <th>Remarks </th>
+                                <td>{{companyPaymentlistFilterData[0].Remarks}}</td>
+
+
+
+                            </tr>
+
+                        </table>
+                        <table class="ProductTable" style="width: 100%;  margin-left: auto; margin-right: auto;margin-top:20px">
+                            <tbody>
+
+                                <tr>
+                                    <th class="t-cell-center">S/N</th>
+                                    <th class="t-cell-center">Invoice No</th>
+                                    <th class="t-cell-center">Invoice Date</th>
+                                    <th class="t-cell-center">Vat</th>
+                                    <th class="t-cell-center">AIT</th>
+                                    <th class="t-cell-center">Actual Amount</th>
+                                    <th class="t-cell-center">Receivable Amount</th>
+                                    <th class="t-cell-center">Received Amount</th>
+                                    <th class="t-cell-center">Received Additional Cost</th>
+                                    <th class="t-cell-center" ng-show="companyPaymentlistFilterData[0].CurrencyId!=1">Conversion Rate</th>
+                                    <th class="t-cell-center" ng-show="companyPaymentlistFilterData[0].CurrencyId!=1">Paid Amount In BDT</th>
+
+                                </tr>
+                                <tr class="HoverTable" ng-repeat="companyPayment in   companyPaymentlistFilterData track by $index">
+                                    <td class="t-cell-center">{{$index+1}}</td>
+                                    <td class="t-cell-center">{{companyPayment.SalesInvoiceNo}}</td>
+                                    <td class="t-cell-center">{{companyPayment.InvoiceDate}}</td>
+                                    <td class="t-cell-center">{{companyPayment.VAT}} {{companyPayment.CurrencyShort}}</td>
+                                    <td class="t-cell-center">{{companyPayment.AIT}} {{companyPayment.CurrencyShort}}</td>
+                                    <td class="t-cell-center">{{companyPayment.ActualAmount}} {{companyPayment.CurrencyShort}}</td>
+                                    <td class="t-cell-center">{{companyPayment.ReceivableAmount}} {{companyPayment.CurrencyShort}} </td>
+                                    <td class="t-cell-center">{{companyPayment.PaidAmount}} {{companyPayment.CurrencyShort}}</td>
+                                    <td class="t-cell-center">{{companyPayment.AdditionalCost}} </td>
+                                    <td class="t-cell-center" ng-show="companyPayment.CurrencyId!=1">{{companyPayment.ConversionRate}} </td>
+                                    <td class="t-cell-center" ng-show="companyPayment.CurrencyId!=1">{{companyPayment.ConversionAmount}}</td>
+
+                                </tr>
+                                <tr>
+                                    <td colspan="3" style="text-align: right">Total= </td>
+                                    <td class="t-cell-center">{{TotalVAT}}</td>
+                                    <td class="t-cell-center">{{TotalAIT}}</td>
+                                    <td class="t-cell-center">{{TotalActualAmount.toFixed(4)}}</td>
+                                    <td class="t-cell-center">{{TotalReceivableAmount.toFixed(4)}}</td>
+                                    <td class="t-cell-center">{{TotalPaidAmount.toFixed(4)}}</td>
+                                    <td class="t-cell-center">{{TotalAdditionalCost.toFixed(4)}}</td>
+                                    <td class="t-cell-center" ng-show="companyPaymentlistFilterData[0].CurrencyId!=1"></td>
+                                    <td class="t-cell-center" ng-show="companyPaymentlistFilterData[0].CurrencyId!=1"></td>
+                                </tr>
+                              
+                            </tbody>
+                        </table>
+                        <table class="ProductTable" style="width: 100%;  margin-left: auto; margin-right: auto;margin-top:20px">
+                            <tr ng-if="companyPaymentlistFilterData[0].CompanyPaymentNo">
+                                <th>Payment No</th>
+                                <td>{{companyPaymentlistFilterData[0].CompanyPaymentNo}}</td>
+                            </tr>
+                            <tr ng-if="companyPaymentlistFilterData[0].PaymentDate">
+                                <th>Payment Date</th>
+                                <td>{{companyPaymentlistFilterData[0].PaymentDate}}</td>
+                            </tr>
+                            <tr ng-if="companyPaymentlistFilterData[0].PaymentTypeName">
+                                <th>Payment Type</th>
+                                <td>{{companyPaymentlistFilterData[0].PaymentTypeName}}</td>
+                            </tr>
+
+                            <tr ng-if="companyPaymentlistFilterData[0].ChequeType">
+                                <th>Cheque Type </th>
+                                <td>{{companyPaymentlistFilterData[0].ChequeType}}</td>
+                            </tr>
+                            <tr ng-if="companyPaymentlistFilterData[0].ChequeNo">
+                                <th>Cheque No</th>
+                                <td>{{companyPaymentlistFilterData[0].ChequeNo}}</td>
+                            </tr>
+                            <tr ng-if="companyPaymentlistFilterData[0].ChequeDate">
+                                <th>Cheque Date</th>
+                                <td>{{companyPaymentlistFilterData[0].ChequeDate}}</td>
+                            </tr>
+
+                            <tr ng-if="companyPaymentlistFilterData[0].MobileNo">
+                                <th>Mobile No</th>
+                                <td>{{companyPaymentlistFilterData[0].MobileNo}}</td>
+                            </tr>
+                            <tr ng-if="companyPaymentlistFilterData[0].TransactionNo">
+                                <th>Transaction No</th>
+                                <td>{{companyPaymentlistFilterData[0].TransactionNo}}</td>
+                            </tr>
+                            <tr ng-if="companyPaymentlistFilterData[0].MobileBankingServiceName">
+                                <th>Mobile Banking Service Name</th>
+                                <td>{{companyPaymentlistFilterData[0].MobileBankingServiceName}}</td>
+                            </tr>
+                            <tr ng-if="companyPaymentlistFilterData[0].ReceiptVoucherNo">
+                                <th>Receipt Voucher No</th>
+                                <td>{{companyPaymentlistFilterData[0].ReceiptVoucherNo}}</td>
+                            </tr>
+                            <tr ng-if="companyPaymentlistFilterData[0].ManualInvoiceNo">
+                                <th>Manual SalesInvoice No</th>
+                                <td contenteditable="true">
+                                    <!--{{companyPaymentlistFilterData[0].ManualInvoiceNo}}-->
+                                    <!--<span ng-repeat="ManSales in companyPaymentlistFilterData">-->
+
+                                    <span>  {{companyPaymentlistFilterData[0].ManualInvoiceNo}}</span>
+                                    <!--</span>-->
+                                </td>
+                            </tr>
+                            <tr ng-if="companyPaymentlistFilterData[0].OnAccountAmount">
+                                <th>OnAccount Amount</th>
+                                <td>{{companyPaymentlistFilterData[0].OnAccountAmount}}</td>
+                            </tr>
+                            <tr ng-if="companyPaymentlistFilterData[0].AdvanceAmount">
+                                <th>Advance Amount</th>
+                                <td>{{companyPaymentlistFilterData[0].AdvanceAmount}}</td>
+                            </tr>
+                            <tr ng-if="companyPaymentlistFilterData[0].MoneyReceiptNo">
+                                <th>Money Receipt No</th>
+                                <td>{{companyPaymentlistFilterData[0].MoneyReceiptNo}}</td>
+                            </tr>
+
+                            <tr ng-if="companyPaymentlistFilterData[0].BankAccountName">
+                                <th>Bank Account Name</th>
+                                <td>{{companyPaymentlistFilterData[0].BankAccountName}}</td>
+                            </tr>
+                            <tr ng-if="companyPaymentlistFilterData[0].ReceiverBankAccount">
+                                <th>Receiver Bank </th>
+                                <td>{{companyPaymentlistFilterData[0].ReceiverBankAccount}}</td>
+                            </tr>
+                            <tr ng-if="companyPaymentlistFilterData[0].CustomerBankAccount">
+                                <th>Customer Bank </th>
+                                <td>{{companyPaymentlistFilterData[0].CustomerBankAccount}}</td>
+                            </tr>
+                            <tr ng-if="companyPaymentlistFilterData[0].FromBranch">
+                                <th>Customer Bank </th>
+                                <td>{{companyPaymentlistFilterData[0].FromBranch}}</td>
+                            </tr>
+                            <tr ng-if="companyPaymentlistFilterData[0].FromBranch">
+                                <th>Customer Bank </th>
+                                <td>{{companyPaymentlistFilterData[0].FromBranch}}</td>
+                            </tr>
+
+                        </table>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>
+<script>
+
+
+
+    jQuery(document).ready(function ($) {
+
+        $(".main-sidebar").attr("hidden", true);
+        $(".main-header").attr("hidden", true);
+        $(".main-footer").attr("hidden", true);
+        $("#br").attr("hidden", true);
+
+        $("div").removeClass("wrapper");
+        $("div").removeClass("content-wrapper");
+    });
+
+
+    function PrintPdf() {
+        window.print();
+    }
+
+</script>

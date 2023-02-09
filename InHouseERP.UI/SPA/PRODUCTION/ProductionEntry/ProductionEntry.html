@@ -1,0 +1,631 @@
+﻿<style>
+    .smallIcom {
+        font-size: 0.8em !important;
+    }
+
+    .addonSmall {
+        padding: 2% 1% !important;
+        font-size: 15px;
+        font-weight: normal;
+        line-height: 1;
+        color: #555;
+        text-align: center;
+        background-color: #eee;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    input[type='number'] {
+        text-align: center !important;
+    }
+</style>
+<form name="productionEntryForm" novalidate>
+    <div class="col-md-12">
+        <div class="alert alert-info alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="topInfo"> &nbsp; &#9755; <span style="color:red;">Red Icon</span> Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp; &#9755; Click On A Table Row To Update/Delete</div>
+        </div>
+    </div>
+    <div class="col-md-12">
+  
+            <div class="panel panel-info" ng-show="CreatePermission">
+                <div class="panel-heading">
+                    <h3 class="panel-title pull-left "><i class="fa fa-list"></i>&nbsp; Production Entry</h3>
+                    <div class="clearfix">
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="proToltipChange" title="IWO No">
+                                <select class="form-control" id="ddlAllIwoSelect2" name="ddlAllIwoData" ng-change="RefreshDdlStore(ddlAllIwoData)" ng-model="ddlAllIwoData" ng-options="iwo.combination for iwo  in iwolist track by iwo.InternalWorkOrderId" >
+                                    <option value=""></option>
+                                </select>
+                            </div>
+                           
+                        </div>
+                        <div class="col-md-1  text-left">
+                            <button class="btn btn-primary " id="reportBtnDisable" ng-click="OpenReport()">
+                                <i title="Report" class="fa fa-print" style="font-size:18px;"> </i> Report
+                            </button>
+                        </div>
+                        <div class="col-md-2  text-center">
+                            <!--<button class="btn btn-primary" ng-click="Onclear()">Clear </button>-->
+                            <button id="btnAdd" ng-click="Onclear()" class="btn btn-danger" title="Clear">
+                                <i class=" fa fa-refresh"></i>&nbsp; Clear
+                            </button>
+                        </div>
+                        <!--<div class="col-md-2">
+                            <button id="btnAdd" ng-click="RedirectItemEntry()" class="customBtn custmoBtnReset" title="Item Entry">
+                                <i class="fa fa-repeat"></i>&nbsp; Item Entry
+                            </button>
+                        </div>-->
+                    </div>
+                    <br />
+
+                    <!--<div class="row" ng-show="iwolist.length">
+                        <div class="col-md-12">
+                            <table class="responstable table-hover">
+                                <tbody>
+                                    <tr>
+                                        <th class="t-cell-center">S/N</th>
+                                        <th class="t-cell-center">IWO No</th>
+                                        <th class="t-cell-center">IWO Date</th>
+                                        <th class="t-cell-center">Company Name</th>
+                                        <th class="t-cell-center">Remanrks</th>
+                                    </tr>
+                                    <tr class="HoverTable searchRow" ng-repeat="iwo in iwolist" onclick="RowSelect(this)" ng-click="getInternalWorkOrderDetails(iwo);">
+                                        <td class="t-cell-center">{{$index+1}}</td>
+                                        <td class="t-cell-center">{{iwo.InternalWorkOrderNo}}</td>
+                                        <td class="t-cell-center">{{iwo.InternalWorkOrderDate}}</td>
+                                        <td class="t-cell-center">{{iwo.CompanyName}}</td>
+                                        <td class="t-cell-center">{{iwo.Remarks}}</td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>-->
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group" ng-class="{ 'has-error' : productionEntryForm.ProductionDate.$invalid && productionEntryForm.ProductionDate.$touched }" data-toggle="tooltip" data-placement="bottom" >
+                                <div class="input-group">
+                                    <!--<input type="text" name="ProductionDate" id="ProductionDate" ng-change="ProductionNumberGenarator();" ng-model="Production.ProductionDate" class="form-control datepicker" placeholder="Production Date" required readonly="readonly" />
+    <span class="input-group-addon" id="productionCalender"><i class="fa fa-calendar req-icon-color"></i></span>-->
+                                    <input type="text" name="ProductionDate" id="ProductionDate" ng-model="Production.ProductionDate"  class="form-control proToltipChange" placeholder="Production Date" readonly title="Production Date"/>
+                                    <span class="input-group-addon" ng-click="ProductionDateChange()" id="ProductionDateChange"><i class="fa fa-calendar req-icon-color"></i></span>
+                                </div>
+                                <!--<span class="help-block" style="display: block;" ng-if="productionEntryForm.ProductionDate.$error.required && productionEntryForm.ProductionDate.$touched">Production Date is required</span>-->
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group" ng-class="{ 'has-error' : productionEntryForm.ProductionNo.$invalid && productionEntryForm.ProductionNo.$touched }" data-toggle="tooltip" data-placement="bottom" >
+                                <div class="input-group ">
+                                    <input type="text" id="ProductionNo" name="ProductionNo" class="form-control proToltipChange" ng-model="Production.ProductionNo" ng-change="CheckDuplicateProductionNo()" placeholder="Production No" maxlength="100" ng-maxlength="100" readonly required title="Production No.">
+                                    <span class="input-group-addon"><i class="fa fa-text-width req-icon-color"></i></span>
+                                </div>
+                                <span class="help-block" style="display: block; color:red" ng-if="productionEntryForm.ProductionNo.$error.required && productionEntryForm.ProductionNo.$touched">Production No is Required</span>
+                                <span class="help-block" style="display: block;color:red" ng-if="productionEntryForm.ProductionNo.$error.maxlength">20 Character Max</span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group" ng-class="{ 'has-error' : productionEntryForm.ddlStore.$dirty && productionEntryForm.ddlStore.$invalid }" data-toggle="tooltip" data-placement="bottom" >
+                                <div class="proToltipChange" title="Stock In Store">
+                                    <div class="input-group input-group-md ddl">
+                                        <select id="ddlStore" ng-model="ddlStore"  ng-disabled="!ddlAllIwoData"  class="form-control selectMendatory" name="ddlStore" ng-change="getInternalWorkOrderDetails();Production.DepartmentName=ddlStore.DepartmentName;Production.DepartmentId=ddlStore.DepartmentId" ng-options="store.DepartmentName for store in Storelist track by store.DepartmentId" required>
+                                            <option value="" >--Stock In Store--</option>
+                                        </select>
+                                    </div>
+
+                                    <span class="help-block" style="color:red;" ng-if="productionEntryForm.$error.required && productionEntryForm.ddlStore.$touched ">Stock In Store is Required</span>
+                                </div>
+                             
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group" ng-class="{ 'has-error' : productionEntryForm.ddlPreparedBy.$dirty && productionEntryForm.ddlPreparedBy.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Prepared By">
+                                <div class="proToltipChange" title="Receive By">
+                                    <div class="input-group input-group-md ddl">
+                                        <select id="ddlPreparedBy" ng-model="ddlPreparedBy" class="form-control selectMendatory" name="ddlPreparedBy" ng-options="employee.FullName +' ~ '+employee.DesignationName+' ~ '+employee.DepartmentName for employee in EmployeeList track by employee.EmployeeId" required>
+                                            <option value="" label="Receive By"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                              
+                                <span class="help-block" ng-show="productionEntryForm.ddlPreparedBy.$dirty && productionEntryForm.ddlPreparedBy.$invalid">Prepared By is Required</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group" ng-class="{ 'has-error' : productionEntryForm.Remarks.$invalid &amp;&amp; productionEntryForm.Remarks.$touched }" data-toggle="tooltip" data-placement="bottom" >
+                                <div class="input-group ">
+                                    <!--<input type="text" id="txtRemarks" name="txtRemarks" class="form-control ng-pristine ng-valid ng-empty ng-valid-maxlength ng-touched" ng-model="Production.Remarks" placeholder="Remarks" maxlength="501" ng-maxlength="500" style="">-->
+                                    <textarea cols="2" rows="2" class="form-control ng-pristine ng-valid ng-empty ng-valid-maxlength ng-touched proToltipChange" ng-model="Production.Remarks" placeholder="Remarks" maxlength="501" ng-maxlength="500" title="Remarks"></textarea>
+                                    <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table class="responstable table-hover">
+                                <tr>
+                                    <th class="t-cell-center"></th>
+                                    <th class="t-cell-center">SL</th>
+                                    <th class="t-cell-center" style="width:20%">Finished Item</th>
+                                    <th class="t-cell-center">FG Material Paper Type</th>
+                                    <!--<th class="t-cell-center">Paper Type </th>-->
+                                    <th class="t-cell-center">Unit Name</th>
+                                    <th class="t-cell-center">Qty Per Roll</th>
+                                    <th class="t-cell-center">Raw Material</th>
+                                    <th class="t-cell-center" style="width:15%">Raw Material Type</th>
+                                    <th class="t-cell-center">Label Brand Name</th>
+                                    <!--<th class="t-cell-center">Mat. Barcode</th>-->
+                                    <th class="t-cell-center" colspan="2">Core</th>
+                                    <th class="t-cell-center">Action</th>
+                                </tr>
+                                <tbody ng-repeat="productionDetail in ProductionDetailList">
+                                    <tr>
+                                        <td ng-click="$event.stopPropagation();" class="t-cell-center"><label><i ng-show="!productionDetail.DisplaySta" class="fa fa-plus-square"></i><i ng-show="productionDetail.DisplaySta" class="fa fa-minus-square"></i><input style="visibility:hidden;" type="checkbox" ng-model="productionDetail.DisplaySta" /></label></td>
+                                        <td class="t-cell-center">{{$index+1}}</td>
+                                        <td class="" style="width:20%">{{productionDetail.FinishedItemName}} </td>
+                                        <td class="">{{productionDetail.FGMaterialType}} </td>
+
+                                        <td class="">{{productionDetail.UnitName}}</td>
+                                        <td class="t-cell-center">{{productionDetail.QtyPerRoll}}</td>
+                                        <td class="">{{productionDetail.RawMaterialItemName}} ~ {{productionDetail.RawMaterialTypeName}} ~  Unit : {{productionDetail.RawUnitName}} </td>
+                                        <td class=""  style="width:15%">
+                                            <!--{{productionDetail.MaterialTypeName}}-->
+                                            <select style="width:100%" class="form-control" name="ddlMaterial" ng-change="RawmatStockCheck(productionDetail)" ng-model="productionDetail.ddlMaterial" ng-options="paper.Combination for paper in matrialPaperTypeList track by paper.MaterialTypeId" disabled>
+                                                <!--<option value="">Wastage Unit</option>-->
+                                                <option value="" label="Material Type"></option>
+                                            </select>
+                                        </td>
+                                        <td class=""> {{productionDetail.LabelBrandName}}</td>
+                                        <!--<td class="t-cell-center">{{productionDetail.RawMaterialItemBarcode}}</td>-->
+                                        <td class="t-cell-center" colspan="2">{{productionDetail.Core}}</td>
+                                        <td>
+                                        <button title="Remove" ng-click="RemoveItemProduction(productionDetail)">
+                                            <i class="fa fa-minus-square"></i>&nbsp;Remove
+                                        </button>
+
+                                        </td>
+
+                                    </tr>
+                                    <tr ng-click="$event.stopPropagation();" ng-show="productionDetail.DisplaySta">
+                                        <td></td>
+                                        <td colspan="11">
+                                            <div>
+
+                                                <table id="IWODetailsTable" class="responstable table-hover">
+                                                    <tr>
+                                                        <th class="t-cell-center" width="20%">Machine No</th>
+                                                        <th class="t-cell-center" width="10%">Production Unit</th>
+                                                        <th class="t-cell-center" width="10%">
+                                                            Attainable Qty
+                                                        </th>
+                                                        <th class="t-cell-center" width="10%">
+                                                            Good Production Qty
+                                                        </th>
+
+                                                        <th class="t-cell-center" width="10%"> Production Qty In Roll</th>
+
+                                                        <th class="t-cell-center" width="9%">Wastage FG Unit</th>
+
+                                                        <th class="t-cell-center" width="10%">Wastage FG Qty</th>
+                                                        <th class="t-cell-center" width="10%">Wastage FG Qty In Roll</th>
+                                                        <th class="t-cell-center" width="10%">Wastage Percent(%)</th>
+
+
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="t-cell-center" width="10%">
+                                                            <select style="width:100%" class="form-control" name="ddlMachine" ng-model="productionDetail.Machine" ng-options="machine.MachineName for machine in machineList  track by machine.MachineId" ng-change="productionDetail.MachineId=productionDetail.Machine.MachineId">
+                                                                <!--<option value="">Wastage Unit</option>-->
+                                                                <option value="" label="Machine"></option>
+                                                            </select>
+                                                        </td>
+
+                                                        <td class="t-cell-center" width="10%">
+
+                                                            <select id="ddlStoreSelect2" class="form-control " name="ddlProductionItemUnitId" ng-model="productionDetail.ProductionItemUnitId" ng-options="unit.UnitName for unit in ItemUnitlist track by unit.ItemUnitId" ng-change="ConvertRollToMeter(productionDetail)" disabled>
+                                                                <option value="" label="Production Unit"></option>
+                                                            </select>
+
+                                                        </td>
+                                                        <td class="t-cell-center" width="10%">
+                                                            <input type="number" id="AttainableQty" name="AttainableQty" min="0" class="form-control " ng-model="productionDetail.AttainableQty" placeholder="Attainable Qty" />
+                                                        </td>
+                                                        <td class="t-cell-center" width="10%">
+                                                            <input type="number" id="ProductionQty" name="ProductionQty" min="0" class="form-control " ng-change="ConvertRollToMeter(productionDetail);" ng-model="productionDetail.ProductionQuantity" ng-blur="CheckValidProductionQty(productionDetail)" placeholder="Enter Production Qty" />
+                                                        </td>
+
+
+                                                        <td class="t-cell-center" width="10%">
+                                                            <div class="input-group" data-toggle="tooltip" data-placement="bottom" title="Production Qty In Roll">
+                                                                <input type="number" step="0.000" name="Roll" min="0" class="form-control" ng-model="productionDetail.ProductionQtyInRoll" ng-change="PcPerRollValidation(productionDetail)" placeholder="Production Qty In Roll" />
+                                                                <!--<span class="input-group-addon "><i class="fa fa-bell  " style="color:black;"></i></span>-->
+                                                            </div>
+                                                        </td>
+                                                        <td class="t-cell-center" width="9%">
+                                                            <select style="width:100%" class="form-control" name="ddlWastageItemUnit" ng-model="productionDetail.WastageItemUnitId" ng-options="unit.UnitName for unit in ItemUnitlist track by unit.ItemUnitId" ng-change="ConvertWastageToMeter(productionDetail)" disabled>
+                                                                <!--<option value="">Wastage Unit</option>-->
+                                                                <option value="" label="Wastage Unit"></option>
+                                                            </select>
+                                                        </td>
+                                                        <td class="t-cell-center" width="10%">
+
+                                                            <div class="input-group" data-toggle="tooltip" data-placement="bottom" title="Enter Wastage Qty">
+                                                                <input type="number" step="0.000" name="Wastage" min="0" class="form-control " ng-change="ConvertWastageToMeter(productionDetail)" ng-model="productionDetail.WastageQty" />
+                                                                <!--<span class="input-group-addon "><i class="fa fa-bell " style="color:black;"></i></span>-->
+                                                            </div>
+                                                        </td>
+                                                        <td class="t-cell-center" width="10%">
+
+                                                            <div class="input-group" data-toggle="tooltip" data-placement="bottom" title="Enter Wastage Qty In Roll">
+                                                                <input type="number" step="0.000" name="Wastage" min="0" class="form-control " ng-model="productionDetail.WastageQtyInRoll" ng-change="ReverseCalForWastageUnit(productionDetail)" />
+                                                                <!--<span class="input-group-addon "><i class="fa fa-bell " style="color:black;"></i></span>-->
+                                                            </div>
+                                                        </td>
+                                                        <td class="t-cell-center" width="10%">
+
+                                                            <div class="input-group" data-toggle="tooltip" data-placement="bottom" title="Enter Wastage Percent ">
+                                                                <input type="number" step="0.000" name="Wastagepercent" min="0" class="form-control " ng-model="productionDetail.WastagePercent" />
+                                                                <!--<span class="input-group-addon "><i class="fa fa-bell " style="color:black;"></i></span>-->
+                                                            </div>
+                                                        </td>
+
+
+
+                                                    </tr>
+                                                </table>
+                                                <table id="IWODetailsTable" class="responstable table-hover">
+                                                    <tr>
+                                                        <th class="t-cell-center" width="20%">Mat.Current Stock</th>
+                                                        <th class="t-cell-center" width="10%">Unit Name</th>
+                                                        <th class="t-cell-center" width="20%">Used Matrial Qty (Roll)</th>
+                                                        <!--<th class="t-cell-center" width="15%">Used Matrial Length (Meter)</th>
+
+                    <th class="t-cell-center" width="15%">Used Matrial Weight (KG)</th>
+                    <th class="t-cell-center" width="15%">Used Matrial Area (Sqm)</th>-->
+
+                                                        <!--<th class="t-cell-center" width="20%">Matrial Unit Cost</th>-->
+
+
+
+
+
+                                                        <th class="t-cell-center" width="30%">Wastage Remarks</th>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="t-cell-center" width="20%">
+                                                            {{productionDetail.CurrentStockQuantity}}
+                                                        </td>
+                                                        <td class="t-cell-center" width="10%">
+                                                            {{productionDetail.StockUnitName}}
+                                                        </td>
+                                                        <td class="t-cell-center" width="20%">
+                                                            <div class="input-group" data-toggle="tooltip" data-placement="bottom" title="Enter Used Matrial Qty">
+                                                                <!--<div class="row">-->
+                                                                <!--<div class="col-md-6">
+                            <span>-->
+                                                                <input type="number" step="0.000" name="Roll" min="0" class="form-control" ng-model="productionDetail.UsedMaterialQtyInRoll" ng-change="UsedRawMatrialCalculation(productionDetail)" />
+
+                                                                <!--</span>
+                            </div>-->
+                                                                <!--<div class="col-md-6">-->
+                                                                <!--<span style="margin-top:3%;">
+                                <button class="btn btn-default" style="height:30px;background-color:#99e6ff" ng-click="itemSqmLmKgModalBtn(productionDetail)">
+                                    Mat. Info
+                                </button>
+
+                            </span>-->
+                                                                <!--</div>-->
+                                                                <!--</div>-->
+                                                                <!--<span class="input-group-addon "><i class="fa fa-bell  " style="color:black;"></i></span>-->
+                                                            </div>
+                                                        </td>
+                                                        <!--<td class="t-cell-center" width="15%">
+                        <div class="input-group" data-toggle="tooltip" data-placement="bottom" title="Enter Used  Matrial in Meter">
+                            <input type="number" step="0.000" name="UsedRollMeter" min="0" class="form-control" ng-model="productionDetail.UsedMaterialLengthinMeter" placeholder="0" readonly />
+
+                        </div>
+                    </td>
+
+                    <td class="t-cell-center" width="18%">
+                        <div class="input-group" data-toggle="tooltip" data-placement="bottom" title="Enter Used Matrial Weight in Meter">
+                            <input type="number" step="0.000" name="UsedRollMeter" ng-model="productionDetail.UsedMaterialWeigntInKg" min="0" class="form-control" readonly />
+
+                        </div>
+                    </td>
+                    <td class="t-cell-center" width="18%">
+                        <div class="input-group" data-toggle="tooltip" data-placement="bottom" title="Enter Used Matrial Area in Meter">
+                            <input type="number" step="0.000" ng-model="productionDetail.UsedMaterialAreaInSqm" name="UsedRollMeter" min="0" class="form-control" readonly />
+
+                        </div>
+                    </td>-->
+
+                                                        <!--<td class="t-cell-center" width="20%">
+                                                            <div class="input-group" data-toggle="tooltip" data-placement="bottom" title="Showing Cost">
+                                                                <input type="number" step="0.000" ng-model="productionDetail.UsedMaterialUnitCost" style="background-color: transparent; border-color: transparent" name="Costing" min="0" class="form-control" readonly="readonly" disabled="disabled" />
+                                                            </div>
+                                                        </td>-->
+
+
+
+                                                        <td class="t-cell-center" width="60%">
+                                                            <!--<div class="input-group" data-toggle="tooltip" data-placement="bottom" title="Enter Wastage Remarks">-->
+                                                            <textarea width="60%" name="WastageRemarks" class="form-control" ng-model="productionDetail.WastageRemarks" placeholder="Enter Wastage Remarks" />
+                                                            <!--<span class="input-group-addon "><i class="fa fa-text-width smallIcom"></i></span>-->
+                                                            <!--</div>-->
+                                                        </td>
+                                                    </tr>
+                                                </table>
+
+
+                                            </div>
+                                        </td>
+
+                                      
+
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="col-md-4">
+                            <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 5%; padding-right: 7%;">
+                                <div class="row">
+                                    <button id="btnSave" class="customBtn custmoBtnSave" ng-click="saveProduction()" title="Save" ng-disabled="!ddlAllIwoData || !ddlStore || !Production.ProductionNo || !ProductionDetailList.length">
+                                        <i class="fa fa-save"></i>&nbsp;{{btnSave}}
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 7%; padding-right: 5%;">
+                                <div class="row">
+                                    <button id="Button3" class="btn btn-danger" title="Reset" ng-click="resetForm()">
+                                        <i class="fa fa-refresh"></i>&nbsp;Reset
+                                    </button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                </div>
+
+                <div class="row" ng-show="ListViewPermission">
+
+                    <div class="col-md-12">
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                <h3 class="panel-title pull-left "><i class="fa fa-check"></i>&nbsp;Production List</h3>
+                                <div class="clearfix">
+                                </div>
+                            </div>
+
+                            <div class="panel-footer">
+
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <div class="input-group proToltipChange" data-toggle="tooltip" title="From Date">
+
+                                                <input type="text" name="FromDate" id="txtFromProduction" ng-model="FromDate"  class="form-control " placeholder="From Date" readonly />
+                                                <span class="input-group-addon" ng-click="FormDateChangeForProduction()" id="FormDateChangeForDelivery"><i class="fa fa-calendar req-icon-color"></i></span>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <div class="input-group proToltipChange" data-toggle="tooltip" title="To Date">
+                                                <input type="text" name="ToDate" id="txtToDateForProduction" ng-model="ToDate"  class="form-control " placeholder="To Date" readonly />
+                                                <span class="input-group-addon" ng-click="ToDateChangeForProduction()" id="ToDateChangeForSO"><i class="fa fa-calendar req-icon-color"></i></span>
+                                            </div>
+
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <div class="form-group proToltipChange" data-toggle="tooltip" title="Search Production No And Store">
+                                            <input type="text" class="form-control" id="ProductionAndStore" ng-model="SearchProductionNoAndStore" name="name" placeholder="Production NO / Store ..." />
+                                        </div>
+                                    </div>
+
+                                  
+
+                                    <div class="col-md-3">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <button id="btnSearch" ng-click="ProductionSearch();" style="width:100%" class="customBtn custmoBtnSearch proToltipChange" title="Search">
+                                                    <i class="fa fa-search"></i>&nbsp;Search
+                                                </button>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <button id="btnSearch" ng-click="reloadBtn()" style="width:100%" class="btn btn-danger proToltipChange" title="Clear">
+                                                    <i class="fa fa-refresh"></i>&nbsp;Clear
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                                <hr />
+                                <table class="responstable table-hover ">
+                                    <tbody>
+                                        <tr>
+                                            <th class="t-cell-center">S/N</th>
+                                            <th class="t-cell-center">Production No</th>
+                                            <th class="t-cell-center">InternalWorkOrder No</th>
+                                            <th class="t-cell-center">Customer Name</th>
+                                            <th class="t-cell-center">Production Date</th>
+
+                                            <th class="t-cell-center">Store Name</th>
+
+
+                                            <th class="t-cell-center">Action</th>
+                                        </tr>
+                                        <tr class="HoverTable searchRow" dir-paginate="production in productionListForGrid | itemsPerPage: PerPage" current-page="currentPage" total-items="total_count" ng-click="getForIWODetailsUpdate(iwo)">
+                                            <td class="t-cell-center"> {{$index + ((currentPage-1) * PerPage) + 1}} </td>
+                                            <td class="t-cell-center">{{production.ProductionNo}}</td>
+                                            <td class="t-cell-center">{{production.InternalWorkOrderNo}}</td>
+                                            <td class="t-cell-center">{{production.CompanyNameBilling}}</td>
+                                            <td class="t-cell-center">{{production.ProductionDate}}</td>
+                                            <td class="t-cell-center">{{production.DepartmentName}}</td>
+
+
+                                            <td class="t-cell-center" style="width:10%">
+                                                <button ng-disabled="isReportDisabled" style="margin: 2px; width: 95%; color: black;"
+                                                        ng-click="ProductionReport(production)">
+                                                    <i title="Report" class="fa fa-print" style="font-size:18px;"> </i> Report
+                                                </button>
+                                                <button ng-show="production.IsCancelled == true" style="margin: 2px; width: 95%; color: red;" ng-disabled="iwo.IsCancelled">
+                                                    <strong>Cancelled</strong>
+                                                </button>
+                                            </td>
+
+
+                                        </tr>
+                                        <tr class="t-foot" ng-show="total_count>PerPage">
+                                            <th colspan="8">
+                                                <dir-pagination-controls max-size="8"
+                                                                         direction-links="true"
+                                                                         boundary-links="true"
+                                                                         on-page-change="getData(newPageNumber)" style="text-align:center;">
+                                                </dir-pagination-controls>
+                                            </th>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div class="row pagination-footer">
+                                    <div class="col-md-6">
+                                        <span>Show </span><input class="input-pagesize" type="number" ng-maxlength="100" ng-minlength="1" width="1" ng-model="PerPage"> <span>Records </span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <span class="pull-right">Showing {{((currentPage-1)*PerPage)+1}} to {{((currentPage-1) * PerPage) + SalesOrderListPaged.length}} of {{total_count}} Records</span>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="modal" id="itemSqmLmKgModal" tabindex="-1" role="dialog">
+                            <div class="modal-dialog modal-lg" role="document">
+                                <div class="modal-content">
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <div class="modal-header">
+                                                <h3 class="modal-title text-primary">{{itemInfoName}} Infomation</h3>
+
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 text-center">
+                                            <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>-->
+                                        </div>
+                                    </div>
+
+
+                                    <div class="modal-body">
+                                        <table class="responstable table-hover table-bordered">
+                                            <tr>
+                                                <th style="text-align:center">SL</th>
+                                                <th style="text-align:center">Roll Per Lenght (Meter)</th>
+                                                <th style="text-align:center">Roll Per Area (SqMeter)</th>
+                                                <th style="text-align:center">Roll Per Weight (Kg)</th>
+
+                                            </tr>
+                                            <tr ng-repeat="itemInfo in ItemInfoList track by $index">
+                                                <td style="text-align:center">{{$index + 1}}</td>
+                                                <td style="text-align:center">{{itemInfo.UsedMaterialLengthinMeterVal}}</td>
+                                                <td style="text-align:center">{{itemInfo.UsedMaterialAreaInSqmVal}}</td>
+                                                <td style="text-align:center">{{itemInfo.UsedMaterialWeigntInKgVal}}</td>
+
+                                            </tr>
+
+                                        </table>
+
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" ng-click="ModalClose()" data-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+        </div>
+    
+
+  
+</form>
+<!--<pre>{{iwolist | json}}</pre>
+<pre>{{ProductionDetailList | json}}</pre>-->
+<script>
+
+    $('.proToltipChange').tooltip({ boundary: 'window' })
+    //$("#ddlStore").select2({
+    //    placeholder:"Stock In Store",
+      
+    //});
+
+    $("#ddlPreparedBy").select2({
+        placeholder: "Receive By",
+        theme: "classic",
+      
+    });
+
+    //$("#ddlAllIwoSelect2").select2({
+    //   // placeholder: "Select IWO",
+    //    theme: "classic",
+    //});
+
+    
+
+    function RowSelect(e) {
+        $('.searchRow').css('background-color', '');
+        $(e).css('background-color', '#94d5ef');
+    }
+
+    //var picker = new Pikaday({
+    //    field: document.getElementById('ProductionDate'),
+    //    firstDay: 1,
+    //    format: "DD/MM/YYYY",
+    //    minDate: new Date('1930-01-01'),
+    //    maxDate: new Date('2050-12-31'),
+    //    yearRange: [1930, 2050],
+    //    theme: 'blue-theme'
+    //});
+    //document.getElementById("productionCalender").addEventListener("click", function () {
+    //    picker.show();
+    //});
+</script>

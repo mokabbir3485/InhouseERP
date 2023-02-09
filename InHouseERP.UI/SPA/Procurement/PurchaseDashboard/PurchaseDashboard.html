@@ -1,0 +1,187 @@
+﻿<form name="PurchaseDashboardForm" novalidate>
+    <div class="col-md-12">
+        <div class="alert alert-info alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="topInfo"> &nbsp; &#9755; <span style="color:red;">Red Icon</span> Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp; &#9755; Click On A Table Row To Update</div>
+        </div>
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-shield"></i>&nbsp;Purchase Dashboard</h3>
+                <div class="clearfix">
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <div class="input-group " data-toggle="tooltip" title="From Date">
+                                <input type="text" name="FromDate" id="txtFromDateForSD" ng-model="FromDate" ng-change="" class="form-control " placeholder="From Date" readonly />
+                                <span class="input-group-addon" ng-click="FormDateChangeForSD()" id="FormDateChange"><i class="fa fa-calendar-times-o"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <div class="input-group " data-toggle="tooltip" title="To Date">
+                                <input type="text" name="ToDate" id="txtToDateForSD" ng-model="ToDate" ng-change="" class="form-control " placeholder="To Date" readonly />
+                                <span class="input-group-addon" ng-click="ToDateChangeForSD();" id="ToDateChange"><i class="fa fa-calendar-times-o"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group" ng-class="{ 'has-error' : PurchaseDashboardForm.ddlDashboardType.$dirty && PurchaseDashboardForm.ddlDashboardType.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Dashboard Type">
+                            <div class="input-group input-group-md ddl">
+                                <select ng-model="ddlDashboardType" name="ddlDashboardType" class="form-control selectMendatory" ng-change="onDivShowGetById(ddlDashboardType.DashboardTypeId)" ng-options="dashboardType.DashboardTypeName for dashboardType in DashboardTypeList track by dashboardType.DashboardTypeId" required>
+                                    <option value="" label="Select Dashboard Type"></option>
+                                </select>
+                                <span class="help-block" ng-show="PurchaseDashboardForm.ddlDashboardType.$dirty && PurchaseDashboardForm.ddlDashboardType.$invalid">Dashboard Type is required</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="form-group" ng-class="{ 'has-error' : PurchaseDashboardForm.Supplier.$dirty && PurchaseDashboardForm.Supplier.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Supplier ">
+                            <div class="input-group input-group-md ddl">
+                                <select id="ddlSupplier" ng-model="ddlSupplier" name="Supplier" class="form-control selectMendatory" ng-options="Supplier.Name for Supplier in SupplierList track by Supplier.Id" required>
+                                    <option value="" label="-- Select Supplier--"></option>
+                                </select>
+                                <span class="help-block" ng-show="PurchaseDashboardForm.Supplier.$dirty && PurchaseDashboardForm.Supplier.$invalid">Supplier Name is required</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-1">
+                        <button class=" btn btn-primary" ng-click="onLoadBtn()" ng-disabled="!ddlSupplier || !ddlDashboardType">Load </button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table class="responstable table-hover">
+                                <tr>
+                                    <th class="t-cell-center"></th>
+                                    <th class="t-cell-center">SL.No</th>
+                                    <th class="t-cell-center">Supplier Name</th>
+                                    <th class="t-cell-center">Total Amount</th>
+                                </tr>
+                                <tbody ng-repeat="aPurchase in PurchaseDashboardList">
+
+                                    <tr>
+                                        <td class="t-cell-center"><label><i ng-show="!aPurchase.DisplaySta" class="fa fa-plus-square"></i><i ng-show="aPurchase.DisplaySta" class="fa fa-minus-square"></i><input style="visibility:hidden;" type="checkbox" ng-model="aPurchase.DisplaySta" /></label></td>
+                                        <td class="t-cell-center">{{$index+1}}</td>
+                                        <td class="t-cell-center">{{aPurchase.SupplierName}}</td>
+                                        <td class="t-cell-center">{{aPurchase.TotalAmount}}</td>
+                                    </tr>
+                                    <tr ng-click="$event.stopPropagation();" ng-show="aPurchase.DisplaySta">
+                                        <td></td>
+                                        <td colspan="3">
+                                            <table class="responstable table-hover">
+                                                <tr>
+                                                    <th class="t-cell-center"></th>
+                                                    <th>SL.No</th>
+                                                    <th class="t-cell-center">Purchase No</th>
+                                                    <th class="t-cell-center">Purchase Date</th>
+                                                    <th class="t-cell-center">Purchase Type</th>
+                                                    <th class="t-cell-center">Supplier Name</th>
+                                                    <th class="t-cell-center">Amount</th>
+                                                </tr>
+                                                <tbody ng-repeat="ePurchase in aPurchase.events">
+                                                    <tr>
+                                                        <td class="t-cell-center"><label><i ng-show="!ePurchase.DisplaySta2" class="fa fa-plus-square"></i><i ng-show="ePurchase.DisplaySta2" class="fa fa-minus-square"></i><input style="visibility:hidden;" type="checkbox" ng-model="ePurchase.DisplaySta2" ng-change="GetPurchaseDetail(ePurchase.PBId, ePurchase.IsLocal);AutoCollasePurchase(ePurchase);" /></label></td>
+                                                        <td>{{$index+1}}</td>
+                                                        <td class="t-cell-center">{{ePurchase.PBNo}}</td>
+                                                        <td class="t-cell-center">{{ePurchase.PBDate}}</td>
+                                                        <td class="t-cell-center">{{ePurchase.PBType}}</td>
+                                                        <td class="t-cell-center">{{ePurchase.SupplierName}}</td>
+                                                        <td class="t-cell-center">{{ePurchase.Amount}}</td>
+                                                    </tr>
+                                                    <tr ng-if="ePurchase.DisplaySta2">
+                                                        <td></td>
+                                                        <td colspan="6">
+                                                            <table class="responstable table-hover">
+                                                                <tr>
+                                                                    <th class="t-cell-center"></th>
+                                                                    <th>SL.No</th>
+                                                                    <th class="t-cell-center">Item Name</th>
+                                                                    <th class="t-cell-center">Size</th>
+                                                                    <th class="t-cell-center">Code</th>
+                                                                    <th class="t-cell-center">Material</th>
+                                                                    <th class="t-cell-center">Qty</th>
+                                                                    <th class="t-cell-center">Unit Name</th>
+                                                                    <th class="t-cell-center">Unit Price</th>
+                                                                    <th class="t-cell-center">Amount</th>
+
+                                                                </tr>
+                                                                <tbody ng-repeat="aPurchaseDetail in PurchaseDetailList">
+                                                                    <tr>
+                                                                        <td class="t-cell-center"><label ng-show="aPurchaseDetail.CategoryId == 2"><i ng-show="!aPurchaseDetail.DisplaySta3" class="fa fa-plus-square"></i><i ng-show="aPurchaseDetail.DisplaySta3" class="fa fa-minus-square"></i><input style="visibility:hidden;" type="checkbox" ng-model="aPurchaseDetail.DisplaySta3" ng-change="AutoCollasePurchaseDetail(aPurchaseDetail);" /></label></td>
+                                                                        <td>{{$index+1}}</td>
+                                                                        <td class="t-cell-center">{{aPurchaseDetail.ItemName}}</td>
+                                                                        <td class="t-cell-center">{{aPurchaseDetail.Size}}</td>
+                                                                        <td class="t-cell-center">{{aPurchaseDetail.ItemCode}}</td>
+                                                                        <td class="t-cell-center">{{aPurchaseDetail.MaterialTypeCode}}</td>
+                                                                        <td class="t-cell-center">{{aPurchaseDetail.Qty}}</td>
+                                                                        <td class="t-cell-center">{{aPurchaseDetail.UnitName}}</td>
+                                                                        <td class="t-cell-center">{{aPurchaseDetail.UnitPrice}}</td>
+                                                                        <td class="t-cell-center">{{aPurchaseDetail.Amount}}</td>
+
+                                                                    </tr>
+                                                                    
+                                                                    <tr ng-if="aPurchaseDetail.DisplaySta3">
+                                                                        <td></td>
+                                                                        <td colspan="9" ng-show="WarrentyAndSerialNoDetailAdAttributeLst.length > 0">
+                                                                            <table class="responstable table-hover">
+                                                                                <tr>
+                                                                                    <th>SL.No</th>
+                                                                                    <th class="t-cell-center">Serial No</th>
+                                                                                    <th class="t-cell-center">Warrenty In Days</th>
+                                                                                    <th class="t-cell-center">Department Name</th>
+                                                                                </tr>
+                                                                                <tr ng-repeat="aWarrentyAndSerialNoDetailAdAttribute in WarrentyAndSerialNoDetailAdAttributeLst">
+                                                                                    <td>{{$index+1}}</td>
+                                                                                    <td class="t-cell-center">{{aWarrentyAndSerialNoDetailAdAttribute.SerialNo}}</td>
+                                                                                    <td class="t-cell-center">{{aWarrentyAndSerialNoDetailAdAttribute.WarrentyInDays}}</td>
+                                                                                    <td class="t-cell-center">{{aWarrentyAndSerialNoDetailAdAttribute.DepartmentName}}</td>
+                                                                                </tr>
+                                                                            </table>
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                                <!--<tfoot>
+                                                                    <tr>
+                                                                        <td colspan="9" style="text-align:right;">Total: </td>
+                                                                        <td class="t-cell-center">{{TotalAmount}}</td>
+                                                                    </tr>
+                                                                </tfoot>-->
+                                                                
+                                                            </table>
+
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+
+                                            </table>
+
+                                        </td>
+                                    </tr>
+
+
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</form>
+<script>
+    $('#ddlSupplier').select2({
+        placeholder: "Select Supplier/Item",
+        theme: "classic",
+        dropdownAutoWidth: false
+    });
+</script>

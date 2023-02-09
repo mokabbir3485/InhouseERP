@@ -1,0 +1,1073 @@
+﻿
+<style>
+    #ItemSearchCombination .select2-container {
+        width: 220px !important;
+    }
+    #formSearchCombinationId .select2-container {
+        width: 320px !important;
+    }
+    #ToSearchCombinationId .select2-container {
+        width: 320px !important;
+    }
+
+    #toPaperType .select2-container {
+        width: 150px !important;
+    }
+    #fromPaperType .select2-container {
+        width: 240px !important;
+    }
+
+    #ddlPaperTypeId .select2-container {
+        width: 150px !important;
+    }
+    #ddlLabelBrand1 .select2-container {
+        width: 150px !important;
+    }
+
+    #ddlLabelBrand2 .select2-container {
+        width: 99% !important;
+    }
+
+    #ToddlLabelBrandDiv .select2-container {
+        width: 99% !important;
+    }
+
+    #SelectIWODiv .select2-container {
+        width: 99% !important;
+    }
+    #SelectProductionDiv .select2-container {
+        width: 99% !important;
+    }
+    
+</style>
+<form name="issueWithoutRequisitionForm" novalidate>
+    <div class="col-md-12">
+        <div class="alert alert-info alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="topInfo"> &nbsp; &#9755; <span style="color:red;">Red Icon</span> Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp; &#9755; Click On A Table Row To Update/Delete</div>
+        </div>
+    </div>
+        <div class="col-md-12" ng-show="CreatePermission">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <div class="row">
+                        <h3 class="panel-title">&nbsp; <i class="fa fa-list"></i>&nbsp;Stock Transfer</h3>
+                    </div>
+                </div>
+                <div class="panel-body">
+
+                    <div class="row">
+
+                        <div class="col-md-3">
+                            <div class="form-group" ng-class="{ 'has-error' : issueWithoutRequisitionForm.issueDate.$invalid && issueWithoutRequisitionForm.issueDate.$touched }" data-toggle="tooltip" data-placement="bottom">
+                                <div class="input-group">
+                                 
+                                    <input type="text" name="issueDate" id="txtIssueDate" ng-model="inv_StockIssue.IssueDate" class="form-control transferToltipChange" placeholder="Delivery Date" readonly title="Transfer Date" />
+                                    <span class="input-group-addon" ng-click="DateChangeForStockTransfer()" id="DateChangeForStockTransfer"><i class="fa fa-calendar req-icon-color"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group" ng-class="{ 'has-error' : issueWithoutRequisitionForm.StockTransferNo.$invalid && issueWithoutRequisitionForm.StockTransferNo.$touched }" data-toggle="tooltip" data-placement="bottom">
+
+                                <input type="text" min="0" ng-model="inv_StockIssue.StockTransferNo" id="txtStockTransferNo" class="form-control transferToltipChange" name="StockTransferNo" placeholder="Transfer No." maxlength="40" ng-maxlength="40" readonly title="Transfer No." />
+                                <span class="help-block" style="display: block;" ng-if="issueWithoutRequisitionForm.StockTransferNo.$error.maxlength">40 Character Max</span>
+                            </div>
+
+
+                        </div>
+
+
+                        <div class="col-md-3">
+                            <div class="form-group" ng-class="{ 'has-error' : issueWithoutRequisitionForm.TransferType.$dirty && issueWithoutRequisitionForm.TransferType.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Transfer Type">
+                                <div class="transferToltipChange" title="Transfer Type">
+                                    <div class="input-group input-group-md ddl">
+                                        <select ng-model="ddlTransferType" name="ddlTransferTypeName"   class="form-control selectMendatory"  ng-change="LoadFormTransfer(ddlTransferType);inv_StockIssue.StockTransferTypeName=ddlTransferType.StockTransferTypeName;inv_StockIssue.StockTransferTypeId=ddlTransferType.StockTransferTypeId" ng-options="transferType.StockTransferTypeName  for transferType in TransferTypeList track by transferType.StockTransferTypeId" required>
+                                            <option value="" >Select Transfer Type</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <span class="help-block" style="display: block;color:red" ng-show="issueWithoutRequisitionForm.TransferType.$dirty && issueWithoutRequisitionForm.TransferType.$invalid">Stock Transfer Type Type is required</span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group" ng-class="{ 'has-error' :issueWithoutRequisitionForm.Remarks.$invalid && issueWithoutRequisitionForm.Remarks.$touched }" data-toggle="tooltip" data-placement="bottom">
+                                <div class="input-group ">
+                                    <textarea type="text" id="Remarks" name="Remarks" maxlength="501" class="form-control transferToltipChange" ng-model="stockTransfer.Remarks" rows="1" placeholder="Remarks" ng-maxlength="500" title="Remarks"></textarea>
+                                    <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                </div>
+                                <span class="help-block" ng-if="issueWithoutRequisitionForm.Remarks.$error.maxlength">500 Character Max</span>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                    <div class="row">
+
+                        <div class="col-md-3">
+                            <div class="input-group input-group-md ddl" data-toggle="tooltip" data-placement="bottom">
+                                <div class="transferToltipChange" title="From Store">
+                                    <select ng-model="ddlStore" id="ddlStoreSelect2" class="form-control selectMendatory"
+                                            name="ddlStore" ng-change="inv_StockIssue.IssueFromDepartmentId=ddlStore.DepartmentId;inv_StockIssue.IssueFromDepartmentName=ddlStore.DepartmentName; GetByCombinationLike();CheckForISTM(); CheckISTMLoadForStore(ddlTransferType)"
+                                            ng-options="department.DepartmentName for department in Storelist track by department.DepartmentId">
+                                        <option value="">From Store</option>
+                                    </select>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group" data-toggle=" tooltip" data-placement="bottom" title="To Store">
+                                <div class="transferToltipChange" title="To Store">
+                                    <div class="input-group width-hundred-percent">
+                                        <!--| filter: {DepartmentId: '!'+ ddlStore.DepartmentId}-->
+                                        <select ng-model="ddlDepartment" id="ddlDepartment" class="form-control selectMendatory" name="ToDepartment" ng-change="inv_StockIssue.IssueToDepartmentId=ddlDepartment.DepartmentId;inv_StockIssue.IssueToDepartmentName=ddlDepartment.DepartmentName" ng-options="toDepartment.DepartmentName for toDepartment in DepartmentList  track by toDepartment.DepartmentId" required ng-disabled="!ddlStore">
+                                            <option value="" > To Store</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group" ng-class="{ 'has-error' : issueWithoutRequisitionForm.ddlIssueeBy.$dirty && issueWithoutRequisitionForm.ddlIssueeBy.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Transfer By">
+                                <div class="transferToltipChange" title="Issue By">
+                                    <div class="input-group input-group-md ddl">
+                                        <select ng-model="ddlIssueeBy" id="ddlIssueeBy" name="ddlIssueeBy" class="form-control selectMendatory" ng-change="inv_StockIssue.IssuedById=ddlIssueeBy.EmployeeId;inv_StockIssue.IssuedBy=ddlIssueeBy.FullName; stockTransfer.IssuedBy = ddlIssueeBy.EmployeeId;" ng-options="employee.FullName+' ~ '+employee.DesignationName+' ~ '+employee.DepartmentName  for employee in employeeList track by employee.EmployeeId" required>
+                                            <option value="" label="Issue By"></option>
+                                        </select>
+                                    </div>
+                                    <span class="help-block" style="display: block;color:red" ng-if="issueWithoutRequisitionForm.ddlIssueeBy.$invalid">Issue is required</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group" ng-class="{ 'has-error' : issueWithoutRequisitionForm.ddlReceiveBy.$dirty && issueWithoutRequisitionForm.ddlReceiveBy.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Receive By">
+                                <div class="transferToltipChange" title="Receive By">
+                                    <div class="input-group input-group-md ddl">
+                                        <select id="ddlReceiveBy" ng-model="ddlReceiveBy" class="form-control" name="ddlReceiveBy" ng-change="inv_StockIssue.ReceivedById=ddlReceiveBy.EmployeeId;inv_StockIssue.ReceivedBy=ddlReceiveBy.FullName" ng-options="employee.FullName +' ~ '+employee.DesignationName+' ~ '+employee.DepartmentName for employee in employeeList track by employee.EmployeeId" required ng-disabled="!ddlIssueeBy">
+                                            <option value="" label="Receive By"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <span class="help-block" ng-show="issueWithoutRequisitionForm.ddlReceiveBy.$dirty && issueWithoutRequisitionForm.ddlReceiveBy.$invalid">Recived By</span>
+
+
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3" ng-hide="ddlTransferType.StockTransferTypeId==5">
+                            <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Select IWO">
+                                <div class="transferToltipChange" title="IWO NO">
+                                    <div id="SelectIWODiv" class="input-group input-group-md ddl">
+                                        <select id="SelectIWO" ng-model="ddlIwo" name="ddlIwo" class="form-control selectMendatory" ng-change="GetCheckInternalWorkOrderForId(ddlIwo)" ng-options="iwo.InternalWorkOrderNo  for iwo in ProductionWiseIwoListDistinct track by iwo.InternalWorkOrderId">
+                                            <option value="">Select IWO</option>
+                                        </select>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3" ng-show="ddlTransferType.StockTransferTypeId==2">
+                            <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Select IWO">
+                                <div class="transferToltipChange" title="Production NO">
+                                    <div id="SelectProductionDiv" class="input-group input-group-md ddl">
+                                        <select id="SelectProduction" ng-model="ddlProduction" ng-change="CheckCurrentProductionStockWithItemLoad(ddlProduction)" ng-options="pro.ProductionNo  for pro in ProductionWiseIwoListFilter track by pro.ProductionId" name="ddlProduction" class="form-control selectMendatory">
+                                            <option value="">Select Production</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+
+
+
+                    </div>
+                    <hr />
+                    <div class="panel-footer">
+
+                        <div class="row" ng-show="ddlTransferType.StockTransferTypeId!=4">
+                            <div class="col-md-3">
+                                <div class="form-group" ng-class="{ 'has-error' : issueWithoutRequisitionForm.itemName.$invalid && issueWithoutRequisitionForm.itemName.$touched }" data-toggle="tooltip" data-placement="bottom">
+                                    <div id="ItemSearchCombination" class="transferToltipChange" title="Item Name">
+                                        <div class="input-group width-hundred-percent">
+                                            <select id="SearchTextBox" ng-model="ItemSearchCombination" name="itemName1" class="form-control selectMendatory" ng-options="aCombination.Combination for aCombination in ItemList track by aCombination.ItemId" ng-change="LoadACombination(ItemSearchCombination); CheckForStockItem()" ng-disabled="!ddlStore ||!ddlTransferType">
+                                                <option value="">Type Item Name Or Any Other Related Info</option>
+                                            </select>
+                                            <span class="help-block" ng-show="issueWithoutRequisitionForm.itemName.$dirty && issueWithoutRequisitionForm.itemName.$invalid">ItemName is required</span>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+                            <div class="col-md-2">
+                                <div  class="transferToltipChange"  title="Material Paper Type">
+                                    <select  ng-model="ddlPaperTypeId" ng-disabled="ItemCombination.CategoryId==2 || ItemCombination.CategoryId==6" ng-change="CheckForStockItem(ddlPaperTypeId)" class="form-control " name="ddlmatrialPaperType" id="ddlPaperType" ng-options="paper.Combination for paper in matrialPaperTypeList track by paper.MaterialTypeId">
+                                        <option value="">--Material Paper Type--</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-2" ng-show="ItemCombination.SubCategoryId==3">
+
+                                <div class="form-group">
+                                    <div id="ddlLabelBrand1" class="transferToltipChange" title="Label Brand">
+                                        <div class="input-group width-hundred-percent">
+                                            <select ng-model="ddlLabelBrand" class="form-control " ng-change="BrandLabelEmpty();BrandCheckStock(ddlLabelBrand)" name="ddLabelBrand1" id="ddLabelBrand1" ng-options="labelB.LabelBrandName for labelB in LabelBrandList track by labelB.LabelBrandId">
+                                                <option value="">--Label Brand--</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group" data-toggle="tooltip" data-placement="bottom">
+                                    <div class="input-group">
+                                        <input type="number" name="issueQty" class="form-control txt-center transferToltipChange" disabled="disabled" ng-model="ItemCombination.CurrentQuantity" placeholder="Curr. Qty." readonly title="Current Quantity">
+                                        <span class="input-group-addon"><i class="fa">Curr.Stock <span ng-if="ItemCombination.UnitName">[ {{ItemCombination.UnitName}}]</span> </i></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-2">
+                                <div class="form-group" data-placement="bottom">
+                                
+                                    <input type="number" id="transferQtyIds" class="form-control txt-center transferToltipChange" name="TransferQty" ng-change="RollSqmAndKgCalculationWithAdd()" ng-disabled="IsHardware" ng-model="ItemCombination.AttributeQty" placeholder="Transfer Qty." title="Transfer Quantity">
+                                  
+                                </div>
+                            </div>
+                            <div class="col-md-2" ng-show="ItemCombination.SubCategoryId !=3">
+                                <div class="form-group" ng-class="{ 'has-error' : issueWithoutRequisitionForm.ddlUnit.$dirty && issueWithoutRequisitionForm.ddlUnit.$invalid }" data-toggle="tooltip" data-placement="bottom">
+                                    <div class="transferToltipChange" title="Unit">
+                                        <div class="input-group input-group-md ddl">
+                                            <select class="form-control selectMendatory" ng-model="ddlUnit" name="ddlUnit" ng-options="unit.UnitName for unit in ItemUnitlist track by unit.ItemUnitId" ng-change="CheckUnitName(ddlUnit);ddlUnit.ItemUnitId=ItemCombination.ItemUnitId;ddlUnit.UnitName=$scope.ItemCombination.UnitName;" required disabled>
+                                                <option value="" label="Select Unit"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <span class="help-block" ng-show="issueWithoutRequisitionForm.ddlUnit.$dirty && issueWithoutRequisitionForm.ddlUnit.$invalid">Unit is required</span>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                     
+                        <div class="row" ng-show="ddlTransferType.StockTransferTypeId==4">
+                            <div class="col-md-4">
+                                <div class="form-group" ng-class="{ 'has-error' : issueWithoutRequisitionForm.itemName.$invalid && issueWithoutRequisitionForm.itemName.$touched }" data-toggle="tooltip" data-placement="bottom">
+                                    <div id="formSearchCombinationId" class="transferToltipChange" title="From Item Name">
+                                        <div class="input-group width-hundred-percent">
+                                            <select id="FormSearchTextBox" ng-model="formSearchCombination" name="itemName2" class="form-control selectMendatory" ng-options="aCombination.Combination for aCombination in ItemList track by aCombination.ItemId" ng-change="FormItemLoad(formSearchCombination)" ng-disabled="!ddlStore ||!ddlTransferType">
+                                                <option value="">Type Item Name Or Any Other Related Info</option>
+                                            </select>
+                                            <span class="help-block" ng-show="issueWithoutRequisitionForm.itemName.$dirty && issueWithoutRequisitionForm.itemName.$invalid">ItemName is required</span>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+                            <div class="col-md-3">
+                                <div id="fromPaperType" class="transferToltipChange" title="From Material Paper Type">
+                                    <select ng-disabled="ItemCombination.CategoryId==2" ng-model="formddlmatrialPaperType" ng-change="CheckForStockItem(formddlmatrialPaperType);FromPaperTypeId(formddlmatrialPaperType)" class="form-control " name="ddlmatrialPaperType" id="FormPaperType" ng-options="paper.Combination for paper in matrialPaperTypeList track by paper.MaterialTypeId">
+                                        <option value="">--Material Paper Type--</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3" ng-show="formSearchCombination.SubCategoryId==3">
+                                <div id="ddlLabelBrand2" class="transferToltipChange" title="Label Brand">
+                                    <select ng-model="ddlLabelBrand" class="form-control " ng-change="BrandLabelEmpty();BrandCheckStock1(ddlLabelBrand)" name="ddLabelBrand" id="ddLabelBrand2" ng-options="labelB.LabelBrandName for labelB in LabelBrandList track by labelB.LabelBrandId">
+                                        <option value="">--Label Brand--</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-5" ng-show="formSearchCombination.SubCategoryId !=3 ">
+                                <div class="form-group " data-toggle="tooltip" data-placement="bottom">
+                                    <div class="input-group">
+                                        <input type="number" name="issueQty" class="form-control txt-center transferToltipChange" disabled="disabled" ng-model="ItemCombination.FormCurrentQuantity" placeholder="Curr. Qty." readonly title="Current Quantity">
+                                        <span class="input-group-addon"><i class="fa"> <span ng-if="ItemCombination.FormUnitName">{{ItemCombination.FormUnitName}}</span> </i></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2" ng-show="formSearchCombination.SubCategoryId==3 ">
+                                <div class="form-group " data-toggle="tooltip" data-placement="bottom">
+                                    <div class="input-group">
+                                        <input type="number" name="issueQty" class="form-control txt-center transferToltipChange" disabled="disabled" ng-model="ItemCombination.FormCurrentQuantity" placeholder="Curr. Qty." readonly title="Current Quantity">
+                                        <span class="input-group-addon"><i class="fa"> <span ng-if="ItemCombination.FormUnitName">{{ItemCombination.FormUnitName}}</span> </i></span>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+                        </div>
+                        <div class="row" ng-show="ddlTransferType.StockTransferTypeId==4">
+                            <div class="col-md-4">
+                                <div class="form-group" ng-class="{ 'has-error' : issueWithoutRequisitionForm.itemName.$invalid && issueWithoutRequisitionForm.itemName.$touched }" data-toggle="tooltip" data-placement="bottom">
+                                    <div id="ToSearchCombinationId" class="transferToltipChange" title="To Item Name">
+                                        <div class="input-group width-hundred-percent">
+                                            <select id="ToSearchTextBox" ng-change="ToItemLoad(ToSearchCombination)" ng-model="ToSearchCombination" name="itemName" class="form-control selectMendatory" ng-options="aCombination.Combination for aCombination in ItemList track by aCombination.ItemId">
+                                                <option value="">Type Item Name Or Any Other Related Info</option>
+                                            </select>
+                                            <span class="help-block" ng-show="issueWithoutRequisitionForm.itemName.$dirty && issueWithoutRequisitionForm.itemName.$invalid">ItemName is required</span>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div id="toPaperType" class="transferToltipChange" title="To Material Paper Type">
+                                    <select ng-disabled="ItemCombination.CategoryId==2" ng-model="toddlmatrialPaperType" ng-change="ToPaperTypeId(toddlmatrialPaperType)" class="form-control " name="ddlmatrialPaperType" id="ToPaperType" ng-options="paper.Combination for paper in matrialPaperTypeList track by paper.MaterialTypeId">
+                                        <option value="">--Material Paper Type--</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-2" ng-show="formSearchCombination.SubCategoryId==3">
+                                <div id="ToddlLabelBrandDiv" class="transferToltipChange" title="Label Brand">
+                                    <select ng-model="ToLabelBrand" class="form-control " ng-change="ToBrandLabelStock(ddlLabelBrand)" name="ddLabelBrand" id="ToddLabelBrand2" ng-options="labelB.LabelBrandName for labelB in LabelBrandList track by labelB.LabelBrandId">
+                                        <option value="">--Label Brand--</option>
+                                    </select>
+                                </div>
+                            </div>
+
+
+                            <div class="col-md-2">
+                                <div class="form-group " data-toggle="tooltip" data-placement="bottom">
+                                    <div class="input-group">
+                                        <input type="number" name="issueQty" class="form-control txt-center transferToltipChange" disabled="disabled" ng-model="ItemCombination.ToCurrentQuantity" placeholder="Curr. Qty." readonly title="Current Quantity">
+                                        <span class="input-group-addon"><i class="fa"><span ng-if="ItemCombination.ToUnitName">{{ItemCombination.ToUnitName}}</span> </i></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4" ng-show="formSearchCombination.SubCategoryId!=3">
+                                <div class="form-group" data-placement="bottom">
+                                    <div class="input-group">
+                                        <input type="number" id="transferQtyIds" class="form-control txt-center transferToltipChange" name="TransferQty" ng-disabled="IsHardware" ng-model="ItemCombination.AttributeQty" placeholder="0" title=" Transfer Quantity">
+                                        <span class="input-group-addon" style="color:red">T.Qty</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2" ng-show="formSearchCombination.SubCategoryId==3">
+                                <div class="form-group" data-placement="bottom">
+                                    <div class="input-group">
+                                        <input type="number" id="transferQtyIds" class="form-control txt-center transferToltipChange" name="TransferQty" ng-disabled="IsHardware" ng-model="ItemCombination.AttributeQty" placeholder="0" title=" Transfer Quantity">
+                                        <span class="input-group-addon" style="color:red">T.Qty</span>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                        <div class="row" ng-show="ItemCombination.SerialList.length">
+                            <div class="col-md-12">
+                                <table class="responstable table-hover">
+                                    <tr>
+                                        <th>Hardware Serial No</th>
+                                    </tr>
+                                    <tr >
+                                        <td>
+                                            <span ng-repeat="aSerial in ItemCombination.SerialList">
+                                                <span style="padding:7px;text-align:justify">
+                                                    <input type="checkbox" ng-click="CheckUpdate(aSerial)" ng-model="aSerial.IsChecked"  /> {{aSerial.SerialNo}}
+                                                </span>
+                                               
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                      
+                     
+                    <div class="row" ng-show="ddlTransferType.StockTransferTypeId !=4 || ddlTransferType==null">
+                        <div class="col-md-10">
+
+                        </div>
+                        <div class="col-md-2">
+                            <button name="btnAdd" class="customBtn custmoBtnReset" title="Add"  ng-click="AddIssueDetail()">
+                                <i class=" fa fa-plus-square"></i>&nbsp;{{buttonAddIssue}}
+                            </button>
+                        </div>
+                    </div>
+                        <div class="row" ng-show="ddlTransferType.StockTransferTypeId==4">
+                            <div class="col-md-2" >
+                                <div class="form-group" ng-class="{ 'has-error' : issueWithoutRequisitionForm.ddlUnit.$dirty && issueWithoutRequisitionForm.ddlUnit.$invalid }" data-toggle="tooltip" data-placement="bottom">
+                                    <div class="transferToltipChange" title="Unit">
+                                        <div class="input-group input-group-md ddl">
+                                            <select class="form-control selectMendatory" ng-model="ddlUnit" name="ddlUnit" ng-options="unit.UnitName for unit in ItemUnitlist track by unit.ItemUnitId" ng-change="CheckUnitName(ddlUnit);ddlUnit.ItemUnitId=ItemCombination.ItemUnitId;ddlUnit.UnitName=$scope.ItemCombination.UnitName;" required disabled>
+                                                <option value="" label="Select Unit"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <span class="help-block" ng-show="issueWithoutRequisitionForm.ddlUnit.$dirty && issueWithoutRequisitionForm.ddlUnit.$invalid">Unit is required</span>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <button name="btnAdd" class="customBtn custmoBtnReset" title="Add"  ng-click="AddIssueDetail()" >
+                                    <i class=" fa fa-plus-square"></i>&nbsp;{{buttonAddIssue}}
+                                </button>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table class="responstable table-hover">
+                                <tr>
+                                    <th class="t-cell-center"></th>
+                                    <th class="t-cell-center">SL.No</th>
+                                    <th class="t-cell-center" ng-show="ddlTransferType.StockTransferTypeId != 4 ">Product Name</th>
+                                    <th class="t-cell-center" ng-show="ddlTransferType.StockTransferTypeId == 4 ">Form Product Name</th>
+                                    <th class="t-cell-center"  ng-show="ddlTransferType.StockTransferTypeId == 4 ">To Product Name</th>
+                                    <th class="t-cell-center" ng-show="ddlTransferType.StockTransferTypeId != 4 ">Material Type </th>
+                                    <th class="t-cell-center"ng-show="ddlTransferType.StockTransferTypeId == 4 ">Form Material Type </th>
+                                    <th class="t-cell-center"ng-show="ddlTransferType.StockTransferTypeId == 4 ">To Material Type </th>
+                                    <th class="t-cell-center">Label Brand Name</th>
+                                    <th class="t-cell-center" ng-show="ddlTransferType.StockTransferTypeId == 4 ">To Brand Name</th>
+                                    <th class="t-cell-center">Unit</th>
+                       
+                                 
+                                </tr>
+                                <tbody ng-repeat="aIssue in SingleIssuelist track by $index">
+                                    <tr>
+                                        <td class="t-cell-center"><label><i ng-show="!aIssue.DisplaySta" class="fa fa-plus-square"></i><i ng-show="aIssue.DisplaySta" class="fa fa-minus-square"></i><input style="visibility:hidden;" type="checkbox" ng-model="aIssue.DisplaySta" /></label></td>
+                                        <td class="t-cell-center">{{$index+1}}</td>
+                                        <td class="t-cell-center" ng-show="ddlTransferType.StockTransferTypeId != 4 ">{{aIssue.ItemName}} </td>
+                                        <td class="t-cell-center" ng-show="ddlTransferType.StockTransferTypeId == 4 ">{{aIssue.ItemName}} </td>
+                                        <td class="t-cell-center" ng-show="ddlTransferType.StockTransferTypeId == 4 ">{{aIssue.ToItemName}} </td>
+                                        <td class="t-cell-center" ng-show="ddlTransferType.StockTransferTypeId != 4 ">{{aIssue.MaterialTypeName}} </td>
+                                        <td class="t-cell-center" ng-show="ddlTransferType.StockTransferTypeId == 4 ">{{aIssue.MaterialTypeName}} </td>
+                                        <td class="t-cell-center" ng-show="ddlTransferType.StockTransferTypeId == 4 ">{{aIssue.MaterialTypeName}} </td>
+
+                                        <td class="t-cell-center">{{aIssue.LabelBrandName}} </td>
+                                        <td class="t-cell-center" ng-show="ddlTransferType.StockTransferTypeId == 4 ">{{aIssue.ToLabelBrandName}} </td>
+                                        <td class="t-cell-center" style="width:10%">
+                                            <div class="input-group input-group-md ddl">
+                                                <select class="form-control selectMendatory" ng-model="aIssue.ItemUnit" name="ddlUnit" ng-options="unit.UnitName for unit in ItemUnitlist track by unit.ItemUnitId" ng-change="aIssue.ItemUnitId = aIssue.ItemUnit.ItemUnitId" disabled>
+                                                    <option value="" label="Unit"></option>
+                                                </select>
+                                            </div>
+
+                                        </td>
+
+                                        <!--<td class="t-cell-center">{{aIssue.IssueQuantity}}</td>-->
+                                       
+                                    </tr>
+                                    <tr ng-show="aIssue.DisplaySta">
+                                        <td></td>
+                                        <td colspan="8">
+                                            <div>
+                                                <table class="responstable table-hover">
+                                                    <tr>
+                                                        <th class="t-cell-center" style="width:15%">Exceed Or Shortage</th>
+                                                        <!--<th class="t-cell-center" style="width:10%">Item Code</th>-->
+                                                        <th class="t-cell-center" style="width:10%">Current Quantity</th>
+                                                        <th class="t-cell-center" style="width:40%" ng-show="aIssue.SerialList.length">Serial No</th>
+                                                        <th class="t-cell-center" style="width:30%">Transfer Quantity</th>
+                                                        <th class="t-cell-center" style="width:10%">Remove</th>
+                                                    </tr>
+                                                    <tr class="HoverTable">
+                                                        <td style="width:15%;text-align:center">
+                                                            <input type="text" class="form-control" ng-model="aIssue.ExceedOrShortage" />
+                                                        </td>
+                                                        <!--<td class="t-cell-center">{{aIssue.Barcode}}</td>-->
+                                                        <td class="t-cell-center">{{aIssue.CurrentQuantity}}  {{aIssue.UnitName}}</td>
+                                                        <td ng-show="aIssue.SerialList.length">
+                                                            <span class="chk-box-alinment"></span>
+                                                            <label class="checkbox-inline" ng-repeat="serial in aIssue.SerialList">
+                                                                <input type="checkbox" ng-model="serial.IsChecked" ng-click="CountCheckedTransferQty(aIssue);" />{{serial.SerialNo}}
+                                                            </label>
+                                                        </td>
+                                                        <td class="t-cell-center text-center">
+                                                            <input type="number" style="text-align:center" ng-change="RollSqmMAndRollWeightCal(aIssue); aIssue.AttributeQty = CheckItemQuantity(aIssue.CurrentQuantity, aIssue.AttributeQty)" ng-model="aIssue.TransferQty" />
+                                                            <input type="text" style="width:80px;" ng-model="aIssue.UnitName" readonly />
+                                                        </td>
+
+
+                                                        <td class="t-cell-center">
+                                                            <button title="Remove" ng-click="aIssue.IssueQuantity = aIssue.IssueQuantity - aIssue.AttributeQty; RemoveItemAttr(aIssue)">
+                                                                <i class="fa fa-minus-square"></i>&nbsp;Remove
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <div class="row">
+                        <div class="col-md-2" ng-hide="ddlTransferType.StockTransferTypeId==5">
+                            <button id="btnSave" name="btnSave" style="width:100%" class="btn btn-success" ng-click="SaveIssueWithoutRequisition()" title="Save" ng-disabled="!ddlTransferType || !inv_StockIssue.IssueNo||!inv_StockIssue.IssueDate||!ddlStore||!ddlDepartment||!ddlIssueeBy || !ddlReceiveBy||!SingleIssuelist.length ||!ddlIwo">
+                                <i class="fa fa-save"></i>&nbsp;{{btnSave}}
+                            </button>
+                        </div>
+                        <div class="col-md-2" ng-show="ddlTransferType.StockTransferTypeId==5">
+                            <button id="btnSave" name="btnSave" style="width:100%" class="btn btn-success" ng-click="SaveIssueWithoutRequisition()" title="Save" ng-disabled="!ddlTransferType || !inv_StockIssue.IssueNo||!inv_StockIssue.IssueDate||!ddlStore||!ddlDepartment||!ddlIssueeBy || !ddlReceiveBy||!SingleIssuelist.length">
+                                <i class="fa fa-save"></i>&nbsp;{{btnSave}}
+                            </button>
+                        </div>
+                        <div class="col-md-2">
+                            <button id="Button3"  style="width:100%" class="btn btn-danger" title="Reset" ng-click="resetForm()">
+                                <i class="fa fa-refresh"></i>&nbsp;Reset
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <div class="col-md-12" ng-show="ListViewPermission">
+        <br />
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-list"></i>&nbsp;Stock Transfer List</h3>
+            </div>
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <div class="input-group transferToltipChange" data-toggle="tooltip" title="From Date">
+                                <input type="text" name="FromDate" id="txtFromDateForST" ng-model="FromDate"  class="form-control " placeholder="From Date" readonly />
+                                <span class="input-group-addon" ng-click="FormDateChangeForST()" id="FormDateChange"><i class="fa fa-calendar req-icon-color"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group transferToltipChange" data-toggle="tooltip" title="To Date">
+                                    <input type="text" name="ToDate" id="txtToDateForST" ng-model="ToDate"  class="form-control " placeholder="To Date" readonly />
+                                    <span class="input-group-addon" ng-click="ToDateChangeForST()" id="ToDateChange"><i class="fa fa-calendar req-icon-color"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group transferToltipChange" data-toggle="tooltip" title="Search Stock Transfer No">
+                            <input type="text" class="form-control" id="textStockTransferNo" ng-model="SearchStockTransferNo"  name="name" placeholder="Stock Transfer No" />
+                        </div>
+                    </div>
+
+                    <!--<div class="col-md-2">
+
+                       
+                    </div>-->
+
+                    <div class="col-md-3">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <button id="btnSearch" ng-click="StockTransferSearch();" style="width:100%" class="customBtn custmoBtnSearch transferToltipChange" title="Search">
+                                    <i class="fa fa-search"></i>&nbsp;Search
+                                </button>
+                            </div>
+                            <div class="col-md-6">
+                                <button id="btnSearch" ng-click="reloadBtn()" style="width:100%" class="btn btn-danger transferToltipChange" title="Reload">
+                                    <i class="fa fa-refresh"></i>&nbsp;Clear
+                                </button>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="responstable table-hover">
+                            <tbody>
+                                <tr class="t-head">
+                                    <th>S/N</th>
+                                    <th class="txt-center">Transfer No</th>
+                                    <th class="txt-center">Transfer Date</th>
+                                    <th class="txt-center">Transfer Type</th>
+                                    <th class="txt-center">From Store</th>
+                                    <th class="txt-center">To Store</th>
+                                    <th class="txt-center">Issued By</th>
+                                    <th class="txt-center">Received By</th>
+                                    <th class="txt-center">Action</th>
+                                </tr>
+                                <tr class="HoverTable searchRow" dir-paginate="aStockTransfer in StockTransferListPaged | itemsPerPage: PerPage" current-page="currentPage" total-items="total_count">
+                                    <td class="t-cell-center">{{$index + ((currentPage-1)*PerPage) + 1}}</td>
+                                    <td class="txt-center">{{aStockTransfer.StockTransferNo }}</td>
+                                    <td class="txt-center">{{aStockTransfer.StockTransferDate }}</td>
+                                    <td class="txt-center">{{aStockTransfer.StockTransferTypeName }}</td>
+                                    <td class="txt-center">{{aStockTransfer.FromStoreName }}</td>
+                                    <td class="txt-center">{{aStockTransfer.ToStoreName }}</td>
+                                    <td class="txt-center">{{aStockTransfer.IssuedByName }}</td>
+                                    <td class="txt-center">{{aStockTransfer.ReceivedByName }}</td>
+                                    <td class="txt-center" style="width:10%">
+                                        <button  style="margin: 2px; width: 95%; color: black;" 
+                                                ng-click="MaterialReturnAndISTMReportBtn(aStockTransfer);">
+                                            <i class="fa fa-print" style="font-size:18px"></i> Report
+                                        </button>
+                                        <button ng-show="aStockTransfer.IsCancelled == true" style="margin: 2px; width: 95%; color: red;" ng-disabled="iwo.IsCancelled">
+                                            <strong>Cancelled</strong>
+                                        </button>
+                                    </td>
+
+                                </tr>
+                                <tr class="t-foot" ng-show="total_count>PerPage">
+                                    <th colspan="9">
+                                        <dir-pagination-controls max-size="9"
+                                                                 direction-links="true"
+                                                                 boundary-links="true"
+                                                                 on-page-change="getData(newPageNumber)" style="text-align:center;">
+                                        </dir-pagination-controls>
+                                    </th>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="row pagination-footer">
+                            <div class="col-md-6">
+                                <span>Show </span><input class="input-pagesize" type="number" ng-maxlength="100" ng-minlength="1" width="1" ng-model="PerPage"> <span>Records </span>
+                            </div>
+                            <div class="col-md-6">
+                                <span class="pull-right">Showing {{((currentPage-1)*PerPage)+1}} to {{((currentPage-1) * PerPage) + StockTransferListPaged.length}} of {{total_count}} Records</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+  
+</form>
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="modal" id="itemSqmLmKgModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="modal-header">
+                                <h3 class="modal-title text-primary">Item Infomation</h3>
+
+                            </div>
+                        </div>
+                        <div class="col-md-4 text-center">
+                            <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>-->
+                        </div>
+                    </div>
+
+
+                    <div class="modal-body">
+                        <table class="responstable table-hover table-bordered">
+                            <tr>
+                                <th style="text-align:center">SL</th>
+                                <th style="text-align:center">Roll Per Lenght (Meter)</th>
+                                <th style="text-align:center">Roll Per Area (SqMeter)</th>
+                                <th style="text-align:center">Roll Per Weight (Kg)</th>
+
+                            </tr>
+                            <tr ng-repeat="itemInfo in ItemInfoList track by $index">
+                                <td style="text-align:center">{{$index + 1}}</td>
+                                <td style="text-align:center">{{itemInfo.RollLenghtInMeterVal}}</td>
+                                <td style="text-align:center">{{itemInfo.RollAreaInSqMeterVal}}</td>
+                                <td style="text-align:center">{{itemInfo.PackageWeightVal}}</td>
+
+                            </tr>
+
+                        </table>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" ng-click="ModalClose()" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!--<pre>{{AllCombinationSearch | json}}</pre>-->
+<script>
+
+    $('.transferToltipChange').tooltip({ boundary: 'window' })
+
+    $("#SearchTextBox").select2({
+        //placeholder: "Type Item Name Or Any Other Related Info",
+         theme: "classic",
+        //dropdownAutoWidth: false
+      
+    });
+
+    $("#FormSearchTextBox").select2({
+       // placeholder: "From Item Name ",
+        //theme: "classic",
+        //dropdownAutoWidth: false
+        theme: "classic",
+    });
+    $("#ToSearchTextBox").select2({
+       // placeholder: "To Item Name ",
+        //theme: "classic",
+        //dropdownAutoWidth: false
+        theme: "classic",
+    });
+
+    $("#ToPaperType").select2({
+      //  placeholder: "--Material Paper Type--",
+        theme: "classic",
+    });
+
+    $("#FormPaperType").select2({
+       // placeholder: "--Material Paper Type--",
+        theme: "classic",
+    });
+
+    $("#ddlPaperType").select2({
+       // placeholder: "--Material Paper Type--",
+        //theme: "classic",
+    });
+    $("#ddLabelBrand1").select2({
+        dropdownAutoWidth: false
+    });
+
+    $("#ddLabelBrand2").select2({
+        dropdownAutoWidth: false
+    });
+    $("#ddlStoreSelect2").select2({
+       /* placeholder: "From Store",*/
+        theme: "classic",
+        dropdownAutoWidth: false
+    });
+    $("#ddlDepartment").select2({
+     /*   placeholder: "To Store",*/
+        theme: "classic",
+        dropdownAutoWidth: false
+    });
+
+    $("#ddlReceiveBy").select2({
+        placeholder: "Recived By",
+        theme: "classic",
+        dropdownAutoWidth: false
+        //   allowClear: true
+    });
+
+    $("#ddlIssueeBy").select2({
+        placeholder: "Issue By",
+        theme: "classic",
+        dropdownAutoWidth: false
+        // allowClear: true
+    });
+
+    $("#SelectIWO").select2({
+        //placeholder: "Select IWO",
+        theme: "classic",
+        dropdownAutoWidth: false
+        // allowClear: true
+    });
+     $("#SelectProduction").select2({
+        // placeholder: "Select Production",
+          theme: "classic",
+         dropdownAutoWidth: false
+                // allowClear: true
+     });
+            
+
+    $("#ddlItemSelect2").select2({
+      //  placeholder: "Select Item",
+        theme: "classic",
+        dropdownAutoWidth: false
+        //allowClear: true
+    });
+
+    $("#ddlPaperTypeId").select2({
+        theme: "classic",
+      //  dropdownAutoWidth: false
+    })
+
+    $("#ToddLabelBrand2").select2({
+       // theme: "classic",
+        //  dropdownAutoWidth: false
+    })
+
+    //var picker = new Pikaday({
+    //    field: document.getElementById('txtIssueDate'),
+    //    firstDay: 1,
+    //    format: "DD/MM/YYYY",
+    //    minDate: new Date('1930-01-01'),
+    //    maxDate: new Date('2050-12-31'),
+    //    yearRange: [1930, 2050],
+    //    theme: 'blue-theme'
+    //});
+    //document.getElementById("calender1").addEventListener("click", function () {
+    //    picker.show();
+    //});
+
+    var elements = document.getElementsByClassName("arrow-togglable");
+    var currentIndex = 0;
+
+    function newControl(e) {
+        elements = document.getElementsByClassName("arrow-togglable");
+        currentIndex = 0;
+        if (window.event.which == 40) {
+            currentIndex = ((currentIndex + 1) == elements.length) ? 0 : ++currentIndex;
+            elements[currentIndex].focus();
+        }
+        if (window.event.which == 38) {
+            currentIndex = (currentIndex == 0) ? elements.length - 1 : --currentIndex;
+            elements[currentIndex].focus();
+        }
+    }
+
+    function nextControlFromSugession(e) {
+        if (window.event.which == 40) {
+            currentIndex = ((currentIndex + 1) == elements.length) ? 0 : ++currentIndex;
+            elements[currentIndex].focus();
+        }
+        if (window.event.which == 38) {
+            currentIndex = (currentIndex == 0) ? elements.length - 1 : --currentIndex;
+            elements[currentIndex].focus();
+        }
+    }
+    function Hilitor2(id, tag) {
+        var targetNode = document.getElementById(id) || document.body;
+        var hiliteTag = tag || "EM";
+        var skipTags = new RegExp("^(?:" + hiliteTag + "|SCRIPT|FORM)$");
+        var colors = ["#ff6", "#a0ffff", "#9f9", "#f99", "#f6f"];
+        var wordColor = [];
+        var colorIdx = 0;
+        var matchRegex = "";
+        var openLeft = false;
+        var openRight = false;
+
+        this.setMatchType = function (type) {
+            switch (type) {
+                case "left":
+                    this.openLeft = false;
+                    this.openRight = true;
+                    break;
+
+                case "right":
+                    this.openLeft = true;
+                    this.openRight = false;
+                    break;
+
+                case "open":
+                    this.openLeft = this.openRight = true;
+                    break;
+
+                default:
+                    this.openLeft = this.openRight = false;
+
+            }
+        };
+
+        function addAccents(input) {
+            retval = input;
+            retval = retval.replace(/([ao])e/ig, "$1");
+            retval = retval.replace(/\\u00E[024]/ig, "a");
+            retval = retval.replace(/\\u00E7/ig, "c");
+            retval = retval.replace(/\\u00E[89AB]/ig, "e");
+            retval = retval.replace(/\\u00E[EF]/ig, "i");
+            retval = retval.replace(/\\u00F[46]/ig, "o");
+            retval = retval.replace(/\\u00F[9BC]/ig, "u");
+            retval = retval.replace(/\\u00FF/ig, "y");
+            retval = retval.replace(/\\u00DF/ig, "s");
+            retval = retval.replace(/a/ig, "([aÃ Ã¢Ã¤]|ae)");
+            retval = retval.replace(/c/ig, "[cÃ§]");
+            retval = retval.replace(/e/ig, "[eÃ¨Ã©ÃªÃ«]");
+            retval = retval.replace(/i/ig, "[iÃ®Ã¯]");
+            retval = retval.replace(/o/ig, "([oÃ´Ã¶]|oe)");
+            retval = retval.replace(/u/ig, "[uÃ¹Ã»Ã¼]");
+            retval = retval.replace(/y/ig, "[yÃ¿]");
+            retval = retval.replace(/s/ig, "(ss|[sÃŸ])");
+            return retval;
+        }
+
+        this.setRegex = function (input) {
+            input = input.replace(/\\([^u]|$)/g, "$1");
+            input = input.replace(/[^\w\\\s']+/g, "").replace(/\s+/g, "|");
+            input = input.replace(/^\||\|$/g, "");
+            input = addAccents(input);
+            if (input) {
+                var re = "(" + input + ")";
+                if (!this.openLeft) re = "(?:^|[\\b\\s])" + re;
+                if (!this.openRight) re = re + "(?:[\\b\\s]|$)";
+                matchRegex = new RegExp(re, "i");
+                return true;
+            }
+            return false;
+        };
+
+        this.getRegex = function () {
+            var retval = matchRegex.toString();
+            retval = retval.replace(/(^\/|\(\?:[^\)]+\)|\/i$)/g, "");
+            return retval;
+        };
+
+        // recursively apply word highlighting
+        this.hiliteWords = function (node) {
+            if (node === undefined || !node) return;
+            if (!matchRegex) return;
+            if (skipTags.test(node.nodeName)) return;
+
+            if (node.hasChildNodes()) {
+                for (var i = 0; i < node.childNodes.length; i++)
+                    this.hiliteWords(node.childNodes[i]);
+            }
+            if (node.nodeType == 3) { // NODE_TEXT
+                if ((nv = node.nodeValue) && (regs = matchRegex.exec(nv))) {
+                    if (!wordColor[regs[1].toLowerCase()]) {
+                        wordColor[regs[1].toLowerCase()] = colors[colorIdx++ % colors.length];
+                    }
+
+                    var match = document.createElement(hiliteTag);
+                    match.appendChild(document.createTextNode(regs[1]));
+                    match.style.backgroundColor = wordColor[regs[1].toLowerCase()];
+                    match.style.fontStyle = "inherit";
+                    match.style.color = "#000";
+
+                    var after;
+                    if (regs[0].match(/^\s/)) { // in case of leading whitespace
+                        after = node.splitText(regs.index + 1);
+                    } else {
+                        after = node.splitText(regs.index);
+                    }
+                    after.nodeValue = after.nodeValue.substring(regs[1].length);
+                    node.parentNode.insertBefore(match, after);
+                }
+            };
+        };
+
+        // remove highlighting
+        this.remove = function () {
+            var arr = document.getElementsByTagName(hiliteTag);
+            while (arr.length && (el = arr[0])) {
+                var parent = el.parentNode;
+                parent.replaceChild(el.firstChild, el);
+                parent.normalize();
+            }
+        };
+
+        // start highlighting at target node
+        this.apply = function (input) {
+            // this.remove();
+            if (input === undefined || !(input = input.replace(/(^\s+|\s+$)/g, ""))) return;
+            input = convertCharStr2jEsc(input);
+            if (this.setRegex(input)) {
+                this.hiliteWords(targetNode);
+            }
+        };
+
+        // added by Yanosh Kunsh to include utf-8 string comparison
+        function dec2hex4(textString) {
+            var hexequiv = new Array("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F");
+            return hexequiv[(textString >> 12) & 0xF] + hexequiv[(textString >> 8) & 0xF] + hexequiv[(textString >> 4) & 0xF] + hexequiv[textString & 0xF];
+        }
+
+        function convertCharStr2jEsc(str, cstyle) {
+            // Converts a string of characters to JavaScript escapes
+            // str: sequence of Unicode characters
+            var highsurrogate = 0;
+            var suppCP;
+            var pad;
+            var n = 0;
+            var outputString = '';
+            for (var i = 0; i < str.length; i++) {
+                var cc = str.charCodeAt(i);
+                if (cc < 0 || cc > 0xFFFF) {
+                    outputString += '!Error in convertCharStr2UTF16: unexpected charCodeAt result, cc=' + cc + '!';
+                }
+                if (highsurrogate != 0) { // this is a supp char, and cc contains the low surrogate
+                    if (0xDC00 <= cc && cc <= 0xDFFF) {
+                        suppCP = 0x10000 + ((highsurrogate - 0xD800) << 10) + (cc - 0xDC00);
+                        if (cstyle) {
+                            pad = suppCP.toString(16);
+                            while (pad.length < 8) {
+                                pad = '0' + pad;
+                            }
+                            outputString += '\\U' + pad;
+                        } else {
+                            suppCP -= 0x10000;
+                            outputString += '\\u' + dec2hex4(0xD800 | (suppCP >> 10)) + '\\u' + dec2hex4(0xDC00 | (suppCP & 0x3FF));
+                        }
+                        highsurrogate = 0;
+                        continue;
+                    } else {
+                        outputString += 'Error in convertCharStr2UTF16: low surrogate expected, cc=' + cc + '!';
+                        highsurrogate = 0;
+                    }
+                }
+                if (0xD800 <= cc && cc <= 0xDBFF) { // start of supplementary character
+                    highsurrogate = cc;
+                } else { // this is a BMP character
+                    switch (cc) {
+                        case 0:
+                            outputString += '\\0';
+                            break;
+                        case 8:
+                            outputString += '\\b';
+                            break;
+                        case 9:
+                            outputString += '\\t';
+                            break;
+                        case 10:
+                            outputString += '\\n';
+                            break;
+                        case 13:
+                            outputString += '\\r';
+                            break;
+                        case 11:
+                            outputString += '\\v';
+                            break;
+                        case 12:
+                            outputString += '\\f';
+                            break;
+                        case 34:
+                            outputString += '\\\"';
+                            break;
+                        case 39:
+                            outputString += '\\\'';
+                            break;
+                        case 92:
+                            outputString += '\\\\';
+                            break;
+                        default:
+                            if (cc > 0x1f && cc < 0x7F) {
+                                outputString += String.fromCharCode(cc);
+                            } else {
+                                pad = cc.toString(16).toUpperCase();
+                                while (pad.length < 4) {
+                                    pad = '0' + pad;
+                                }
+                                outputString += '\\u' + pad;
+                            }
+                    }
+                }
+            }
+            return outputString;
+        }
+
+    }
+</script>

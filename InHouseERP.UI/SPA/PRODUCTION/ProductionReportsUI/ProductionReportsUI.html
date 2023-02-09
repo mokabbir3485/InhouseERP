@@ -1,0 +1,122 @@
+﻿<style>
+    .responstable th:nth-child(2) {
+        width: 10% !important;
+    }
+
+</style>
+<form name="ProductionReportsUIForm" novalidate>
+
+    <div class="col-md-4">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-group"></i>&nbsp;Reports </h3>
+            </div>
+            <div class="panel-body">
+
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="radio-inline" ng-show="ProductionHistory">
+                            <label>
+                                <input type="radio" name="ProductionHistoryReport" value="ProductionHistoryReport" ng-model="ProductionReportsUI">{{ProductionHistoryName}}
+                            </label>
+                        </div>
+                    </div>
+                    <!--<div class="row">
+                        <div class="radio-inline" ng-show="SalesProductivity">
+                            <label>
+                                <input type="radio" name="salesProductivityReport" value="SalesProductivityReport" ng-model="ProductionReportsUI">{{SalesProductivityReportName}}
+
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="radio-inline" ng-show="CIF">
+                            <label>
+                                <input type="radio" name="CIFReport" value="CIFReport" ng-model="ProductionReportsUI">{{CIFReportName}}
+
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="radio-inline" ng-show="CompanyPaymentStatus">
+                            <label>
+                                <input type="radio" name="CompanyPaymentStatusReport" value="CompanyPaymentStatusReport" ng-model="ProductionReportsUI">{{CompanyPaymentStatusReportName}}
+
+                            </label>
+                        </div>
+                    </div>-->
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-list"></i>&nbsp;Report Parameters</h3>
+            </div>
+            <div class="panel-body custom-panal-body">
+
+                <div class="row">
+                    <div class="col-md-6" ng-show="ProductionReportsUI=='ProductionHistoryReport'" ng-hide="">
+                        <div class="form-group " ng-class="{ 'has-error' : ProductionReportsUIForm.FromDate.$invalid && ProductionReportsUIForm.FromDate.$touched }" data-toggle="tooltip" data-placement="bottom" title="From Date">
+                            <div class='input-group'>
+                                <input type="text" name="FromDate" id="txtFromDate" onkeydown="return false" ng-model="FromDate" class="form-control " placeholder="From Date" readonly />
+                                <span class="input-group-addon" id="FormDate" ng-click="FormDateChange()"><i class="fa fa-calendar"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6" ng-show="ProductionReportsUI=='ProductionHistoryReport'" ng-hide="">
+                        <div class="form-group" ng-class="{ 'has-error' : ProductionReportsUIForm.ToDate.$invalid && ProductionReportsUIForm.ToDate.$touched }" data-toggle="tooltip" data-placement="bottom" title="To Date">
+                            <div class='input-group'>
+                                <input type="text" name="ToDate" id="txtToDate" ng-model="ToDate" class="form-control " placeholder="To Date" readonly />
+                                <span class="input-group-addon" id="ToDate" ng-click="ToDateChange()"><i class="fa fa-calendar"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+
+
+                
+                <div class="row" ng-show="ProductionReportsUI == 'ProductionHistoryReport'">
+                    <div class="col-md-4">
+                        <button id="Button1" class="customBtn custmoBtnSave tooltipAll" ng-click="ProductionReportsUIButton()" title="Report View">
+
+                            <i class="fa fa-floppy-o"></i>&nbsp;View Report
+                        </button>
+
+                    </div>
+                    <div class="col-md-4" ng-show="ProductionReportsUI == 'ProductionHistoryReport' ||  ProductionReportsUI == 'CIFReport' || ProductionReportsUI == 'CompanyPaymentStatusReport'">
+                        <button id="Button1" class="btn btn-danger tooltipAll" ng-click="ResetButton()" title="Reset Button">
+
+                            Reset
+                        </button>
+                    </div>
+                    <div class="col-md-4">
+
+                    </div>
+
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+
+</form>
+
+<script>
+    $('.tooltipAll').tooltip({ boundary: 'window' })
+
+    function RowSelect(e) {
+        $('.searchRow').css('background-color', '');
+        $(e).css('background-color', '#94d5ef');
+    }
+
+</script>

@@ -1,0 +1,353 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+
+    <style type="text/css">
+
+        body {
+            font-family: "Times New Roman", Times, serif;
+            color: #000000;
+            height: auto;
+            font-size: 15px;
+        }
+
+        #MainTable td {
+            text-align: center;
+        }
+
+        @page {
+            size: A4;
+        }
+
+        .flexcontainer {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        #container {
+            bottom: 0;
+            position: fixed !important;
+            width:100%;
+        }
+
+        #left {
+            float: left;
+            width: 100px;
+        }
+
+        #right {
+            float: right;
+            width: 100px;
+        }
+
+        #center {
+            margin: 0 auto;
+            /*width: 100px;*/
+        }
+    </style>
+
+</head>
+<body>
+    <!--<page>-->
+    <table class="table" style="margin: auto !important">
+        <tbody>
+            <tr>
+                <td>
+                    <div class="container hidden-print">
+                        <!--<div class="col-sm-7 col-md-9">
+
+                        </div>-->
+                        <div class="row">
+                            <div class="col-sm-2 col-md-1">
+                                <button type="button"  onclick="document.title = 'Material Demand ' + getCurrentDateTime(); PrintPdf();"  class="customBtn custmoBtnReset" style="border-radius: 3px; margin-bottom: -.9em; margin-top: -15px; padding-bottom: 3px; padding-top: 3px;" title="Print To .PDF">
+                                    <i class="fa fa-print"></i>&nbsp;Print
+                                </button>
+                            </div>
+
+                            <!--<div class="col-sm-3 col-md-2">-->
+                                <!--<button type="button" onclick="ExportToDoc();" class="customBtn custmoBtnReset" style="border-radius: 3px; margin-bottom: -.9em; margin-top: -15px; padding-bottom: 3px; padding-top: 3px;" title="Export to .doc">
+                                    <i class="fa fa-save"></i>&nbsp;Export to .doc
+                                </button>-->
+                            <!--</div>-->
+                        </div>
+                        <br />
+                    </div>
+
+                    <div id="source-html">
+
+
+                        <table style="text-align: center;margin-left:auto;margin-right:auto;">
+
+                            <tr>
+                                <!--<td>
+                                    <img style="height: 80px; width: 80px; padding: 5px" src="../../../UploadedImages/logo.jpg" />
+                                </td>-->
+                                <td>
+                                    <p style="font-size: 30px;line-height: 1; margin : 0; padding : 0 ; font-weight: bold;"><strong>Retail Technologies Limited</strong></p>
+                                    <p style="font-size: 14px; line-height: 1.5; margin : 0; padding : 0 ;">
+                                        Durlovpur (Bormi) ,Satkhamair ,sreepur, Gazipur, Dhaka-1744
+                                    </p>
+                                    <br />
+                                    <p style="font-size: 18px; line-height: 1; margin: 0; padding: 0; border:double"><b>EXTERNAL<br /> MATERIALS DEMAND</b></p>
+                                </td>
+                            </tr>
+                        </table>
+                        <br />
+                        <div class="flexcontainer">
+                            <div>
+                                <table>
+                                    <tbody>
+                                        <tr>
+                                            <td style="width: 50px;">
+                                                <span style="font-size: .9em; line-height: 1; margin : 0; padding : 0 ; font-weight: bold;">Site: </span>
+                                            </td>
+                                            <td>
+                                                <span style="font-size: .9em; line-height: 1; margin : 0; padding : 0 ; font-weight: bold;">{{MaterialsDemandData.BranchName}}</span>
+                                            </td>
+
+                                        </tr>
+                                        <tr style="padding:5px;">
+
+                                            <td style="width: 50px;">
+                                                <span style="font-size: .9em; line-height: 1; margin : 0; padding : 0 ; font-weight: bold;">From: </span>
+                                            </td>
+                                            <td>
+                                                <span style="font-size: .9em; line-height: 1; margin : 0; padding : 0 ; font-weight: bold;">{{MaterialsDemandData.FromDepartmentName}}</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width: 50px;">
+                                                <span style="font-size: .9em; line-height: 1; margin : 0; padding : 0 ; font-weight: bold;">To: </span>
+                                            </td>
+                                            <td>
+                                                <span style="font-size: .9em; line-height: 1; margin : 0; padding : 0 ; font-weight: bold;">{{MaterialsDemandData.ToDepartmentName}}</span>
+                                            </td>
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div>
+                                <table>
+                                    <tbody>
+                                        <tr style="padding:5px;">
+
+                                            <td style="width: 120px;">
+                                                <span align="left" style="font-size: .9em; line-height: 1; margin : 0; padding : 0 ; font-weight: bold;">Demand No: </span>
+                                            </td>
+                                            <td>
+                                                <span style="font-size: .9em; line-height: 1; margin : 0; padding : 0 ; font-weight: bold;">{{MaterialsDemandData.MaterialsDemandNo}}</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width: 120px;">
+                                                <span align="left" style="font-size: .9em; line-height: 1; margin : 0; padding : 0 ; font-weight: bold;">Demand Date: </span>
+                                            </td>
+                                            <td>
+                                                <span style="font-size: .9em; line-height: 1; margin : 0; padding : 0 ; font-weight: bold;">{{MaterialsDemandData.DemandDate}}</span>
+                                            </td>
+
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="width: 120px;">
+                                                <span align="left" style="font-size: .9em; line-height: 1; margin : 0; padding : 0 ; font-weight: bold;">Delivery Date: </span>
+                                            </td>
+                                            <td>
+                                                <span style="font-size: .9em; line-height: 1; margin : 0; padding : 0 ; font-weight: bold;">{{MaterialsDemandData.DeliveryDate}}</span>
+                                            </td>
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                            </div>
+
+                        </div>
+                        <br />
+                        <table id="MainTable" border="1" width="100%" align="center">
+                            <thead>
+                                <tr>
+                                    <th rowspan="2" style="text-align: center">SL No</th>
+                                    <th rowspan="2" style="text-align: center">Name Of Materials</th>
+                                    <th rowspan="2" style="text-align: center">Specification</th>
+                                    <th rowspan="2" style="text-align: center">I.W.O No.</th>
+                                    <th rowspan="2" style="text-align: center">Customer Name</th>
+                                    <th rowspan="2" style="text-align: center">M/C Name</th>
+                                    <th rowspan="2" style="text-align: center">Present Stock</th>
+                                    <th colspan="2" style="text-align: center">Quentity</th>
+                                </tr>
+                                <tr>
+                                    <th style="text-align: center">Demand</th>
+                                    <th style="text-align: center">Unit</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="aMaterialsDemandDetail in MaterialsDemandDetailList track by $index">
+                                    <td>
+                                        {{$index+1}}
+                                    </td>
+                                    <td>
+                                        <span style="font-size: .9em;">{{aMaterialsDemandDetail.NameOfMaterials}}</span>
+                                    </td>
+                                    <td>
+                                        <span style="font-size: .9em;">{{aMaterialsDemandDetail.ItemSpecification}}</span>
+                                    </td>
+                                    <td>
+                                        <span style="font-size: .9em;">{{aMaterialsDemandDetail.InternalWorkOrderNo}}</span>
+                                    </td>
+                                    <td>
+                                        <span style="font-size: .9em;">{{aMaterialsDemandDetail.CustomerName}}</span>
+                                    </td>
+                                    <td>
+                                        <span style="font-size: .9em;">{{aMaterialsDemandDetail.MCName}}</span>
+                                    </td>
+                                    <td>
+                                        <span style="font-size: .9em;">{{aMaterialsDemandDetail.StockDetails}}</span>
+                                    </td> 
+                                    <td>
+                                        <span style="font-size: .9em;">{{aMaterialsDemandDetail.DemandQuantity}}</span>
+                                    </td>
+                                    <td>
+                                        <span style="font-size: .9em;">{{aMaterialsDemandDetail.UnitName}}</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <br />
+                        <br />
+                        <br />
+
+                        <div class="flexcontainer">
+                            <div style="text-align: center; line-height: .9;">
+                                <!--<hr style="border-top: 1px solid black;">-->
+
+                                <span>{{MaterialsDemandData.PreparedByName}}</span><br />
+                                <span>_________________________</span><br />
+                                <span style="font-size: .9em; margin: 0; padding: 0; font-weight: bold;">Prepared By</span>
+                            </div>
+                            <div style="text-align: center; line-height: .9;">
+                                <span>_________________________</span><br />
+                                <span style="text-align: center; font-size: .9em; margin: 0; padding: 0; font-weight: bold;">Authorized By Signature</span>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <!--</page>-->
+
+    <script type="text/javascript">
+        $('#HtmlData').hide();
+
+
+        function ExportToDoc() {
+            //$('#ciTable tbody tr th:nth-last-child(1)').each(function (tdIndex, tr) {
+            //    $("#ciTable tbody tr th:nth-last-child(1)").find("span").remove();
+            //})
+
+            //$('#ciTable tbody tr td:nth-last-child(-n+2)').each(function (tdIndex, tr) {
+            //    $("#ciTable tbody tr td:nth-last-child(-n+2)").find("span").remove();
+            //})
+            $('.hideButton').hide();
+            $('#result').hide();
+
+            //$("#ci tbody tr td").find("textarea").each(function (areaIndex, area) {
+            //    $(this).replaceWith("<div id='txtAreaInfo'>" + $(this).text() + "</div>");
+
+            //});
+
+            var sourceHTML = document.getElementById("source-html").innerHTML;
+
+            // console.log(sourceHTML);
+            function escapeRegExp(string) {
+                return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+            }
+            function replaceAll(str, term, replacement) {
+                return str.replace(new RegExp(escapeRegExp(term), 'g'), replacement);
+            }
+            var removeTableBorderStr;
+            $('#ciTable tbody tr td').each(function (tdIndex, td) {
+                var preStyle = $(this).attr("style");
+
+                if (preStyle != undefined) {
+                    var pos = preStyle.indexOf("display: none;");
+                    if (pos != -1) {
+                        $('#ciTable').find("tbody tr td:nth-child(" + tdIndex + ")").each(function () {
+
+                            $(this).remove();
+
+                            alert();
+                        });
+                        //  $(this).remove();
+                    }
+                }
+
+            });
+
+
+            var thCount = 8;
+            //$('#ciTable thead tr th').each(function () {
+            //    thCount++;
+            //});
+
+            if (thCount <= 10 && thCount > 0) {
+                removeTableBorderStr = replaceAll(sourceHTML, 'style="width: 100% !important; font-size: .9em; font-family: "Times New Roman", Times, serif; color:#000000; text-align:center; margin:0; padding:0;', 'style="width: 100% !important; text:align:center; border: 1px solid black; border-collapse: collapse; font-size: .9em; font-family: "Times New Roman", Times, serif; color:#000000; margin:0; padding:0;');
+            }
+            else if (thCount <= 15 && thCount > 10) {
+                removeTableBorderStr = replaceAll(sourceHTML, 'style="width: 100% !important; font-size: .9em; font-family: "Times New Roman", Times, serif; color:#000000; text-align:center; margin:0; padding:0;', 'style="width: 100% !important; text:align:center; border: 1px solid black; border-collapse: collapse; font-size: .7em; font-family: "Times New Roman", Times, serif; color:#000000; margin:0; padding:0;');
+            }
+            else {
+                alert('Please insert less then 15 column.');
+                return;
+            }
+
+            //var firstChildCount = 1;
+            //$("#ciTable tbody tr").each(function () {
+            //    var firstChild = $(this).children(':first');
+            //    firstChild.text(firstChildCount++).outerText;
+            //});
+            var source = 'data:application/vnd.ms-word;charset=utf-8,' + encodeURIComponent(removeTableBorderStr);
+            var fileDownload = document.createElement("a");
+            document.body.appendChild(fileDownload);
+            fileDownload.href = source;
+            fileDownload.download = 'Commercil Invoice.doc';
+            fileDownload.click();
+            document.body.removeChild(fileDownload);
+            $('.hideButton').show();
+            $('#result').show();
+            //$("#ci tbody tr td").find("textarea").show();
+            //$("#ci tbody tr td").html(CommercialInvoiceMasterList[0].ExporterInfo);
+            //$("#ci tbody tr td").find("#ExInfo").each(function () {
+            //    $(this).replaceWith("<textarea>" + CommercialInvoiceMasterList[0].ExporterInfo + "</textarea>");
+            //});
+
+            //$("#ci tbody tr td").find("div").each(function (divsIndex, divs) {
+            //    $(this).replaceWith("<textarea id='txtAreaInfo' spellcheck='false'>" + $(this).text() + "</textarea>");
+            //});
+
+        }
+
+
+        function PrintPdf() {
+
+            window.print();
+
+        }
+        jQuery(document).ready(function ($) {
+
+            $(".main-sidebar").attr("hidden", true);
+            $(".main-header").attr("hidden", true);
+            $(".main-footer").attr("hidden", true);
+            $("#Hidebr").attr("hidden", true);
+
+            $("div").removeClass("wrapper");
+            $("div").removeClass("content-wrapper");
+        });
+
+
+    </script>
+</body>
+
+</html>

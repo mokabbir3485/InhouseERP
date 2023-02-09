@@ -1,0 +1,795 @@
+﻿<style>
+    @media (min-width: 768px) {
+        .modal-xl {
+            width: 90%;
+            max-width: 1200px;
+        }
+    }
+
+    #DivMaterialType .select2-container {
+        width: 231px !important;
+    }
+
+    #DivLabelBrand .select2-container {
+        width: 141px !important;
+    }
+
+    #DivPreparedBySO .select2-container {
+        width: 227px !important;
+        /*width: 483px !important;*/
+    }
+</style>
+
+<form name="PurchaseOrderEntryForm" novalidate>
+    <div ng-show="CreatePermission || RevisePermission">
+        <div class="col-md-12">
+            <div class="alert alert-info alert-dismissible fade in" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <div class="topInfo"> &nbsp; &#9755; <span style="color:red;">Red Icon</span> Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp; &#9755; Click On A Table Row To Update/Delete</div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h3 class="panel-title pull-left "><i class="fa fa-list"></i>&nbsp;Purchase Order {{Mood}}</h3>
+                    <div class="clearfix">
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="col-md-3">
+                                <div class="form-group" ng-class="{ 'has-error' :PurchaseOrderEntryForm.PODate.$invalid && PurchaseOrderEntryForm.PODate.$touched }">
+                                    <div class="input-group tooltipAll" data-toggle="tooltip" title="Purchase Order Date">
+                                        <input type="text" id="txtPODate" ng-model="PurchaseOrder.PODate" class="form-control tooltipAll" name="PODate" placeholder="Purchase Order Date" maxlength="40" required readonly />
+
+                                        <span class="input-group-addon" ng-click="CalendartxtPODate()" id="CalendartxtPODate"><i class="fa fa-calendar req-icon-color"></i></span>
+                                    </div>
+                                    <span class="help-block" style="display: block;" ng-if="PurchaseOrderEntryForm.PODate.$invalid && PurchaseOrderEntryForm.PODate.$touched ">PO Date is required</span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group" ng-class="{ 'has-error' :PurchaseOrderEntryForm.PONo.$invalid && PurchaseOrderEntryForm.PONo.$touched }" data-toggle="tooltip" data-placement="bottom">
+                                    <div class="input-group ">
+                                        <input type="text" ng-model="PurchaseOrder.PONo" id="txtPONo" class="form-control tooltipAll" name="PONo" placeholder="Purchase Order No" maxlength="40" ng-maxlength="40" title="Purchase Order No" readonly />
+                                        <span class="input-group-addon tooltipAll" title="This sales order number may change automatically before saving if it already exists in the system."><i class="fa fa-info-circle" style="color:red"></i></span>
+                                    </div>
+                                    <span class="help-block" ng-if="PurchaseOrderEntryForm.PONo.$error.required && PurchaseOrderEntryForm.PONo.$touched">Purchase Order No is required</span>
+                                    <span class="help-block" ng-if="PurchaseOrderEntryForm.PONo.$error.maxlength">40 Character Max</span>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-3">
+                                <div class="form-group" ng-class="{ 'has-error' :PurchaseOrderEntryForm.ManualPONo.$invalid && PurchaseOrderEntryForm.ManualPONo.$touched }" data-toggle="tooltip" data-placement="bottom">
+                                    <div class="input-group ">
+                                        <input type="text" ng-model="PurchaseOrder.ManualPONo" id="txtManualPONo" class="form-control tooltipAll" name="ManualPONo" placeholder="Manual PO No" maxlength="250" ng-maxlength="250" title="Manual PO No" />
+                                        <span class="input-group-addon tooltipAll" title="Manual PO No."><i class="fa fa-info-circle" style="color:black"></i></span>
+                                    </div>
+                                    <span class="help-block" ng-if="PurchaseOrderEntryForm.ManualPONo.$error.required && PurchaseOrderEntryForm.ManualPONo.$touched">Manual PO No is required</span>
+                                    <span class="help-block" ng-if="PurchaseOrderEntryForm.ManualPONo.$error.maxlength">250 Character Max</span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group" ng-class="{ 'has-error' :PurchaseOrderEntryForm.QuotationNo.$invalid && PurchaseOrderEntryForm.QuotationNo.$touched }" data-toggle="tooltip" data-placement="bottom">
+                                    <div class="input-group ">
+                                        <input type="text" ng-model="PurchaseOrder.QuotationNo" id="txtQuotationNo" class="form-control tooltipAll" name="QuotationNo" placeholder="Quotation No" maxlength="250" ng-maxlength="250" title="Quotation No" />
+                                        <span class="input-group-addon tooltipAll" title="Quotation No."><i class="fa fa-info-circle" style="color:black"></i></span>
+                                    </div>
+                                    <span class="help-block" ng-if="PurchaseOrderEntryForm.QuotationNo.$error.required && PurchaseOrderEntryForm.QuotationNo.$touched">Quotation No is required</span>
+                                    <span class="help-block" ng-if="PurchaseOrderEntryForm.QuotationNo.$error.maxlength">250 Character Max</span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="col-md-3">
+                                <div class="form-group tooltipAll" ng-class="{ 'has-error' : PurchaseOrderEntryForm.ddlBranch.$dirty && PurchaseOrderEntryForm.ddlBranch.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Branch">
+                                    <div class="input-group input-group-md ddl">
+                                        <select id="ddlBranch" ng-model="ddlBrunch" class="form-control selectMendatory" name="ddlBranch" ng-options="brunch.BranchName  for brunch in Branchlist  track by brunch.BranchId" ng-change="PurchaseOrder.BranchId = ddlBrunch.BranchId;">
+                                            <option value="" label="Select Branch"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group tooltipAll" ng-class="{ 'has-error' : PurchaseOrderEntryForm.MaterialsDemand.$dirty && PurchaseOrderEntryForm.MaterialsDemand.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Materials Demand No">
+                                    <div class="input-group width-hundred-percent">
+                                        <select id="ddlMaterialsDemand" ng-model="ddlMaterialsDemand" name="MaterialsDemand" class="form-control selectMendatory" ng-options="MaterialsDemand.MaterialsDemandNo for MaterialsDemand in MatrialDemandList track by MaterialsDemand.MaterialsDemandId" ng-change="PurchaseOrder.MaterialsDemandId = ddlMaterialsDemand.MaterialsDemandId">
+                                            <option value=""></option>
+                                        </select>
+                                        <span class="help-block" ng-show="PurchaseOrderEntryForm.MaterialsDemand.$dirty && PurchaseOrderEntryForm.MaterialsDemand.$invalid">Materials Demand No is required</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group tooltipAll" ng-class="{ 'has-error' : PurchaseOrderEntryForm.ddlPreparedBy.$dirty && PurchaseOrderEntryForm.ddlPreparedBy.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Prepared By">
+                                    <div id="DivPreparedBySO" class="input-group input-group-md ddl">
+                                        <select ng-model="ddlPreparedBy" name="ddlPreparedBy" id="ddlPreparedBySO" class="form-control selectMendatory" ng-change="PurchaseOrder.PreparedById=ddlPreparedBy.EmployeeId" ng-options="employee.FullName+' ~ '+employee.DesignationName+' ~ '+employee.DepartmentName  for employee in employeeList track by employee.EmployeeId" required>
+                                            <option value="" label="Reference"></option>
+                                        </select>
+                                    </div>
+                                    <span class="help-block" ng-show="PurchaseOrderEntryForm.ddlPreparedBy.$dirty && PurchaseOrderEntryForm.ddlPreparedBy.$invalid">Prepared By is Required</span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group" ng-class="{ 'has-error' :PurchaseOrderEntryForm.DeliveryDate.$invalid && PurchaseOrderEntryForm.DeliveryDate.$touched }">
+                                    <div class="input-group tooltipAll" data-toggle="tooltip" title="Delivery Date">
+                                        <input type="text" id="txtInvoiceDueDate" ng-model="PurchaseOrder.DeliveryDate" class="form-control" name="DeliveryDate" placeholder="Delivery Date" maxlength="40" readonly />
+
+                                        <span class="input-group-addon" ng-click="CalendartxtInvoiceDueDate()" id="CalendartxtInvoiceDueDate"><i class="fa fa-calendar"></i></span>
+                                    </div>
+                                    <span class="help-block" style="display: block;" ng-if="PurchaseOrderEntryForm.DeliveryDate.$invalid && PurchaseOrderEntryForm.DeliveryDate.$touched ">Delivery Date is required</span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="col-md-3">
+                                <div class="form-group tooltipAll" ng-class="{ 'has-error' : PurchaseOrderEntryForm.SupplierType.$touched && PurchaseOrderEntryForm.SupplierType.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Supplier Type">
+                                    <div class="input-group input-group-md ddl">
+                                        <select ng-model="ddlSupplierType" class="form-control selectMendatory" name="SupplierType" ng-options="supplierType.SupplierTypeName for supplierType in supplierTypeList track by supplierType.SupplierTypeId" ng-change="GetSupplier(ddlSupplierType.SupplierTypeId); SupplierTypeChange(ddlSupplierType.SupplierTypeId);" required>
+                                            <option value="" label="Select Supplier Type"></option>
+                                        </select>
+                                    </div>
+                                    <span class="help-block" ng-show="PurchaseOrderEntryForm.SupplierType.$touched && PurchaseOrderEntryForm.SupplierType.$invalid">Supplier Type is required</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group" ng-class="{ 'has-error' : PurchaseOrderEntryForm.ddlSupplier.$dirty && PurchaseOrderEntryForm.ddlSupplier.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Supplier">
+                                    <div class="tooltipAll" title="Select Supplier">
+                                        <select id="ddlSupplier" ng-model="ddlSupplier" name="ddlSupplier" class="form-control" ng-options="supplier.SupplierName for supplier in supplierlist track by supplier.SupplierId" ng-change="PurchaseOrder.SupplierId = ddlSupplier.SupplierId;PurchaseOrder.SupplierName = ddlSupplier.SupplierName; GetSupplierAddressBySupplierId(ddlSupplier.SupplierId);" required>
+                                            <option value="">-- Select Supplier -- </option>
+                                        </select>
+                                        <span class="help-block" ng-show="PurchaseOrderEntryForm.ddlSupplier.$dirty && PurchaseOrderEntryForm.ddlSupplier.$invalid">Supplier Name is required</span>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-group" ng-class="{ 'has-error' : PurchaseOrderEntryForm.ddlSupplierAddress.$dirty && PurchaseOrderEntryForm.ddlSupplierAddress.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Supplier Address">
+
+                                    <div class="input-group width-hundred-percent tooltipAll" title="Select Supplier">
+                                        <select id="ddlSupplierAddress" ng-model="ddlSupplierAddress" name="ddlSupplierAddress" class="form-control selectMendatory" ng-options="supplierAddress.AddressType + ': ' + supplierAddress.Address for supplierAddress in SupplierAddressList track by supplierAddress.AddressId" ng-change="PurchaseOrder.SupplierAddressId = ddlSupplierAddress.AddressId;" required>
+                                            <option value="">-- Select Supplier Address -- </option>
+                                        </select>
+                                        <span class="help-block" ng-show="PurchaseOrderEntryForm.CurrencyType.$dirty && PurchaseOrderEntryForm.CurrencyType.$invalid">Address is required</span>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="row" ng-show="LocalViewPermission">
+                        <div class="col-md-12">
+                            <div class="col-md-3">
+                                <div class="form-group tooltipAll" ng-class="{ 'has-error' :PurchaseOrderEntryForm.PlaceOfDelivery.$invalid && PurchaseOrderEntryForm.PlaceOfDelivery.$touched }" data-toggle="tooltip" data-placement="bottom" title="Place Of Delivery">
+                                    <div class="input-group ">
+                                        <textarea id="PlaceOfDelivery" rows="1" name="PlaceOfDelivery" maxlength="501" class="form-control" ng-model="PurchaseOrder.PlaceOfDelivery" placeholder="Place Of Delivery" ng-maxlength="500"> </textarea>
+                                        <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                    </div>
+                                    <span class="help-block" ng-if="PurchaseOrderEntryForm.PlaceOfDelivery.$error.maxlength">500 Character Max</span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group tooltipAll" ng-class="{ 'has-error' :PurchaseOrderEntryForm.Remarks.$invalid && PurchaseOrderEntryForm.Remarks.$touched }" data-toggle="tooltip" data-placement="bottom" title="Additional Info">
+                                    <div class="input-group ">
+                                        <textarea id="AdditionalInfo" rows="1" name="AdditionalInfo" maxlength="1000" class="form-control" ng-model="PurchaseOrder.AdditionalInfo" placeholder="Additional Info" ng-maxlength="1000"> </textarea>
+                                        <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                    </div>
+                                    <span class="help-block" ng-if="PurchaseOrderEntryForm.AdditionalInfo.$error.maxlength">1000 Character Max</span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group tooltipAll" ng-class="{ 'has-error' :PurchaseOrderEntryForm.Remarks.$invalid && PurchaseOrderEntryForm.Remarks.$touched }" data-toggle="tooltip" data-placement="bottom" title="Remarks">
+                                    <div class="input-group ">
+                                        <textarea id="Remarks" style="height:34px;" name="Remarks" maxlength="501" class="form-control" ng-model="PurchaseOrder.Remarks" placeholder="Remarks" ng-maxlength="500"> </textarea>
+                                        <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                    </div>
+                                    <span class="help-block" ng-if="PurchaseOrderEntryForm.Remarks.$error.maxlength">500 Character Max</span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group tooltipAll" ng-class="{ 'has-error' : PurchaseOrderEntryForm.ContactNo.$dirty && PurchaseOrderEntryForm.ContactNo.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Contact No">
+                                    <div class="input-group">
+                                        <input type="text" id="txtContactNo" ng-model="PurchaseOrder.ContactNo" name="ContactNo" class="form-control" placeholder="Contact No" maxlength="50" ng-maxlength="50">
+                                        <span class="input-group-addon" style="color:black"><i class="fa fa-mobile" aria-hidden="true"></i></span>
+                                    </div>
+                                    <span class="help-block" ng-show="PurchaseOrderEntryForm.ContactNo.$dirty && PurchaseOrderEntryForm.ContactNo.$invalid">Contact No is required</span>
+                                    <span class="help-block" ng-if="PurchaseOrderEntryForm.ContactNo.$error.maxlength">50 Character Max</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-footer">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group" ng-class="{ 'has-error' : PurchaseOrderEntryForm.Category.$dirty && PurchaseOrderEntryForm.Category.$invalid }">
+                                    <div class="tooltipAll" title="Select Category">
+                                        <div class="input-group input-group-md ddl" data-toggle="tooltip" data-placement="bottom">
+                                            <select ng-model="ddlCategory" class="form-control selectMendatory" name="Category" id="cmbCategory" ng-options="category.CategoryName for category in CategoryList track by category.CategoryId" ng-change="CheckPurchaseTypeFlag(ddlCategory); PurchaseOrderDetail.CategoryId = ddlCategory.CategoryId;" required autofocus>
+                                                <option value="" label="Select Category" hidden></option>
+                                            </select>
+                                        </div>
+                                        <span class="help-block" ng-show="PurchaseOrderEntryForm.Category.$dirty && PurchaseOrderEntryForm.Category.$invalid">Category is required</span>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group tooltipAll" ng-class="{ 'has-error' : PurchaseOrderEntryForm.itemName.$invalid && PurchaseOrderEntryForm.itemName.$touched }" data-toggle="tooltip" data-placement="bottom" title="Item Name">
+                                    <div class="input-group width-hundred-percent">
+                                        <select id="itemNameSO" ng-model="ddlItemNameAll" name="itemName" class="form-control selectMendatory" ng-options="PurchaseOrderDetail.TempItemName for PurchaseOrderDetail in ItemSearchListForSO track by PurchaseOrderDetail.ItemId" ng-change="loadItemDetails(ddlItemNameAll); PurchaseOrderDetail.ItemId = ddlItemNameAll.ItemId;">
+                                            <option value=""></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="form-group" ng-class="{ 'has-error' : PurchaseOrderEntryForm.MaterialType.$dirty && PurchaseOrderEntryForm.MaterialType.$invalid }">
+                                    <div id="DivMaterialType" class="input-group input-group-md ddl tooltipAll" data-toggle="tooltip" data-placement="bottom" title="Select Material Type">
+                                        <select id="MaterialType1" ng-model="ddlMaterialType" class="form-control selectMendatory"  name="MaterialType" ng-options="MaterialType.MaterialType for MaterialType in MaterialTypeList track by MaterialType.MaterialTypeId" ng-change="PurchaseOrderDetail.MaterialTypeId=ddlMaterialType.MaterialTypeId;PurchaseOrderDetail.MaterialTypeCode=ddlMaterialType.MaterialTypeCode;" ng-disabled="ddlItemNameAll.CategoryId == 2 || !ddlItemNameAll" required>
+                                            <option value="" label="Select Material Type"></option>
+                                        </select>
+                                    </div>
+                                    <span class="help-block" ng-show="PurchaseOrderEntryForm.MaterialType.$dirty && PurchaseOrderEntryForm.MaterialType.$invalid">Material Type is required</span>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            
+                            <div class="col-md-3">
+                                <div class="form-group tooltipAll" ng-class="{ 'has-error' : PurchaseOrderEntryForm.ItemNameCheck.$dirty && PurchaseOrderEntryForm.ItemNameCheck.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Item Name">
+                                    <div class="input-group">
+                                        <input type="text" id="txtItemName" ng-model="PurchaseOrderDetail.ItemName" name="ItemNameCheck" class="form-control" placeholder="Item Name" maxlength="500" ng-maxlength="500">
+                                        <span class="input-group-addon" style="color:black"><b>Item Name</b></span>
+                                    </div>
+                                    <span class="help-block" ng-show="PurchaseOrderEntryForm.ItemNameCheck.$dirty && PurchaseOrderEntryForm.ItemNameCheck.$invalid">Item Name is required</span>
+                                    <span class="help-block" ng-if="PurchaseOrderEntryForm.ItemNameCheck.$error.maxlength">15 Character Max</span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group tooltipAll" ng-class="{ 'has-error' : PurchaseOrderEntryForm.DescriptionOne.$dirty && PurchaseOrderEntryForm.DescriptionOne.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Description 1">
+                                    <div class="input-group">
+                                        <input type="text" id="txtDescriptionOne" ng-model="PurchaseOrderDetail.ItemDescription" name="DescriptionOne" class="form-control" placeholder="Description 1" maxlength="500" ng-maxlength="500" readonly>
+                                        <span class="input-group-addon" style="color:red"><b>Des 1</b></span>
+                                    </div>
+                                    <span class="help-block" ng-show="PurchaseOrderEntryForm.DescriptionOne.$dirty && PurchaseOrderEntryForm.DescriptionOne.$invalid">Description 1 is required</span>
+                                    <span class="help-block" ng-if="PurchaseOrderEntryForm.DescriptionOne.$error.maxlength">15 Character Max</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group tooltipAll" ng-class="{ 'has-error' : PurchaseOrderEntryForm.DescriptionTwo.$dirty && PurchaseOrderEntryForm.DescriptionTwo.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Description 2">
+                                    <div class="input-group">
+                                        <input type="text" id="txtDescriptionTwo" ng-model="PurchaseOrderDetail.ItemDescriptionTwo" name="DescriptionTwo" class="form-control" placeholder="Description 2" maxlength="500" ng-maxlength="500">
+                                        <span class="input-group-addon" style="color:black"><b>Des 2</b></span>
+                                    </div>
+                                    <span class="help-block" ng-show="PurchaseOrderEntryForm.DescriptionTwo.$dirty && PurchaseOrderEntryForm.DescriptionTwo.$invalid">Description 2 is required</span>
+                                    <span class="help-block" ng-if="PurchaseOrderEntryForm.DescriptionTwo.$error.maxlength">15 Character Max</span>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group tooltipAll" ng-class="{ 'has-error' : PurchaseOrderEntryForm.ItemCode.$dirty && PurchaseOrderEntryForm.ItemCode.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Size Code">
+                                    <div class="input-group">
+                                        <input type="text" id="txtItemCode" ng-model="PurchaseOrderDetail.ItemCode" name="ItemCode" class="form-control" placeholder="Size Code" maxlength="500" ng-maxlength="500" readonly>
+                                        <span class="input-group-addon" style="color:black"><b>Code</b></span>
+                                    </div>
+                                    <span class="help-block" ng-show="PurchaseOrderEntryForm.ItemCode.$dirty && PurchaseOrderEntryForm.ItemCode.$invalid">Size Code is required</span>
+                                    <span class="help-block" ng-if="PurchaseOrderEntryForm.ItemCode.$error.maxlength">15 Character Max</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" ng-show="ImportViewPermission">
+                            <div class="col-md-3">
+                                <div class="form-group tooltipAll" ng-class="{ 'has-error' : PurchaseOrderEntryForm.PartCodeNo.$dirty && PurchaseOrderEntryForm.PartCodeNo.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Part Code Number">
+                                    <div class="input-group">
+                                        <input type="text" id="txtPartCodeNo" ng-model="PurchaseOrderDetail.PartCodeNo" name="PartCode" class="form-control" placeholder="Part Code Number" maxlength="500" ng-maxlength="500">
+                                        <span class="input-group-addon" style="color:black"><b>Part Code</b></span>
+                                    </div>
+                                    <span class="help-block" ng-if="PurchaseOrderEntryForm.PartCode.$error.maxlength">15 Character Max</span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group tooltipAll" title="Roll Direction">
+                                    <select class="form-control" ng-model="PurchaseOrderDetail.RollDirection">
+                                        <option value="" label="-Roll Direction-"> </option>
+                                        <option value="Regular" label="R"></option>
+                                        <option value="Face In" label="FI"></option>
+                                        <option value="Face Out" label="FO"></option>
+                                        <option value="Clock Wise" label="CW"></option>
+                                        <option value="Anti Clock Wise" label="ACW"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group tooltipAll" data-toggle="tooltip" data-placement="bottom" title="Square Meter">
+                                    <div class="input-group">
+                                        <input type="number" id="txtSquareMeter" class="form-control txt-center" ng-model="PurchaseOrderDetail.SquareMeter" placeholder="Meter2">
+                                        <span class="input-group-addon"><b>M2</b></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group tooltipAll" data-toggle="tooltip" data-placement="bottom" title="Square Meter Price">
+                                    <div class="input-group">
+                                        <input type="number" id="txtSquareMeterPrice" class="form-control txt-center" ng-model="PurchaseOrderDetail.SquareMeterPrice" placeholder="M2 Price">
+                                        <span class="input-group-addon"><i class="fa fa-qq" style="color:black;"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group tooltipAll" data-toggle="tooltip" data-placement="bottom" title="Total Reels">
+                                    <div class="input-group">
+                                        <input type="number" id="txtTotalReels" class="form-control txt-center" ng-model="PurchaseOrderDetail.TotalReels" placeholder="Total Reels">
+                                        <span class="input-group-addon"><i class="fa fa-qq" style="color:black;"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" ng-show="ImportViewPermission">
+                            <div class="col-md-8">
+                                <div class="form-group tooltipAll" ng-class="{ 'has-error' : PurchaseOrderEntryForm.CuttingSize.$dirty && PurchaseOrderEntryForm.CuttingSize.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Cutting Size">
+                                    <div class="input-group">
+                                        <input type="text" id="txtCuttingSize" ng-model="PurchaseOrderDetail.CuttingSize" name="CuttingSize" class="form-control" placeholder="Cutting Size" maxlength="500" ng-maxlength="500">
+                                        <span class="input-group-addon" style="color:black"><b>Cutting Size</b></span>
+                                    </div>
+                                    <span class="help-block" ng-if="PurchaseOrderEntryForm.PartCode.$error.maxlength">15 Character Max</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group tooltipAll" ng-class="{ 'has-error' : PurchaseOrderEntryForm.CuttingQuantity.$dirty && PurchaseOrderEntryForm.CuttingQuantity.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Cutting Quantity">
+                                    <div class="input-group">
+                                        <input type="number" id="txtCuttingQuantity" ng-model="PurchaseOrderDetail.CuttingQuantity" name="CuttingQuantity" class="form-control" placeholder="Cutting Quantity" maxlength="500" ng-maxlength="500">
+                                        <span class="input-group-addon" style="color:black"><b>Cutting Quantity</b></span>
+                                    </div>
+                                    <span class="help-block" ng-if="PurchaseOrderEntryForm.PartCode.$error.maxlength">15 Character Max</span>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2">
+                                <div class="form-group tooltipAll" data-toggle="tooltip" data-placement="bottom" title="Order Quantity">
+                                    <div class="input-group">
+                                        <input type="number" id="txtOrderQty" class="form-control txt-center" ng-model="PurchaseOrderDetail.Quantity" min="1" max="9999999" ng-change="priceOrAmountChangeForQty(true)" placeholder="Order Qty">
+                                        <span class="input-group-addon"><i class="fa fa-qq" style="color:red;"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group tooltipAll" data-toggle="tooltip" data-placement="bottom" title="Sale Price (Tk.)">
+                                    <div class="input-group">
+                                        <input type="number" id="txtPrice" class="form-control txt-center" ng-model="PurchaseOrderDetail.UnitPrice" ng-disabled="!PurchaseOrderDetail.Quantity" ng-change="priceOrAmountChange(true)" placeholder="Price(Tk)" required>
+                                        <span class="input-group-addon"><i class="fa fa-qq" style="color:red;"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2" ng-show="LocalViewPermission">
+                                <div class="form-group tooltipAll" data-toggle="tooltip" data-placement="bottom" title="VAT Percentage">
+                                    <div class="input-group">
+                                        <input type="number" id="txtVatPercentage" class="form-control txt-center" ng-model="PurchaseOrderDetail.VATPercentage" ng-disabled="!PurchaseOrderDetail.Quantity" ng-change="VatAmountCalculetion();" placeholder="VAT Percentage" required>
+                                        <span class="input-group-addon"><i style="color:black;"><b>%</b></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2" ng-show="LocalViewPermission">
+                                <div class="form-group tooltipAll" data-toggle="tooltip" data-placement="bottom" title="VAT Amount">
+                                    <div class="input-group">
+                                        <input type="number" id="txtVatAmount" class="form-control txt-center" ng-model="PurchaseOrderDetail.VATAmount" ng-change="" placeholder="VAT Amount" readonly>
+                                        <span class="input-group-addon"><i class="fa fa-qq" style="color:black;"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-2">
+                                <div class="form-group tooltipAll" data-toggle="tooltip" data-placement="bottom" title="Amount">
+                                    <div class="input-group">
+                                        <input type="number" id="txtAmount" class="form-control txt-center" ng-model="PurchaseOrderDetail.Amount" ng-change="priceChangeForAmount()" placeholder="Amount" autocomplete="off">
+                                        <span class="input-group-addon"><i class="fa fa-qq" style="color:red;"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+
+                                <div class="form-group tooltipAll" ng-class="{ 'has-error' : PurchaseOrderEntryForm.ddlMu.$dirty && PurchaseOrderEntryForm.ddlMu.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Unit">
+                                    <div class="input-group input-group-md ddl">
+                                        <select class="form-control selectMendatory" ng-model="ddlMu" name="ddlMu" ng-disabled="ddlItemNameAll.SubCategoryId == 4" ng-options="unit.UnitName for unit in ItemUnitlist track by unit.ItemUnitId" ng-change="PurchaseOrderDetail.UnitId = ddlMu.ItemUnitId;PurchaseOrderDetail.UnitName = ddlMu.UnitName;">
+                                            <option value="" label="Select Unit"></option>
+                                        </select>
+                                    </div>
+                                    <span class="help-block" ng-show="PurchaseOrderEntryForm.ddlMu.$dirty && PurchaseOrderEntryForm.ddlMu.$invalid">Unit is required</span>
+                                </div>
+
+                            </div>
+
+
+                        </div>
+                        <div class="row">
+                            <div class="col-md-9">
+
+                            </div>
+                            <div class="col-md-3">
+                                <button id="btnAdd" class="{{BtnColor}} tooltipAll" title="Add" name="AddDetail" ng-click="AddSalesOrderDetail(AddProductLbl)" ng-disabled=" !PurchaseOrderDetail.Quantity || !ddlMu">
+                                    <i class=" fa fa-plus-square"></i>&nbsp;{{AddProductLbl}}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table class="responstable table-hover">
+                                <tr>
+
+                                    <th class="t-cell-center">SL.No</th>
+                                    <th class="t-cell-center">Item</th>
+                                    <th class="t-cell-center">Description</th>
+                                    <th class="t-cell-center">Material</th>
+                                    <th class="t-cell-center" >Direction</th>
+                                    <th class="t-cell-center">Unit</th>
+                                    <th class="t-cell-center">Quantity</th>
+                                    <th class="t-cell-center">Price</th>
+                                    <th class="t-cell-center">Vat(%)</th>
+                                    <th class="t-cell-center">Amount</th>
+                                    <th class="t-cell-center">Action</th>
+                                </tr>
+                                <tbody ng-repeat="aSOrederList in  PurchaseOrderDetailList track by $index">
+                                    <tr>
+                                        <td class="t-cell-center">{{$index+1}}</td>
+                                        <td class="t-cell-center">{{aSOrederList.ItemName}} ~ {{aSOrederList.ItemDescription}}</td>
+                                        <td class="t-cell-center">{{aSOrederList.ItemDescriptionTwo}}</td>
+                                        <td class="t-cell-center">{{aSOrederList.MaterialTypeCode}}</td>
+                                        <td class="t-cell-center">{{aSOrederList.RollDirection}}</td>
+                                        <td class="t-cell-center">{{aSOrederList.UnitName}}</td>
+                                        <td class="t-cell-center">{{aSOrederList.Quantity}}</td>
+                                        <td class="t-cell-center">{{aSOrederList.UnitPrice}}</td>
+                                        <td class="t-cell-center">{{aSOrederList.VATPercentage}}</td>
+                                        <td class="t-cell-center">{{aSOrederList.Amount}}</td>
+                                        <td class="t-cell-center">
+                                            <button title="Edit" style="margin:5px;" ng-click="SelAdditionalInfo(aSOrederList)">
+                                                <i class="fa fa-pencil"></i>
+                                            </button>
+
+                                            <button title="Remove" ng-click="RemoveItemAttr(aSOrederList)">
+                                                <i class="fa fa-minus-square"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+
+
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="6" style="text-align:right;">Total: </td>
+                                        <td class="t-cell-center">{{TotalQuantity}}</td>
+                                        <td class="t-cell-center"></td>
+                                        <td class="t-cell-center"></td>
+                                        <td class="t-cell-center">{{TotalAmount}}</td>
+                                        <td class="t-cell-center">
+                                            <button title="Calculation" ng-click="AmountCalculation()">
+                                                <i class="fa fa-calculator"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="col-md-3" ng-show="LocalViewPermission">
+                            <div class="form-group tooltipAll" data-toggle="tooltip" data-placement="bottom">
+                                <div class="input-group">
+                                    <span class="form-inline" style="background-color:white;">
+                                        <span>
+                                            <input type="number" ng-model="PurchaseOrder.AdditionalDiscount" style="width: 85%; padding: 1px" id="txtAdditionalDiscount" class="form-control tooltipAll" ng-change="PurchaseOrder.AmountAfterDiscount = 0; PurchaseOrder.AmountAfterDiscount = TotalAmount -  PurchaseOrder.AdditionalDiscount" maxlength="10" placeholder="Additional Discount(Tk)" required title="Additional Discount(Tk)">
+                                        </span>
+                                        <span>
+                                            <input type="text" style="width:15%;padding:1px;font-size:14px;font-weight:bold;text-align:center; color:red" class="form-control" value="&#2547" disabled>
+                                        </span>
+
+                                    </span>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3" ng-show="LocalViewPermission">
+                            <div class="form-group tooltipAll" data-toggle="tooltip" data-placement="bottom">
+                                <div class="input-group">
+                                    <span class="form-inline" style="background-color:white;">
+                                        <span>
+                                            <input type="number" ng-model="PurchaseOrder.AmountAfterDiscount" style="width: 85%; padding: 1px" id="txtAfterDiscount" class="form-control tooltipAll" maxlength="10" placeholder="Total Amount After Discount" required title="Total Amount After Discount" readonly>
+                                        </span>
+                                        <span>
+                                            <input type="text" style="width:15%;padding:1px;font-size:14px;font-weight:bold;text-align:center; color:red" class="form-control" value="&#2547" disabled>
+                                        </span>
+
+                                    </span>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3" ng-show="ImportViewPermission">
+                            <div class="form-group" ng-class="{ 'has-error' :PurchaseOrderEntryForm.FreightLabel.$invalid && PurchaseOrderEntryForm.FreightLabel.$touched }" data-toggle="tooltip" data-placement="bottom">
+                                <div class="input-group ">
+                                    <input type="text" ng-model="PurchaseOrder.FreightLabel" id="txtFreightLabel" class="form-control tooltipAll" name="FreightLabel" placeholder="Feight Label" maxlength="250" ng-maxlength="250" title="Freight Label" />
+                                    <span class="input-group-addon tooltipAll" title="Feight Label"><i class="fa fa-info-circle" style="color:black"></i></span>
+                                </div>
+                                <span class="help-block" ng-if="PurchaseOrderEntryForm.FreightLabel.$error.required && PurchaseOrderEntryForm.FreightLabel.$touched">Freight Label is required</span>
+                                <span class="help-block" ng-if="PurchaseOrderEntryForm.FreightLabel.$error.maxlength">250 Character Max</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h3 class="panel-title pull-left "><i class="fa fa-list"></i>&nbsp;Terms and Conditions</h3>
+                    <div class="panel-title pull-right">
+                        <button type="button" id="btnResetTerms" ng-click="resetTerms()" class="customBtn custmoBtnReset" style="border-radius: 3px; margin-bottom: -10px; margin-top: -15px; padding-bottom: 3px; padding-top: 3px;" title="Reset Terms and Conditions">
+                            <i class="fa fa-refresh"></i>&nbsp;Reset Terms
+                        </button>
+                    </div>
+                    <div class="clearfix">
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="container">
+                            <p type="text" name="TermsAndCondition" class="summernote">
+                                {{PurchaseOrder.TermsAndCondition}}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 5%; padding-right: 7%;" ng-show="CreatePermission">
+                        <div class="row">
+                            <button id="btnSave" class="customBtn custmoBtnSave tooltipAll" name="Save" ng-click="SavePurchaseOrder()" title="Save" ng-disabled="!PurchaseOrderDetailList.length || !PurchaseOrder.PODate || !ddlSupplier || !ddlPreparedBy
+                                || !PurchaseOrder.PONo || !ddlBrunch">
+                                <i class="fa fa-save"></i>&nbsp;{{btnSave}}
+                            </button>
+                        </div>
+                    </div>
+                    <!--<div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 5%; padding-right: 7%;" ng-show="PurchaseOrder.IsLocal && btnSave == 'Update'">-->
+                    <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 5%; padding-right: 7%;" ng-show="PurchaseOrder.IsLocal && CheckedPermission">
+                        <div class="row">
+                            <button id="btnChecked" class="customBtn custmoBtnSave tooltipAll" name="Checked" ng-click="CheckPurchaseOrder()" title="Checeked" ng-disabled="!PurchaseOrderDetailList.length || !PurchaseOrder.PODate || !ddlSupplier || !ddlPreparedBy
+                                || !PurchaseOrder.PONo || !ddlBrunch">
+                                <i class="fa fa-check-circle-o"></i>&nbsp;Checked
+                            </button>
+                        </div>
+                    </div>
+                    <div  class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 7%; padding-right: 5%;">
+                        <div class="row">
+                            <button id="Button3" class="btn btn-danger tooltipAll" title="Reset" ng-click="resetForm()">
+                                <i class="fa fa-refresh"></i>&nbsp;Reset
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12" ng-show="ListViewPermission">
+        <br />
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-search"></i>&nbsp;Purchase Order Search</h3>
+            </div>
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <div class="input-group tooltipAll" data-toggle="tooltip" title="From Date">
+
+                                <input type="text" name="FromDate" id="txtFromDateForSO" ng-model="FromDate" class="form-control " placeholder="From Date" readonly />
+                                <span class="input-group-addon" ng-click="FormDateChangeForSO()" id="FormDateChange"><i class="fa fa-calendar"></i></span>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <div class="input-group tooltipAll" data-toggle="tooltip" title="To Date">
+                                <input type="text" name="ToDate" id="txtToDateForSO" ng-model="ToDate" class="form-control " placeholder="To Date" readonly />
+                                <span class="input-group-addon" ng-click="ToDateChangeForSO()" id="ToDateChange"><i class="fa fa-calendar"></i></span>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group tooltipAll" data-toggle="tooltip" title="Search Supplier Name / Purchase Order No">
+                            <input type="text" class="form-control" id="textPurchaseOrderNoAndSupplier" ng-model="SearchPurchaseOrderAndSupplierName" name="name" placeholder="Supplier Name / Purchase Order No" />
+                        </div>
+                    </div>
+
+                    <div class="col-md-1">
+                        <div class="row">
+                            <button id="btnSearch" ng-click="reloadBtn()" class="btn btn-danger tooltipAll" title="Reload">
+                                <i class="fa fa-refresh"></i>&nbsp;Clear
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-md-2 col-sm-2 col-lg-2 col-xs-12" style="padding-right: 3%; padding-left: 3%;">
+                        <div class="row">
+                            <button id="btnSearch" class="customBtn custmoBtnSearch tooltipAll" title="Search" ng-click="PurchaseOrderSearch();">
+                                <i class="fa fa-search-plus"></i>&nbsp;Search
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="responstable table-hover" style="width:100%">
+                            <tbody>
+                                <tr>
+                                    <th class="t-cell-center">S/N</th>
+                                    <th class="t-cell-center">Type</th>
+                                    <th class="t-cell-center" style="width:10%">Order No</th>
+                                    <th class="t-cell-center" style="width:10%">Manual PO No</th>
+                                    <th class="t-cell-center" style="width:9%">Order Date</th>
+                                    <th class="t-cell-center" style="width:5%">Factory</th>
+                                    <th class="t-cell-center">Company Name</th>
+                                    <th class="t-cell-center">Sales Person</th>
+                                    <th class="t-cell-center">Delivery Date</th>
+                                    <th class="t-cell-center">Amount</th>
+                                    <th class="t-cell-center">Status</th>
+                                    <th class="t-cell-center" style="width:10%">Action</th>
+                                </tr>
+                                <tr class="HoverTable searchRow" dir-paginate="aPurchaseOrder in PurchaseOrderListPaged  | itemsPerPage: PerPage" current-page="currentPage" total-items="total_count" onclick="RowSelect(this)" ng-click="">
+                                    <td class="t-cell-center">{{$index + ((currentPage-1)*PerPage) + 1}}</td>
+                                    <td class="t-cell-center">{{aPurchaseOrder.Type}}</td>
+                                    <td class="t-cell-center">{{aPurchaseOrder.PONo}}</td>
+                                    <td class="t-cell-center">{{aPurchaseOrder.ManualPONo}}</td>
+                                    <td class="t-cell-center">{{aPurchaseOrder.PODate}}</td>
+                                    <td class="t-cell-center">{{aPurchaseOrder.BranchName}}</td>
+                                    <td class="t-cell-center">{{aPurchaseOrder.SupplierName}}</td>
+                                    <td class="t-cell-center">{{aPurchaseOrder.PreparedByName}}</td>
+                                    <td class="t-cell-center">{{aPurchaseOrder.DeliveryDate}}</td>
+                                    <td class="t-cell-center">{{aPurchaseOrder.AmountAfterDiscount}}</td>
+                                    <td class="t-cell-center">{{aPurchaseOrder.Status}}</td>
+                                    
+                                    <td class="t-cell-center">
+                                        <button ng-hide="aPurchaseOrder.IsCancelled || aPurchaseOrder.IsChecked" style="margin: 2px; width: 95% " class=""
+                                                ng-click="GetPurchaseOrderDetails(aPurchaseOrder);">
+                                            Edit
+                                        </button>
+                                        <button ng-show="aPurchaseOrder.IsCancelled == true" class="" style="color: #d73925; margin: 2px; width: 95%" ng-disabled="aPurchaseOrder.IsCancelled"
+                                                ng-click="">
+                                            <strong>Cancelled</strong>
+                                        </button>
+
+                                        <button class="" style="margin: 2px; width: 95%"
+                                                ng-click="OpenReport(aPurchaseOrder.POId, aPurchaseOrder.IsLocal)">
+                                            Report
+                                        </button>
+                                    </td>
+
+                                </tr>
+                                <tr class="t-foot" ng-show="total_count>PerPage">
+                                    <th colspan="12">
+                                        <dir-pagination-controls max-size="10"
+                                                                 direction-links="true"
+                                                                 boundary-links="true"
+                                                                 on-page-change="getData(newPageNumber)" style="text-align:center;">
+                                        </dir-pagination-controls>
+                                    </th>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="row pagination-footer">
+                            <div class="col-md-6">
+                                <span>Show </span><input class="input-pagesize" type="number" ng-maxlength="100" ng-minlength="1" width="1" ng-model="PerPage"> <span>Records </span>
+                            </div>
+                            <div class="col-md-6">
+                                <span class="pull-right">Showing {{((currentPage-1)*PerPage)+1}} to {{((currentPage-1) * PerPage) + PurchaseOrderListPaged.length}} of {{total_count}} Records</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+
+
+<script>
+
+
+    $('.tooltipAll').tooltip({ boundary: 'window' })
+
+    $("#ddlMaterialsDemand").select2({
+        placeholder: "Search for: Materials Demand No",
+        //theme: "classic",
+        dropdownAutoWidth: false
+    });
+
+    $("#ddlSupplier").select2({
+        theme: "classic"
+    })
+
+    $("#ddlPreparedBySO").select2({
+        placeholder: "Search for: Prepared By",
+        theme: "classic",
+        dropdownAutoWidth: false
+    });
+    $("#ddlEmployee").select2({
+        //placeholder: "Search for: Prepared By",
+        //theme: "classic",
+        //dropdownAutoWidth: false
+    });
+    $("#MaterialType1").select2({
+        placeholder: "--Material  Type--",
+        theme: "classic",
+        dropdownAutoWidth: false
+    });
+
+    $(document).ready(function () {
+        $('.summernote').summernote({
+            height: 200,
+            tabsize: 2,
+            width: 1010,
+
+            toolbar: [
+                ['style', ['bold', 'italic', 'underline', 'clear']],
+                ['font', ['strikethrough', 'superscript', 'subscript']],
+                ['fontname', ['fontname']],
+                ['table', ['table']],
+                ['insert', ['link', 'picture']],
+                ['view', ['fullscreen', 'codeview']],
+                ['fontsize', ['fontsize']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['height', ['height']]
+            ]
+
+        });
+
+    });
+</script>
+<script>
+    function RowSelect(e) {
+        $('.searchRow').css('background-color', '');
+        $(e).css('background-color', '#94d5ef');
+    }
+
+    function newControl(e) {
+        elements = document.getElementsByClassName("arrow-togglable");
+        currentIndex = 0;
+        if (window.event.which == 40) {
+            currentIndex = ((currentIndex + 1) == elements.length) ? 0 : ++currentIndex;
+            elements[currentIndex].focus();
+        }
+        if (window.event.which == 38) {
+            currentIndex = (currentIndex == 0) ? elements.length - 1 : --currentIndex;
+            elements[currentIndex].focus();
+        }
+    }
+
+</script>

@@ -1,0 +1,608 @@
+﻿@{
+    Layout = null;
+
+    var ApplicationVersion = System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString();
+
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    @*<meta http-equiv='cache-control' content='no-cache' />
+    <meta http-equiv='expires' content='0' />*@
+    @*<META HTTP-EQUIV="refresh" CONTENT="100;URL=/Home/Login#/">*@
+    <title>RTL</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/vendors")
+    @Scripts.Render("~/bundles/spa")
+
+    <script src="~/Scripts/marked.js"></script>
+    <script src="~/Scripts/lodash.js"></script>
+    <script src="~/Scripts/screenfull.js"></script>
+    <script src="~/Scripts/angular-screenfull.js"></script>
+
+    <script src="../../../Scripts/angularjs-dropdown-multiselect.js"></script>
+    <link rel="shortcut icon" type="image/x-icon" href="~/favicon.ico" />
+    <script src="/signalR/hubs"></script>
+    <style>
+        .dialog-window {
+            height: 500px;
+        }
+        .scrollable-content {
+            height: 450px;
+            /*overflow: auto;*/
+            overflow-y: auto; /* Hide vertical scrollbar */
+            overflow-x: hidden; /* Hide horizontal scrollbar */
+        }
+        /*.footer {
+            height: 20px;
+        }*/
+        .ChangeColor{
+            color:red;
+        }
+        .pointer {
+            cursor: pointer;
+        }
+    </style>
+    <style>
+        a {
+            text-decoration: none;
+            color: black;
+        }
+
+            a:visited {
+                color: black;
+            }
+
+        .box::-webkit-scrollbar-track {
+            -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+            background-color: #F5F5F5;
+            border-radius: 5px
+        }
+
+        .box::-webkit-scrollbar {
+            width: 10px;
+            background-color: #F5F5F5;
+            border-radius: 5px
+        }
+
+        .box::-webkit-scrollbar-thumb {
+            background-color: black;
+            border: 2px solid black;
+            border-radius: 5px
+        }
+        .notification {
+            padding-top: 30px;
+            position: relative;
+            display: inline-block;
+        }
+        .box {
+            width: 400px;
+            height: 0px;
+            border-radius: 10px;
+            transition: 0.5s;
+            position: absolute;
+            overflow-y: scroll;
+            padding: 0px;
+            left: -264px;
+            margin-top: 5px;
+            background-color: #F4F4F4;
+            -webkit-box-shadow: 10px 10px 23px 0px rgba(0,0,0,0.2);
+            -moz-box-shadow: 10px 10px 23px 0px rgba(0,0,0,0.1);
+            box-shadow: 10px 10px 23px 0px rgba(0,0,0,0.1);
+            cursor: context-menu;
+            height: 70vh;
+        }
+        .boxUser {
+            width: 300px;
+            height: 0px;
+            border-radius: 10px;
+            transition: 0.5s;
+            position: absolute;
+            padding: 0px;
+            left: -208px;
+            margin-top: 3px;
+            background-color: #F4F4F4;
+            -webkit-box-shadow: 10px 10px 23px 0px rgba(0,0,0,0.2);
+            -moz-box-shadow: 10px 10px 23px 0px rgba(0,0,0,0.1);
+            box-shadow: 10px 10px 23px 0px rgba(0,0,0,0.1);
+            cursor: context-menu;
+            height: 40vh;
+        }
+        .sec {
+            padding: 10px 10px;
+            background-color: #F4F4F4;
+            transition: 0.5s;
+        }
+
+        .txt {
+            vertical-align: top;
+            font-size: 1.25rem;
+            padding: 5px 10px 0px 10px;
+        }
+
+        .title {
+            font-size: 2rem;
+            color: black;
+            
+        }
+        .sub {
+            font-size: 1rem;
+            color: grey;
+        }
+
+        .new {
+            border-style: none none solid none;
+            border-color: red;
+        }
+
+        .sec:hover {
+            background-color: #BFBFBF;
+        }
+
+    </style>
+</head>
+<body ng-app="AngularDemoApp" class="hold-transition skin-blue sidebar-mini">
+    <div class="wrapper">
+        <div ng-controller="IndexController">
+            
+            <header class="main-header">
+                <a href="#/Home" class="logo" style="position: fixed;">
+                    <span class="logo-mini"><img width="50" height="50" src="~/UploadedImages/logoBackLess.png" /></span>
+                    @*<span class="logo-mini"><b>RT</b></span>*@
+                    @*<span class="logo-lg"><b>RETAIL</b> TECHNOLOGIES LTD.</span>*@
+
+                    <span class="logo-lg">
+                        <img width="50" height="50" src="~/UploadedImages/logoBackLess.png" /><b>RETAIL</b> TECHNOLOGIES LTD.
+                    </span>
+                </a>
+
+                <nav class="navbar navbar-fixed-top">
+                    <a href="" id="togle" class="sidebar-toggle" data-toggle="offcanvas" role="button" onclick="return change(this);">
+                        <span id="arrow" class="leftArrow"></span>
+                        <span class="fa-arrow-left"></span>
+                    </a>
+                    <button class="btn btn-danger" style="margin-top: 10px;" ng-click="ReloadPage();"><i class="fa fa-retweet" aria-hidden="true"></i>&nbsp;Refresh Page</button>
+                    <div class="navbar-custom-menu">
+                        @*<input type="button" id="btnClick" ng-click="ReloadPage();" value="button">*@
+                        <ul class="nav navbar-nav">
+                            @*<li style="border-radius: 5px; padding: 1px; margin-top: 15px; color: red; background-color: white;font-weight: bold; margin-right:5px;" ng-show="IsNotify" ><p class="marquee"><span>{{Message}}</span></p></li>*@
+                            @*<li id="hour" style="border-radius: 5px; padding: 1px; margin-top: 15px; color: green; background-color: white;font-weight: bold; margin-right:5px;" ng-hide="true">00</li>
+        <li style="border-radius: 5px; padding: 1px; margin-top: 15px;font-weight: bold; color: white;  margin-right:5px;" ng-hide="true">:</li>
+        <li id="min" style="border-radius: 5px; padding: 1px; margin-top: 15px; color: green; background-color: white;font-weight: bold; margin-right:5px;" ng-hide="true">00</li>
+        <li style="border-radius: 5px; padding: 1px; margin-top: 15px;font-weight: bold; color: white;  margin-right:5px;"ng-hide="true">:</li>
+        <li id="sec" style="border-radius: 5px; padding: 1px; margin-top: 15px; color: green; background-color: white;font-weight: bold; margin-right:5px;" ng-hide="true">00</li>
+        <li style="border-radius: 5px; padding: 1px; margin-top: 15px;font-weight: bold; color: green; background-color: white; margin-right:5px; display:none; " ng-hide="true">:</li>
+        <li id="milisec" style="border-radius: 5px; padding: 1px; margin-top: 15px; color: green; background-color: white;font-weight: bold; margin-right:5px; display:none; " ng-hide="true">00</li>*@
+
+                            <li ng-show="online" style="border-radius: 5px; padding: 1px; margin-top: 15px; color: green; background-color: white">Online&nbsp;<i class="fa fa-wifi" aria-hidden="true"></i>&nbsp;</li>
+                            <li ng-hide="online" style="border-radius: 5px; padding: 1px; margin-top: 15px; color: red; background-color: white; ">Offline&nbsp;<i class="fa fa-spinner" aria-hidden="true">&nbsp;</i></li>
+
+                            <!--<li class="dropdown messages-menu">-->
+                            @*<a href="" class="dropdown-toggle" data-toggle="modal" data-target="#NotificationMessageModal">*@
+                            <!--<a href="" class="dropdown-toggle" data-toggle="dropdown">
+        <i class="fa fa-bell-o"></i>
+        <span ng-hide="UnreadMessageNo == 0" class="label label-danger">{{UnreadMessageNo}}</span>
+    </a>
+    <ul class="dropdown-menu dialog-window" style="display: none; width: 420px;">
+        <li class="user-header">
+            <h4 style="text-align:center !important;" class="modal-title"><strong><i class="fa fa-newspaper-o"></i>  &nbsp;&nbsp;Notice Board &nbsp;&nbsp;<i class="fa fa-newspaper-o"></i> </strong></h4>
+        </li>
+        <li class="user-body">
+            <div class="scrollable-content">
+                <div class="row" ng-repeat="aNotice in NoticeList track by $index" ng-click="ReadLog(aNotice)">
+                    <div style="{{aNotice.color}}" class="col-md-11">
+                        <div class="col-md-6 pull-left">
+                            <u><strong>{{aNotice.NotificaitonTitle}}</strong></u>
+                        </div>
+                        <div style="text-align: right !important; margin-right: -40px;" class="col-md-6 pull-right">
+                            <i class="fa fa-clock-o"></i>  &nbsp;&nbsp;{{aNotice.CreateDate}}
+                            <a class="fa fa-close" style="color: red;" ng-click="DeleteLog(aNotice);"></a>
+                        </div>
+                        <div class="col-md-12">
+                            <p style="text-align: justify;">{{aNotice.NotificationDetail}}</p>
+                            <hr />
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <a style="text-align:center; color:black;" ng-click="SeeAll();"><b>See All</b></a>
+        </li>
+        <li class="user-footer">
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="col-md-4">-->
+                            @*<button type="button" class="btn btn-primary" ng-click="ReadAllLog()"><i class="fa fa-crosshairs"></i>&nbsp;Mark as Read All</button>*@
+                            <!--</div>-->
+                            @*<div class="col-md-4">
+        </div>*@
+                            @*<div class="col-md-4">
+            <button type="button" class="btn btn-danger" ng-click="DeleteAllLog();"><i class="fa fa-trash"></i>&nbsp;Delete All</button>
+        </div>*@
+                            <!--</div>
+
+                </div>
+                <br />
+            </li>
+        </ul>
+    </li>-->
+
+
+                            <li>
+                                <a class="pointer NotificationBtn" ng-click="ShowNotification();">
+                                    <i class="fa fa-bell-o NotificationBtn"></i>
+                                    <span ng-hide="UnreadMessageNo == 0" class="label label-danger NotificationBtn">{{UnreadMessageNo}}</span>
+                                </a>
+                                <div class="NotificationContain" id="NotificationPage" style=" position: sticky; z-index: 2; ">
+                                    <div class="box NotificationContain">
+                                        <div class="sec new NotificationContain" style="position: sticky; top: 0; background-color: #F5F5F5; padding: 1px; ">
+                                            @*<h4 style="text-align: center !important; font-weight:bold;"><i class="fa fa-newspaper-o"></i>  &nbsp;&nbsp;Notifications &nbsp;&nbsp;<i class="fa fa-newspaper-o"></i></h4>*@
+                                            <h4 class="NotificationContain" style="text-align: center !important; font-weight:bold;">&nbsp;&nbsp;Notifications &nbsp;&nbsp;</h4>
+
+                                        </div>
+                                        <div class="sec NotificationContain" ng-repeat="aNotice in NoticeList track by $index">
+                                            <a class="NotificationContain" ng-click="RedidectPage(aNotice.ScreenUrl)">
+                                                <div class="txt NotificationContain" style="font-weight: bold;">{{aNotice.NotificaitonTitle}}</div>
+                                                <div class="txt NotificationContain">{{aNotice.NotificationDetail}}</div>
+                                                <div class="txt sub NotificationContain"><i class="fa fa-clock-o NotificationContain"></i>  &nbsp;&nbsp;{{aNotice.CreateDate}} ~ {{aNotice.CreateTime}}</div>
+                                            </a>
+                                        </div>
+                                        <div class="sec NotificationContain" style="text-align: center; color: black; position:sticky; bottom:0; padding:0;" ng-click="SeeAll();">
+                                            <a class="NotificationContain" style="font-weight: bold;">See All</a>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+
+
+
+
+                            </li>
+
+                            @*<li class="messages-menu">
+            <a id="NotifyBtn" class="pointer" ng-click="ShowNotification();">
+                <i id="NotifyBtn" class="fa fa-bell-o"></i>
+                <span ng-hide="UnreadMessageNo == 0" id="NotifyBtn" class="label label-danger">{{UnreadMessageNo}}</span>
+            </a>
+            <ul class="dropdown-menu dialog-window" id="NotificationPage" style="display: none; width: 420px;">
+                <li id="NotificationContain" class="user-header">
+                    <h4 id="NotificationContain" style="text-align: center !important;" class="modal-title"><strong id="NotificationContain"><i id="NotificationContain" class="fa fa-newspaper-o"></i>  &nbsp;&nbsp;Notifications &nbsp;&nbsp;<i id="NotificationContain" class="fa fa-newspaper-o"></i> </strong></h4>
+                </li>
+                <li id="NotificationContain" class="user-body">
+                    <div id="NotificationContain" class="scrollable-content">
+                        <div id="NotificationContain" class="row pointer" ng-repeat="aNotice in NoticeList track by $index" ng-click="ReadLog(aNotice)">
+                            <div style="{{aNotice.color}}" id="NotificationContain" class="col-md-11" ng-click="RedidectPage(aNotice.ScreenUrl)">
+                                <div id="NotificationContain" class="col-md-6 pull-left" style="margin-right: -40px;">
+                                    <u id="NotificationContain"><strong id="NotificationContain">{{aNotice.NotificaitonTitle}}</strong></u>
+                                </div>
+                                <div id="NotificationContain" style="text-align: right !important; margin-right: -40px;" class="col-md-6 pull-right">
+                                    <i id="NotificationContain" class="fa fa-clock-o"></i>  &nbsp;&nbsp;{{aNotice.CreateDate}} ~ {{aNotice.CreateTime}}
+                                </div>
+                                <div id="NotificationContain" class="col-md-12" style="margin-right: -40px;">
+                                    <p id="NotificationContain" style="text-align: justify;">{{aNotice.NotificationDetail}}</p>
+                                    <hr id="NotificationContain" />
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <a id="NotificationContain" class="pointer" style="text-align:center; color:black;" ng-click="SeeAll();"><b id="NotificationContain">See All</b></a>
+                </li>
+
+            </ul>
+        </li>*@
+
+                            <li>
+                                <a ng-click="ShowUser();" class="pointer UserBtn">
+                                    <img src="/UploadedFiles/profile.png" height="23" width="23" class="img-circle UserBtn">
+                                    <span class="hidden-xs UserBtn">{{UserName}}</span>
+                                </a>
+                                <div class="UserContain" id="UserPage" style=" position: sticky; z-index: 2; ">
+                                    <div class="boxUser UserContain">
+                                        <div class="UserContain" align="center" style="text-align: center;">
+                                            <img  src="/UploadedFiles/profile.png" height="100" width="100" class="img-circle UserContain" alt="User Image"><br />
+                                            <span class="UserContain" style="font-weight: bold;">
+                                                @*<b>{{UserName}} - {{RoleName}}</b>*@
+                                                {{UserName}}
+                                            </span><br />
+                                            <span class="UserContain" style="font-weight: bold;">
+                                                {{FullName}} - {{DesignationName}}
+                                            </span><br />
+                                            <span class="UserContain" style="font-weight: bold;">
+                                                {{DepartmentName}}
+                                            </span>
+                                        </div>
+
+                                        <div class="row UserContain" style=" margin-top: 30px; margin-left: 5px; margin-right: 20px;">
+                                            <div class="col-md-4 UserContain">
+                                                <button class="btnLogOut btn-default UserContain"><i class="fa fa-user UserContain" aria-hidden="true"></i>&nbsp;Profile</button>
+                                            </div>
+                                            <div class="col-md-4 UserContain">
+                                                <button class="btnLogOut btn-default UserContain" ng-click="RemoveScreenLock()"><i class="fa fa-unlock UserContain" aria-hidden="true"></i>&nbsp;Unlock</button>
+                                            </div>
+                                            <div class="col-md-4 UserContain">
+                                                <button class="btnLogOut btn-default UserContain" ng-click="SignOut()"><i class="fa fa-sign-out UserContain" aria-hidden="true"></i>&nbsp;Log out</button>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+
+
+
+
+                            </li>
+
+
+                            @*<li class="user user-menu">
+                                <a id="UserBtn" ng-click="ShowUser();" class="dropdown-toggle pointer" data-toggle="dropdown">
+                                    <img src="/UploadedFiles/profile.png" class="user-image" alt="User Image">
+                                    <span class="hidden-xs">{{UserName}}</span>
+                                </a>
+                                <ul class="dropdown-menu" id="UserPage">
+                                    <li id="UserContain" class="user-header">
+                                        <img id="UserContain" src="/UploadedFiles/profile.png" class="img-circle" alt="User Image">
+                                        <p id="UserContain">
+                                            {{UserName}} - {{RoleName}}
+                                        </p>
+                                    </li>
+                                    <li id="UserContain" class="user-footer">
+                                        <div id="UserContain" class="row">
+                                            <div id="UserContain" class="col-md-4">
+                                                <button id="UserContain" class="btnLogOut btn-default"><i class="fa fa-user" aria-hidden="true"></i>&nbsp;Profile</button>
+                                            </div>
+                                            <div id="UserContain" class="col-md-4">
+                                                <button id="UserContain" class="btnLogOut btn-default" ng-click="RemoveScreenLock()"><i class="fa fa-unlock" aria-hidden="true"></i>&nbsp;Unlock</button>
+                                            </div>
+                                            <div id="UserContain" class="col-md-4">
+                                                <button id="UserContain" class="btnLogOut btn-default" ng-click="SignOut()"><i class="fa fa-sign-out" aria-hidden="true"></i>&nbsp;Log out</button>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>*@
+                            @* ~~~~~~~~~~~~~User Hover~~~~~~~~~ *@
+                            @*<li class="dropdown user user-menu">
+            <a href="" class="dropdown-toggle pointer" data-toggle="dropdown">
+                <img src="/UploadedFiles/profile.png" class="user-image" alt="User Image">
+                <span class="hidden-xs">{{UserName}}</span>
+            </a>
+            <ul class="dropdown-menu">
+                <li class="user-header">
+                    <img src="/UploadedFiles/profile.png" class="img-circle" alt="User Image">
+                    <p>
+                        {{UserName}} - {{RoleName}}
+                    </p>
+                </li>
+                <li class="user-footer">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <button class="btnLogOut btn-default"><i class="fa fa-user" aria-hidden="true"></i>&nbsp;Profile</button>
+                        </div>
+                        <div class="col-md-4">
+                            <button class="btnLogOut btn-default" ng-click="RemoveScreenLock()"><i class="fa fa-unlock" aria-hidden="true"></i>&nbsp;Unlock</button>
+                        </div>
+                        <div class="col-md-4">
+                            <button class="btnLogOut btn-default" ng-click="SignOut()"><i class="fa fa-sign-out" aria-hidden="true"></i>&nbsp;Log out</button>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </li>*@
+                            @* ~~~~~~~~~~~~~User Hover~~~~~~~~~ *@
+
+
+                        </ul>
+                    </div>
+                    <div style="margin-top: 6px; color: red; background-color: white; font-weight: bold; " ng-show="IsNotify"><p class="marquee"><span>{{Message}}</span></p></div>
+
+
+                </nav>
+
+            </header>
+            @*<div class="modal fade" id="NotificationMessageModal" role="dialog">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 style="text-align:center !important;" class="modal-title"><strong><i class="fa fa-newspaper-o"></i>  &nbsp;&nbsp;Notice Board &nbsp;&nbsp;<i class="fa fa-newspaper-o"></i> </strong></h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row" ng-repeat="aNotice in NoticeList">
+                            <div class="col-md-1">
+                                <img width="100%;" src="~/UploadedFiles/notice.png" />
+                            </div>
+                            <div class="col-md-11">
+                                <div class="col-md-6 pull-left">
+                                    <u><strong>{{aNotice.SenderName}}</strong></u>
+                                </div>
+                                <div style="text-align:right !important;" class="col-md-6 pull-right">
+                                    <i class="fa fa-clock-o"></i>  &nbsp;&nbsp;{{aNotice.CreateDate}},&nbsp;&nbsp;{{aNotice.Time}}
+                                </div>
+                                <div class="col-md-12">
+                                    <p style="text-align: justify;">{{aNotice.NoticeContent}}</p>
+                                    <hr />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="row">
+                            <div class="col-md-4  pull-left">
+                                <button type="button" class="customBtn custmoBtnReset" data-dismiss="modal"><i class="fa fa-crosshairs"></i>&nbsp;Close </button>
+                            </div>
+                            <div class="col-md-4 pull-right">
+                                <button type="button" class="customBtn custmoBtnReset" data-dismiss="modal"><i class="fa fa-crosshairs"></i>&nbsp;Close & Mark as Read</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>*@
+            <aside class="main-sidebar sideScroll" style="position: fixed; transition: width 0.3s ease;">
+                <section class="sidebar">
+                    <div style="width: 213px; position: -webkit-sticky; position: sticky; z-index:2; top: 0; margin-right: auto;">
+                        <input type="text" name="searchItem" ng-model="textItem" ng-click="SetActive();" class="form-control " placeholder="  &#xF002; Search...." style="font-family: Arial, FontAwesome; margin: 0px; padding: 0px; width: 100%; outline: none; height: 30px; border-radius: 5px;" />
+
+                        <button style="position: absolute; border-radius: 5px; right: 3px; border: none; top: 2px; height: 26px; cursor: pointer; color: white; background-color: #367fa9;" ng-click="CloseActive()"><i class="fa fa-close"></i></button>
+                    </div>
+
+                    <ul class="sidebar-menu" >
+                        @*<li><a href="#/Home"><i class="fa fa-home"></i><span>Home</span></a></li>*@
+                        <li class="treeview {{Permission.IsActive}}" ng-repeat="Permission in PermissionList">
+                            <a href="">
+                                <i class="{{Permission.events[0].ImageUrl}}"></i><span>{{Permission.ModuleName}} </span> <i class="fa fa-angle-left pull-right"></i>
+                            </a>
+                            <ul class="treeview-menu" ng-repeat="aPermission in Permission.events | filter: textItem">
+                                <li><a ng-click="ChangedColor(aPermission)" style="{{aPermission.color}}" href="#/{{aPermission.ScreenUrl}}"><i class="fa fa-circle-o"></i>{{aPermission.Description}}</a></li>
+                                
+                            </ul>
+                        </li>
+
+
+
+                        <!--<li class="treeview" ng-class="EmailView">
+                            <a href="">
+                                <i class="fa fa-envelope"></i><span>Email</span> <i class="fa fa-angle-left pull-right"></i>
+                            </a>
+                            <ul class="treeview-menu" ng-repeat="aEmail in EmailArray | filter: textItem">
+                                <li ng-class="{{aEmail.class}}"><a href="#/{{aEmail.href}}"><i class="fa fa-circle-o"></i>{{aEmail.Name}}</a></li>-->
+                                @*<li ng-class="EmailNotificationSetupView"><a href="#/EmailNotificationSetup"><i class="fa fa-circle-o"></i>Email Notification Setup</a></li>
+                                <li ng-class="EmailSendView"><a href="#/EmailSendEntry"><i class="fa fa-circle-o"></i>Email Send</a></li>*@
+                            <!--</ul>
+                        </li>-->
+
+                    </ul>
+                </section>
+            </aside>
+
+            <div class="content-wrapper">
+
+                <section class="content">
+                    <div class="row">
+                        <div id="Hidebr">
+
+                            <br />
+
+
+
+
+                            @*<div style="background-color: rgb(255, 248, 197); padding-top: .5px; padding-bottom: .5px" ng-show="IsNotify">
+                            <p><h3 class="blink" style="text-align:center">{{Message}}</h3></p>
+
+                        </div>*@
+                            <br />
+                            <br />
+
+                        </div>
+
+                        <div class="col-md-12">
+                            <div id="loader" data-loading></div>
+                            <div class="ng-view {{IsBolck}}" autoscroll="true">
+                                <loading data-method="ctrlFn" />
+
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+            </div>
+        </div>
+        
+        <footer class="main-footer">
+            <div class="pull-right hidden-xs">
+                <b>Version</b> @ApplicationVersion
+
+            </div>
+            <strong>Copyright 2020 © <a href="http://rtbd.com">RTBD</a>.</strong> All rights
+            reserved.
+        </footer>
+    </div>
+
+
+    <script>
+        /*$('.tooltipAll').tooltip({ boundary: 'window' });*/
+        function blink_text() {
+            $('.blink').fadeOut(1000);
+            $('.blink').fadeIn(1000);
+        }
+        setInterval(blink_text, 2000);
+
+        $('ul.nav li.dropdown').hover(function () {
+            $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeIn(500);
+        }, function () {
+            $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeOut(500);
+        });
+    </script>
+    <script type="text/javascript">
+        //$(document).click(function (evt) {
+        //    if (evt.target.id == "NotificationContain") {
+        //        return;
+        //    } else {
+        //        //$('#Profile').addClass('hide').removeClass('show');
+        //        $('.NotificationPage').hide();
+        //    }
+
+
+        //    if (evt.target.id == "UserBtn" || evt.target.id == "UserContain") {
+        //        return;
+        //    } else {
+        //        //$('#Profile').addClass('hide').removeClass('show');
+        //        $('#UserPage').hide();
+        //    }
+        //});
+
+        $(document).ready(function () {
+            
+            $('.sidebar-toggle').click(function () {
+                if ($(".main-sidebar").hasClass('sideScroll')) {
+                    $('.main-sidebar').removeClass('sideScroll');
+
+                } else {
+                    $(".main-sidebar").addClass('sideScroll');
+                }
+            });
+            $(".treeview-menu li").click(function () {
+                $(".treeview-menu li").removeClass("active");
+                $(this).addClass("active");
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#togle").click(function () {
+                if ($('#arrow').hasClass('leftArrow')) {
+                    $('#arrow').removeClass('leftArrow');
+                    $('#arrow').addClass('rightArrow');
+                    $('.treeview-menu').addClass('siteScroll');
+                }
+                else {
+                    $('#arrow').removeClass('rightArrow');
+                    $('#arrow').addClass('leftArrow');
+                    $('.treeview-menu').removeClass('siteScroll');
+                }
+            });
+            
+        });
+    </script>
+    <script type="text/javascript">
+        function preventBack() { window.history.forward(); }
+        setTimeout("preventBack()", 10);
+        window.onunload = function () { null };
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('window').on('touchmove', function (event) {
+                event.preventDefault();
+            });
+        })
+    </script>
+</body>
+</html>

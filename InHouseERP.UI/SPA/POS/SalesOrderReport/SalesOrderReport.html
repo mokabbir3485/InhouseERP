@@ -1,0 +1,289 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+        body {
+            font-family: "Times New Roman", Times, serif;
+            color: #000000;
+            width: 100%;
+            height: 100%;
+        }
+
+        .ProductTable th {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+
+        .ProductTable td {
+            border: 1px solid black;
+            border-collapse: collapse;
+            padding: 5px;
+        }
+
+        .footer {
+            position: fixed;
+            left: 29px;
+            bottom: 0px;
+        }
+
+        .flexcontainer {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .ColorRed{
+            background-color: red;
+        }
+        /*.ColorBlack{
+            color: black;
+        }*/
+
+        @media print {
+            .page-break {
+                display: block;
+                page-break-before: always;
+            }
+
+        }
+
+        @page {
+            size: A4;
+            font-family: 'Times New Roman';
+        }
+
+        @media screen {
+            div#footer_wrapper {
+                display: none;
+            }
+            
+        }
+
+        @media print {
+            #signeture {
+                visibility: hidden;
+            }
+
+            div#footer_wrapper {
+                margin: 0px 2px 0px 7px;
+                position: fixed;
+                bottom: 5px;
+            }
+
+            div#footer_content {
+                font-weight: bold;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="footer_wrapper" class="container">
+        <div id="footer_content">
+            <table style="width: 100%;">
+                <tbody style="left:30px; right: 50px;">
+                    <tr>
+                        <td width="450px" style="text-align:left;">
+                        </td>
+                        <td width="450px" style="text-align: right;">
+                            <p style="font-size:14px;font-weight:bold;">For {{SalesOrderDetailList[0].GroupName}}</p>
+                            <div style="height:30px;">
+
+                            </div>
+                            <p style="font-size:12px;">Authority Signatory</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <table style="width: 100%">
+        <tbody>
+            <tr>
+                <td>
+                    <div class=" hidden-print">
+                        <div class="col-sm-7 col-md-9">
+
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-2 col-md-1">
+                                <button type="button" onclick="ExportToDoc();" class="customBtn custmoBtnReset" style="border-radius: 3px; margin-bottom: -.9em; margin-top: -15px; padding-bottom: 3px; padding-top: 3px;" title="Export to .doc" hidden>
+                                    <i class="fa fa-save"></i>&nbsp;Export to .doc
+                                </button>
+                            </div>
+
+                            <div class="col-sm-3 col-md-2">
+                                
+                                <button type="button"  onclick="document.title = 'Sales Order ' + getCurrentDateTime(); PrintPdf();"  class="customBtn custmoBtnReset" style="border-radius: 3px; margin-bottom: -.9em; margin-top: -15px; padding-bottom: 3px; padding-top: 3px;" title="Print PDF">
+                                    <i class="fa fa-print"></i>&nbsp;Print
+                                </button>
+                            </div>
+                        </div>
+                        <hr />
+                    </div>
+
+                    <div id="source-html">
+                        <div>
+                            <img id="LogoImg" style="height:64px; width:750px;" src="/UploadedImages/rtlFullName.png" />
+                        </div>
+                        <br />
+                        <div valign="middle" align="center">
+                            <p style="font-size:20px; border: 1px solid #000000; width:180px; "><b>SALES ORDER</b></p>
+                            <p ng-if="SalesOrderDetailList[0].CompanyAddress"><b>Billing : {{SalesOrderDetailList[0].CompanyName}}</b></p><p>{{SalesOrderDetailList[0].CompanyAddress}}</p>
+                            <p ng-if="SalesOrderDetailList[0].CompanyDeliveryAddress"><b>Delivery : {{SalesOrderDetailList[0].CompanyDeliveryName}}</b></p><p>{{SalesOrderDetailList[0].CompanyDeliveryAddress}}</p>
+                        </div>
+                        <biv class="flexcontainer">
+                            <div>
+                                <span> Sales Order No: {{SalesOrderDetailList[0].SalesOrderNo}}</span><br />
+                                <span> Ref/Order No: {{SalesOrderDetailList[0].PONos}}</span><br />
+                                <span> Ref/Order Date: {{SalesOrderDetailList[0].PODates}}</span>
+                            </div>
+                            <div>
+                                <span>Dated: {{SalesOrderDetailList[0].SalesOrderDate}}</span><br />
+                                <span>Prepared By: {{SalesOrderDetailList[0].PrepareByName}}</span><br />
+                                <span ng-if="SalesOrderDetailList[0].FactoryName">Factory: {{SalesOrderDetailList[0].FactoryName}}</span>
+                            </div>
+                        </biv>
+
+                        <table class="ProductTable table-hover" style="width: 100%;  margin:auto">
+                            <tbody>
+                                <tr>
+                                    <th class="t-cell-center">S/N</th>
+                                    <th class="t-cell-center" style="width:40%">Description of Goods</th>
+                                    <th class="t-cell-center">Material</th>
+                                    <th class="t-cell-center">Brand</th>
+                                    <th class="t-cell-center">Direction</th>
+                                    <th class="t-cell-center">Ups</th>
+                                    <th class="t-cell-center">Quantity</th>
+                                    <th class="t-cell-center">Rate</th>
+                                    <!--<th class="t-cell-center">Per</th>-->
+                                    <th class="t-cell-center" ng-show="SalesOrderDetailList[0].IsVat == 1">Amount(Ex)</th>
+                                    <th class="t-cell-center" ng-show="SalesOrderDetailList[0].IsVat == 1">Vat(%)</th>
+                                    <th class="t-cell-center" ng-show="SalesOrderDetailList[0].IsVat == 1">Vat Amount</th>
+                                    <th class="t-cell-center" style="width: 20%">Amount</th>
+
+                                </tr>
+                                <tr class="HoverTable" ng-repeat="aSalesOrderDetail in SalesOrderDetailList track by $index">
+                                    <td class="t-cell-center">{{$index+1}}</td>
+                                    <td class="t-cell-center">{{aSalesOrderDetail.Combination}} <!--(Pcs/Roll {{aSalesOrderDetail.PcPerRoll}})--> </td>
+                                    <td style="text-align:center">{{aSalesOrderDetail.MaterialTypeCode}}</td>
+                                    <td style="text-align:center">{{aSalesOrderDetail.LabelBrandName}}</td>
+                                    <td style="text-align:center">{{aSalesOrderDetail.RollDirection}}</td>
+                                    <td style="text-align:center">{{aSalesOrderDetail.Ups}}</td>
+                                    <td class="{{aSalesOrderDetail.ErrorColor}}" style="text-align:center;" >
+                                        <span>{{aSalesOrderDetail.OrderQty}} {{aSalesOrderDetail.OrderQtyString}}</span>
+                                    </td>
+                                    <td style="text-align:center">{{aSalesOrderDetail.OrderPrice}}</td>
+                                    <!--<td style="text-align:center">{{aSalesOrderDetail.OrderQtyString}} </td>-->
+                                    <td style="text-align:center" ng-show="SalesOrderDetailList[0].IsVat == 1">{{aSalesOrderDetail.AmountExVat}}</td>
+                                    <td style="text-align:center" ng-show="SalesOrderDetailList[0].IsVat == 1">{{aSalesOrderDetail.VatPercentage}} %</td>
+                                    <td style="text-align:center" ng-show="SalesOrderDetailList[0].IsVat == 1">{{aSalesOrderDetail.VatAmount}}</td>
+                                    <td style="text-align:right;">{{aSalesOrderDetail.Amount}}</td>
+
+                                </tr>
+                                <tr>
+                                    <td colspan="8" style="text-align:right;" ng-show="SalesOrderDetailList[0].IsCPT">{{SalesOrderDetailList[0].QtySummary}}</td>
+                                    <td colspan="8" style="text-align:right;" ng-hide="SalesOrderDetailList[0].IsCPT"><b>{{SalesOrderDetailList[0].QtySummary}}</b></td>
+                                    <td ng-show="SalesOrderDetailList[0].IsVat == 1"></td>
+                                    <td ng-show="SalesOrderDetailList[0].IsVat == 1"></td>
+                                    <td ng-show="SalesOrderDetailList[0].IsVat == 1"></td>
+                                    <td style="text-align:right;" ng-show="SalesOrderDetailList[0].IsCPT">{{SalesOrderDetailList[0].CurrencyType}} {{SalesOrderDetailList[0].TotalAmt}}</td>
+                                    <td style="text-align:right;" ng-hide="SalesOrderDetailList[0].IsCPT"><b>{{SalesOrderDetailList[0].CurrencyType}} {{SalesOrderDetailList[0].TotalAmt}}</b> </td>
+                                </tr>
+                                <tr ng-show="SalesOrderDetailList[0].IsCPT">
+                                    <td colspan="8" style="text-align:right;">Freight Cost: </td>
+                                    <td ng-show="SalesOrderDetailList[0].IsVat == 1"></td>
+                                    <td ng-show="SalesOrderDetailList[0].IsVat == 1"></td>
+                                    <td ng-show="SalesOrderDetailList[0].IsVat == 1"></td>
+                                    <td style="text-align:right;" ng-show="SalesOrderDetailList[0].CurrencyId == 2">{{SalesOrderDetailList[0].CurrencyType}} {{SalesOrderDetailList[0].CPTCost}} </td>
+                                    <td style="text-align:right;" ng-show="SalesOrderDetailList[0].CurrencyId == 1">{{SalesOrderDetailList[0].CurrencyType}} {{SalesOrderDetailList[0].CPTCost}} </td>
+                                </tr>
+                                <tr ng-show="SalesOrderDetailList[0].IsCPT">
+                                    <td colspan="8" style="text-align:right;"><b>Total: </b></td>
+                                    <td ng-show="SalesOrderDetailList[0].IsVat == 1"></td>
+                                    <td ng-show="SalesOrderDetailList[0].IsVat == 1"></td>
+                                    <td ng-show="SalesOrderDetailList[0].IsVat == 1"></td>
+                                    <td style="text-align:right;" ng-show="SalesOrderDetailList[0].CurrencyId == 2"><b>{{SalesOrderDetailList[0].CurrencyType}} {{TotalAmount}}</b> </td>
+                                    <td style="text-align:right;" ng-show="SalesOrderDetailList[0].CurrencyId == 1"><b>{{SalesOrderDetailList[0].CurrencyType}} {{TotalAmount}}</b> </td>
+                                </tr>
+                            </tbody>
+                            <!--<tfoot>
+                                
+                            </tfoot>-->
+                        </table>
+
+                        <table style="width: 100%; border:none;margin-top:10px;">
+                            <tr>
+                                <td style="width:30%">
+                                    Amount Chargeable (in words)
+                                </td>
+
+                                <td style="width:30%;text-align:right;"><i>E. & O.E</i></td>
+                            </tr>
+                        </table>
+
+                        <table style="width: 100%; border:none;margin-top:5px;">
+                            <tr>
+                                <td style="width:30%">
+                                    <p style="font-weight:bold;font-size:14px;"> {{SalesOrderDetailList[0].AmountInWords}}</p>
+                                    <!--<p style="font-weight:bold;font-size:14px;"> {{Word}}</p>-->
+                                   
+                                <!--<p ng-if="SalesOrderDetailList[0].Remarks">Special Instruction : {{SalesOrderDetailList[0].Remarks}}</p>-->
+                                </td>
+                                <td style="width:30%;text-align:right;">
+                                   
+                                </td>
+                            </tr>
+                        </table>
+                        <p style="font-size:14px;"><b>Remarks:</b> {{SalesOrderDetailList[0].Remarks}}</p>
+                        <div class="footer">
+                            <img id="LogoImg" style="height:20px; width:750px;" src="/UploadedImages/rtlAddress.png" />
+
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+        <tfoot id="signeture">
+            <tr>
+                <td>
+                    <table style="width: 100%; border:none;margin-top:5px;"> 
+                        <tr>
+                            <td></td>
+                            <td style="text-align:right;">
+                                <p style="font-size:14px;font-weight:bold;">For {{SalesOrderDetailList[0].GroupName}}</p>
+                                <div style="height:30px;">
+
+                                </div>
+                                <p style="font-size:12px;">Authority Signatory</p>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+</body>
+</html>
+<script>
+
+
+
+    jQuery(document).ready(function ($) {
+
+        $(".main-sidebar").attr("hidden", true);
+        $(".main-header").attr("hidden", true);
+        $(".main-footer").attr("hidden", true);
+        $("#Hidebr").attr("hidden", true);
+
+        $("div").removeClass("wrapper");
+        $("div").removeClass("content-wrapper");
+    });
+
+
+    function PrintPdf() {
+        window.print();
+    }
+
+</script>

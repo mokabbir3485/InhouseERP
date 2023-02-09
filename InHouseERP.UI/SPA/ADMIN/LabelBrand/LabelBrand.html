@@ -1,0 +1,175 @@
+﻿<style>
+    #DivItemName .select2-container {
+        width: 301px !important;
+    }
+</style>
+<form name="LabelBrandForm" novalidate>
+    <div class="col-md-12">
+        <div class="alert alert-info alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="topInfo"> &nbsp;  &#9755;&nbsp; <span style="color:red;">Red Icon</span> Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp; &#9755; Click On A Table Row To Update/Delete</div>
+        </div>
+    </div>
+
+    <div class="col-md-4" ng-show="CreatePermission||RevisePermission">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-share-alt"></i>&nbsp;Label Brand Entry</h3>
+            </div>
+            <div class="panel-body">
+                <div class="form-group tooltipAll" ng-class="{ 'has-error' : LabelBrandForm.company.$dirty && LabelBrandForm.company.$dirty }" data-toggle="tooltip" data-placement="bottom" title="Select Company">
+                    <div class="input-group width-hundred-percent">
+                        <select id="companyName" ng-model="ddlCompany" name="company" class="form-control selectMendatory" ng-options="company.CompanyName for company in companyList track by company.CompanyId" ng-change="ad_LabelBrand.CompanyId = ddlCompany.CompanyId">
+                            <option value=""></option>
+                        </select>
+                        <span class="help-block" ng-show="LabelBrandForm.company.$dirty && LabelBrandForm.company.$invalid">Company is required</span>
+                    </div>
+                </div>
+                <div class="form-group tooltipAll" ng-class="{ 'has-error' : LabelBrandForm.itemName.$dirty && LabelBrandForm.itemName.$dirty }" data-toggle="tooltip" data-placement="bottom" title="Item Name">
+                    <div id="DivItemName" class="input-group width-hundred-percent">
+                        <select id="itemName" ng-model="ddlItemName" name="itemName" class="form-control selectMendatory" ng-disabled="!ddlCompany" ng-options="aItemSearch.TempItemName for aItemSearch in ItemSearchList track by aItemSearch.ItemId" ng-change="ad_LabelBrand.ItemId = ddlItemName.ItemId;">
+                            <option value=""></option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group tooltipAll" ng-class="{ 'has-error' : LabelBrandForm.LabelBrandName.$invalid && LabelBrandForm.LabelBrandName.$touched }" data-toggle="tooltip" data-placement="bottom" title="Label Brand Name">
+                    <div class="input-group">
+                        <input type="text" id="txtLabelBrandName" name="LabelBrandName" class="form-control " ng-model="ad_LabelBrand.LabelBrandName" placeholder="Label Brand Name" required>
+                        <span class="input-group-addon"><i class="fa fa-text-width" style="color:red"></i></span>
+                    </div>
+                    <span class="help-block" ng-if="LabelBrandForm.LabelBrandName.$error.required && LabelBrandForm.LabelBrandName.$touched">Label Brand Name is required</span>
+                    <span class="help-block" ng-if="LabelBrandForm.LabelBrandName.$error.maxlength">50 Character Max</span>
+                </div>
+                <div class="form-group tooltipAll" ng-class="{ 'has-error' : LabelBrandForm.LabelBrandShortName.$invalid && LabelBrandForm.LabelBrandShortName.$touched }" data-toggle="tooltip" data-placement="bottom" title="Label Brand Short Name">
+                    <div class="input-group">
+                        <input type="text" id="txtLabelBrandShortName" name="LabelBrandShortName" class="form-control" ng-model="ad_LabelBrand.LabelBrandShortName" placeholder="Label Brand Short Name">
+                        <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                    </div>
+                    <span class="help-block" ng-if="LabelBrandForm.LabelBrandShortName.$error.maxlength">15 Character Max</span>
+                </div>
+                <div class="input-group">
+                    <label>Status: </label>
+                    &nbsp;&nbsp;
+                    <div class="radio-inline">
+                        <input type="radio" name="optionsRadios" ng-value="true" ng-model="ad_LabelBrand.IsActive"> Active
+                    </div>
+                    <div class="radio-inline">
+                        <input type="radio" name="optionsRadios" ng-value="false" ng-model="ad_LabelBrand.IsActive"> Inactive
+                    </div>
+                </div>
+                <br />
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 5%; padding-right: 7%;">
+                            <div class="row">
+                                <button class="customBtn custmoBtnSave tooltipAll" name="saveBtn" ng-click="AddLabelBrand()" ng-disabled="!ddlItemName || !ddlCompany || !ad_LabelBrand.LabelBrandName">
+                                    <i class="fa fa-floppy-o"></i>&nbsp;{{btnSave}}
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 6%; padding-right: 6%;">
+                            <!--<div class="row">
+                    <button id="btnDelete" class="customBtn custmoBtnDelete tooltipAll" ng-click="Delete()" ng-show="btnDeleteShow" title="Search">
+                        <i class="fa fa-trash"></i>&nbsp;Delete
+                    </button>
+                </div>-->
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 7%; padding-right: 5%;">
+                            <div class="row">
+                                <button id="btnReset" class="customBtn custmoBtnReset tooltipAll" ng-click="resetForm()" title="Reset">
+                                    <i class="fa fa-refresh"></i>&nbsp;Reset
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8" ng-show="ListViewPermission">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-list"></i>&nbsp;Label Brand List</h3>
+            </div>
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="input-group">
+                            <input type="text" class="form-control tooltipAll" ng-change="GetCropTypeSearch()" ng-model="SearchCropTypeName" placeholder="Search For Item and Company Name" title="Search For Item and Company Name" />
+                            <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="input-group input-group-md ddl">
+                            <select ng-model="ddlSearchStatus" ng-change="GetCropTypeSearch()" class="form-control selectNotMandetory">
+                                <option value="" label="Select Status"></option>
+                                <option value="1" label="Active"></option>
+                                <option value="0" label="Inactive"></option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body custom-panal-body">
+                <div class="tbl-outer">
+                    <table class="responstable table-hover">
+                        <tbody>
+                            <tr>
+                                <th>S/N</th>
+                                <th class="txt-center">Company Name</th>
+                                <th class="txt-center">Size Code</th>
+                                <th class="txt-center">Item Description</th>
+                                <th class="txt-center">Label Brand Name</th>
+                                <th class="txt-center">Short Name</th>
+                                <th class="txt-center">Status</th>
+                            </tr>
+                            <tr class="HoverTable" dir-paginate="aLabelBrand in LabelBrandList | filter:q | itemsPerPage: PerPage" current-page="currentPage" total-items="total_count" ng-click="SelLabelBrand(aLabelBrand)">
+                                <td>{{$index + ((currentPage-1)*PerPage) + 1}}</td>
+                                <td class="txt-center">{{aLabelBrand.CompanyName }}</td>
+                                <td class="txt-center">{{aLabelBrand.ItemCode }}</td>
+                                <td class="txt-center">{{aLabelBrand.ItemDescription }}</td>
+                                <td class="txt-center">{{aLabelBrand.LabelBrandName }}</td>
+                                <td>{{aLabelBrand.LabelBrandShortName }}</td>
+                                <td class="txt-center">{{aLabelBrand.Status}}</td>
+                            </tr>
+                            <tr class="t-foot" ng-show="total_count>PerPage">
+                                <th colspan="8">
+                                    <dir-pagination-controls max-size="8"
+                                                                direction-links="true"
+                                                                boundary-links="true"
+                                                                on-page-change="getData(newPageNumber)" style="text-align:center;">
+                                    </dir-pagination-controls>
+                                </th>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="row pagination-footer">
+                        <div class="col-md-6">
+                            <span>Show </span><input class="input-pagesize" type="number" ng-maxlength="100" ng-minlength="1" width="1" ng-model="PerPage"> <span>Records </span>
+                        </div>
+                        <div class="col-md-6">
+                            <span class="pull-right">Showing {{((currentPage-1)*PerPage)+1}} to {{((currentPage-1)*PerPage)+LabelBrandList.length}} of {{total_count}} Records</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</form>
+
+<script>
+    $('.tooltipAll').tooltip({ boundary: 'window' })
+
+    $("#companyName").select2({
+        placeholder: "Search for: Company Name",
+        theme: "classic",
+        dropdownAutoWidth: false
+    });
+
+    
+</script>

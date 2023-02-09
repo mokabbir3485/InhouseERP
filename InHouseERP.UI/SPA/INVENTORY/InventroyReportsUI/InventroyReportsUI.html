@@ -1,0 +1,185 @@
+﻿<style>
+    .responstable th:nth-child(2) {
+        width: 10% !important;
+    }
+
+    #DivDdlEmployee .select2-container {
+        width: 323px !important;
+    }
+
+    #DivDdlCompany .select2-container {
+        width: 323px !important;
+    }
+</style>
+<form name="SalesReportForm" novalidate>
+
+    <div class="col-md-4">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-group"></i>&nbsp;Reports </h3>
+            </div>
+            <div class="panel-body">
+
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="radio-inline" ng-show="StockIssue">
+                            <label>
+                                <input type="radio" name="StockIssueReport" value="StockIssueReport" ng-model="salesReport">{{StockIssueReportName}}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="radio-inline" ng-show="DeliveryReport">
+                            <label>
+                                <input type="radio" name="salesProductivityReport" value="DeliveryReport" ng-model="salesReport">{{DeliveryReportName}}
+
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="radio-inline" ng-show="StockStatusReport">
+                            <label>
+                                <input type="radio" name="StockStatusReport" value="StockStatusReport" ng-model="salesReport">{{StockStatusReportName}}
+
+                            </label>
+                        </div>
+                    </div>
+                               
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-list"></i>&nbsp;Report Parameters</h3>
+            </div>
+            <div class="panel-body custom-panal-body">
+
+                <div class="row">
+                    <div class="col-md-6" ng-show="salesReport=='StockIssueReport' || salesReport=='DeliveryReport'">
+                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : SalesReportForm.FromDate.$invalid && SalesReportForm.FromDate.$touched }" data-toggle="tooltip" data-placement="bottom" title="From Date">
+                            <div class='input-group'>
+                                <input type="text" name="FromDate" id="txtFromDate" onkeydown="return false" ng-model="FromDate" class="form-control " placeholder="From Date" readonly />
+                                <span class="input-group-addon" id="FormDate" ng-click="FormDateChange()"><i class="fa fa-calendar"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6" ng-show="salesReport=='StockIssueReport' || salesReport=='DeliveryReport'">
+                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : SalesReportForm.ToDate.$invalid && SalesReportForm.ToDate.$touched }" data-toggle="tooltip" data-placement="bottom" title="To Date">
+                            <div class='input-group'>
+                                <input type="text" name="ToDate" id="txtToDate" ng-model="ToDate" class="form-control " placeholder="To Date" readonly />
+                                <span class="input-group-addon" id="ToDate" ng-click="ToDateChange()"><i class="fa fa-calendar"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6" ng-show="salesReport=='StockStatusReport'" ng-hide="salesReport=='StockIssueReport' || salesReport=='DeliveryReport'">
+                        <div class="form-group">
+                            <div class="input-group StockStatus" data-toggle="tooltip" title="As On Date">
+                                <input type="text" name="FromDate" id="txtasOnDate" ng-model="StatusDate" class="form-control issueToltip" placeholder="As On Date" readonly title="As On Date" />
+                                <span class="input-group-addon" ng-click="aSOnDate()" id="aSOnDate"><i class="fa fa-calendar req-icon-color"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6" ng-show="salesReport=='StockStatusReport'" ng-hide="salesReport=='StockIssueReport' || salesReport=='DeliveryReport'">
+                        <div class="form-group" ng-class="{ 'has-error' : SalesReportForm.Category.$dirty && SalesReportForm.Category.$invalid }">
+                            <div class="input-group input-group-md ddl tooltipAll" data-toggle="tooltip" data-placement="bottom" title="Select Category">
+                                <select ng-model="ddlCategory" class="form-control selectMendatory" name="Category" id="cmbCategory" ng-options="category.CategoryName for category in CategoryList track by category.CategoryId">
+                                    <option value="" label="Select Category"></option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6" ng-show="salesReport=='StockStatusReport'" ng-hide="salesReport=='StockIssueReport' || salesReport=='DeliveryReport'">
+                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : SalesReportForm.SubCategory.$dirty && SalesReportForm.SubCategory.$invalid }">
+                            <div class="input-group input-group-md ddl" data-toggle="tooltip" data-placement="bottom" title="Select Subcategory">
+                                <select ng-model="ddlSubCategory" class="form-control selectMendatory" name="SubCategory" ng-options="subCategory.SubCategoryName for subCategory in SubcategoryList | filter:{CategoryId: ddlCategory.CategoryId}:true track by subCategory.SubCategoryId" ng-disabled="!ddlCategory">
+                                    <option value="" label="Select Subcategory"></option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6" ng-show="salesReport=='StockStatusReport'" ng-hide="salesReport=='StockIssueReport' || salesReport=='DeliveryReport'">
+                        <div class="form-group" ng-class="{ 'has-error' : SalesReportForm.Store.$invalid && SalesReportForm.Store.$touched }">
+                            <div class="input-group input-group-md ddl tooltipAll" data-toggle="tooltip" data-placement="bottom" title="Select Department ~ Branch">
+                                <select ng-model="ddlStore"  class="form-control selectMendatory" name="Store" ng-options="department.DepartmentName + ' ~ ' + department.BranchName for department in StoreList track by department.DepartmentId">
+                                    <option value="" label="Select Department ~ Branch"></option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+              
+
+                <div class="row">
+                    <div class="col-md-4" ng-show="salesReport == 'StockIssueReport' || salesReport=='DeliveryReport'">
+                        <button id="Button1" class="customBtn custmoBtnSave tooltipAll" ng-click="InventoryReportButton()" ng-disabled="!ToDate || !FromDate" title="Report View">
+
+                            <i class="fa fa-floppy-o"></i>&nbsp;View Report
+                        </button>
+
+                    </div>
+                    <div class="col-md-4" ng-show="salesReport=='StockStatusReport'">
+                        <button id="Button1" class="customBtn custmoBtnSave tooltipAll" ng-click="InventoryReportButton()" ng-disabled="!StatusDate || !ddlCategory || !ddlStore" title="Report View">
+
+                            <i class="fa fa-floppy-o"></i>&nbsp;View Report
+                        </button>
+
+                    </div>
+                    <div class="col-md-4" ng-show="salesReport == 'StockIssueReport' || salesReport=='DeliveryReport' || salesReport=='StockStatusReport' ">
+                        <button style="width:38%" id="Button1" class="btn btn-danger tooltipAll" ng-click="ResetButton()" title="Reset Button">
+
+                            Reset
+                        </button>
+                    </div>
+                    <div class="col-md-4">
+
+                    </div>
+
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+
+</form>
+
+<script>
+    $('.tooltipAll').tooltip({ boundary: 'window' })
+
+    function RowSelect(e) {
+        $('.searchRow').css('background-color', '');
+        $(e).css('background-color', '#94d5ef');
+    }
+
+    $("#ddlSalesReport").select2({
+
+        //placeholder: "Employee Name",
+        theme: "classic"
+    });
+
+    $("#ddlsection").select2({
+
+
+
+    });
+
+
+</script>

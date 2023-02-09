@@ -1,0 +1,287 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+
+        body {
+            font-family: "Times New Roman", Times, serif;
+            color: #000000;
+            writing-mode: inherit;
+            width: 100%;
+            height: 100%;
+        }
+
+        #UpperTable td {
+            border: 1px solid black;
+            border-collapse: collapse;
+            padding: 5px;
+        }
+
+        .ProductTable th {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+
+        .ProductTable td {
+            border: 1px solid black;
+            border-collapse: collapse;
+            padding: 5px;
+        }
+
+        .footer {
+            position: fixed;
+            left: 29px;
+            bottom: 0px;
+        }
+
+        .flexcontainer {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        @media screen {
+            img {
+                height: 200px;
+                width: 300px;
+                margin-top: 0px;
+            }
+        }
+
+        @media print {
+            #LogoImg, img {
+                margin-top: -10px;
+            }
+
+            #PrintImg, img {
+                margin-top: -10px;
+                height: 200px;
+                width: 300px;
+            }
+
+            .page-break {
+                display: block;
+                page-break-before: always;
+            }
+
+            img {
+                height: 200px;
+                width: 300px;
+                margin-top: 60px;
+            }
+        }
+
+        @page {
+            size: A4;
+            max-height: 100%;
+            max-width: 100%;
+            font-family: 'Times New Roman';
+        }
+    </style>
+</head>
+<body>
+    <table style="width: 100%">
+        <tbody>
+            <tr>
+                <td>
+                    <div class=" hidden-print">
+                        <div class="row">
+                            <div class="col-sm-2 col-md-1">
+                                <button type="button"  onclick="document.title = 'Supplier Payment ' + getCurrentDateTime(); PrintPdf();"  class="customBtn custmoBtnReset" style="border-radius: 3px; margin-bottom: -.9em; margin-top: -15px; padding-bottom: 3px; padding-top: 3px;" title="Export to .doc">
+                                    <i class="fa fa-print"></i>&nbsp;Print
+                                </button>
+                            </div>
+
+                        </div>
+                        <hr />
+                    </div>
+                    <div class="" id="source-html">
+                        <table id="heading" style="text-align: center;margin-left:auto;margin-right:auto;">
+
+                            <tr>
+                                <td>
+                                    <!--<img style="height: 80px; width: 80px; padding: 5px" src="../../../UploadedImages/logo.jpg" />-->
+                                </td>
+                                <td>
+                                    <p style="font-size: 30px;line-height: 1; margin : 0; padding : 0 ; font-weight: bold;"><strong>Retail Technologies Limited</strong></p>
+                                    <p style="font-size: 14px; line-height: 1.5; margin : 0; padding : 0 ;">
+                                        Address: Flat- 22 A, Navana Tower, 45 Gulshan1, Dhaka-1212
+                                    </p>
+
+                                    <p style="font-size: 25px; text-align: center; margin: 0px; padding: 0px;"> <b> <u>{{ReportName}}</u></b></p>
+                                </td>
+                            </tr>
+                        </table>
+                        <br />
+
+                        <table style="width:100%">
+                            <tr>
+                                <td style="width:80%">
+                                </td>
+                                <td style="width:20%;text-align:right;">Date : {{toDate}}</td>
+                            </tr>
+                        </table>
+                        <table class="ProductTable" style="width: 100%;  margin-left: auto; margin-right: auto;margin-top:20px">
+
+                            <tr>
+                                <th>Supplier Name</th>
+                                <td>{{paymentTypelistFilterData[0].SupplierName}}</td>
+                            </tr>
+                            <tr>
+                                <th>Address </th>
+                                <td>{{paymentTypelistFilterData[0].SupplierAddress }}</td>
+                            </tr>
+                            <tr>
+                                <th>Payment No</th>
+                                <td>{{paymentTypelistFilterData[0].SupplierPaymentNo}}</td>
+                            </tr>
+                            <tr>
+                                <th>Payment Date</th>
+                                <td>{{paymentTypelistFilterData[0].PaymentDate}}</td>
+                            </tr> 
+                            <tr>
+                                <th>Remarks</th>
+                                <td>{{paymentTypelistFilterData[0].Remarks}}</td>
+
+                            </tr>
+                        </table>
+                        <table class="ProductTable" style="width: 100%;  margin-left: auto; margin-right: auto;margin-top:20px">
+                            <tbody>
+
+                                <tr>
+                                    <th class="t-cell-center">S/N</th>
+                                    <th class="t-cell-center">PB No</th>
+                                    <th class="t-cell-center">Payment Type</th>
+                                    <th class="t-cell-center">Actual Amount</th>
+                                    <th class="t-cell-center">Payable Amount</th>
+                                    <th class="t-cell-center">Paid Amount</th>
+                                    <th class="t-cell-center">Paid VAT</th> 
+                                    <th class="t-cell-center">Paid AIT</th>
+                                    <th class="t-cell-center">Additional Cost</th>
+                                    <th class="t-cell-center">Conversion Rate</th>
+                                    <th class="t-cell-center">Total Received Amount</th>
+
+                                </tr>
+                                <tr class="HoverTable" ng-repeat="supplierPayment in   paymentTypelistFilterData track by $index">
+                                    <td class="t-cell-center">{{$index+1}}</td>
+                                    <td class="t-cell-center">{{supplierPayment.PBNo}}</td>
+                                    <td class="t-cell-center">{{supplierPayment.PaymentTypeName}}</td>
+
+                                    <td class="text-right">{{supplierPayment.ActualAmount}}</td>
+                                    <td class="text-right">{{supplierPayment.ActualAmount - supplierPayment.PaidAmount}}</td>
+                                    <td class="text-right">{{supplierPayment.PaidAmount}}</td>
+                                    <td class="text-right">{{supplierPayment.TotalVAT}} {{supplierPayment.CurrencyShort}}</td>
+                                    <td class="text-right">{{supplierPayment.TotalAIT}} {{supplierPayment.CurrencyShort}}</td>
+                                    <td class="text-right">{{supplierPayment.AdditionalCost}} {{supplierPayment.CurrencyShort}}</td>
+                                    <td class="text-right">{{supplierPayment.ConversionRate}} {{supplierPayment.CurrencyShort}}</td>
+                                    <td class="text-right">{{supplierPayment.PaidAmount + supplierPayment.TotalVAT + supplierPayment.TotalAIT}}  {{supplierPayment.CurrencyShort}}</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3" style="text-align:right">
+                                        Total
+
+                                    </td>
+
+                                    <td>
+                                        <p style="text-align:right"><b style="margin-left:50px;"> {{totalActualAmount}} </b></p>
+                                    </td>
+                                    <td>
+                                        <p style="text-align:right"><b style="margin-left:50px;"> {{totalPayableAmount}} </b></p>
+                                    </td>
+                                    <td>
+                                        <p style="text-align:right"><b style="margin-left:50px;"> {{totalPaid}} </b></p>
+                                    </td>
+                                    <td>
+                                        <p style="text-align:right"><b style="margin-left:50px;"> {{totalVAT}} </b></p>
+                                    </td>
+                                    <td>
+                                        <p style="text-align:right"><b style="margin-left:50px;"> {{totalAIT}} </b></p>
+                                    </td>
+                                    <td>
+                                        <p style="text-align:right"><b style="margin-left:50px;"> {{totalAdditionalCost}} </b></p>
+                                    </td>
+                                    <td>
+                                        <p style="text-align:right"><b style="margin-left:50px;"> </b></p>
+                                    </td>
+                                    <td>
+                                        <p style="text-align:right"><b style="margin-left:50px;"> {{Total}} </b></p>
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table class="ProductTable" style="width: 100%;  margin-left: auto; margin-right: auto;margin-top:20px">
+
+                            <tr ng-if="paymentTypelistFilterData[0].ChequeNo">
+                                <th>Cheque No</th>
+                                <td>{{paymentTypelistFilterData[0].ChequeNo}}</td>
+                            </tr>
+                            <tr ng-if="paymentTypelistFilterData[0].ChequeDate">
+                                <th>Cheque No</th>
+                                <td>{{paymentTypelistFilterData[0].ChequeDate}}</td>
+                            </tr>
+                            
+                            <tr ng-if="paymentTypelistFilterData[0].ChequeTypeName">
+                                <th>Cheque Type</th>
+                                <td>{{paymentTypelistFilterData[0].ChequeTypeName}}</td>
+                            </tr>
+
+                            <tr ng-if="paymentTypelistFilterData[0].MobileNo">
+                                <th>Mobile No</th>
+                                <td>{{paymentTypelistFilterData[0].MobileNo}}</td>
+                            </tr>
+                            <tr ng-if="paymentTypelistFilterData[0].TransactionNo">
+                                <th>Transaction No</th>
+                                <td>{{paymentTypelistFilterData[0].TransactionNo}}</td>
+                            </tr>
+                            <tr ng-if="paymentTypelistFilterData[0].PaymentVoucherNo">
+                                <th>Payment Voucher No</th>
+                                <td>{{paymentTypelistFilterData[0].PaymentVoucherNo}}</td>
+                            </tr>
+                            <tr ng-if="paymentTypelistFilterData[0].MoneyReceiptNo">
+                                <th>Money ReceiptNo</th>
+                                <td>{{paymentTypelistFilterData[0].MoneyReceiptNo}}</td>
+                            </tr>
+
+
+                            <tr ng-if="paymentTypelistFilterData[0].PayerBankAccountName">
+                                <th>Payer Bank Account Name</th>
+                                <td>{{paymentTypelistFilterData[0].PayerBankAccountName}}</td>
+                            </tr>
+                            <tr ng-if="paymentTypelistFilterData[0].SupplierBankAccountName">
+                                <th>Supplier Bank Account Name</th>
+                                <td>{{paymentTypelistFilterData[0].SupplierBankAccountName}}</td>
+                            </tr>
+
+                        </table>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>
+<script>
+
+
+
+    jQuery(document).ready(function ($) {
+
+        $(".main-sidebar").attr("hidden", true);
+        $(".main-header").attr("hidden", true);
+        $(".main-footer").attr("hidden", true);
+        $("#br").attr("hidden", true);
+
+        $("div").removeClass("wrapper");
+        $("div").removeClass("content-wrapper");
+    });
+
+
+    function PrintPdf() {
+        window.print();
+    }
+
+</script>

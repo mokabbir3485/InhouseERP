@@ -1,0 +1,563 @@
+﻿<style>
+    #SpecialItemDev .select2-container {
+        width: 740px !important;
+    }
+    #HeadCodeDev .select2-container {
+        width: 207px !important;
+    }
+</style>
+<form name="itemEntryTwoForm" novalidate>
+    <div class="col-md-12">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-list"></i>&nbsp;Item Size Entry</h3>
+            </div>
+            <div class="panel-body" style="margin-right: -25px; margin-left: -15px; ">
+
+                <ul class="nav nav-tabs">
+                    <li class="active" style="cursor:pointer;"><a data-toggle="tab" data-target="#ItemAttribute"><span><i class="fa fa-list"></i></span>&nbsp;Item Attribute</a></li>
+                    <li style="cursor:pointer;"><a data-toggle="tab" data-target="#ItemAdditionalAttribute"><span><i class="fa fa-list"></i></span>&nbsp;Additional Attribute</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div id="ItemAttribute" class="tab-pane fade in active">
+                        <div class="col-md-12">
+                            <br />
+                            <!--<div class="row">
+                                <button ng-click="test();">Test</button>
+                            </div>-->
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="col-md-4">
+                                        <label>Category</label>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="form-group" ng-class="{ 'has-error' : itemEntryTwoForm.Category.$dirty && itemEntryTwoForm.Category.$invalid }">
+
+                                            <div class="input-group input-group-md ddl tooltipAll" data-toggle="tooltip" data-placement="bottom" title="Select Category">
+                                                <select ng-model="ddlCategory" class="form-control selectMendatory" name="Category" id="cmbCategory" ng-options="category.CategoryName for category in CategoryList track by category.CategoryId" ng-change="ad_Item.CategoryId = ddlCategory.CategoryId;" required autofocus>
+                                                    <option value="" label="Select Category"></option>
+                                                </select>
+                                            </div>
+                                            <span class="help-block" ng-show="itemEntryTwoForm.Category.$dirty && itemEntryTwoForm.Category.$invalid">Category is required</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label>Subcategory</label>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : itemEntryTwoForm.SubCategory.$dirty && itemEntryTwoForm.SubCategory.$invalid }">
+                                            <div class="input-group input-group-md ddl" data-toggle="tooltip" data-placement="bottom" title="Select Subcategory">
+                                                <select ng-model="ddlSubCategory" class="form-control selectMendatory" name="SubCategory" ng-options="subCategory.SubCategoryName for subCategory in SubcategoryList | filter:{CategoryId: ddlCategory.CategoryId}:true track by subCategory.SubCategoryId" ng-change="CategoryChange1(ddlSubCategory.SubCategoryId)" ng-disabled="!ddlCategory" required>
+                                                    <option value="" label="Select Subcategory"></option>
+                                                </select>
+                                            </div>
+                                            <span class="help-block" ng-show="itemEntryTwoForm.SubCategory.$dirty && itemEntryTwoForm.SubCategory.$invalid">Subcategory is required</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label>Item Name</label>
+                                    </div>
+                                    <div class="col-md-8">
+
+
+                                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : itemEntryTwoForm.ItemName.$touched && itemEntryTwoForm.ItemName.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Item">
+                                            <div class="input-group input-group-md ddl">
+                                                <input type="text" list="ItmList" class="form-control selectMendatory" name="ItemName" ng-model="ad_Item.ItemName" ng-change="itemNameId()" placeholder="Item Name" required />
+                                            </div>
+                                            <datalist id="ItmList">
+                                                <option ng-repeat="Item in ItemNameList" value="{{Item.ItemName}}">
+                                            </datalist>
+                                            <span class="help-block" ng-show="itemEntryTwoForm.ItemName.$touched && itemEntryTwoForm.ItemName.$invalid">Item is required</span>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <label>Description 1</label>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : itemEntryTwoForm.DescriptionOne.$invalid && itemEntryTwoForm.DescriptionOne.$touched }" data-toggle="tooltip" data-placement="bottom" title="Size: ...mm X ...mm">
+                                            <div class="input-group">
+                                                <input type="text" id="txtDescriptionOne" maxlength="100" name="DescriptionOne" class="form-control" ng-model="ad_Item.ItemDescription" ng-maxlength="99" placeholder="Size: ...mm X ...mm" required>
+                                                <span class="input-group-addon"><i class="fa fa-text-width" style="color: red;"></i></span>
+                                            </div>
+                                            <span class="help-block" style="display: block;" ng-if="itemEntryTwoForm.DescriptionOne.$error.required && itemEntryTwoForm.DescriptionOne.$touched">Description 1 is required</span>
+                                            <span class="help-block" style="display: block;" ng-if="itemEntryTwoForm.DescriptionOne.$error.maxlength">100 Character Max</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label>Description 2 </label>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : itemEntryTwoForm.DescriptionTwo.$invalid && itemEntryTwoForm.DescriptionTwo.$touched }" data-toggle="tooltip" data-placement="bottom" title="Description 2">
+                                            <div class="input-group">
+                                                <input type="text" id="txtDescriptionTwo"  name="DescriptionTwo" class="form-control" ng-model="ad_Item.ItemDescriptionTwo"  >
+                                                <span class="input-group-addon"><i class="fa fa-text-width" style="color: black;"></i></span>
+                                            </div>
+                                            <!--<span class="help-block" style="display: block;" ng-if="itemEntryTwoForm.DescriptionTwo.$error.required && itemEntryTwoForm.DescriptionTwo.$touched">Description 2  is required</span>-->
+                                            <span class="help-block" style="display: block;" ng-if="itemEntryTwoForm.DescriptionTwo.$error.maxlength">100 Character Max</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label>Size Code</label>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : itemEntryTwoForm.SizeCode.$invalid && itemEntryTwoForm.SizeCode.$touched }" data-toggle="tooltip" data-placement="bottom" title="Size Code">
+                                            <div class="input-group">
+                                                <input type="text" id="txtSizeCode" maxlength="50" name="SizeCode" class="form-control" ng-model="ad_Item.ItemCode" placeholder="Width x Length" ng-maxlength="49" ng-blur="CheckDuplicateBarcode()" ng-change="ItemCodeChange()" onkeypress="return (event.keyCode != 32 && event.which != 32)" required>
+                                                <span class="input-group-addon"><i class="fa fa-text-width" style="color: red;"></i></span>
+                                            </div>
+                                            <span class="help-block" style="display: block;" ng-if="itemEntryTwoForm.SizeCode.$error.required && itemEntryTwoForm.ItemCode.$touched">Item Code is required</span>
+                                            <span class="help-block" style="display: block;" ng-if="itemEntryTwoForm.SizeCode.$error.maxlength">50 Character Max</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label>Unit</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="form-group" ng-class="{ 'has-error' : itemEntryForm.ItemUnit.$dirty && itemEntryForm.ItemUnit.$invalid }">
+                                                <div class="input-group input-group-md ddl tooltipAll" data-toggle="tooltip" data-placement="bottom" title="Select Unit">
+                                                    <!--<select ng-model="ddlItemUnit" class="form-control selectMendatory" name="ItemUnit" ng-change="Unit(ddlItemUnit);ad_Item.UnitName=ddlItemUnit.UnitName;ad_Item.ItemUnitId=ddlItemUnit.ItemUnitId" ng-options="unit.UnitName for unit in ItemUnitlist track by unit.ItemUnitId" required>-->
+                                                    <select ng-model="ddlItemUnit" class="form-control selectMendatory" name="ItemUnit" ng-change="ad_Item.UnitName=ddlItemUnit.UnitName;ad_Item.ItemUnitId=ddlItemUnit.ItemUnitId" ng-options="unit.UnitName for unit in ItemUnitlist track by unit.ItemUnitId" required>
+                                                        <option value="" label="Select Unit" hidden></option>
+                                                    </select>
+                                                </div>
+                                                <span class="help-block" ng-show="itemEntryForm.ItemUnit.$dirty && itemEntryForm.ItemUnit.$invalid">Unit is required</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4" hidden>
+                                        <label>Package</label>
+                                    </div>
+                                    <div class="col-md-8" hidden>
+                                        <div class="form-group" ng-class="{ 'has-error' : itemEntryForm.ItemPackage.$dirty && itemEntryForm.ItemPackage.$invalid }">
+                                            <div class="input-group input-group-md ddl tooltipAll" data-toggle="tooltip" data-placement="bottom" title="Select Package">
+                                                <!--|  filter: {ItemUnitId: '!' +ddlItemUnit.ItemUnitId} | filter : {ItemUnitId : '!' +ddlItemUnit.ItemUnitId } | filter : {ItemUnitId : '!' +ddlItemUnit.ItemUnitId }-->
+                                                <select id="ddlItemPackage" ng-model="ddlItemPackage" class="form-control selectNotMandetory" ng-disabled="!ddlItemUnit" ng-change="PackageUnit(ddlItemPackage); ad_Item.UnitName=ddlItemPackage.UnitName;ad_Item.ItemUnitId=ddlItemPackage.ItemUnitId" name="ItemPackage" ng-options="package.UnitName for package in ItemUnitlist2 track by package.ItemUnitId" required>
+                                                    <option value="" label="Select Unit" hidden></option>
+                                                </select>
+                                            </div>
+                                            <span class="help-block" ng-show="itemEntryForm.ItemPackage.$dirty && itemEntryForm.ItemPackage.$invalid">Unit is required</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4" hidden>
+                                        <label>Container</label>
+                                    </div>
+                                    <div class="col-md-8" hidden>
+                                        <div class="form-group" ng-class="{ 'has-error' : itemEntryForm.ItemContainer.$dirty && itemEntryForm.ItemContainer.$invalid }">
+                                            <div class="input-group input-group-md ddl tooltipAll" data-toggle="tooltip" data-placement="bottom" title="Select Container">
+                                                <!--| filter : {ItemUnitId : '!' +ddlItemUnit.ItemUnitId } | filter:{ ItemUnitId : '!' +ddlItemPackage.ItemUnitId}-->
+                                                <select id="containerLbl" ng-model="ddlItemContainer" class="form-control selectNotMandetory" ng-change="ad_Item.UnitName=ddlItemContainer.UnitName;ad_Item.ItemUnitId=ddlItemContainer.ItemUnitId" name="ItemContainer" ng-disabled="!ddlItemPackage" ng-options="container.UnitName for container in ItemUnitlist3 track by container.ItemUnitId">
+                                                    <option value="" label="Select Unit" hidden></option>
+                                                </select>
+                                            </div>
+                                            <span class="help-block" ng-show="itemEntryForm.ItemContainer.$dirty && itemEntryForm.ItemContainer.$invalid">Unit is required</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4" hidden>
+                                        <label>RO Level</label>
+                                    </div>
+                                    <div class="col-md-8" hidden>
+                                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : itemEntryTwoForm.RoLevel.$invalid && itemEntryTwoForm.RoLevel.$touched }" data-toggle="tooltip" data-placement="bottom" title="RO Level">
+                                            <div class="input-group">
+                                                <input type="number" id="txtRoLevel" maxlength="50" name="RoLevel" class="form-control" ng-model="ad_Item.ROLevel" ng-maxlength="49" ng-blur="CheckDuplicateBarcode()" ng-change="RoLevelChange()" readonly>
+                                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                            </div>
+                                            <span class="help-block" style="display: block;" ng-if="itemEntryTwoForm.RoLevel.$error.required && itemEntryTwoForm.RoLevel.$touched">RO Level is required</span>
+                                            <span class="help-block" style="display: block;" ng-if="itemEntryTwoForm.RoLevel.$error.maxlength">50 Character Max</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4" hidden>
+                                        <label>HS Code</label>
+                                    </div>
+                                    <div class="col-md-8" hidden>
+                                        <div class="form-group" ng-class="{ 'has-error' : itemEntryTwoForm.HsCode.$dirty && itemEntryTwoForm.HsCode.$invalid }">
+                                            <div class="input-group input-group-md ddl tooltipAll" data-toggle="tooltip" data-placement="bottom" title="Select Category">
+                                                <select ng-model="ddlHsCode" class="form-control selectNotMandetory" name="HSCode" id="cmbHSCode" ng-options="code.HsCode for code in HsCodeList track by code.HsCodeId" ng-change="ad_Item.HsCodeId=ddlHsCode.HsCodeId;ad_Item.HsCode=ddlHsCode.HsCode" disabled autofocus>
+                                                    <option value="" label="Select HSCode"></option>
+                                                </select>
+                                            </div>
+                                            <!--<span class="help-block" ng-show="itemEntryTwoForm.HsCode.$dirty && itemEntryTwoForm.HsCode.$invalid">HSCode is required</span>-->
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label>Width(Meter)</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="form-group tooltipAll" ng-class="{ 'has-error' : itemEntryTwoForm.WidthPerRoll.$invalid && itemEntryTwoForm.WidthPerRoll.$touched }" data-toggle="tooltip" data-placement="bottom" title="Width per Roll">
+                                                <div class="input-group">
+                                                    <input type="number" id="txtWidthPerRoll" maxlength="50" name="WidthPerRoll" class="form-control" ng-model="ItemAdditionalAttribute.RollWidthInMeter" ng-maxlength="49">
+                                                    <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                                </div>
+                                                <span class="help-block" style="display: block;" ng-if="itemEntryTwoForm.WidthPerRoll.$error.required && itemEntryTwoForm.WidthPerRoll.$touched">Width Per Roll is required</span>
+                                                <span class="help-block" style="display: block;" ng-if="itemEntryTwoForm.WidthPerRoll.$error.maxlength">50 Character Max</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label>Length(Meter)</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="form-group tooltipAll" ng-class="{ 'has-error' : itemEntryTwoForm.LengthPerRoll.$invalid && itemEntryTwoForm.LengthPerRoll.$touched }" data-toggle="tooltip" data-placement="bottom" title="Length Per Roll">
+                                                <div class="input-group">
+                                                    <input type="number" id="txtLengthPerRoll" maxlength="50" name="LengthPerRoll" class="form-control" ng-model="ItemAdditionalAttribute.RollLenghtInMeter" ng-maxlength="49">
+                                                    <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                                </div>
+                                                <span class="help-block" style="display: block;" ng-if="itemEntryTwoForm.LengthPerRoll.$error.required && itemEntryTwoForm.LengthPerRoll.$touched">Length Per Roll is required</span>
+                                                <span class="help-block" style="display: block;" ng-if="itemEntryTwoForm.LengthPerRoll.$error.maxlength">50 Character Max</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label>Control Head</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="form-group tooltipAll" ng-class="{ 'has-error' : itemEntryTwoForm.ddlControlHead.$dirty && itemEntryTwoForm.ddlControlHead.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Search for: Control Head">
+                                                <div id="HeadCodeDev" class="input-group width-hundred-percent">
+                                                    <select id="ddlControlHead" ng-model="ddlControlHead" name="ddlControlHead" class="form-control selectMendatory" ng-options="aControlHead.AccountingHead for aControlHead in ControlHeadList track by aControlHead.HeadCode"  ng-change="ItemAdditionalAttribute.HeadCode = ddlControlHead.HeadCode">
+                                                        <!--<option value="">Search for: Item Name ~ Description One ~ Description Two ~ Size Code ~ Pc(s) Per Roll ~ Roll Per Carton ~ Hs Code</option>-->
+                                                        <option value="" label="Search for: Control Head">Search for: Control Head</option>
+                                                    </select>
+                                                    <!--<span class="help-block" ng-show="itemEntryTwoForm.ddlControlHead.$dirty && itemEntryTwoForm.ddlControlHead.$invalid">Control Head is required</span>-->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="row" hidden>
+                                        <div class="col-md-4">
+                                            <label>VAT & SD: </label>
+
+                                        </div>
+                                        <div class="col-md-8">
+                                            <input ng-click="hideBtnColapse()" type="checkbox" name="optionsRadios" ng-value="true" ng-model="IsChecked" disabled>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="row" ng-show="ddlCategory.CategoryId == 2">
+                                        <br />
+                                        <div class="col-md-4">
+                                            <label>No Serial: </label>
+
+                                        </div>
+                                        <div class="col-md-8">
+                                            <input type="checkbox" name="NoSerial" ng-value="true" ng-model="ad_Item.NoSerial">
+                                        </div>
+                                    </div>
+                                    <br />
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label>Active Status:<span style="color:red;">*</span> </label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="input-group">
+
+                                                <div class="radio-inline">
+                                                    <input type="radio" name="optionsRadios" ng-value="true" ng-model="ad_Item.IsActive">Active
+                                                </div>
+                                                <div class="radio-inline">
+                                                    <input type="radio" name="optionsRadios" ng-value="false" ng-model="ad_Item.IsActive">Inactive
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="col-md-6" ng-show="ddlItemPackage">
+                                        <label>{{ddlItemUnit.UnitName}} per {{ddlItemPackage.UnitName}}</label>
+                                    </div>
+                                    <div class="col-md-6" ng-show="ddlItemPackage">
+                                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : itemEntryTwoForm.UnitPackage.$invalid && itemEntryTwoForm.UnitPackage.$touched }" data-toggle="tooltip" data-placement="bottom" title="Unit Per Package">
+                                            <div class="input-group">
+                                                <input type="text" id="txtUnitPackage" maxlength="50" name="UnitPackage" class="form-control" ng-model="ad_Item.UnitPerPackage" ng-maxlength="49" readonly>
+                                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                            </div>
+                                            <span class="help-block" style="display: block;" ng-if="itemEntryTwoForm.UnitPackage.$error.required && itemEntryTwoForm.UnitPackage.$touched">Unit Per Package is required</span>
+                                            <span class="help-block" style="display: block;" ng-if="itemEntryTwoForm.UnitPackage.$error.maxlength">50 Character Max</span>
+                                        </div>
+                                    </div>
+                                    <div hidden class="col-md-6" ng-show="ddlItemUnit.ItemUnitId== 2||ddlItemPackage.ItemUnitId==2||ddlItemContainer.ItemUnitId==2">
+                                        <label>{{btnPackageWeight}}(kg) </label>
+                                    </div>
+                                    <div hidden class="col-md-6" ng-show="ddlItemUnit.ItemUnitId== 2||ddlItemPackage.ItemUnitId==2||ddlItemContainer.ItemUnitId==2">
+                                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : itemEntryTwoForm.PackageWeight.$invalid && itemEntryTwoForm.PackageWeight.$touched }" data-toggle="tooltip" data-placement="bottom" title="Package Weight">
+                                            <div class="input-group">
+                                                <input type="number" id="txtPackageWeight" name="PackageWeight" class="form-control" ng-model="ad_Item.PackageWeight" readonly>
+                                                <!--<span class="input-group-addon"><i class="fa fa-text-width" style="color: red;"></i></span>-->
+                                            </div>
+                                            <span class="help-block" style="display: block;" ng-if="itemEntryTwoForm.PackageWeight.$error.required && itemEntryTwoForm.PackageWeight.$touched">Package Weight is required</span>
+                                            <span class="help-block" style="display: block;" ng-if="itemEntryTwoForm.PackageWeight.$error.maxlength">50 Character Max</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" style="padding-right:5px" ng-if="ddlItemUnit.ItemUnitId== 1" ng-show="ddlItemContainer">
+                                        <label>{{ddlItemPackage.UnitName}} Per {{ddlItemContainer.UnitName}}</label>
+                                    </div>
+                                    <div class="col-md-6" ng-if="ddlItemUnit.ItemUnitId== 1" ng-show="ddlItemContainer">
+                                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : itemEntryTwoForm.PackagePerContainer.$invalid && itemEntryTwoForm.PackagePerContainer.$touched }" data-toggle="tooltip" data-placement="bottom" title="Package Per Container">
+                                            <div class="input-group">
+                                                <input type="text" id="txtPackagePerContainer" maxlength="50" name="PackagePerContainer" class="form-control" ng-model="ad_Item.PackagePerContainer" ng-maxlength="49" readonly>
+                                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                            </div>
+                                            <span class="help-block" style="display: block;" ng-if="itemEntryTwoForm.PackagePerContainer.$error.required && itemEntryTwoForm.PackagePerContainer.$touched">Package Per Container is required</span>
+                                            <span class="help-block" style="display: block;" ng-if="itemEntryTwoForm.PackagePerContainer.$error.maxlength">50 Character Max</span>
+                                        </div>
+                                    </div>
+                                    <div hidden class="col-md-6" ng-if="ddlItemUnit.ItemUnitId== 3||ddlItemPackage.ItemUnitId==3||ddlItemContainer.ItemUnitId==3">
+                                        <label>{{btnContainerWeight}}(kg)</label>
+                                    </div>
+                                    <div hidden class="col-md-6" ng-show="ddlItemUnit.ItemUnitId== 3||ddlItemPackage.ItemUnitId==3||ddlItemContainer.ItemUnitId==3">
+                                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : itemEntryTwoForm.ContainerWeight.$invalid && itemEntryTwoForm.ContainerWeight.$touched }" data-toggle="tooltip" data-placement="bottom" title="Container Weight">
+                                            <div class="input-group">
+                                                <input type="number" id="txtContainerWeight" name="ContainerWeight" class="form-control" ng-model="ad_Item.ContainerWeight" ng-change="CartonSizeChange();" readonly>
+                                                <!--<span class="input-group-addon"><i class="fa fa-text-width" style="color: red;"></i></span>-->
+                                            </div>
+                                            <span class="help-block" style="display: block;" ng-if="itemEntryTwoForm.ContainerWeight.$error.required && itemEntryTwoForm.ContainerWeight.$touched">Container Weight is required</span>
+                                            <span class="help-block" style="display: block;" ng-if="itemEntryTwoForm.ContainerWeight.$error.maxlength">50 Character Max</span>
+                                        </div>
+                                    </div>
+                                    <div hidden class="col-md-6" ng-show="ddlItemUnit.ItemUnitId== 3||ddlItemPackage.ItemUnitId==3||ddlItemContainer.ItemUnitId==3">
+                                        <label>{{btnContainerSize}}</label>
+                                    </div>
+
+                                    <div hidden class="col-md-6" ng-show="ddlItemUnit.ItemUnitId== 3||ddlItemPackage.ItemUnitId==3||ddlItemContainer.ItemUnitId==3">
+                                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : itemEntryTwoForm.ContainerSize.$invalid && itemEntryTwoForm.ContainerSize.$touched }" data-toggle="tooltip" data-placement="bottom" title="Container Size">
+                                            <div class="input-group">
+                                                <input type="text" id="txtContainerSize" maxlength="50" name="ContainerSize" class="form-control" ng-model="ad_Item.ContainerSize" ng-maxlength="49" readonly>
+                                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                            </div>
+                                            <span class="help-block" style="display: block;" ng-if="itemEntryTwoForm.ContainerSize.$error.required && itemEntryTwoForm.ContainerSize.$touched">Container Size is required</span>
+                                            <span class="help-block" style="display: block;" ng-if="itemEntryTwoForm.ContainerSize.$error.maxlength">50 Character Max</span>
+                                        </div>
+                                    </div>
+
+                                    <div style="margin-top:20px;" ng-show="IsChecked">
+                                        <div class="col-md-6">
+                                            <label>SD</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group tooltipAll" ng-class="{ 'has-error' : itemEntryTwoForm.Sd.$invalid && itemEntryTwoForm.Sd.$touched }" data-toggle="tooltip" data-placement="bottom" title="SD ">
+                                                <div class="input-group">
+                                                    <input type="number" id="txtContainerSize" maxlength="50" name="Sd" class="form-control" ng-model="ad_ItemVat.Sd" ng-maxlength="49">
+                                                    <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                                </div>
+                                                <span class="help-block" style="display: block;" ng-if="itemEntryTwoForm.Sd.$error.required && itemEntryTwoForm.Sd.$touched">SD is required</span>
+                                                <span class="help-block" style="display: block;" ng-if="itemEntryTwoForm.Sd.$error.maxlength">50 Character Max</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label>VAT</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group tooltipAll" ng-class="{ 'has-error' : itemEntryTwoForm.Vat.$invalid && itemEntryTwoForm.Vat.$touched }" data-toggle="tooltip" data-placement="bottom" title="Vat">
+                                                <div class="input-group">
+                                                    <input type="number" id="txtContainerSize" maxlength="50" name="Vat" class="form-control" ng-model="ad_ItemVat.Vat" ng-maxlength="49">
+                                                    <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                                </div>
+                                                <span class="help-block" style="display: block;" ng-if="itemEntryTwoForm.Vat.$error.required && itemEntryTwoForm.Vat.$touched">Vat is required</span>
+                                                <span class="help-block" style="display: block;" ng-if="itemEntryTwoForm.Vat.$error.maxlength">50 Character Max</span>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--  -->
+                    <div id="ItemAdditionalAttribute" class="tab-pane fade">
+                        <div class="col-md-12">
+                            <br />
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="col-md-2" hidden>
+                                        <label>Width per Roll (Meter)</label>
+                                    </div>
+                                    <div class="col-md-2" hidden>
+                                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : itemEntryTwoForm.WidthPerRoll.$invalid && itemEntryTwoForm.WidthPerRoll.$touched }" data-toggle="tooltip" data-placement="bottom" title="Item Width">
+                                            <div class="input-group">
+                                                <input type="number" id="txtWidthPerRoll" maxlength="50" name="WidthPerRoll" class="form-control" ng-model="ItemAdditionalAttribute.RollWidthInMeter" ng-maxlength="49" readonly>
+                                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                            </div>
+                                            <span class="help-block" style="display: block;" ng-if="itemEntryTwoForm.WidthPerRoll.$error.required && itemEntryTwoForm.WidthPerRoll.$touched">Width Per Roll is required</span>
+                                            <span class="help-block" style="display: block;" ng-if="itemEntryTwoForm.WidthPerRoll.$error.maxlength">50 Character Max</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2" hidden>
+                                        <label>Length per Roll (Meter)</label>
+                                    </div>
+                                    <div class="col-md-2" hidden>
+                                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : itemEntryTwoForm.LengthPerRoll.$invalid && itemEntryTwoForm.LengthPerRoll.$touched }" data-toggle="tooltip" data-placement="bottom" title="Length Per Roll">
+                                            <div class="input-group">
+                                                <input type="number" id="txtLengthPerRoll" maxlength="50" name="LengthPerRoll" class="form-control" ng-model="ItemAdditionalAttribute.RollLenghtInMeter" ng-maxlength="49" readonly>
+                                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                            </div>
+                                            <span class="help-block" style="display: block;" ng-if="itemEntryTwoForm.LengthPerRoll.$error.required && itemEntryTwoForm.LengthPerRoll.$touched">Length Per Roll is required</span>
+                                            <span class="help-block" style="display: block;" ng-if="itemEntryTwoForm.LengthPerRoll.$error.maxlength">50 Character Max</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="col-md-2" hidden>
+                                        <label>Area per Roll (Sqm.)</label>
+                                    </div>
+                                    <div class="col-md-2" hidden>
+                                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : itemEntryTwoForm.AreaPerRoll.$invalid && itemEntryTwoForm.AreaPerRoll.$touched }" data-toggle="tooltip" data-placement="bottom" title="Area Per Roll">
+                                            <div class="input-group">
+                                                <input type="number" id="txtAreaPerRoll" maxlength="50" name="AreaPerRoll" class="form-control" ng-model="ItemAdditionalAttribute.RollAreaInSqMeter" ng-maxlength="49" readonly>
+                                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                            </div>
+                                            <span class="help-block" style="display: block;" ng-if="itemEntryTwoForm.AreaPerRoll.$error.required && itemEntryTwoForm.AreaPerRoll.$touched">Area Per Roll is required</span>
+                                            <span class="help-block" style="display: block;" ng-if="itemEntryTwoForm.AreaPerRoll.$error.maxlength">50 Character Max</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <span><b>Tag Label With Ribbon</b></span>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : itemEntryTwoForm.CheckBox.$invalid && itemEntryTwoForm.CheckBox.$touched }" data-toggle="tooltip" data-placement="bottom" title="CheckBox">
+                                            <label class="switch">
+                                                <input type="checkbox" ng-model="IsSpecialItemModel" ng-disabled="IsLabel" ng-click="hideButton()">
+                                                <span class="slider round"></span>
+                                            </label>
+
+                                            <span class="help-block" style="color: red; display: block;" ng-if="itemEntryTwoForm.CheckBox.$error.required && itemEntryTwoForm.CheckBox.$touched">Invoice No is required</span>
+                                            <span class="help-block" style="color: red; display: block;" ng-if="itemEntryTwoForm.CheckBox.$error.maxlength">50 Character Max</span>
+                                        </div>
+                                    </div>
+
+                                    <!--<div class="col-md-3 CheckBoxDiv">
+
+        <div class="checkbox" style="margin-top:15px; display:none">
+            <label class="MaterialCheckBox">
+                Is Active<input type="checkbox" name="IsActive" id="IsActive" value="" ng-model="ItemAdditionalAttribute.IsActive">
+                <span class="cr"><i class="cr-icon fa fa-check"></i></span>
+            </label>
+        </div>
+    </div>-->
+                                </div>
+                            </div>
+                            <div class="row" ng-show="IsSpecialItem">
+                                <div class="col-md-9">
+                                    <div class="form-group tooltipAll" ng-class="{ 'has-error' : itemEntryTwoForm.SpecialItem.$invalid && itemEntryTwoForm.SpecialItem.$touched }" data-toggle="tooltip" data-placement="bottom" title="Item Name">
+                                        <div id="SpecialItemDev" class="input-group width-hundred-percent">
+                                            <select id="SpecialItem" ng-model="ddlSpecialItem" name="SpecialItem" class="form-control selectMendatory" ng-options="aItemSearchForSpecial.TempItemName for aItemSearchForSpecial in ItemSearchForSpecialList track by aItemSearchForSpecial.ItemId">
+                                                <!--<option value="">Search for: Item Name ~ Description One ~ Description Two ~ Item Code ~ Pc(s) Per Roll ~ Roll Per Carton ~ Hs Code</option>-->
+                                                <option value=""></option>
+                                            </select>
+                                            <span class="help-block" ng-show="itemEntryTwoForm.SpecialItem.$dirty && itemEntryTwoForm.SpecialItem.$invalid">Item Name is required</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-2">
+                                    <button class="customBtn custmoBtnReset" ng-click="AddSpecialItem(ddlSpecialItem);" title="Add">
+                                        <i class="fa fa-pencil-square"></i>&nbsp;Add
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="row" ng-show="IsSpecialItem">
+                                <div class="col-md-12">
+                                    <table class="responstable table-hover">
+                                        <tr>
+
+                                            <th class="t-cell-center">SL.No</th>
+                                            <th class="t-cell-center">Item Description</th>
+                                            <!--<th class="t-cell-center">Quantity</th>
+                                            <th class="t-cell-center">Price</th>
+                                            <th class="t-cell-center">Amount</th>
+                                            <th class="t-cell-center">Amount BDT</th>-->
+                                            <th class="t-cell-center">Action</th>
+                                        </tr>
+                                        <tbody ng-repeat="aSpecialItem in  SpecialItemList track by $index">
+                                            <tr>
+                                                <td class="t-cell-center">{{$index+1}}</td>
+                                                <td class="t-cell-center">{{aSpecialItem.TempItemName}}</td>
+                                                <!--<td class="t-cell-center">{{aSpecialItem}}</td>
+                                                <td class="t-cell-center">{{aSpecialItem}}</td>
+                                                <td class="t-cell-center">{{aSpecialItem}}</td>
+                                                <td class="t-cell-center">{{aSpecialItem}}</td>-->
+                                                <td class="t-cell-center">
+                                                    <button title="Remove" ng-click="RemoveSpecialItem(aSpecialItem)">
+                                                        <i class="fa fa-minus-square"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="row ">
+                    <div class="col-sm-4 marginTop">
+                        <div class="row ">
+                            <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 5%; padding-right: 7%;">
+                                <div class="row">
+                                    <!-- Include Sales Order  Directive-->
+                                    <!--<sales-order-directive></sales-order-directive>
+                                    <sales-order-revise-directive></sales-order-revise-directive>-->
+
+
+                                    <!--<proforma-invoice-directive></proforma-invoice-directive>
+                                    <proforma-invoice-revise-directive></proforma-invoice-revise-directive>-->
+
+                                    <!--Include End -->
+
+                                    <button id="Button1" class="customBtn custmoBtnSave tooltipAll" ng-click="SaveItem(); updateItem(); " title="save" ng-disabled="!ddlCategory || !ddlSubCategory ||!ad_Item.ItemName||!ddlItemUnit || !ad_Item.ItemDescription || !ad_Item.ItemCode">
+                                        <i class="fa fa-floppy-o"></i>&nbsp;{{btnSaveItem}}
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 6%; padding-right: 6%;">
+                                <div class="row">
+                                    <button id="Button2" class="customBtn custmoBtnDelete" ng-show="btnItemDeleleShow" ng-click="Delete()" title="Search">
+                                        <i class="fa fa-trash"></i>&nbsp;Delete
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 7%; padding-right: 5%;">
+                                <div class="row">
+                                    <button id="Button3" class="customBtn custmoBtnReset" ng-click="ResetForm()" title="Clear">
+                                        <i class="fa fa-refresh"></i>&nbsp;Reset
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<script>
+    $('.tooltipAll').tooltip({ boundary: 'window' });
+    $("#SpecialItem").select2({
+        placeholder: "Search for company wise: Item Name ~ Description ~ Item Code ~ Pc(s) Per Roll ~ Roll Per Carton ~ Hs Code",
+    });
+
+    $("#ddlControlHead").select2({
+        //placeholder: "Search for: Control Head",
+        //theme: "classic",
+        dropdownAutoWidth: false
+    });
+</script>

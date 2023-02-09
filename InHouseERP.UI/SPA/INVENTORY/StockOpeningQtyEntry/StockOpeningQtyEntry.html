@@ -1,0 +1,339 @@
+﻿<style>
+    #DivLabelBrand .select2-container {
+        width: 141px !important;
+    }
+</style>
+<form name="StockOpeningQtyEntryForm" novalidate>
+    <div class="col-md-12">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-folder-open"></i>&nbsp;Stock Opening Quantity Entry</h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-2">
+                        <div class="form-group" ng-class="{ 'has-error' :StockOpeningQtyEntryForm.OpeningDate.$invalid && StockOpeningQtyEntryForm.OpeningDate.$touched }">
+                            <div class="input-group tooltipAll" data-toggle="tooltip" title="Opening Date">
+                                <input type="text" id="txtOpeningDate" ng-model="OpeningDate" class="form-control tooltipAll" name="OpeningDate" placeholder="Opening Date" maxlength="40" required />
+
+                                <span class="input-group-addon" ng-click="CalendartxtOpeningDate()" id="CalendartxtOpeningDate"><i class="fa fa-calendar req-icon-color"></i></span>
+                            </div>
+                            <span class="help-block" style="display: block;" ng-if="StockOpeningQtyEntryForm.OpeningDate.$invalid && StockOpeningQtyEntryForm.OpeningDate.$touched ">Opening Date is required</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group" ng-class="{ 'has-error' : StockOpeningQtyEntryForm.Store.$invalid && StockOpeningQtyEntryForm.Store.$touched }">
+                            <div class="input-group input-group-md ddl tooltipAll" data-toggle="tooltip" data-placement="bottom" title="Select Department ~ Branch">
+                                <select ng-model="ddlStore" ng-disabled="StoreDisable" class="form-control selectMendatory" name="Store" ng-options="department.DepartmentName + ' ~ ' + department.BranchName for department in StoreList track by department.DepartmentId" ng-change="ClearOpenintQtyList(); SearchOpeningQuantity(ddlStore.DepartmentId, ddlProduct.ItemId)" required autofocus>
+                                    <option value="" label="Select Department ~ Branch"></option>
+                                </select>
+                            </div>
+                            <span class="help-block" ng-show="StockOpeningQtyEntryForm.Store.$touched && StockOpeningQtyEntryForm.Store.$invalid">Department is required</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div id="selectItem" class="form-group tooltipAll" ng-class="{ 'has-error' : StockOpeningQtyEntryForm.Product.$dirty && StockOpeningQtyEntryForm.Product.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Product">
+                            <div class="input-group input-group-md ddl">
+                                <select ng-model="ddlProduct" id="ddlProduct" name="Product" class="form-control selectNotMandetory" ng-change="SearchOpeningQuantity(ddlStore.DepartmentId, ddlProduct.ItemId); ClearMaterialType();GetLabelBrand(ddlProduct);" ng-disabled="!ddlStore" ng-options="item.Description for item in ItemSearchResultList track by item.ItemId">
+                                    <!--<option value="" label="Select Product"></option>-->
+                                </select>
+
+                            </div>
+                            <span class="help-block" ng-show="StockOpeningQtyEntryForm.Product.$dirty && StockOpeningQtyEntryForm.Product.$invalid">Product is required</span>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : StockOpeningQtyEntryForm.ddlmatrialType.$dirty && StockOpeningQtyEntryForm.ddlmatrialType.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Material Type">
+                            <div class="input-group input-group-md ddl">
+                                <select ng-model="ddlmatrialType" class="form-control" name="ddlmatrialType" id="MaterialType1" ng-disabled="!ddlProduct || ddlProduct.CategoryId == 2" ng-options="Material.Combination for Material in matrialTypeList track by Material.MaterialTypeId" ng-change="SearchOpeningQuantity(ddlStore.DepartmentId, ddlProduct.ItemId)">
+                                    <!--<option value="" label="--Select Material Type--"></option>-->
+                                </select>
+                            </div>
+                            <span class="help-block" ng-show="StockOpeningQtyEntryForm.ddlmatrialType.$dirty && StockOpeningQtyEntryForm.ddlmatrialType.$invalid">matrial Type is required</span>
+                        </div>
+
+
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group" ng-class="{ 'has-error' : StockOpeningQtyEntryForm.ddlLabelBrand.$dirty && StockOpeningQtyEntryForm.ddlLabelBrand.$invalid }">
+                            <div id="DivLabelBrand" class="input-group input-group-md ddl tooltipAll" data-toggle="tooltip" data-placement="bottom" title="Select Label Brand">
+                                <select id="LabelBrand" ng-model="ddlLabelBrand" class="form-control selectMendatory" name="ddlLabelBrand" ng-options="LabelBrand.LabelBrandName for LabelBrand in LabelBrandList track by LabelBrand.LabelBrandId" ng-change="SearchOpeningQuantity(ddlStore.DepartmentId, ddlProduct.ItemId)" ng-disabled="ddlProduct.SubCategoryId != 3" required autofocus>
+                                    <option value="" label="Select Label Brand">--Label Brand--</option>
+                                </select>
+                            </div>
+                            <span class="help-block" ng-show="StockOpeningQtyEntryForm.ddlLabelBrand.$dirty && StockOpeningQtyEntryForm.ddlLabelBrand.$invalid">Label Brand is required</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+
+                    <div class="col-md-3" ng-show="ddlProduct.SubCategoryId == 1 || ddlProduct.SubCategoryId == 3 || ddlProduct.CategoryId == 5">
+                        <div class=" input-group">
+                            <input type="number" class="form-control txt-center tooltipAll" placeholder="Pc Qty" title="Pc Qty" ng-model="StockOpeningQuantity.PcQty" ng-readonly="StockOpeningQuantity.RollQty" min="0">
+                            <span class="input-group-addon"><b>Pc Qty</b></span>
+                        </div>
+                    </div>
+                    <div class="col-md-3" ng-show="ddlProduct.CategoryId == 2">
+                        <div class=" input-group">
+                            <input type="number" class="form-control txt-center tooltipAll" placeholder="Unit Qty" title="Unit Qty" ng-model="StockOpeningQuantity.PcQty" min="0">
+                            <span class="input-group-addon"><b>Unit Qty</b></span>
+                        </div>
+                    </div>
+                    <div class="col-md-3" ng-show="ddlProduct.SubCategoryId == 4 || ddlProduct.SubCategoryId == 14 || ddlProduct.CategoryId == 4 || ddlProduct.CategoryId == 5">
+                        <div class=" input-group">
+                            <input type="number" class="form-control txt-center tooltipAll" placeholder="Roll Qty" title="Roll Qty" ng-model="StockOpeningQuantity.RollQty" ng-readonly="StockOpeningQuantity.PcQty" min="0">
+                            <span class="input-group-addon"><b>Roll Qty</b></span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class=" input-group">
+                            <input type="number" class="form-control txt-center tooltipAll" placeholder="Unit Price" title="Unit Price" ng-model="StockOpeningQuantity.UnitPrice" min="0">
+                            <span class="input-group-addon"><b>Unit Price</b></span>
+                        </div>
+                    </div>
+                    <div class="col-md-3" ng-show="ddlProduct.CategoryId == 2">
+                        <span ng-hide="StockOpeningQuantity.NoSerial"><input type="checkbox" ng-model="IsWarrantyAndSerial" ng-click="AddWarrentyAndSerialNoInput(StockOpeningQuantity.PcQty, IsWarrantyAndSerial);" ng-disabled="!StockOpeningQuantity.PcQty" />&nbsp;Add SN</span>
+                    </div>
+
+                </div>
+                <br />
+                <div class="row" ng-show="ddlProduct.CategoryId == 2 && IsWarrantyAndSerial">
+                    <div class="col-md-12">
+                        <table class="responstable table-hover">
+                            <tbody>
+                                <tr>
+                                    <th class="t-cell-center">S/N</th>
+                                    <th class="t-cell-center">Serial No</th>
+                                    <th class="t-cell-center">Warrenty In Days</th>
+                                </tr>
+                                <tr class="HoverTable searchRow" ng-repeat="aWarrentyAndSerialNoDetail in WarrentyAndSerialNoDetailAdAttributeLst track by $index">
+                                    <td class="t-cell-center">{{$index + 1}}</td>
+                                    <td class="t-cell-center">
+                                        <input type="text" style="text-align:center" ng-model="aWarrentyAndSerialNoDetail.SerialNo" ng-blur="CheckDuplicateSerialNo(aWarrentyAndSerialNoDetail);" />
+                                    </td>
+                                    <td class="t-cell-center">
+                                        <input type="number" style="text-align:center" ng-model="aWarrentyAndSerialNoDetail.WarrentyInDays" /> <!--ng-change="AddWarrentyInDaysAll(aWarrentyAndSerialNoDetail.WarrentyInDays)"-->
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-10">
+
+                    </div>
+                    <div class="col-md-2">
+                        <button id="btnSearch" ng-disabled="!ddlStore || !ddlProduct || DisAddBtn || !OpeningDate" ng-click="AddOpeningList()" class="customBtn custmoBtnSearch" title="Add">
+                            <!--<i class="fa fa-search"></i>&nbsp;-->Add
+                        </button>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="responstable table-hover">
+                            <tr class="t-head">
+                                <th class="t-cell-center"></th>
+                                <th>S/N</th>
+                                <th class="t-cell-center">Department</th>
+                                <th class="t-cell-center">Description</th>
+                                <th class="t-cell-center">Material Type</th>
+                                <th class="t-cell-center">Brand Name</th>
+                                <th class="t-cell-center">Unit</th>
+                                <th class="t-cell-center">Pc Qty</th>
+                                <th class="t-cell-center">Roll Qty</th>
+                                <th style="text-align:center;">Unit Price</th>
+                                <th style="text-align:center;">Action</th>
+                            </tr>
+                            <tbody class="HoverTable" ng-repeat="alistXsl in OpeningQuantityList">
+                                <tr>
+                                    <td ng-click="$event.stopPropagation();" class="t-cell-center"><label ng-show="alistXsl.CategoryId == 2"><i ng-show="!alistXsl.DisplaySta" class="fa fa-plus-square"></i><i ng-show="alistXsl.DisplaySta" class="fa fa-minus-square"></i><input style="visibility:hidden;" type="checkbox" ng-model="alistXsl.DisplaySta" /></label></td>
+                                    <td>{{$index+1}}</td>
+                                    <td>{{alistXsl.DepartmentName}}</td>
+                                    <td>{{alistXsl.Description}}</td>
+                                    <td>{{alistXsl.MaterialTypeName}} ~ {{alistXsl.MaterialTypeCode}}</td>
+                                    <td>{{alistXsl.LabelBrandName}}</td>
+
+                                    <td class="t-cell-center">{{alistXsl.UnitName}}</td>
+                                    <td><input type="number" class="form-control txt-center" ng-model="alistXsl.PcQty" disabled></td>
+
+                                    <td><input type="number" class="form-control txt-center" ng-model="alistXsl.RollQty" disabled></td>
+
+                                    <td><input type="number" class="form-control txt-center" ng-model="alistXsl.UnitPrice " disabled></td>
+                                    <td><button ng-click="RemoveOpening(alistXsl);"><!--<i class="fa fa-minus-square"></i>--><b>Remove</b></button></td>
+                                </tr>
+                                <tr ng-click="$event.stopPropagation();" ng-show="alistXsl.DisplaySta">
+                                    <td></td>
+                                    <td colspan="9">
+                                        <div>
+                                            <table class="responstable table-hover " id="attributeDetailsTable">
+                                                <tr>
+
+                                                    <th class="t-cell-center">Serial No</th>
+                                                    <th class="t-cell-center">Warrenty In Days</th>
+                                                </tr>
+                                                <tr class="HoverTable Edit" ng-repeat="WarrentyAndSerialNoDetailAdAttribute in alistXsl.WarrentyAndSerialNoList">
+                                                    <td class="t-cell-center">
+                                                        {{WarrentyAndSerialNoDetailAdAttribute.SerialNo}}
+                                                    </td>
+                                                    <td class="t-cell-center">
+                                                        {{WarrentyAndSerialNoDetailAdAttribute.WarrentyInDays}}
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="row">
+                <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 5%; padding-right: 7%;">
+                    <div class="row">
+                        <button id="btnDelete" ng-click="AddOpeningQty()" style="width:100%" ng-disabled="!OpeningQuantityList.length" class="btn btn-success" title="Save">
+                            <i class="fa fa-save"></i>&nbsp;{{saveBtn}}
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 7%; padding-right: 5%;">
+                    <div class="row">
+                        <button id="btnReset" ng-click="resetForm()" style="width:100%" class="btn btn-danger" title="Reset">
+                            <i class="fa fa-refresh"></i>&nbsp;Reset
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <br />
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-search"></i>&nbsp;Stock Opening Search</h3>
+            </div>
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <div class="input-group tooltipAll" data-toggle="tooltip" title="From Date">
+
+                                <input type="text" name="FromDate" id="txtFromDateForSO" ng-model="FromDate" class="form-control " placeholder="From Date" readonly />
+                                <span class="input-group-addon" ng-click="FormDateChangeForSO()" id="FormDateChange"><i class="fa fa-calendar req-icon-color"></i></span>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <div class="input-group tooltipAll" data-toggle="tooltip" title="To Date">
+                                <input type="text" name="ToDate" id="txtToDateForSO" ng-model="ToDate" class="form-control " placeholder="To Date" readonly />
+                                <span class="input-group-addon" ng-click="ToDateChangeForSO()" id="ToDateChange"><i class="fa fa-calendar req-icon-color"></i></span>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group tooltipAll" data-toggle="tooltip" title="Search Department name / Item Size">
+                            <input type="text" class="form-control" id="textDepartmentNameAndItemSize" ng-model="SearchDepartmentNameAndItemSize" name="name" placeholder="Search Department name / Item Size" />
+                        </div>
+                    </div>
+                    <div class="col-md-2 col-sm-2 col-lg-2 col-xs-12" style="padding-right: 3%; padding-left: 3%;">
+                        <div class="row">
+                            <button id="btnSearch" class="customBtn custmoBtnSearch tooltipAll" title="Search" ng-click="StockOpeningSearch();">
+                                <i class="fa fa-search-plus"></i>&nbsp;Search
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="row">
+                            <button id="btnSearch" ng-click="reloadBtn()" class="btn btn-danger tooltipAll" title="Reload">
+                                <i class="fa fa-refresh"></i>&nbsp;Clear
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="responstable table-hover" style="width:100%">
+                            <tbody>
+                                <tr>
+                                    <th class="t-cell-center">S/N</th>
+                                    <th class="t-cell-center">Opening Date</th>
+                                    <th class="t-cell-center">Department</th>
+                                    <th class="t-cell-center">Size Code</th>
+                                    <th class="t-cell-center">Description</th>
+                                    <th class="t-cell-center">Pc Qty</th>
+                                    <th class="t-cell-center">Roll Qty</th>
+                                    
+                                </tr>
+                                <tr class="HoverTable searchRow" dir-paginate="aStockOpening in StockOpeningListPaged  | itemsPerPage: PerPage" current-page="currentPage" total-items="total_count" onclick="RowSelect(this)" ng-click="">
+                                    <td class="t-cell-center">{{$index + ((currentPage-1)*PerPage) + 1}}</td>
+                                    <td class="t-cell-center">{{aStockOpening.OpeningDate}}</td>
+                                    <td class="t-cell-center">{{aStockOpening.DepartmentName}}</td>
+                                    <td class="t-cell-center">{{aStockOpening.ItemCode}}</td>
+                                    <td class="t-cell-center">{{aStockOpening.ItemDescription}}</td>
+                                    <td class="t-cell-center">{{aStockOpening.PcQty}}</td>
+                                    <td class="t-cell-center">{{aStockOpening.RollQty}}</td>
+                                </tr>
+                                <tr class="t-foot" ng-show="total_count>PerPage">
+                                    <th colspan="10">
+                                        <dir-pagination-controls max-size="8"
+                                                                 direction-links="true"
+                                                                 boundary-links="true"
+                                                                 on-page-change="getData(newPageNumber)" style="text-align:center;">
+                                        </dir-pagination-controls>
+                                    </th>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="row pagination-footer">
+                            <div class="col-md-6">
+                                <span>Show </span><input class="input-pagesize" type="number" ng-maxlength="100" ng-minlength="1" width="1" ng-model="PerPage"> <span>Records </span>
+                            </div>
+                            <div class="col-md-6">
+                                <span class="pull-right">Showing {{((currentPage-1)*PerPage)+1}} to {{((currentPage-1) * PerPage) + StockOpeningListPaged.length}} of {{total_count}} Records</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script>
+    $('.tooltipAll').tooltip({ boundary: 'window' });
+    $("#MaterialType1").select2({
+        placeholder: "--Material  Type--",
+    });
+    $("#LabelBrand").select2({
+        placeholder: "--Label Brand--",
+        //theme: "classic",
+        dropdownAutoWidth: false
+    });
+    //$("#ddlProduct").select2({
+    //    placeholder: "Search for: Item Name ~ Description ~ Item Code",
+    //    //theme: "classic",
+    //    dropdownAutoWidth: false,
+    //    width: 'resolve'
+    //});
+    
+</script>
+
+
+
+

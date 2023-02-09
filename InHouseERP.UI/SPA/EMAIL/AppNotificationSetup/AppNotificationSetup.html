@@ -1,0 +1,193 @@
+﻿<style>
+    #sortable tbody tr:nth-child(1) {
+        counter-reset: rowNumber;
+    }
+
+    #sortable tbody tr {
+        counter-increment: rowNumber;
+    }
+
+        #sortable tbody tr td:first-child::before {
+            content: counter(rowNumber);
+            min-width: 1em;
+            margin-right: 0.5em;
+        }
+
+    .btn-load {
+        width: auto !important;
+    }
+</style>
+<form name="AppNotificationSetupForm" novalidate>
+    
+    <div class="col-md-12">
+        <div class="alert alert-info alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="topInfo"> &nbsp; &#9755; <span style="color:red;">Red Icon</span> Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp;</div>
+        </div>
+    </div>
+    <div class="col-md-12" ng-show="CreatePermission || RevisePermission">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-md-4">
+                        <h3 class="panel-title pull-left "><i class="fa fa-list"></i>&nbsp;App Notification Setup</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group" ng-class="{ 'has-error' : AppNotificationSetupForm.ReportName.$touched && AppNotificationSetupForm.ReportName.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Report Name">
+                            <div class="input-group width-hundred-percent">
+                                <select id="ddlReportName" ng-model="ddlReportName" name="ReportName" class="form-control selectMendatory" ng-options="Report.ReportName for Report in ReportNameForNotificationList track by Report.ReportId" required>
+                                    <option value="">Select Report Name</option>
+                                </select>
+                                <span class="help-block" ng-show="AppNotificationSetupForm.ReportName.$touched && AppNotificationSetupForm.ReportName.$invalid">Report Name is required</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group" ng-class="{ 'has-error' : AppNotificationSetupForm.Role.$touched && AppNotificationSetupForm.Role.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select User Group">
+                            <div class="input-group input-group-md ddl">
+                                <select id="roleDdl" ng-model="ddlRole" ng-change="GetEmployeeByRoleId(ddlRole.RoleId)" ng-disabled="IsUpdate" class="form-control selectNotMandetory" name="Role" ng-options="role.RoleName for role in Rolelist track by role.RoleId" required>
+                                    <option value="" label="Select User Group"></option>
+                                </select>
+                            </div>
+                            <span class="help-block" ng-show="AppNotificationSetupForm.Role.$touched && AppNotificationSetupForm.Role.$invalid">Role is required</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group" ng-class="{ 'has-error' : AppNotificationSetupForm.Employee.$dirty && AppNotificationSetupForm.Employee.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Employee">
+                            <div class="input-group input-group-md ddl">
+                                <div id="selectEmployee" ng-dropdown-multiselect=""
+                                     options="example8data"
+                                     selected-model="UserIdList"
+                                     extra-settings="example8settings"
+                                     translation-texts="EmployeePlaceholder" ng-click="ReportDataFiltering(UserIdList)"  >
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-2">
+                        <div class="form-group" ng-class="{ 'has-error' : AppNotificationSetupForm.IsActive.$invalid && AppNotificationSetupForm.IsActive.$touched }" data-toggle="tooltip" data-placement="bottom" title="Email Address">
+                            <div class="input-group ">
+                                <input type="radio" name="IsActive" ng-value="true" ng-model="IsActive" />&nbsp Active
+                                <input type="radio" name="IsActive" ng-value="false" ng-model="IsActive" />&nbsp Inactive
+                            </div>
+                            <span class="help-block" style="display: block; color:red" ng-if="AppNotificationSetupForm.IsActive.$error.required && AppNotificationSetupForm.IsActive.$touched">Is Active is required</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="col-md-4">
+                            <button ng-click="Save()" style="margin-left: -15px;" ng-disabled="!ddlReportName || !ddlRole" class="customBtn custmoBtnSave" title="Save">
+                                <i class="fa fa-floppy-o"></i>&nbsp;Save
+                            </button>
+                        </div>
+                        <div class="col-md-4">
+                            <button type="button" ng-click="Reset()" class="customBtn custmoBtnReset" title="Reset">
+                                <i class="fa fa-refresh"></i>&nbsp;Reset
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            
+        </div>
+        <!--  -->
+    </div>
+    <div class="col-md-12" ng-show="ListViewPermission">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-list"></i>&nbsp;App Notification Setup List</h3>
+            </div>
+            <div class="panel-body custom-panal-body">
+                <div class="row">
+                    <div class="col-md-5">
+                        <div class="form-group tooltipAll" data-toggle="tooltip" title="Role / Report Name / Employee">
+                            <input type="text" class="form-control" id="textNotificationSetup" ng-model="NotificationSetup" ng-change="NotificationSetupSearch();" name="name" placeholder="Role / Report Name / Employee" />
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <div class="row">
+                            <button id="btnSearch" ng-click="reloadBtn()" class="customBtn custmoBtnSearch tooltipAll" title="Reload">
+                                <i class="fa fa-refresh"></i>&nbsp;Clear
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="tbl-outer">
+                    <table class="responstable table-hover">
+                        <tbody>
+                            <tr class="t-head">
+                                <th class="txt-center">S/N</th>
+                                <th class="txt-center"><span>Report Name</span></th>
+                                <th class="txt-center">Role</th>
+                                <th class="txt-center">Employee</th>
+                                <th class="txt-center">Status</th>
+                                <th class="txt-center">Action</th>
+                            </tr>
+                            <tr class="HoverTable" dir-paginate="aAppNotificationSetup in AppNotificationSetuplist | filter:q | itemsPerPage: PerPage" current-page="currentPage" total-items="total_count">
+                                <td class="txt-center">{{$index + ((currentPage-1)*PerPage) + 1 }}</td>
+                                <td class="txt-center">{{aAppNotificationSetup.ReportName}}</td>
+                                <td class="txt-center">{{aAppNotificationSetup.RoleName}}</td>
+                                <td class="txt-center">{{aAppNotificationSetup.EmployeeName}}</td>
+                                <td class="txt-center">{{aAppNotificationSetup.Status}}</td>
+                                <td class="txt-center">
+                                    <button ng-click="SelAppNotificationSetup(aAppNotificationSetup)">
+                                        Edit
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr class="t-foot" ng-show="total_count>PerPage">
+                                <th colspan="6">
+                                    <dir-pagination-controls max-size="8"
+                                                             direction-links="true"
+                                                             boundary-links="true"
+                                                             on-page-change="getData(newPageNumber)" style="text-align:center;">
+                                    </dir-pagination-controls>
+                                </th>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="row pagination-footer">
+                        <div class="col-md-6">
+                            <span>Show </span><input class="input-pagesize" type="number" ng-maxlength="100" ng-minlength="1" width="1" ng-model="PerPage"> <span>Records </span>
+                        </div>
+                        <div class="col-md-6">
+                            <span class="pull-right">Showing {{((currentPage-1)*PerPage)+1}} to {{((currentPage-1)*PerPage)+AppNotificationSetuplist.length}} of {{total_count}} Records</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</form>
+<script>
+    $("#ddlReportName").select2({
+        //placeholder: "Search for: Role Name",
+        theme: "classic",
+        dropdownAutoWidth: false
+    });
+    //$("#ddlEmployee").select2();
+    $("#roleDdl").select2({
+        placeholder: "Search for: Role Name",
+        theme: "classic",
+        dropdownAutoWidth: false
+    });
+    function RowSelect(e) {
+        $('.searchRow').css('background-color', '');
+        $(e).css('background-color', '#94d5ef');
+    }
+
+</script>

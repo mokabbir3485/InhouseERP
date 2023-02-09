@@ -1,0 +1,178 @@
+﻿
+<form name="CompanyVatAitForm" novalidate>
+    <div class="col-md-12">
+        <div class="alert alert-info alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="topInfo"> &nbsp; &#9755; <span style="color:red;">Red Icon</span> Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp; &#9755; Click On A Table Row To Update</div>
+        </div>
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-shield"></i>&nbsp;Customer Vat Ait</h3>
+                <div class="clearfix">
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : CompanyVatAitForm.Importer.$dirty && CompanyVatAitForm.Importer.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select  Customer">
+                            <div class="input-group width-hundred-percent">
+                                <select id="Importer" ng-model="ddlImporter" name="Importer" class="form-control selectMendatory" ng-options="company.CompanyName for company in companyList track by company.CompanyId" ng-change="rcv_CompanyVatAit.CompanyId == ddlImporter.CompanyId;">
+                                    <option value=""></option>
+                                </select>
+                                <span class="help-block" ng-show="CompanyVatAitForm.Importer.$dirty && CompanyVatAitForm.Importer.$invalid">Importer is required</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <div class="input-group tooltipAll" data-toggle="tooltip" title="Receive Date">
+                                <input type="text" id="dtReceiveDate" ng-model="rcv_CompanyVatAit.ReceiveDate" class="form-control" name="ReceiveDate" placeholder="Receive Date" readonly />
+
+                                <span class="input-group-addon" ng-click="CalendarReceiveDate()" id="calenderReceiveDate"><i class="fa fa-calendar req-icon-color"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : CompanyVatAitForm.VAT.$dirty && CompanyVatAitForm.VAT.$invalid }" data-toggle="tooltip" data-placement="bottom" title="VAT">
+                            <div class="input-group">
+                                <input type="number" id="txtVAT" ng-model="rcv_CompanyVatAit.VAT" name="VAT" class="form-control" placeholder="VAT" maxlength="15" ng-maxlength="14">
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block" ng-show="CompanyVatAitForm.VAT.$dirty && CompanyVatAitForm.VAT.$invalid">VAT is required</span>
+                            <span class="help-block" ng-if="CompanyVatAitForm.VAT.$error.maxlength">15 Character Max</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : CompanyVatAitForm.AIT.$dirty && CompanyVatAitForm.AIT.$invalid }" data-toggle="tooltip" data-placement="bottom" title="AIT">
+                            <div class="input-group">
+                                <input type="number" id="txtAIT" ng-model="rcv_CompanyVatAit.AIT" name="VAT" class="form-control" placeholder="AIT" maxlength="15" ng-maxlength="14">
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block" ng-show="CompanyVatAitForm.AIT.$dirty && CompanyVatAitForm.AIT.$invalid">AIT is required</span>
+                            <span class="help-block" ng-if="CompanyVatAitForm.AIT.$error.maxlength">15 Character Max</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-2">
+                <button class="btn btn-success tooltipAll" style="width:100%" ng-click="SaveCompanyVatAit()" ng-disabled="!ddlImporter || !rcv_CompanyVatAit.ReceiveDate">
+                    <i class="fa fa-floppy-o"></i>&nbsp;Save
+                </button>
+            </div>
+            <div class="col-md-2">
+                <button id="Button3" style="width:100%" class="btn btn-danger tooltipAll" title="Reset" ng-click="ResetForm()">
+                    <i class="fa fa-refresh"></i>&nbsp;Reset
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <br />
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-list"></i>&nbsp;Customer Vat Ait Receive List</h3>
+            </div>
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <div class="input-group tooltipAll" data-toggle="tooltip" title="From Date">
+                                <input type="text" name="FromDate" id="txtFromDateForVA" ng-model="FromDate" ng-change="CompanyVatAitSearch();" class="form-control " placeholder="From Date" readonly />
+                                <span class="input-group-addon" ng-click="FormDateChangeForVA()" id="FormDateChange"><i class="fa fa-calendar req-icon-color"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group tooltipAll" data-toggle="tooltip" title="To Date">
+                                    <input type="text" name="ToDate" id="txtToDateForVA" ng-model="ToDate" ng-change="CompanyVatAitSearch();" class="form-control " placeholder="To Date" readonly />
+                                    <span class="input-group-addon" ng-click="ToDateChangeForVA()" id="ToDateChange"><i class="fa fa-calendar req-icon-color"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group tooltipAll" data-toggle="tooltip" title="Search Company Name">
+                            <input type="text" class="form-control" id="textCompanyName" ng-model="SearchCompanyName" ng-change="CompanyVatAitSearch();" name="name" placeholder="Search Company Name" />
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <button id="btnSearch" style="width:100%" ng-click="reloadBtn()" class="btn btn-danger tooltipAll" title="Reload">
+                            <i class="fa fa-refresh"></i>&nbsp;Clear
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="responstable table-hover">
+                            <tbody>
+                                <tr class="t-head">
+                                    <th>S/N</th>
+                                    <th class="txt-center">Customer Name</th>
+                                    <th class="txt-center">Receive Date</th>
+                                    <th class="txt-center">VAT</th>
+                                    <th class="txt-center">AIT</th>
+                                    <th class="txt-center">Action</th>
+                                </tr>
+                                <tr class="HoverTable searchRow" dir-paginate="aCompanyVatAit in CompanyVatAitListPaged | itemsPerPage: PerPage" current-page="currentPage" total-items="total_count">
+                                    <td class="t-cell-center">{{$index + ((currentPage-1)*PerPage) + 1}}</td>
+                                    <td class="txt-center">{{aCompanyVatAit.CompanyName }}</td>
+                                    <td class="txt-center">{{aCompanyVatAit.ReceiveDate }}</td>
+                                    <td class="txt-center">{{aCompanyVatAit.VAT }}</td>
+                                    <td class="txt-center">{{aCompanyVatAit.AIT }}</td>
+                                    <td class="txt-center">
+                                        <button class="btn btn-primary" id="btnReport" style=""
+                                                ng-click="SelCompanyVatAit(aCompanyVatAit);">
+                                            <i class="fa fa-print" style="font-size:18px"></i>  Edit
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr class="t-foot" ng-show="total_count>PerPage">
+                                    <th colspan="8">
+                                        <dir-pagination-controls max-size="8"
+                                                                 direction-links="true"
+                                                                 boundary-links="true"
+                                                                 on-page-change="getData(newPageNumber)" style="text-align:center;">
+                                        </dir-pagination-controls>
+                                    </th>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="row pagination-footer">
+                            <div class="col-md-6">
+                                <span>Show </span><input class="input-pagesize" type="number" ng-maxlength="100" ng-minlength="1" width="1" ng-model="PerPage"> <span>Records </span>
+                            </div>
+                            <div class="col-md-6">
+                                <span class="pull-right">Showing {{((currentPage-1)*PerPage)+1}} to {{((currentPage-1) * PerPage) + CompanyVatAitPaged.length}} of {{total_count}} Records</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</form>
+
+<script>
+    $('.tooltipAll').tooltip({ boundary: 'window' })
+    $("#Importer").select2({
+        placeholder: "Search for: Customer Name",
+        theme: "classic",
+        dropdownAutoWidth: false
+    });
+</script>

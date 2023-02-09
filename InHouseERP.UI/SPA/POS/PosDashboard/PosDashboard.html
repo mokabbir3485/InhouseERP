@@ -1,0 +1,394 @@
+﻿
+<style>
+    .responstable th:nth-child(2) {
+        width: 10% !important;
+    }
+</style>
+<style>
+    .card-box {
+        position: relative;
+        color: #fff;
+        padding: 5px 2.5px 15px;
+        margin: 5px 0px;
+    }
+
+        .card-box:hover {
+            text-decoration: none;
+            color: #f1f1f1;
+        }
+
+            .card-box:hover .icon i {
+                font-size: 100px;
+                transition: 1s;
+                -webkit-transition: 1s;
+            }
+
+        .card-box .inner {
+            padding: 5px 10px 0 10px;
+        }
+
+        .card-box h3 {
+            font-size: 27px;
+            font-weight: bold;
+            margin: 0 0 2px 0;
+            white-space: nowrap;
+            padding: 0;
+            text-align: left;
+        }
+
+        .card-box p {
+            font-size: 13px;
+        }
+
+        .card-box .icon {
+            position: absolute;
+            top: auto;
+            bottom: 10px;
+            right: 5px;
+            z-index: 0;
+            font-size: 72px;
+            color: rgba(0, 0, 0, 0.15);
+        }
+
+        .card-box .card-box-footer {
+            position: absolute;
+            left: 0px;
+            bottom: 0px;
+            text-align: center;
+            padding: 3px 0;
+            color: rgba(255, 255, 255, 0.8);
+            background: rgba(0, 0, 0, 0.1);
+            width: 100%;
+            text-decoration: none;
+        }
+
+        .card-box:hover .card-box-footer {
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+    .bg-blue {
+        background-color: #00c0ef !important;
+    }
+
+    .bg-green {
+        background-color: #00a65a !important;
+    }
+
+    .bg-orange {
+        background-color: #f39c12 !important;
+    }
+
+    .bg-red {
+        background-color: #d9534f !important;
+    }
+    .flexcontainer {
+        display: flex;
+        justify-content: space-between;
+    }
+    .inner p:hover {
+        background-color: #00e673;
+        /*padding: 5px;*/
+        border-radius: 5px;
+    }
+</style>
+<form name="PosDashboardForm" novalidate>
+    <div class="col-md-12">
+        <div class="alert alert-info alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="topInfo"> &nbsp; &#9755; <span style="color:red;">Red Icon</span> Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp; &#9755; Click On A Table Row To Update</div>
+        </div>
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-shield"></i>&nbsp;Pos Dashboard</h3>
+                <div class="clearfix">
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-lg-3 col-sm-6">
+                            <div class="card-box bg-green " style="border-radius:10px;">
+                                <div class="inner">
+                                    <h3 style="text-align:center"> {{SoApprovePending}} </h3>
+                                    <p style="text-align:center">
+                                        <a href="#/SalesOrderApprove" style="text-align: center; color:white">Sales Order Approve Pending&nbsp;<i class="fa fa-arrow-circle-right"></i></a>
+                                    </p>
+                                    <h3 style="text-align:center; padding-top:5px;"> {{SoAmendmentReqPending}} </h3>
+                                    <p style="text-align:center">
+                                        <a href="#/SalesOrderApprove" style="text-align: center; color:white">S.O. Amendment Request Pending&nbsp;<i class="fa fa-arrow-circle-right"></i></a>
+                                    </p>
+                                </div>
+                                <div class="icon">
+                                    <i class="fa fa-clock-o" aria-hidden="true"></i>
+                                </div>
+                                <a href="#/SalesOrder" class="card-box-footer" style="border-radius:10px;">Total Sales Order: {{TotalSo}}&nbsp; <i class="fa fa-arrow-circle-right"></i></a>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3 col-sm-6">
+                            <div class="card-box bg-orange " style="border-radius:10px;">
+                                <div class="inner">
+                                    <h3 style="text-align:center"> {{IwoApprovePending}} </h3>
+                                    <p style="text-align:center">
+                                        <a href="#/InventoryApprovals" style="text-align: center; color:white">I.W.O. Approve Pending&nbsp;<i class="fa fa-arrow-circle-right"></i></a>
+                                    </p>
+                                    <h3 style="text-align:center; padding-top:5px;"> {{IwoAmendmentReqPending}} </h3>
+                                    <p style="text-align:center">
+                                        <a href="#/InventoryApprovals" style="text-align: center; color:white">IWO Amendment Request Pending&nbsp;<i class="fa fa-arrow-circle-right"></i></a>
+                                    </p>
+                                </div>
+                                <div class="icon">
+                                    <i class="fa fa-clock-o" aria-hidden="true"></i>
+                                </div>
+                                <a href="#/InternalWorkOrder" class="card-box-footer" style="border-radius:10px;">Total Internal Work Order: {{TotalIWO}}&nbsp; <i class="fa fa-arrow-circle-right"></i></a>
+                            </div>
+
+                        </div>
+                        <div class="col-lg-3 col-sm-6">
+                            <div class="card-box bg-blue" style="border-radius: 10px; height: 150px;">
+                                <div class="inner">
+                                    <h3 style="text-align:center"> {{TotalSalesInvoice}} </h3>
+                                    <p style="text-align:center">
+                                        <a href="#/SalesInvoice" style="text-align: center; color:white">Total Sales Invoice&nbsp;<i class="fa fa-arrow-circle-right"></i></a>
+                                    </p>
+                                    <h3 style="text-align:center">&nbsp;</h3>
+                                    <br />
+                                    <br />
+                                </div>
+                                <div class="icon">
+                                    <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
+                                </div>
+                                <a href="#/SalesInvoice" class="card-box-footer" style="border-radius:10px;">View Info&nbsp; <i class="fa fa-arrow-circle-right"></i></a>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-sm-6">
+                            <div class="card-box bg-red" style="border-radius: 10px; height: 150px;">
+                                <div class="inner">
+                                    <h3 style="text-align:center"> {{TotalCancelledSO}} </h3>
+                                    <p style="text-align:center">
+                                        <a href="#/SalesInvoice" style="text-align: center; color:white">Total Cancel Sales Order&nbsp;<i class="fa fa-arrow-circle-right"></i></a>
+                                    </p>
+                                    <h3 style="text-align:center">&nbsp;</h3>
+                                    <br />
+                                    <br />
+                                </div>
+                                <div class="icon">
+                                    <i class="fa fa-times-circle-o" aria-hidden="true"></i>
+                                </div>
+                                <a href="#/SalesInvoice" class="card-box-footer" style="border-radius:10px;">View Info&nbsp; <i class="fa fa-arrow-circle-right"></i></a>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div style="background-color:#b3b3ff; padding:10px">
+                            <h3 class="panel-title" style="text-align:center;">Month Wise Sales Order, IWO, Sales Invoice</h3>
+                        </div>
+                        <br />
+                        <div class="col-md-4">
+                            <div id="LoadDateCountLineSystem" class="flexcontainer" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 2px solid #ccc; ">
+                                <div>
+                                    <span id="LoadDateCountLine"></span>
+                                </div>
+
+                                <div>
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2">
+                            <button class="customBtn custmoBtnReset" style="background-color:#04AA6D" ng-click="LoadDate('LoadDateCountLine');" title="Load">
+                                <i class="fa fa-refresh"></i>&nbsp;Load
+                            </button>
+                        </div>
+
+                        <div class="col-md-12">
+                            <canvas id="CountLineChart" width="300" height="150"></canvas>
+                            <!--<img width="300" height="150" src="../../../UploadedImages/NoChart.jpg" />-->
+                        </div>
+                        <!--<div class="col-md-12">-->
+                            <!--<canvas id="CountLineChart" width="300" height="150"></canvas>-->
+                            <!--<img id="CountLineNoChart" style="width:997px; height:498px;" src="../../../UploadedImages/NoChart.jpg" />
+                        </div>-->
+                    </div>
+                    <div class="row">
+                        <div style="background-color:#b3b3ff; padding:10px">
+                            <h3 class="panel-title" style="text-align:center;">Month Wise Invoice Amount</h3>
+                        </div>
+                        <br />
+                        <div class="col-md-4">
+                            <div id="LoadDateAmountBarSystem" class="flexcontainer" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 2px solid #ccc; ">
+                                <div>
+                                    <span id="LoadDateAmountBar"></span>
+                                </div>
+
+                                <div>
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2">
+                            <button class="customBtn custmoBtnReset" style="background-color:#04AA6D" ng-click="LoadDate('LoadDateAmountBar');" title="Load">
+                                <i class="fa fa-refresh"></i>&nbsp;Load
+                            </button>
+                        </div>
+                        <div class="col-md-12">
+                            <canvas id="CountBarChart" width="300" height="150"></canvas>
+                        </div>
+                    </div>
+                    <!--Company Wise Total Sales Order  -->
+                    <div class="row">
+                        <div style="background-color:#b3b3ff; padding:10px">
+                            <h3 class="panel-title" style="text-align:center;">Company Wise Total Sales Order</h3>
+                        </div>
+                        <br />
+                        <div class="col-md-4">
+                            <div id="LoadDateCountBarSystem" class="flexcontainer" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 2px solid #ccc; ">
+                                <div>
+                                    <span id="LoadDateCountBar"></span>
+                                </div>
+
+                                <div>
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2">
+                            <button class="customBtn custmoBtnReset" style="background-color:#04AA6D" ng-click="LoadDate('LoadDateCountBar');" title="Load">
+                                <i class="fa fa-refresh"></i>&nbsp;Load
+                            </button>
+                        </div>
+                        <div class="col-md-12">
+                            <canvas id="CountBarCompanyWiseSOChart" width="300" height="200"></canvas>
+                        </div>
+                    </div>
+                    <!-- Local Export Order Ratio -->
+                    <div class="row">
+                        <div style="background-color:#b3b3ff; padding:10px">
+                            <h3 class="panel-title" style="text-align:center;">Local Export Order Ratio</h3>
+                        </div>
+                        <br />
+                        <div class="col-md-4">
+                            <div id="LoadDateCountPieSystem" class="flexcontainer" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 2px solid #ccc; ">
+                                <div>
+                                    <span id="LoadDateCountPie"></span>
+                                </div>
+
+                                <div>
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2">
+                            <button class="customBtn custmoBtnReset" style="background-color:#04AA6D" ng-click="LoadDate('LoadDateCountPie');" title="Load">
+                                <i class="fa fa-refresh"></i>&nbsp;Load
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+
+                        </div>
+                        <div class="col-md-6">
+                            <canvas id="CountPieChart" width="150" height="150"></canvas>
+                        </div>
+                        <div class="col-md-3">
+
+                        </div>
+                    </div>
+                </div>
+
+                
+            </div>
+
+        </div>
+    </div>
+
+    
+</form>
+<!--<div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 2px solid #ccc; width: 30%">
+    <i class="fa fa-calendar"></i>&nbsp;
+    <span id="LoadDate"></span>-->
+<!--<i class="fa fa-caret-down"></i>-->
+<!--</div>-->
+<script>
+    $(function () {
+
+        //var start = moment().subtract(29, 'days');
+        //var start = moment().subtract(1, 'year');
+        //var end = moment();
+
+        //function cb(start, end) {
+        //    $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+        //}
+
+        //$('#reportrange').daterangepicker({
+        //    "showDropdowns": true,
+        //    /*"autoApply": true,*/
+        //    startDate: start,
+        //    endDate: end,
+        //    ranges: {
+        //        //'Today': [moment(), moment()],
+        //        //'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+        //        //'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+        //        //'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+        //        //'This Month': [moment().startOf('month'), moment().endOf('month')],
+        //        //'Last Months': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+        //        'Last 6 Months': [moment().subtract(6, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+        //        'This Year': [moment().startOf('year'), moment().endOf('year')],
+        //        'Last Year': [moment().subtract(1, 'year').startOf('year'), moment().subtract(1, 'year').endOf('year')],
+        //        'Last 2 Years': [moment().subtract(2, 'year').startOf('year'), moment().subtract(1, 'year').endOf('year')],
+        //        'Last 5 Years': [moment().subtract(5, 'year').startOf('year'), moment().subtract(1, 'year').endOf('year')],
+        //    }
+        //}, cb);
+
+        //cb(start, end);
+        //console.log("A new date selection was made: " + start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+        //////////////////////////////////////////////////////
+
+        //var start = moment().subtract(1, 'year');
+        //var end = moment();
+        //function cb(start, end) {
+        //    $('input[name="datefilter"]').val(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+        //}
+        //$('input[name="datefilter"]').daterangepicker({
+        //    autoUpdateInput: false,
+        //    locale: {
+        //        cancelLabel: 'Clear'
+        //    },
+        //    "showDropdowns": true,
+        //    /*"autoApply": true,*/
+        //    startDate: start,
+        //    endDate: end,
+        //    ranges: {
+        //        'Last 6 Months': [moment().subtract(6, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+        //        'This Year': [moment().startOf('year'), moment().endOf('year')],
+        //        'Last Year': [moment().subtract(1, 'year').startOf('year'), moment().subtract(1, 'year').endOf('year')],
+        //        'Last 2 Years': [moment().subtract(2, 'year').startOf('year'), moment().subtract(1, 'year').endOf('year')],
+        //        'Last 5 Years': [moment().subtract(5, 'year').startOf('year'), moment().subtract(1, 'year').endOf('year')],
+        //    }
+        //}, cb);
+        //window.addEventListener('load', function () {
+        //    cb(start, end);
+        //})
+
+        //$('input[name="datefilter"]').on('apply.daterangepicker', function (ev, picker) {
+        //    $(this).val(picker.startDate.format('MMMM D, YYYY') + ' - ' + picker.endDate.format('MMMM D, YYYY'));
+        //});
+
+        //$('input[name="datefilter"]').on('cancel.daterangepicker', function (ev, picker) {
+        //    $(this).val('');
+        //});
+    });
+    function RowSelect(e) {
+        $('.searchRow').css('background-color', '');
+        $(e).css('background-color', '#94d5ef');
+    }
+
+</script>

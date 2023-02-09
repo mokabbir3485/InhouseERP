@@ -1,0 +1,131 @@
+﻿<!--<link href="../../../Content/bootstrap-datetimepicker.css" rel="stylesheet" />-->
+<form name="AdvanceToEmployeeHistoryForm" novalidate>
+    <div class="col-md-12">
+        <div class="alert alert-info alert-dismissible fade in hidden-print" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="topInfo"> &nbsp; &#9755; <span style="color:red;">Red Icon</span> Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp; &#9755; Click On A Table Row To Update</div>
+        </div>
+        <div class="panel panel-info">
+            <div class="panel-heading hidden-print">
+                <h3 class="panel-title"><i class="fa fa-shield"></i>&nbsp;Advance To Employee History</h3>
+                <div class="clearfix">
+                </div>
+            </div>
+            <div class="panel-body hidden-print" >
+                <div class="row">
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <div class="input-group " data-toggle="tooltip" title="From Date">
+                                <input type="text" name="FromDate" id="txtFromDateForSD" ng-model="FromDate" ng-change="" class="form-control " placeholder="From Date" readonly />
+                                <span class="input-group-addon" ng-click="FormDateChangeForSD()" id="FormDateChange"><i class="fa fa-calendar-times-o"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <div class="input-group " data-toggle="tooltip" title="To Date">
+                                <input type="text" name="ToDate" id="txtToDateForSD" ng-model="ToDate" ng-change="" class="form-control " placeholder="To Date" readonly />
+                                <span class="input-group-addon" ng-click="ToDateChangeForSD();" id="ToDateChange"><i class="fa fa-calendar-times-o"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="form-group" ng-class="{ 'has-error' : AdvanceToEmployeeHistoryForm.Employee.$dirty && AdvanceToEmployeeHistoryForm.Employee.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Employee">
+                            <div class="input-group input-group-md ddl">
+                                <select id="ddlEmployee" ng-model="ddlEmployee" name="Employee" class="form-control selectMendatory" ng-options="Employee.FullName + ' ~ ' + Employee.DesignationName for Employee in EmployeeList track by Employee.EmployeeId" >
+                                    <option value="" label="-- Select Employee --"></option>
+                                </select>
+                                <span class="help-block" ng-show="AdvanceToEmployeeHistoryForm.Employee.$dirty && AdvanceToEmployeeHistoryForm.Employee.$invalid">Employee Name is required</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-1">
+                        <button class=" btn btn-primary" ng-click="onLoadBtn()">Load </button>
+                    </div>
+                    <div class="col-md-1">
+                        <button class="btn btn-danger" ng-click="ClearForm()">Clear</button>
+                    </div>
+                    <div class="col-md-1">
+                        <button type="button" onclick="PrintPdf();" class="btn btn-primary" >
+                            <i class="fa fa-print"></i>&nbsp;Print
+                        </button>
+                    </div>
+
+                </div>
+
+
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-4">
+
+                        </div>
+                        <div class="col-md-4">
+                            <p style="font-weight:bold;font-size:18px;text-align:center;"><u>Advance To Employee Report</u></p>
+                        </div>
+                        <div class="col-md-4">
+
+                        </div>
+                    </div>
+                    <table class="responstable table-hover">
+                        <tr>
+                            <th class="t-cell-center">SL.No</th>
+                            <th class="t-cell-center">Advance Payment No</th>
+                            <th class="t-cell-center">Employee</th>
+                            <th class="t-cell-center">Payment Type</th>
+                            <th class="t-cell-center">Payment Date</th>
+                            <th class="t-cell-center">Paid Amount</th>
+                            <th class="t-cell-center">Remarks</th>
+                        </tr>
+                        <tr ng-repeat="aAdvance in AdvanceToEmployeeList">
+                            <td class="t-cell-center">{{$index+1}}</td>
+                            <td class="t-cell-center">{{aAdvance.AdvancePaymentNo}}</td>
+                            <td class="t-cell-center">{{aAdvance.EmployeeName}}</td>
+                            <td class="t-cell-center">{{aAdvance.PaymentTypeName}}</td>
+                            <td class="t-cell-center">{{aAdvance.PaymentDate}}</td>
+                            <td class="t-cell-center">{{aAdvance.PaidAmount}}</td>
+                            <td class="t-cell-center">{{aAdvance.Remarks}}</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:right" colspan="5">Total: </td>
+                            <td class="t-cell-center">{{TotalPaidAmount}}</td>
+                            <td class="t-cell-center"></td>
+                        </tr>
+                    </table>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</form>
+<script>
+    $('#ddlEmployee').select2({
+        placeholder: "Select Employee",
+        //theme: "classic",
+        dropdownAutoWidth: false
+    });
+
+    //jQuery(document).ready(function ($) {
+
+    //    $(".main-sidebar").attr("hidden", true);
+    //    $(".main-header").attr("hidden", true);
+    //    $(".main-footer").attr("hidden", true);
+    //    $("#br").attr("hidden", true);
+
+    //    $("div").removeClass("wrapper");
+    //    $("div").removeClass("content-wrapper");
+    //});
+
+
+    function PrintPdf() {
+        $(".main-footer").attr("hidden", true);
+        $("#br").attr("hidden", true);
+        window.print();
+    }
+</script>

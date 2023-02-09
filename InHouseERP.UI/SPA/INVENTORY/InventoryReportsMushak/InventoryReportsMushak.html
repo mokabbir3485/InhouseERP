@@ -1,0 +1,353 @@
+﻿<style>
+    .responstable th:nth-child(2) {
+        width: 10% !important;
+    }
+</style>
+<form name="inventoryReportMushakForm" novalidate>
+
+    <div class="col-md-4">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-group"></i>&nbsp;Reports </h3>
+            </div>
+            <div class="panel-body">
+                <div class="col-md-12">
+                    <div class="row" ng-show="Mushak_4_3">
+                        <div class="radio-inline">
+                            <label>
+                                <input type="radio" name="optionsRadios5" value="ReportMusuk_4_3" ng-click="CheckReport(MusukReport)" ng-model="MusukReport">Mushak 4.3
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row" ng-show="Mushak_6_1">
+                        <div class="radio-inline">
+                            <label>
+                                <input type="radio" name="optionsRadios5" value="ReportMusuk_6_1" ng-click="CheckReport(MusukReport)" ng-model="MusukReport">Mushak 6.1
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row" ng-show="Mushak_6_2">
+                        <div class="radio-inline">
+                            <label>
+                                <input type="radio" name="optionsRadios5" value="ReportMusuk_6_2" ng-click="CheckReport(MusukReport)" ng-model="MusukReport">Mushak 6.2
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row" ng-show="Mushak_6_3">
+                        <div class="radio-inline">
+                            <label>
+                                <input type="radio" name="optionsRadios5" value="ReportMusuk_6_3" ng-click="CheckReport(MusukReport)" ng-model="MusukReport">Mushak 6.3
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row" ng-show="Mushak_6_6">
+                        <div class="radio-inline">
+                            <label>
+                                <input type="radio" name="optionsRadios5" value="ReportMushak6_6" ng-click="CheckReport(MusukReport)" ng-model="MusukReport">Mushak 6.6
+                            </label>
+                        </div>
+                    </div>
+                    <!--<div class="row" ng-show="TreasuryChallan">
+                        <div class="radio-inline">
+                            <label>
+                                <input type="radio" name="optionsRadios5" value="ReportTreasuryChallan" ng-click="CheckReport(MusukReport)" ng-model="MusukReport">Treasury Challan
+                            </label>
+                        </div>
+                    </div>-->
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div ng-show="MusukReport=='ReportMusuk_6_1' || MusukReport=='ReportMusuk_6_2'">
+        <table>
+            <tr>
+                <td style=" width: 250px;">
+
+                    <div class="form-group" ng-class="{ 'has-error' : inventoryReportMushakForm.LocalOrImporter.$invalid && inventoryReportMushakForm.LocalOrImporter.$touched }" data-toggle="tooltip" data-placement="bottom" title="Select Local Or Importer">
+                        <div class="input-group width-hundred-percent">
+                            <select ng-model="ddlPDType" name="LocalOrImporter" class="form-control selectMendatory" ng-options="PDType.PDTypeName for PDType in PDTypeList track by PDType.PDTypeId" ng-change="GetByPurchaseBillId(ddlPDType.PDTypeId)" required>
+                                <option value="" label="--Select Purchase Bill Type--"></option>
+                            </select>
+                            <span class="help-block" style="color:red" ng-if="inventoryReportMushakForm.LocalOrImporter.$touched && inventoryReportMushakForm.LocalOrImporter.$invalid">LocalOrImporter Name is required</span>
+                        </div>
+                    </div>
+
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="form-group" ng-class="{ 'has-error' : inventoryReportMushakForm.ddlSupplier.$dirty && inventoryReportMushakForm.ddlSupplier.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Supplier">
+                        <div class="tooltipAll" title="Select Supplier">
+                            <select id="ddlSupplier" ng-model="ddlSupplier" name="ddlSupplier" class="form-control" ng-options="supplier.SupplierName for supplier in supplierlist track by supplier.SupplierId" ng-change="GetPBBySuppilerId(ddlSupplier.SupplierId)" required>
+                                <option value="">-- Select Supplier -- </option>
+                            </select>
+                            <span class="help-block" ng-show="inventoryReportMushakForm.ddlSupplier.$dirty && inventoryReportMushakForm.ddlSupplier.$invalid">Supplier Name is required</span>
+                        </div>
+
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+
+                    <div class="form-group" ng-class="{ 'has-error' : inventoryReportMushakForm.PB.$invalid && inventoryReportMushakForm.PB.$touched }" data-toggle="tooltip" data-placement="bottom" title="Select PB Number">
+                        <div class="input-group width-hundred-percent">
+                            <select ng-model="ddlPB" id="ddlPB" name="PB" class="form-control selectMendatory" ng-options="PB.PBNo for PB in PBList track by PB.PBId" required>
+                                <option value="" label="--Select PB Number--">--Select PB Number--</option>
+                            </select>
+                            <span class="help-block" style="color:red" ng-if="inventoryReportMushakForm.PB.$touched && inventoryReportMushakForm.PB.$invalid">PB Number is required</span>
+                        </div>
+                    </div>
+
+                </td>
+            </tr>
+
+            <tr>
+
+
+                <td style=" width: 250px;">
+
+                    <button ng-show="MusukReport=='ReportMusuk_6_1'" class="btn btn-success" style="width:100%"
+                            ng-click="MushakBtn_6_1()">
+                        <i class="fa fa-print"></i>  Mushak 6.1
+                    </button>
+                    <button ng-show="MusukReport=='ReportMusuk_6_2'" class="btn btn-success" style="width:100%"
+                            ng-click="MushakBtn_6_2()">
+                        <i class="fa fa-print"></i>  Mushak 6.2
+                    </button>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <!--<div ng-show="MusukReport=='ReportMusuk_6_2'">
+        <table>
+            <tr>
+                <td style=" width: 250px;">
+
+                    <div class="form-group" ng-class="{ 'has-error' : inventoryReportMushakForm.Importer.$invalid && inventoryReportMushakForm.Importer.$touched }" data-toggle="tooltip" data-placement="bottom" title="Select Purchase Bill Type">
+                        <div class="input-group width-hundred-percent">
+                            <select ng-model="ddlLocalOrImp" name="Importer" class="form-control selectMendatory" ng-options="PBList.Name for PBList in IPBAndLPBList track by PBList.Id" ng-change="GetByPurchaseBillId(PBList.Id=ddlLocalOrImp.Id)" required>
+                                <option value="" label="--Select Purchase Bill Type--"></option>
+                            </select>
+                            <span class="help-block" style="color:red" ng-if="inventoryReportMushakForm.Importer.$touched && inventoryReportMushakForm.Importer.$invalid">Importer Name is required</span>
+                        </div>
+                    </div>
+
+                </td>
+            </tr>
+            <tr>
+                <td>
+
+                    <div class="form-group" ng-class="{ 'has-error' : inventoryReportMushakForm.Importer.$invalid && inventoryReportMushakForm.Importer.$touched }" data-toggle="tooltip" data-placement="bottom" title="Select Importer">
+                        <div class="input-group width-hundred-percent">
+                            <select ng-model="ddlImporter" name="Importer" class="form-control selectMendatory" ng-options="suppiler.SupplierName for suppiler in suppilerList track by suppiler.SupplierId" ng-change="GetBySuppilerId(suppiler.SupplierId=ddlImporter.SupplierId)" required>
+                                <option value="" label="--Select Importer--" hidden></option>
+                            </select>
+                            <span class="help-block" style="color:red" ng-if="inventoryReportMushakForm.Importer.$touched && inventoryReportMushakForm.Importer.$invalid">Importer Name is required</span>
+                        </div>
+                    </div>
+
+                </td>
+            </tr>
+            <tr>
+                <td>
+
+                    <div class="form-group" ng-class="{ 'has-error' : inventoryReportMushakForm.Importer.$invalid && inventoryReportMushakForm.Importer.$touched }" data-toggle="tooltip" data-placement="bottom" title="Select PB Number">
+                        <div class="input-group width-hundred-percent">
+                            <select ng-model="ddlImportPbImporter" name="Importer" class="form-control selectMendatory" ng-options="suppiler.PBNo for suppiler in suppilerImportPBList " ng-change="GetByPBId(suppiler=ddlImportPbImporter)" required>
+                                <option value="" label="--Select Importer--" hidden></option>
+                            </select>
+                            <span class="help-block" style="color:red" ng-if="inventoryReportMushakForm.Importer.$touched && inventoryReportMushakForm.Importer.$invalid">Importer Name is required</span>
+                        </div>
+                    </div>
+
+                </td>
+            </tr>
+            <tr>
+
+
+                <td style=" width: 250px;">
+
+                    <button class="btn btn-success" style="width:100%"
+                            ng-click="MushakBtn_6_2()">
+                        <i class="fa fa-print"></i>  Mushak 6.2
+                    </button>
+                </td>
+            </tr>
+        </table>
+    </div>-->
+
+    <!-- Mushak6_3 -->
+    <div ng-show="MusukReport == 'ReportMusuk_6_3'">
+        <table>
+            <tr>
+                <td style=" width: 250px;">
+
+                    <div class="form-group" ng-class="{ 'has-error' : inventoryReportMushakForm.Company.$invalid && inventoryReportMushakForm.Company.$touched }" data-toggle="tooltip" data-placement="bottom" title="Select Company">
+                        <div class="input-group width-hundred-percent">
+                            <select id="ddlCompany" ng-model="ddlCompany" name="Company" class="form-control selectMendatory" ng-options="aCompany.CompanyName for aCompany in companyList track by aCompany.CompanyId" ng-change="GetSalesInvoiceForMushak_6_3(ddlCompany.CompanyId)" required>
+                                <option value="" label="--Select Company--"></option>
+                            </select>
+                            <span class="help-block" style="color:red" ng-if="inventoryReportMushakForm.Company.$touched && inventoryReportMushakForm.Company.$invalid">Company Name is required</span>
+                        </div>
+                    </div>
+
+                </td>
+
+            </tr>
+            <tr>
+                <td style=" width: 250px;">
+
+                    <div class="form-group" ng-class="{ 'has-error' : inventoryReportMushakForm.SalesInvoice.$invalid && inventoryReportMushakForm.SalesInvoice.$touched }" data-toggle="tooltip" data-placement="bottom" title="Select Sales Invoice">
+                        <div class="input-group width-hundred-percent">
+                            <select id="ddlSalesInvoice" ng-model="ddlSalesInvoice" name="SalesInvoice" class="form-control selectMendatory" ng-options="aSalesInvoice.SalesInvoiceNo for aSalesInvoice in SalesInvoiceList track by aSalesInvoice.SalesInvoiceId" required>
+                                <option value="" label="--Select Sales Invoice--"></option>
+                            </select>
+                            <span class="help-block" style="color:red" ng-if="inventoryReportMushakForm.SalesInvoice.$touched && inventoryReportMushakForm.SalesInvoice.$invalid">Sales Invoice No is required</span>
+                        </div>
+                    </div>
+
+                </td>
+            </tr>
+            <tr>
+                <td style=" width: 250px;">
+
+                    <button class="btn btn-success" style="width:100%"
+                            ng-click="MushakBtn_6_3()">
+                        <i class="fa fa-print"></i>  Mushak 6.3
+                    </button>
+                </td>
+
+            </tr>
+        </table>
+    </div>
+    <!-- Tejari Challan -->
+    <!--<div ng-show="MusukReport == 'ReportTreasuryChallan'">
+        <table>
+            <tr>
+                <td style=" width: 250px;">
+                </td>
+            </tr>
+            <tr>
+
+                <td style=" width: 250px;">
+
+                    <button class="btn btn-success" style="width:100%"
+                            ng-click="TejariChallanBtn()">
+                        <i class="fa fa-print"></i> Treasury
+                    </button>
+                </td>
+
+            </tr>
+        </table>
+    </div>-->
+
+    <div ng-show="MusukReport == 'ReportMusuk_4_3'">
+        <table>
+            <tr>
+                <td style=" width: 250px;">
+
+                    <div class="form-group" ng-class="{ 'has-error' : inventoryReportMushakForm.BillOfMaterial.$invalid && inventoryReportMushakForm.BillOfMaterial.$touched }" data-toggle="tooltip" data-placement="bottom" title="Select Bill Of Material No">
+                        <div class="input-group width-hundred-percent">
+                            <select ng-model="ddlBillOfMaterial" name="BillOfMaterial" class="form-control selectMendatory" ng-options="aBillOfMaterial.BillOfMaterialNo for aBillOfMaterial in BillOfMaterialList track by aBillOfMaterial.BillOfMaterialId" required>
+                                <option value=""> Bill Of Material No</option>
+                            </select>
+                            <span class="help-block" style="color:red" ng-if="inventoryReportMushakForm.Importer.$touched && inventoryReportMushakForm.Importer.$invalid">Bill Of Material Name is required</span>
+                        </div>
+                    </div>
+
+                </td>
+            </tr>
+            <tr>
+
+                <td style=" width: 250px;">
+
+                    <button class="btn btn-success" style="width:100%"
+                            ng-click="MushakBtn_4_3()">
+                        <i class="fa fa-print"></i> Mushak 4.3
+                    </button>
+                </td>
+
+            </tr>
+        </table>
+    </div>
+
+
+    <div ng-show="MusukReport =='ReportMushak6_6'">
+        <table>
+            <tr>
+                <td style=" width: 250px;">
+
+                    <div class="form-group" ng-class="{ 'has-error' : inventoryReportMushakForm.ddlSupplier.$invalid && inventoryReportMushakForm.ddlSupplier.$touched }" data-toggle="tooltip" data-placement="bottom" title="Select BillOfMaterial No">
+                        <div class="input-group width-hundred-percent">
+                            <select ng-model="ddlSupplier" name="ddlSupplier" class="form-control selectMendatory" ng-options="aSup.SupplierName for aSup in SupplierBillFiltereList track by aSup.SupplierId" ng-change="GetSullpierForIssue(ddlSupplier)" required>
+                                <option value=""  >--Supplier--</option>
+                            </select>
+                            <span class="help-block" style="color:red" ng-if="inventoryReportMushakForm.Importer.$touched && inventoryReportMushakForm.Importer.$invalid">Bill Of Material Name is required</span>
+                        </div>
+                    </div>
+
+                </td>
+
+            </tr>
+            <tr>
+                <td style=" width: 250px;">
+
+                    <div class="form-group" ng-class="{ 'has-error' : inventoryReportMushakForm.Issue.$invalid && inventoryReportMushakForm.Issue.$touched }" data-toggle="tooltip" data-placement="bottom" title="Select Issue No">
+                        <div class="input-group width-hundred-percent">
+                            <select ng-model="ddlIssue" name="Issue" class="form-control selectMendatory" ng-options="aIssueBill.IssueNo for aIssueBill in SupplierIssueBillFiltereList track by aIssueBill.IssueId" required>
+                                <option value="" > Issue No</option>
+                            </select>
+                            <span class="help-block" style="color:red" ng-if="inventoryReportMushakForm.Issue.$touched && inventoryReportMushakForm.Issue.$invalid">Issue No is required</span>
+                        </div>
+                    </div>
+
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align:justify; width:250px">
+                    <button class="btn btn-success" style="width:100%"
+                            ng-click="MushakBtn_6_6()">
+                        <i class="fa fa-print"></i>  Mushak 6.6
+                    </button>
+                </td>
+
+
+            </tr>
+        </table>
+    </div>
+
+</form>
+
+<script>
+    function RowSelect(e) {
+        $('.searchRow').css('background-color', '');
+        $(e).css('background-color', '#94d5ef');
+    }
+
+    var today = new Date();
+    var yesterday = new Date(today);
+    yesterday.setDate(today.getDate() - 1);
+    $("#ddlCompany").select2({
+        placeholder: "--Select Company--",
+        // allowClear: true
+        theme: "classic"
+    });
+
+    $("#ddlSalesInvoice").select2({
+        placeholder: "--Select Sales Invoice--",
+        // allowClear: true
+        theme: "classic"
+    });
+
+    $("#ddlSupplier").select2({
+        theme: "classic"
+    })
+    $("#ddlPB").select2({
+        theme: "classic"
+    })
+
+    
+</script>

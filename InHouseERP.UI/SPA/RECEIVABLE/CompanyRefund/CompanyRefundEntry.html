@@ -1,0 +1,362 @@
+﻿<!--<style>
+    .select2-container {
+        width: 100% !important;
+    }
+</style>-->
+<style>
+    #CompanyDiv .select2-container {
+        width: 234px !important;
+    }
+</style>
+<form name="CompanyRefundEntryForm" novalidate>
+    <div class="col-md-12">
+        <div class="alert alert-info alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="topInfo"> &nbsp; &#9755; <span style="color:red;">Red Icon</span> Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp; &#9755; Click On A Table Row To Update</div>
+        </div>
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-shield"></i>&nbsp;Customer Advance Refund</h3>
+                <div class="clearfix">
+                </div>
+            </div>
+            <div class="panel-body">
+
+                <div class="row">
+                    <div class="col-md-3">
+                        <div id="CompanyDiv" class="input-group width-hundred-percent" ng-class="{ 'has-error' : CompanyRefundEntryForm.company.$dirty && CompanyRefundEntryForm.company.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Payment Type">
+                            <select ng-model="ddlCompany" ng-disabled="LoaderEnable" id="companyRefund" name="company" class="form-control selectMendatory" ng-options="com.CompanyName for com in companyList track by com.CompanyId" ng-change="CompanyWithPaymentType(); GetCompanyAdvanceAmount(ddlCompany.CompanyId);OnAdvancedAmountCheck(ddlCompany.CompanyId)" required>
+                                <!--<option value="">--- Select Company---</option>-->
+                            </select>
+                            <span class="help-block" ng-show="CompanyRefundEntryForm.company.$dirty && CompanyRefundEntryForm.company.$invalid">Customer is required</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+
+                        <div class="form-group" ng-class="{ 'has-error' : CompanyRefundEntryForm.PaymentType.$dirty && CompanyRefundEntryForm.PaymentType.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Payment Type">
+                            <div class="input-group input-group-md ddl">
+                                <select ng-model="ddlPaymentType"    class="form-control selectMendatory" name="PaymentType" ng-change="onDivShowGetById(ddlPaymentType.PaymentTypeId); rcv_CompanyRefund.PaymentTypeId=ddlPaymentType.PaymentTypeId; " ng-options="paymentType.PaymentTypeName for paymentType in PaymentTypeList track by paymentType.PaymentTypeId" disabled >
+                                    <option value="" label="Select Payment Type"></option>
+                                </select>
+                                <span class="help-block" ng-show="CompanyRefundEntryForm.PaymentType.$dirty && CompanyRefundEntryForm.PaymentType.$invalid">Payment Type is required</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <div class="input-group " data-toggle="tooltip" title="Refund Date">
+                                <input type="text" id="textRefundDate" ng-model="rcv_CompanyRefund.RefundDate" class="form-control" name="RefundDate" placeholder="Refund Date" readonly />
+
+                                <span class="input-group-addon" ng-click="ChangeRefundDate()" id="ChangeRefundDate"><i class="fa fa-calendar req-icon-color"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group" ng-class="{ 'has-error' : CompanyRefundEntryForm.AdvanceAmount.$dirty && CompanyRefundEntryForm.amount.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Advance Amount">
+                            <div class="input-group">
+                                <input type="number" id="AdvanceAmount" ng-model="AdvanceAmount" name="AdvanceAmount" class="form-control" placeholder="0" maxlength="15" ng-maxlength="14" readonly>
+                                <span class="input-group-addon"><b>Refundable Amount</b></span>
+                            </div>
+                            <span class="help-block" ng-show="CompanyRefundEntryForm.AdvanceAmount.$dirty && CompanyRefundEntryForm.AdvanceAmount.$invalid">Advance Amount is required</span>
+                            <span class="help-block" ng-if="CompanyRefundEntryForm.AdvanceAmount.$error.maxlength">15 Character Max</span>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group" ng-class="{ 'has-error' : CompanyRefundEntryForm.amount.$dirty && CompanyRefundEntryForm.amount.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Amount">
+                            <div class="input-group">
+                                <input type="number" id="txtAmount" ng-model="rcv_CompanyRefund.RefundAmount" name="amount" class="form-control" ng-change="CheckValidAmount();" placeholder="Amount" maxlength="15" min="0" ng-maxlength="14" ng-disabled="!ddlCompany">
+                                <span class="input-group-addon"><i class="fa fa-bell req-icon-color"></i></span>
+                            </div>
+                            <span class="help-block" ng-show="CompanyRefundEntryForm.amount.$dirty && CompanyRefundEntryForm.amount.$invalid">Amount is required</span>
+                            <span class="help-block" ng-if="CompanyRefundEntryForm.amount.$error.maxlength">15 Character Max</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group" ng-class="{ 'has-error' : CompanyRefundEntryForm.BalanceAmount.$dirty && CompanyRefundEntryForm.BalanceAmount.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Balance Amount">
+                            <div class="input-group">
+                                <input type="number" id="BalanceAmount" ng-model="BalanceAmount" name="BalanceAmount" class="form-control" placeholder="Balance Amount" maxlength="15" ng-maxlength="14" readonly>
+                                <span class="input-group-addon"><i class="fa fa-bell req-icon-color"></i></span>
+                            </div>
+                            <!--<span class="help-block" ng-show="CompanyRefundEntryForm.BalanceAmount.$dirty && CompanyRefundEntryForm.BalanceAmount.$invalid">Amount is required</span>-->
+                            <span class="help-block" ng-if="CompanyRefundEntryForm.BalanceAmount.$error.maxlength">15 Character Max</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group" ng-class="{ 'has-error' : CompanyRefundEntryForm.CompanyPaymentRefundNo.$dirty && CompanyRefundEntryForm.CompanyPaymentRefundNo.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Customer Payment Refund No">
+                            <div class="input-group">
+                                <input type="text" id="ReceiptVoucherNo" ng-model="rcv_CompanyRefund.CompanyPaymentRefundNo" name="ReceiptVoucherNo" class="form-control" placeholder="Company Payment Refund No" readonly />
+                                <span class="input-group-addon"><i class="fa fa-text-width req-icon-color"></i></span>
+                            </div>
+                            <!--<span class="help-block" ng-show="CompanyRefundEntryForm.BalanceAmount.$dirty && CompanyRefundEntryForm.BalanceAmount.$invalid">Amount is required</span>-->
+                            <!--<span class="help-block" ng-if="CompanyRefundEntryForm.JVNo.$error.maxlength">15 Character Max</span>-->
+                        </div>
+                    </div>
+                    <div class="col-md-4" ng-if="ddlPaymentType.PaymentTypeId==1">
+                        <div class="form-group" ng-class="{ 'has-error' : CompanyRefundEntryForm.MoneyReceiptNo.$dirty && CompanyRefundEntryForm.MoneyReceiptNo.$invalid }" data-toggle="tooltip" data-placement="bottom" title="JVNo">
+                            <div class="input-group">
+                                <input type="text" id="MoneReciptNo" ng-model="rcv_CompanyRefund.MoneyReceiptNo" name="MoneyReceiptNo" class="form-control" placeholder="Money Receipt No">
+                                <span class="input-group-addon"><i class="fa fa-text-width req-icon-color"></i></span>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-md-4" ng-show="ddlPaymentType.PaymentTypeId==3">
+                        <div class="form-group" ng-class="{ 'has-error' : CompanyRefundEntryForm.ddlBankAccount.$dirty && CompanyRefundEntryForm.ddlBankAccount.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Bank Name">
+                            <!--<div class="input-group input-group-md ddl">-->
+                            <select style="width:100%" id="CompanyRefundBankAccount" ng-model="ddlBankAccount" name="ddlBankAccount" class="form-control selectNotMandetory" ng-options="bank.BankName for bank in BankAccountList track by bank.BankAccountId" ng-change="rcv_CompanyRefund.BankAccountId = ddlBankAccount.BankAccountId">
+                                <option value="">Bank Name : Not Found, Branch : Not Found , AccountNo : Not Found</option>
+                            </select>
+                            <span class="help-block" ng-show="CompanyRefundEntryForm.ddlBankAccount.$dirty && CompanyRefundEntryForm.ddlBankAccount.$invalid">Supplier Name is required</span>
+                            <!--</div>-->
+                        </div>
+                    </div>
+                    <div class="col-md-4" ng-show="ddlPaymentType.PaymentTypeId==2">
+                        <div class="form-group" ng-class="{ 'has-error' : CompanyRefundEntryForm.ddlBankAccount.$dirty && CompanyRefundEntryForm.ddlBankAccount.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Bank Name">
+                            <!--<div class="input-group input-group-md ddl">-->
+                            <select style="width:100%" id="CompanyRefundPayOrderBankAccount" ng-model="ddlBankAccount" name="ddlBankAccount" class="form-control selectNotMandetory" ng-options="bank.BankName for bank in BankAccountList track by bank.BankAccountId" ng-change="rcv_CompanyRefund.BankAccountId = ddlBankAccount.BankAccountId">
+                                <option value="">Bank Name : Not Found, Branch : Not Found , AccountNo : Not Found</option>
+                            </select>
+                            <span class="help-block" ng-show="CompanyRefundEntryForm.ddlBankAccount.$dirty && CompanyRefundEntryForm.ddlBankAccount.$invalid">Supplier Name is required</span>
+                            <!--</div>-->
+                        </div>
+                    </div>
+                    <div class="col-md-4" ng-if="ddlPaymentType.PaymentTypeId==4">
+                        <div class="form-group" ng-class="{ 'has-error' : CompanyRefundEntryForm.ddlServiceName.$dirty && CompanyRefundEntryForm.ddlServiceName.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Service Name">
+                            <div class="input-group input-group-md ddl">
+                                <select id="ddlServiceName" ng-model="ddlServiceName" name="ddlServiceName" class="form-control selectNotMandetory" ng-options="service.PaymentSubTypeName for service in MobilePaymentSubTypeList track by service.PaymentSubTypeId" ng-change="CheckMobileService(ddlServiceName)">
+                                    <option value=""> --- Select Service Name --- </option>
+                                </select>
+                                <span class="help-block" ng-show="CompanyRefundEntryForm.ddlServiceName.$dirty && CompanyRefundEntryForm.ddlServiceName.$invalid">Service Name is required</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" ng-show="ddlPaymentType.PaymentTypeId==3">
+
+                    <div class="col-md-4">
+                        <div class="form-group" ng-class="{ 'has-error' : CompanyRefundEntryForm.ddlChequeType.$invalid && CompanyRefundEntryForm.ddlChequeType.$touched }" data-toggle="tooltip" data-placement="bottom" title="Cheque Type">
+                            <div class="input-group width-hundred-percent">
+                                <select id="chequeTypeddl" ng-model="ddlChequeType" ng-disabled="LoaderEnable" name="ddlChequeType" class="form-control selectNotMandetory"ng-options="cheq.PaymentSubTypeName for cheq in ChequePaymentSubTypeList track by cheq.PaymentSubTypeId">
+                                    <option value=""> --- Select Cheque Type --- </option>
+                                </select>
+                                <span class="help-block" ng-show="CompanyRefundEntryForm.ddlChequeType.$dirty && CompanyRefundEntryForm.ddlChequeType.$invalid">Cheque Type is required</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group" ng-class="{ 'has-error' : CompanyRefundEntryForm.ChequeDate.$invalid && CompanyRefundEntryForm.ChequeDate.$touched }" data-toggle="tooltip" data-placement="bottom" title="Cheque Date">
+                            <div class="input-group">
+                                <input type="text" id="dtChequetxt" ng-model="rcv_CompanyRefund.ChequeDate" name="ChequeDate" class="form-control datepicker" placeholder="Cheque Date" readonly />
+                                <span class="input-group-addon" ng-click="CalendarChequeDate()" id="txtChequecalender"><i class="fa fa-calendar "></i></span>
+                            </div>
+
+                            <span class="help-block" style="display: block;" ng-if="CompanyRefundEntryForm.ChequeDate.$error.required && CompanyRefundEntryForm.ChequeDate.$touched">PB Date is required</span>
+                        </div>
+
+
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group" ng-class="{ 'has-error' : CompanyRefundEntryForm.ChequeNo.$invalid && CompanyRefundEntryForm.ChequeNo.$touched }" data-toggle="tooltip" data-placement="bottom" title="Cheque No">
+                            <div class="input-group">
+                                <input type="text" id="txtChequeNo" name="ChequeNo" class="form-control" ng-model="rcv_CompanyRefund.ChequeNo" placeholder="Cheque No" maxlength="50" ng-maxlength="49">
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block" ng-show="CompanyRefundEntryForm.ChequeNo.$dirty && CompanyRefundEntryForm.ChequeNo.$invalid">Cheque No is required</span>
+                            <span class="help-block" ng-if="CompanyRefundEntryForm.ChequeNo.$error.maxlength">50 Character Max</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" ng-show="ddlPaymentType.PaymentTypeId==2">
+
+                    <div class="col-md-4">
+                        <div class="form-group" ng-class="{ 'has-error' : CompanyRefundEntryForm.ChequeDate.$invalid && CompanyRefundEntryForm.ChequeDate.$touched }" data-toggle="tooltip" data-placement="bottom" title="Pay Order Date">
+                            <div class="input-group">
+                                <input type="text" id="dtPayOrdertxt" ng-model="rcv_CompanyRefund.ChequeDate" name="ChequeDate" class="form-control datepicker" placeholder="Pay order Date" readonly />
+                                <span class="input-group-addon" ng-click="CalendarPayorderDate()" id="txtChequecalender"><i class="fa fa-calendar "></i></span>
+                            </div>
+
+                            <span class="help-block" style="display: block;" ng-if="CompanyRefundEntryForm.ChequeDate.$error.required && CompanyRefundEntryForm.ChequeDate.$touched">PB Date is required</span>
+                        </div>
+
+
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group" ng-class="{ 'has-error' : CompanyRefundEntryForm.ChequeNo.$invalid && CompanyRefundEntryForm.ChequeNo.$touched }" data-toggle="tooltip" data-placement="bottom" title="Pay Order No">
+                            <div class="input-group">
+                                <input type="text" id="txtChequeNo" name="ChequeNo" class="form-control" ng-model="rcv_CompanyRefund.ChequeNo" placeholder="Pay Order No" maxlength="50" ng-maxlength="49">
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block" ng-show="CompanyRefundEntryForm.ChequeNo.$dirty && CompanyRefundEntryForm.ChequeNo.$invalid">Pay Order No is required</span>
+                            <span class="help-block" ng-if="CompanyRefundEntryForm.ChequeNo.$error.maxlength">50 Character Max</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" ng-if="ddlPaymentType.PaymentTypeId==4">
+
+                    <div class="col-md-4">
+                        <div class="form-group" ng-class="{ 'has-error' : CompanyRefundEntryForm.MobileNo.$invalid && CompanyRefundEntryForm.MobileNo.$touched }" data-toggle="tooltip" data-placement="bottom" title="Mobile No">
+                            <div class="input-group">
+                                <input type="text" id="txtMobileNo" name="MobileNo" class="form-control" ng-model="rcv_CompanyRefund.MobileNo" placeholder="Mobile No" maxlength="50" ng-maxlength="49">
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block" ng-show="CompanyRefundEntryForm.MobileNo.$dirty && CompanyRefundEntryForm.MobileNo.$invalid">Mobile No is required</span>
+                            <span class="help-block" ng-if="CompanyRefundEntryForm.MobileNo.$error.maxlength">50 Character Max</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group" ng-class="{ 'has-error' : CompanyRefundEntryForm.TransactionId.$invalid && CompanyRefundEntryForm.TransactionId.$touched }" data-toggle="tooltip" data-placement="bottom" title="Transaction Id">
+                            <div class="input-group">
+                                <input type="text" id="txtTransactionId" name="TransactionId" class="form-control" ng-model="rcv_CompanyRefund.TransactionNo" placeholder="Transaction Id" maxlength="50" ng-maxlength="49">
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block" ng-show="CompanyRefundEntryForm.TransactionId.$dirty && CompanyRefundEntryForm.Transaction.$invalid">Transaction Id is required</span>
+                            <span class="help-block" ng-if="CompanyRefundEntryForm.TransectionId.$error.maxlength">50 Character Max</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-2">
+                <button class="btn btn-success" style="width:100%" name="saveRefund" ng-click="SaveRefund()" ng-disabled="!ddlCompany  || !rcv_CompanyRefund.RefundDate || !rcv_CompanyRefund.RefundAmount">
+                    <i class="fa fa-floppy-o"></i>&nbsp;Save
+                </button>
+            </div>
+            <div class="col-md-2">
+                <button id="Button3" style="width:100%" class="btn btn-danger" title="Search" ng-click="ResetForm()">
+                    <i class="fa fa-refresh"></i>&nbsp;Reset
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <br />
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-list"></i>&nbsp;Customer Advance Refund List</h3>
+            </div>
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <div class="input-group " data-toggle="tooltip" title="From Date">
+                                <input type="text" name="FromDate" id="txtFromDateForCR" ng-model="FromDate" ng-change="CompanyRefundSearch();" class="form-control " placeholder="From Date" readonly />
+                                <span class="input-group-addon" ng-click="FormDateChangeForCR()" id="FormDateChange"><i class="fa fa-calendar req-icon-color"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group " data-toggle="tooltip" title="To Date">
+                                    <input type="text" name="ToDate" id="txtToDateForCR" ng-model="ToDate" ng-change="CompanyRefundSearch();" class="form-control " placeholder="To Date" readonly />
+                                    <span class="input-group-addon" ng-click="ToDateChangeForCR()" id="ToDateChange"><i class="fa fa-calendar req-icon-color"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group" data-toggle="tooltip" title="Search Customer Name">
+                            <input type="text" class="form-control" id="textSupplierName" ng-model="SearchCompanyName" ng-change="CompanyRefundSearch();" name="name" placeholder="Search Customer Name" />
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <button id="btnSearch" style="width:100%" ng-click="reloadBtn()" class="btn btn-danger" title="Reload">
+                            <i class="fa fa-refresh"></i>&nbsp;Clear
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="responstable table-hover">
+                            <tbody>
+                                <tr class="t-head">
+                                    <th>S/N</th>
+                                    <th class="txt-center">Customer Name</th>
+                                    <th class="txt-center">Refund Date</th>
+                                    <th class="txt-center">Refund Amount</th>
+                                    <th class="txt-center">Payment Type</th>
+                                    <th class="txt-center">Action</th>
+                                </tr>
+                                <tr class="HoverTable searchRow" dir-paginate="aCompanyRefund in CompanyRefundListPaged | itemsPerPage: PerPage" current-page="currentPage" total-items="total_count">
+                                    <td class="t-cell-center">{{$index + ((currentPage-1)*PerPage) + 1}}</td>
+                                    <td class="txt-center">{{aCompanyRefund.CompanyName }}</td>
+                                    <td class="txt-center">{{aCompanyRefund.RefundDate }}</td>
+                                    <td class="txt-center">{{aCompanyRefund.RefundAmount }}</td>
+                                    <td class="txt-center">{{aCompanyRefund.PaymentTypeName }}</td>
+                                    <td class="txt-center">
+                                        <!--<button class="btn btn-primary" style="margin:5px;" ng-disabled="GetPagedLoaderEnable" ng-click="SelCompanyRefund(aCompanyRefund);">
+                                            <i class="fa fa-edit" style="font-size:18px"></i> Edit
+                                        </button>-->
+                                        <button   id="btnReport" 
+                                                ng-click="OpenPopupWindow(aCompanyRefund)">
+                                            <i class="fa fa-print" style="font-size:18px"></i>  Report
+                                        </button>
+
+                                    </td>
+
+                                </tr>
+                                <tr class="t-foot" ng-show="total_count>PerPage">
+                                    <th colspan="8">
+                                        <dir-pagination-controls max-size="8"
+                                                                    direction-links="true"
+                                                                    boundary-links="true"
+                                                                    on-page-change="getData(newPageNumber)" style="text-align:center;">
+                                        </dir-pagination-controls>
+                                    </th>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="row pagination-footer">
+                            <div class="col-md-6">
+                                <span>Show </span><input class="input-pagesize" type="number" ng-maxlength="100" ng-minlength="1" width="1" ng-model="PerPage"> <span>Records </span>
+                            </div>
+                            <div class="col-md-6">
+                                <span class="pull-right">Showing {{((currentPage-1)*PerPage)+1}} to {{((currentPage-1) * PerPage) + CompanyRefundListPaged.length}} of {{total_count}} Records</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</form>
+
+ 
+<script>
+    $("#companyRefund").select2({
+        placeholder: "--- Select Customer---",
+        dropdownAutoWidth: false,
+        theme: "classic",
+    });
+    $("#CompanyRefundBankAccount").select2({
+        placeholder: "Select Bank Name",
+        dropdownAutoWidth: false,
+        theme: "classic",
+    });
+
+    $("#CompanyRefundPayOrderBankAccount").select2({
+        placeholder: "Select Bank Name",
+        dropdownAutoWidth: false
+
+    });
+</script>

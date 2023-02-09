@@ -1,0 +1,285 @@
+﻿
+<style>
+    .responstable th:nth-child(2) {
+        width: 10% !important;
+    }
+</style>
+<style>
+    .card-box {
+        position: relative;
+        color: #fff;
+        padding: 5px 2.5px 15px;
+        margin: 5px 0px;
+    }
+
+        .card-box:hover {
+            text-decoration: none;
+            color: #f1f1f1;
+        }
+
+            .card-box:hover .icon i {
+                font-size: 100px;
+                transition: 1s;
+                -webkit-transition: 1s;
+            }
+
+        .card-box .inner {
+            padding: 5px 10px 0 10px;
+        }
+
+        .card-box h3 {
+            font-size: 27px;
+            font-weight: bold;
+            margin: 0 0 2px 0;
+            white-space: nowrap;
+            padding: 0;
+            text-align: left;
+        }
+
+        .card-box p {
+            font-size: 15px;
+        }
+
+        .card-box .icon {
+            position: absolute;
+            top: auto;
+            bottom: 10px;
+            right: 5px;
+            z-index: 0;
+            font-size: 72px;
+            color: rgba(0, 0, 0, 0.15);
+        }
+
+        .card-box .card-box-footer {
+            position: absolute;
+            left: 0px;
+            bottom: 0px;
+            text-align: center;
+            padding: 3px 0;
+            color: rgba(255, 255, 255, 0.8);
+            background: rgba(0, 0, 0, 0.1);
+            width: 100%;
+            text-decoration: none;
+        }
+
+        .card-box:hover .card-box-footer {
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+    .bg-blue {
+        background-color: #00c0ef !important;
+    }
+
+    .bg-green {
+        background-color: #00a65a !important;
+    }
+
+    .bg-orange {
+        background-color: #f39c12 !important;
+    }
+
+    .bg-red {
+        background-color: #d9534f !important;
+    }
+
+    .flexcontainer {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .inner p:hover {
+        background-color: #00e673;
+        /*padding: 5px;*/
+        border-radius: 5px;
+    }
+</style>
+<form name="ReceivableDashboardForm" novalidate>
+    <div class="col-md-12">
+        <div class="alert alert-info alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="topInfo"> &nbsp; &#9755; <span style="color:red;">Red Icon</span> Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp; &#9755; Click On A Table Row To Update</div>
+        </div>
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-shield"></i>&nbsp;Receivable Dashboard</h3>
+                <div class="clearfix">
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-lg-4 col-sm-6">
+                            <div class="card-box bg-green " style="border-radius:10px;">
+                                <div class="inner">
+                                    <!--<h3 style="text-align:center"> {{SoApprovePending}} </h3>
+                    <p style="text-align:center">
+                        <a href="#/SalesOrderApprove" style="text-align: center; color:white">Sales Order Approve Pending&nbsp;<i class="fa fa-arrow-circle-right"></i></a>
+                    </p>-->
+                                    <br />
+                                    <h3 style="text-align:center; padding-top:5px;"> {{TotalPaidVAT}} </h3>
+                                    <p style="text-align:center">
+                                        <a href="#/CompanyPayment" style="text-align: center; color:white">Total Paid VAT&nbsp;<i class="fa fa-arrow-circle-right"></i></a>
+                                    </p>
+                                </div>
+                                <div class="icon">
+                                    <i class="fa fa-money" aria-hidden="true"></i>
+                                </div>
+                                <a href="#/CompanyPayment" class="card-box-footer" style="border-radius:10px;">View More&nbsp; <i class="fa fa-arrow-circle-right"></i></a>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4 col-sm-6">
+                            <div class="card-box bg-orange " style="border-radius:10px;">
+                                <div class="inner">
+                                    <!--<h3 style="text-align:center"> {{IwoApprovePending}} </h3>
+                    <p style="text-align:center">
+                        <a href="#/InventoryApprovals" style="text-align: center; color:white">I.W.O. Approve Pending&nbsp;<i class="fa fa-arrow-circle-right"></i></a>
+                    </p>-->
+                                    <br />
+                                    <h3 style="text-align:center; padding-top:5px;"> {{TotalPaidAIT}} </h3>
+                                    <p style="text-align:center">
+                                        <a href="#/CompanyPayment" style="text-align: center; color:white">Total Paid AIT&nbsp;<i class="fa fa-arrow-circle-right"></i></a>
+                                    </p>
+                                </div>
+                                <div class="icon">
+                                    <i class="fa fa-money" aria-hidden="true"></i>
+                                </div>
+                                <a href="#/CompanyPayment" class="card-box-footer" style="border-radius:10px;">View More&nbsp; <i class="fa fa-arrow-circle-right"></i></a>
+                            </div>
+
+                        </div>
+                        <div class="col-lg-4 col-sm-6">
+                            <div class="card-box bg-red " style="border-radius:10px;">
+                                <div class="inner">
+                                    <br />
+                                    <h3 style="text-align:center; padding-top:5px;"> {{TotalPaidAmount}} </h3>
+                                    <p style="text-align:center">
+                                        <a href="#/CompanyPayment" style="text-align: center; color:white">Total Paid Amount&nbsp;<i class="fa fa-arrow-circle-right"></i></a>
+                                    </p>
+                                </div>
+                                <div class="icon">
+                                    <i class="fa fa-money" aria-hidden="true"></i>
+                                </div>
+                                <a href="#/CompanyPayment" class="card-box-footer" style="border-radius:10px;">View More&nbsp; <i class="fa fa-arrow-circle-right"></i></a>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div style="background-color:#b3b3ff; padding:10px">
+                            <h3 class="panel-title" style="text-align:center;">Month Wise Amount, VAT, AIT, Refund and Advance</h3>
+                        </div>
+                        <br />
+                        <div class="col-md-4">
+                            <div id="LoadDateAmountLineSystem" class="flexcontainer" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 2px solid #ccc; ">
+                                <div>
+                                    <span id="LoadDateAmountLine"></span>
+                                </div>
+
+                                <div>
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2">
+                            <button class="customBtn custmoBtnReset" style="background-color:#04AA6D" ng-click="LoadDate('LoadDateAmountLine');" title="Load">
+                                <i class="fa fa-refresh"></i>&nbsp;Load
+                            </button>
+                        </div>
+
+                        <div class="col-md-12">
+                            <canvas id="AmountLineChart" width="300" height="150"></canvas>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div style="background-color:#b3b3ff; padding:10px">
+                            <h3 class="panel-title" style="text-align:center;">Month Or Year Wise Total Amount</h3>
+                        </div>
+                        <br />
+                        <div class="col-md-4">
+                            <div id="LoadDateAmountBarSystem" class="flexcontainer" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 2px solid #ccc; ">
+                                <div>
+                                    <span id="LoadDateAmountBar"></span>
+                                </div>
+
+                                <div>
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group" ng-class="{ 'has-error' : ReceivableDashboardForm.ChartType.$dirty && ReceivableDashboardForm.ChartType.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Chart Type">
+                                <div class="input-group width-hundred-percent">
+                                    <select ng-model="ChartType" name="ChartType" class="form-control selectMendatory" ng-options="aChartType for aChartType in ChartTypeList" required>
+                                        <option value="" label="Chart Type" hidden></option>
+                                    </select>
+                                    <span class="help-block" ng-show="ReceivableDashboardForm.ChartType.$dirty && ReceivableDashboardForm.ChartType.$invalid">Chart Type is required</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <button class="customBtn custmoBtnReset" style="background-color:#04AA6D" ng-click="LoadDate('LoadDateAmountBar');" title="Load">
+                                <i class="fa fa-refresh"></i>&nbsp;Load
+                            </button>
+                        </div>
+                        <div class="col-md-12">
+                            <canvas id="AmountBarChart" width="300" height="150"></canvas>
+                        </div>
+                    </div>
+                    <!--Company Wise Total Paid Amount-->
+                    <div class="row">
+                        <div style="background-color:#b3b3ff; padding:10px">
+                            <h3 class="panel-title" style="text-align:center;">Company Wise Total Paid Amount</h3>
+                        </div>
+                        <br />
+                        <div class="col-md-4">
+                            <div id="LoadDateCompanyAmountBarSystem" class="flexcontainer" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 2px solid #ccc; ">
+                                <div>
+                                    <span id="LoadDateCompanyAmountBar"></span>
+                                </div>
+
+                                <div>
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Top Values">
+                                <div class="input-group">
+                                    <input type="number" id="TopValues" class="form-control txt-center" ng-model="TopValues" ng-change="MaxTopValues(TopValues);" placeholder="Top Values">
+                                    <span class="input-group-addon"><i class="fa fa-qq" style="color:red;"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <button class="customBtn custmoBtnReset" style="background-color:#04AA6D" ng-click="LoadDate('LoadDateCompanyAmountBar');" title="Load">
+                                <i class="fa fa-refresh"></i>&nbsp;Load
+                            </button>
+                        </div>
+                        <div class="col-md-12">
+                            <canvas id="BarCompanyWisePaidAmountChart" width="300" height="200"></canvas>
+                        </div>
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>
+
+
+</form>
+
+<script>
+    function RowSelect(e) {
+        $('.searchRow').css('background-color', '');
+        $(e).css('background-color', '#94d5ef');
+    }
+
+</script>

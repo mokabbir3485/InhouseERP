@@ -1,0 +1,376 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+        body {
+            font-family: "Times New Roman", Times, serif;
+            color: #000000;
+            writing-mode: inherit;
+            width: 100%;
+            height: 100%;
+        }
+
+
+        .footer {
+            position: fixed;
+            left: 29px;
+            bottom: 0px;
+        }
+
+        .flexcontainer {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        @media screen {
+            img {
+                height: 200px;
+                width: 300px;
+                margin-top: 0px;
+            }
+            div#footer_wrapper {
+                display: none;
+            }
+        }
+
+        .flexcontainer {
+            display: flex;
+            justify-content: space-between;
+        }
+        /*Signature*/
+        @media screen {
+            div#footer_wrapper {
+                display: none;
+            }
+        }
+
+        @media print {
+            #Source {
+                page-break-after: avoid;
+                page-break-before: avoid;
+            }
+            tfoot {
+                visibility: hidden;
+            }
+
+            div#footer_wrapper {
+                margin: 0px 2px 0px 7px;
+                position: fixed;
+                bottom: 10px;
+            }
+
+            div#footer_content {
+                font-weight: bold;
+            }
+            @page {
+                size: A4;
+                max-height: 100%;
+                max-width: 100%;
+                font-family: 'Times New Roman';
+            }
+        }
+
+           
+    </style>
+</head>
+<body>
+    <div id="footer_wrapper" class="container">
+        <div id="footer_content">
+
+            <table style="width: 100%;">
+                <tbody style="left:30px; right: 50px;">
+                    <tr>
+                        <td style="text-align:left; width:450px">
+                            <p><u>Declaration</u></p>
+                            <p style="text-align: justify">We declare that this invoice shows the actual price of the goods described and that all particulars are true and correct.</p>
+                        </td>
+                        <td style="text-align: right;width: 450px;">
+                            <div>
+                                <span style="font-size: .9em; line-height: 1;"><b>for Retail Technologies Limited</b></span>
+                                <br />
+                                <br />
+                                <br />
+                                <span style="font-size: .9em; line-height: 1;">Authorized Signature</span>
+
+                            </div>
+
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <!--<table style="width: 100%;">
+                <tr>
+                    <td style="width:30%">
+                    </td>
+                    <td style="width: 40%; text-align: center;">
+                        <p>
+                            <u> This is Computer Generated Invoice</u>
+                        </p>
+
+                    </td>
+                    <td style="width:30%">
+                    </td>
+                </tr>
+            </table>-->
+        </div>
+    </div>
+    <div class=" hidden-print">
+
+        <div class="row">
+            <div class="col-sm-4 col-md-4">
+                <input type="checkbox" value="PcPerRollChecked" ng-model="PcPerRollChecked" />&nbsp;Show Pc/Roll
+                <input type="checkbox" value="dollarChecked" ng-model="LabelBrandChecked" ng-change="ShowLabelBrand(LabelBrandChecked);" />&nbsp;Show Label Brand
+                <input type="checkbox" value="MaterialTypeChecked" ng-model="MaterialTypeChecked" />&nbsp;Show Material Type
+                <input type="checkbox" value="ItemMergeChecked" ng-model="ItemMergeChecked" ng-change="ChangeItemMerge()" />&nbsp;Item Merge
+
+            </div>
+            <div class="col-sm-3 col-md-3">
+                <div class="input-group width-hundred-percent" ng-show="IsUSD">
+                    <select ng-model="ddlCurrency" name="CurrencyType" ng-change="Clear(ddlCurrency)" ng-options="currency.CurrencyShort for currency in CurrencyList track by currency.CurrencyId">
+                        <option value="" label="Currency" hidden></option>
+                    </select>
+                    <span>   Rate: {{SalesInvoiceReportList[0].ConversionRate}}</span>
+                </div>
+            </div>
+            <div class="col-sm-2 col-md-2">
+
+            </div>
+            <div class="col-sm-3 col-md-3">
+
+                <button type="button" onclick="document.title = 'Sales Invoice ' + getCurrentDateTime(); PrintPdf();" class="customBtn custmoBtnReset" style="border-radius: 3px; margin-bottom: -.9em; margin-top: -15px; padding-bottom: 3px; padding-top: 3px;" title="Export to .doc">
+                    <i class="fa fa-print"></i>&nbsp;Print
+                </button>
+            </div>
+        </div>
+        <hr />
+    </div>
+    <div id="Source">
+        <table style="width: 100%">
+            <tbody>
+                <tr>
+                    <td>
+
+
+                        <table style="width: 100%">
+                            <tr>
+                                <td style="width: 30%"></td>
+                                <td style="width: 40%">
+                                    <p style="font-size: 15px; text-align: center; margin: 0px; padding: 0px; "> <b><u>INVOICE</u></b></p>
+                                </td>
+                                <td style="width: 30%"></td>
+                            </tr>
+                        </table>
+
+
+                        <p style="font-size: 15px; text-align: center; margin: 0px; padding: 0px;"> <b>Party: {{SalesInvoiceReportList[0].CompanyName}}</b></p>
+                        <p style="font-size: 12px; text-align: center; margin-top: 10px; padding: 0px; margin-top: 0px;">
+                            <b>
+                                <b>
+                                    {{SalesInvoiceReportList[0].CompanyAddress}}
+                                </b>
+                            </b>
+                        </p>
+
+                        <table style="width: 100%;">
+                            <tr>
+                                <td style="text-align: left;width: 30%">
+                                    <p><b>Invoice No: {{SalesInvoiceReportList[0].SalesInvoiceNo}}</b></p>
+                                    <!--<p>PO Ref No:  {{SalesInvoiceReportList[0].PORefNo}}</p>-->
+                                </td>
+                                <td style="width: 40%;">
+                                </td>
+                                <td style="width: 30%;text-align: right">
+                                    <p><b>Date: {{SalesInvoiceReportList[0].SalesInvoiceDate}}</b></p>
+                                </td>
+                            </tr>
+                        </table>
+                        <table border="1" style="width: 100%;padding:3px;">
+                            <tr>
+                                <td valign="top">
+
+                                    <p style="padding:3px;">Order No:  {{SalesInvoiceReportList[0].PORefNo}}</p>
+                                    <p style="padding:3px;">Date: {{SalesInvoiceReportList[0].PORefDate}}</p>
+
+                                </td>
+                                <td valign="top"ng-hide="SalesInvoiceReportList[0].VatChallanNo == null">
+                                    <p style="padding: 3px;">Vat Challan No: {{SalesInvoiceReportList[0].VatChallanNo}}</p>
+                                </td>
+                                <td valign="top">
+                                    <p style="padding: 3px;">
+                                        Delivery No: {{DeliveryNo}}
+                                    </p>
+                                    <p style="padding: 3px;">
+                                        Delivery Date: {{SalesInvoiceReportList[0].DeliveryDates}}
+                                    </p>
+                                </td>
+                                <td valign="top">
+                                    <p style="padding: 3px;">
+                                        RTL S.O.: {{SalesInvoiceReportList[0].SalesOrderNo}}
+                                    </p>
+                                    <p style="padding: 3px;">
+                                        Date: {{SalesInvoiceReportList[0].SalesOrderDate}}
+                                    </p>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <table border="1" style="width: 100%;">
+
+                            <tr style="padding: 10px; text-align: center;">
+                                <th style="text-align: center;">S/N</th>
+                                <th style="text-align: center;">Description Of Goods</th>
+                                <th style="text-align: center;">Quantity</th>
+                                <th style="text-align: center;">Unit</th>
+                                <th style="text-align: center;">Unit Price <span ng-show="SalesInvoiceReportList[0].CurrencyShort == 'BDT'">({{SalesInvoiceReportList[0].CurrencyShort}})</span></th>
+                                <th style="text-align: center;" ng-show="SalesInvoiceReportList[0].IsVat == 1">Amount(Ex)</th>
+                                <th style="text-align: center;" ng-show="SalesInvoiceReportList[0].IsVat == 1">Vat(%)</th>
+                                <th style="text-align: center;" ng-show="SalesInvoiceReportList[0].IsVat == 1">Vat Amount</th>
+                                <th style="text-align: center;">Amount <span ng-show="SalesInvoiceReportList[0].CurrencyShort == 'BDT'">({{SalesInvoiceReportList[0].CurrencyShort}})</span></th>
+
+                            </tr>
+                            <tr ng-repeat="sales in SalesInvoiceReportList track by $index" style="margin-right: 5px;">
+                                <td style="text-align: center;">
+                                    <p>{{$index +1 }}</p>
+                                </td>
+                                <td style="padding-left: 5px; font-weight: bold;"><span>{{sales.ItemDescription}}</span>&nbsp;<span ng-if="sales.SerialNo">SN: {{sales.SerialNo}}</span><span ng-show="PcPerRollChecked && (sales.SubCategoryId == 1 || sales.SubCategoryId == 3)"> ({{sales.PcPerRoll}} Pc/Roll)</span>  <span ng-show="LabelBrandChecked && sales.SubCategoryId ==3"> ~ {{sales.LabelBrandName}} </span>  <span ng-show="MaterialTypeChecked && sales.CategoryId != 2"> ~ {{sales.MaterialTypeName}} ~ {{sales.MaterialTypeCode}}</span></td>
+                                <td style="text-align: center; margin-right: 5px; font-weight: bold;">{{sales.DeliveryQuantity}}</td>
+                                <td style="text-align: center; margin-right: 5px; font-weight: bold;">{{sales.UnitName}}</td>
+                                <td style="text-align: center; font-weight: bold;"><span ng-show="SalesInvoiceReportList[0].CurrencyShort == 'USD'">$ </span><span>{{sales.DeliveryUnitPrice}}</span></td>
+                                <td style="text-align: center; font-weight: bold;" ng-show="SalesInvoiceReportList[0].IsVat == 1"><span ng-show="SalesInvoiceReportList[0].CurrencyShort == 'USD'">$ </span><span>{{sales.AmountExVat}}</span></td>
+                                <td style="text-align: center; font-weight: bold;" ng-show="SalesInvoiceReportList[0].IsVat == 1">{{sales.VatPercentage}}</td>
+                                <td style="text-align: center; font-weight: bold;" ng-show="SalesInvoiceReportList[0].IsVat == 1"><span ng-show="SalesInvoiceReportList[0].CurrencyShort == 'USD'">$ </span><span>{{sales.VatAmount}}</span></td>
+                                <td style="text-align: right; padding:5px; font-weight: bold;"><span ng-show="SalesInvoiceReportList[0].CurrencyShort == 'USD'">$ </span><span>{{sales.Amount}}</span></td>
+
+
+                            </tr>
+                            <tr style="height: 10rem; line-height: 0.1;">
+
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td ng-show="SalesInvoiceReportList[0].IsVat == 1">&nbsp;</td>
+                                <td ng-show="SalesInvoiceReportList[0].IsVat == 1">&nbsp;</td>
+                                <td ng-show="SalesInvoiceReportList[0].IsVat == 1">&nbsp;</td>
+                                <td>&nbsp;</td>
+                            </tr>
+
+                            <tr>
+                                <td style="text-align: right; padding-right: 5px;" colspan="5" ng-show="SalesInvoiceReportList[0].IsCPT">
+                                    Sub Total:
+                                </td>
+                                <td style="text-align: right; padding-right: 5px;" colspan="5" ng-hide="SalesInvoiceReportList[0].IsCPT">
+                                    <b>Total:</b>
+                                </td>
+                                <td style="text-align: right; padding: 5px;" ng-show="SalesInvoiceReportList[0].IsVat == 1"><b>{{TotalAmountExVat}}</b></td>
+                                <td ng-show="SalesInvoiceReportList[0].IsVat == 1"></td>
+                                <td style="text-align: right; padding: 5px;" ng-show="SalesInvoiceReportList[0].IsVat == 1"><b>{{TotalVatAmount}}</b></td>
+                                <td style="text-align: right; padding:5px; " ng-show="SalesInvoiceReportList[0].IsCPT">
+                                    <span ng-show="SalesInvoiceReportList[0].CurrencyShort == 'USD'">$ </span><span>{{TotalAmount}}</span>
+                                </td>
+                                <td style="text-align: right; padding:5px; font-weight: bold; " ng-hide="SalesInvoiceReportList[0].IsCPT">
+                                    <span ng-show="SalesInvoiceReportList[0].CurrencyShort == 'USD'">$ </span><span>{{TotalAmount}}</span>
+                                </td>
+
+                            </tr>
+                            <tr ng-show="SalesInvoiceReportList[0].IsCPT">
+                                <td colspan="5" style="text-align:right; padding-right: 5px;">Freight Cost: </td>
+                                <td ng-show="SalesInvoiceReportList[0].IsVat == 1"></td>
+                                <td ng-show="SalesInvoiceReportList[0].IsVat == 1"></td>
+                                <td ng-show="SalesInvoiceReportList[0].IsVat == 1"></td>
+                                <td style="text-align: right; padding: 5px;" ng-show="SalesInvoiceReportList[0].CurrencyShort == 'USD'">$ {{SalesInvoiceReportList[0].CPTCost}} </td>
+                                <td style="text-align: right; padding: 5px;" ng-show="SalesInvoiceReportList[0].CurrencyShort == 'BDT'">{{SalesInvoiceReportList[0].CPTCost}} </td>
+                            </tr>
+                            <tr ng-show="SalesInvoiceReportList[0].IsCPT">
+                                <td colspan="5" style="text-align:right;padding-right: 5px;"><b>Total: </b></td>
+                                <td style="text-align: right; padding: 5px;" ng-show="SalesInvoiceReportList[0].IsVat == 1"><b>{{TotalAmountExVat}}</b></td>
+                                <td ng-show="SalesInvoiceReportList[0].IsVat == 1"></td>
+                                <td style="text-align: right; padding: 5px;" ng-show="SalesInvoiceReportList[0].IsVat == 1"><b>{{TotalVatAmount}}</b></td>
+                                <td style="text-align: right; padding: 5px;" ng-show="SalesInvoiceReportList[0].CurrencyShort == 'USD'"><b>$ {{TotalAmountWithCPT}}</b> </td>
+                                <td style="text-align: right; padding: 5px;" ng-show="SalesInvoiceReportList[0].CurrencyShort == 'BDT'"><b>{{TotalAmountWithCPT}}</b> </td>
+                            </tr>
+                        </table>
+                        <table style="width: 100%;">
+                            <tr>
+                                <td style="text-align: left;">
+                                    <p>Amount Chargeable (In Words)</p>
+                                    <h5 style="font-weight: bold;">{{SalesInvoiceReportList[0].AmountInWords}}</h5>
+                                </td>
+                                <td style="text-align: right">
+                                    <p>E & O.E</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><b>Remarks: </b>{{SalesInvoiceReportList[0].Remarks}}</td>
+                                <td></td>
+                            </tr>
+                        </table>
+
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td>
+                        <div id="footer">
+                            <br />
+                            <table style="width: 100%;">
+                                <tbody style="left:30px; right: 50px;">
+                                    <tr>
+                                        <td style="text-align:left; width:450px">
+                                            <p><u>Declaration</u></p>
+                                            <p style="text-align: justify">We declare that this invoice shows the actual price of the goods described and that all particulars are true and correct.</p>
+                                        </td>
+                                        <td style="text-align: right;width: 450px;">
+                                            <div>
+                                                <span style="font-size: .9em; line-height: 1;"><b>for Retail Technologies Limited</b></span>
+                                                <br />
+                                                <br />
+                                                <br />
+                                                <span style="font-size: .9em; line-height: 1;">Authorized Signature</span>
+
+                                            </div>
+
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <!--<table style="width: 100%;">
+                            <tr>
+                                <td style="width:30%">
+                                </td>
+                                <td style="width: 40%; text-align: center;">
+                                    <p>
+                                        <u> This is Computer Generated Invoice</u>
+                                    </p>
+
+                                </td>
+                                <td style="width:30%">
+                                </td>
+                            </tr>
+                        </table>-->
+                        </div>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    
+</body>
+</html>
+<script>
+    jQuery(document).ready(function ($) {
+        $(".main-sidebar").attr("hidden", true);
+        $(".main-header").attr("hidden", true);
+        $(".main-footer").attr("hidden", true);
+        $("#Hidebr").attr("hidden", true);
+        $("div").removeClass("wrapper");
+        $("div").removeClass("content-wrapper");
+    });
+    function PrintPdf() {
+        window.print();
+    }
+</script>

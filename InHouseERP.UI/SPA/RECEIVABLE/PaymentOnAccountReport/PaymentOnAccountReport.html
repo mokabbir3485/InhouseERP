@@ -1,0 +1,179 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Company Payment On Account Report</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 16px;
+            /*width: 850px;
+            margin: 0 auto;*/
+        }
+
+        table {
+            border-collapse: collapse;
+        }
+
+        pad {
+            padding: 5px;
+        }
+
+        @page {
+            size: A4;
+            /*margin:0;*/
+        }
+    </style>
+</head>
+
+<body>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="hidden-print">
+                <div class="col-sm-7 col-md-9">
+
+                </div>
+                <div class="row">
+                    <div class="col-sm-2 col-md-1">
+                        <button type="button"  onclick="document.title = 'Customer OnAccount ' + getCurrentDateTime(); PrintPdf();"  class="customBtn custmoBtnReset" style="border-radius: 3px; margin-bottom: -.9em; margin-top: -15px; padding-bottom: 3px; padding-top: 3px;" title="Print To .PDF">
+                            <i class="fa fa-print"></i>&nbsp;Print
+                        </button>
+                    </div>
+
+                    <div class="col-sm-3 col-md-2">
+                        <!--<button type="button" onclick="ExportToDoc();" class="customBtn custmoBtnReset" style="border-radius: 3px; margin-bottom: -.9em; margin-top: -15px; padding-bottom: 3px; padding-top: 3px;" title="Export to .doc">
+                            <i class="fa fa-save"></i>&nbsp;Export to .doc
+                        </button>-->
+                    </div>
+                </div>
+                <br />
+            </div>
+        </div>
+    </div>
+
+    <!--<table width=100% style="font-weight: bold;">
+        <tr>
+            <td>
+                <p style="font-size: .9em; line-height: 1; margin : 0; padding : 0 ; font-weight: bold;">From No. {{PaymentOnAccountObj.FormNo}}</p>
+            </td>
+            <td>
+                <p style="font-size: .9em; line-height: 1; margin : 0; padding : 0 ; font-weight: bold;">Date of Origin: {{PaymentOnAccountObj.DateOfOrigin}}</p>
+
+            </td>
+            <td>
+                <p style="font-size: .9em; line-height: 1; margin : 0; padding : 0 ; font-weight: bold;">Revision No. {{PaymentOnAccountObj.RevisionNo}}</p>
+
+            </td>
+            <td>
+                <p style="font-size: .9em; line-height: 1; margin : 0; padding : 0 ; font-weight: bold;">Revision Date: {{PaymentOnAccountObj.RevisionDate}}</p>
+
+            </td>
+        </tr>
+    </table>-->
+
+    <table id="heading" style="text-align: center;margin-left:auto;margin-right:auto;">
+
+        <tr>
+            <td>
+                <img style="height: 80px; width: 80px; padding: 5px" src="../../../UploadedImages/logo.jpg" />
+            </td>
+            <td>
+                <p style="font-size: 30px;line-height: 1; margin : 0; padding : 0 ; font-weight: bold;"><strong>Retail Technologies Limited</strong></p>
+                <p style="font-size: 14px; line-height: 1.5; margin : 0; padding : 0 ;">
+                    Address: House- B142 (First Floor), Road-22, New DOHS,
+                    Mohakhali, Dhaka-1206
+                </p>
+                <br />
+                <p style="font-size: 18px; line-height: 1; margin: 0; padding: 0;"><i><u><b>Customer Payment On Account Report</b></u></i></p>
+            </td>
+        </tr>
+    </table>
+    <br />
+    <table border="1" width="100%" style="padding:5px;">
+        <thead>
+            <tr>
+                <th style="font-size: .9em; line-height: 1; font-weight: bold; padding:5px;">Customer Name</th>
+                <td>
+                    <span style="font-size: .9em; line-height: 1; font-weight: bold; padding:5px;">{{PaymentOnAccountObj.CompanyName}}</span>
+                </td>
+                <th style="font-size: .9em; line-height: 1; font-weight: bold; padding:5px;" ng-if="PaymentOnAccountObj.PaymentTypeId == 3 || PaymentOnAccountObj.PaymentTypeId == 4">
+                    <span ng-hide="PaymentOnAccountObj.PaymentTypeId == 4">Cheque No</span>
+                    <span ng-hide="PaymentOnAccountObj.PaymentTypeId == 3">Mobile No</span>
+                </th>
+
+                <td ng-if="PaymentOnAccountObj.PaymentTypeId == 3 || PaymentOnAccountObj.PaymentTypeId == 4">
+                    <span style="font-size: .9em; line-height: 1; font-weight: bold; padding:5px;" ng-hide="PaymentOnAccountObj.PaymentTypeId == 4">{{PaymentOnAccountObj.ChequeNo}}</span>
+                    <span style="font-size: .9em; line-height: 1; font-weight: bold; padding:5px;" ng-hide="PaymentOnAccountObj.PaymentTypeId == 3">{{PaymentOnAccountObj.MobileNo}}</span>
+                </td>
+            </tr>
+            <tr>
+                <th style="font-size: .9em; line-height: 1; font-weight: bold; padding:5px;">On Account Date</th>
+                <td>
+                    <span style="font-size: .9em; line-height: 1; font-weight: bold; padding:5px;">{{PaymentOnAccountObj.OnAccountDate}}</span>
+                </td>
+                <th style="font-size: .9em; line-height: 1; font-weight: bold; padding:5px;" ng-if="PaymentOnAccountObj.PaymentTypeId == 3 || PaymentOnAccountObj.PaymentTypeId == 4">
+                    <span ng-hide="PaymentOnAccountObj.PaymentTypeId == 4">Cheque Date</span>
+                    <span ng-hide="PaymentOnAccountObj.PaymentTypeId == 3">Transaction No</span>
+                </th>
+                <td ng-if="PaymentOnAccountObj.PaymentTypeId == 3 || PaymentOnAccountObj.PaymentTypeId == 4">
+                    <span style="font-size: .9em; line-height: 1;  font-weight: bold; padding:5px;" ng-hide="PaymentOnAccountObj.PaymentTypeId == 4">{{PaymentOnAccountObj.ChequeDate}}</span>
+                    <span style="font-size: .9em; line-height: 1; font-weight: bold; padding:5px;" ng-hide="PaymentOnAccountObj.PaymentTypeId == 3">{{PaymentOnAccountObj.TransactionNo}}</span>
+                </td>
+            </tr>
+            <tr>
+                <th style="font-size: .9em; line-height: 1; font-weight: bold; padding:5px;">Payment Type Name</th>
+                <td>
+                    <span style="font-size: .9em; line-height: 1; font-weight: bold; padding:5px;">{{PaymentOnAccountObj.PaymentTypeName}}</span>
+                </td>
+                <th style="font-size: .9em; line-height: 1; font-weight: bold; padding:5px;" ng-if="PaymentOnAccountObj.PaymentTypeId == 3 || PaymentOnAccountObj.PaymentTypeId == 4"><span ng-hide="PaymentOnAccountObj.PaymentTypeId == 4">Cheque Type Name</span><span ng-hide="PaymentOnAccountObj.PaymentTypeId == 3">Mobile Banking Service</span></th>
+                <td ng-if="PaymentOnAccountObj.PaymentTypeId == 3 || PaymentOnAccountObj.PaymentTypeId == 4">
+                    <span style="font-size: .9em; line-height: 1; font-weight: bold; padding:5px;" ng-hide="PaymentOnAccountObj.PaymentTypeId == 4">{{PaymentOnAccountObj.ChequeTypeName}}</span>
+                    <span style="font-size: .9em; line-height: 1; font-weight: bold; padding:5px;" ng-hide="PaymentOnAccountObj.PaymentTypeId == 3">{{PaymentOnAccountObj.MobileBankingServiceName}}</span>
+                </td>
+            </tr>
+            <tr ng-if="PaymentOnAccountObj.PaymentTypeId == 1">
+                <th style="font-size: .9em; line-height: 1; font-weight: bold; padding:5px;">Money Receipt No</th>
+                <td>
+                    <span style="font-size: .9em; line-height: 1; font-weight: bold; padding:5px;">{{PaymentOnAccountObj.MoneyReceiptNo}}</span>
+                </td>
+                <th style="font-size: .9em; line-height: 1; font-weight: bold; padding:5px;" ng-if="PaymentOnAccountObj.PaymentTypeId == 3 || PaymentOnAccountObj.PaymentTypeId == 4"></th>
+                <td ng-if="PaymentOnAccountObj.PaymentTypeId == 3 || PaymentOnAccountObj.PaymentTypeId == 4">
+                    <span style="font-size: .9em; line-height: 1; font-weight: bold; padding:5px;"></span>
+                </td>
+            </tr>
+            <tr>
+                <th style="font-size: .9em; line-height: 1; font-weight: bold; padding:5px;">Amount</th>
+                <td>
+                    <span style="font-size: .9em; line-height: 1; font-weight: bold; padding:5px;">{{PaymentOnAccountObj.OnAccountAmount}}</span>
+                </td>
+                <th style="font-size: .9em; line-height: 1; font-weight: bold; padding:5px;" ng-if="PaymentOnAccountObj.PaymentTypeId == 3 || PaymentOnAccountObj.PaymentTypeId == 4">Remarks</th>
+                <td ng-if="PaymentOnAccountObj.PaymentTypeId == 3 || PaymentOnAccountObj.PaymentTypeId == 4">
+                    <span style="font-size: .9em; line-height: 1; font-weight: bold; padding:5px;">{{PaymentOnAccountObj.Remarks}}</span>
+                </td>
+            </tr>
+
+        </thead>
+    </table>
+
+    <script>
+        function PrintPdf() {
+
+            window.print();
+
+        }
+        jQuery(document).ready(function ($) {
+
+            $(".main-sidebar").attr("hidden", true);
+            $(".main-header").attr("hidden", true);
+            $(".main-footer").attr("hidden", true);
+            $("#Hidebr").attr("hidden", true);
+
+            $("div").removeClass("wrapper");
+            $("div").removeClass("content-wrapper");
+        });
+    </script>
+</body>
+
+</html>

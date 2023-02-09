@@ -1,0 +1,245 @@
+﻿<style>
+    #DivDDLEmployee .select2-container {
+        width: 227px !important;
+    }
+</style>
+<form name="FactoryExpensesForm" novalidate>
+    <div class="col-md-12">
+        <div class="alert alert-info alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="topInfo"> &nbsp; &#9755; <span style="color:red;">Red Icon</span> Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp; &#9755; Click On A Table Row To Update</div>
+        </div>
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-shield"></i>&nbsp;Factory Expenses Entry</h3>
+                <div class="clearfix">
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-3">
+
+                        <div ng-class="{ 'has-error' : purchaseBillEntry.Organization.$invalid && purchaseBillEntry.Organization.$touched }" data-toggle="tooltip" data-placement="bottom" class="input-group width-hundred-percent tooltipAll" title="Purchase For Branch">
+                            <select ng-model="ddlBrunch" class="form-control selectMendatory" name="ddlBranch" ng-options="brunch.BranchName  for brunch in Branchlist  track by brunch.BranchId">
+                                <option value="">For Branch</option>
+                            </select>
+
+
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : FactoryExpensesForm.ExpenseNo.$dirty && FactoryExpensesForm.ExpenseNo.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Expense No">
+                            <div class="input-group">
+                                <input type="text" id="txtExpenseNo" ng-model="FactoryExpenses.ExpenseNo" name="ExpenseNo" class="form-control" placeholder="Expense No" readonly>
+                                <span class="input-group-addon"><i class="fa fa-text-width req-icon-color"></i></span>
+                            </div>
+                            <span class="help-block" ng-show="FactoryExpensesForm.amount.$dirty && FactoryExpensesForm.amount.$invalid">Expense No is required</span>
+                            <span class="help-block" ng-if="FactoryExpensesForm.amount.$error.maxlength">15 Character Max</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <div class="input-group tooltipAll" data-toggle="tooltip" title="Expense Date">
+                                <input type="text" id="dtExpenseDate" ng-model="FactoryExpenses.ExpenseDate" class="form-control" name="ExpenseDate" placeholder="Expense Date" readonly />
+
+                                <span class="input-group-addon" ng-click="CalendarExpenseDate()" id="calenderExpenseDate"><i class="fa fa-calendar req-icon-color"></i></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : FactoryExpensesForm.BillReferenceNo.$dirty && FactoryExpensesForm.BillReferenceNo.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Bill Reference No">
+                            <div class="input-group">
+                                <input type="text" id="txtAmount" ng-model="FactoryExpenses.BillReferenceNo" name="BillReferenceNo" class="form-control" placeholder="Bill Reference No">
+                                <span class="input-group-addon"><i class="fa fa-text-width req-icon-color"></i></span>
+                            </div>
+                            <span class="help-block" ng-show="FactoryExpensesForm.amount.$dirty && FactoryExpensesForm.amount.$invalid">Bill Reference No is required</span>
+                            <span class="help-block" ng-if="FactoryExpensesForm.amount.$error.maxlength">15 Character Max</span>
+                        </div>
+                    </div>
+                  
+
+
+
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : FactoryExpensesForm.ddlEmployee.$dirty && FactoryExpensesForm.ddlEmployee.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Employee">
+                            <div id="DivDDLEmployee" class="input-group input-group-md ddl">
+                                <select ng-model="ddlEmployee" name="ddlEmployee" id="ddlEmployee" class="form-control selectMendatory" ng-change="FactoryExpenses.EmployeeId=ddlEmployee.EmployeeId" ng-options="employee.FullName+' ~ '+employee.DesignationName+' ~ '+employee.DepartmentName  for employee in employeeList track by employee.EmployeeId" required>
+                                    <option value="" label="">--Select Employee</option>
+                                </select>
+                            </div>
+                            <span class="help-block" ng-show="FactoryExpensesForm.ddlPreparedBy.$dirty && FactoryExpensesForm.ddlEmployee.$invalid">Employee is Required</span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : FactoryExpensesForm.ddlFactoryExpensePurpose.$dirty && FactoryExpensesForm.ddlFactoryExpensePurpose.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Factory Expense Purpose">
+                            <div class="input-group input-group-md ddl">
+                                <select ng-model="ddlFactoryExpensePurpose" name="ddlFactoryExpensePurpose" class="form-control selectMendatory" ng-change="FactoryExpenses.PurposeId=ddlFactoryExpensePurpose.PurposeId" ng-options="FactoryExpensePurpose.PurposeName  for FactoryExpensePurpose in FactoryExpensePurposeList track by FactoryExpensePurpose.PurposeId" required>
+                                    <option value="" label="">--Select Expense Purpose--</option>
+                                </select>
+                            </div>
+                            <span class="help-block" ng-show="FactoryExpensesForm.ddlFactoryExpensePurpose.$dirty && FactoryExpensesForm.ddlFactoryExpensePurpose.$invalid">Factory Expense Purpose is Required</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : FactoryExpensesForm.amount.$dirty && FactoryExpensesForm.amount.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Amount">
+                            <div class="input-group">
+                                <input type="number" id="txtAmount" ng-model="FactoryExpenses.Amount" name="amount" class="form-control" placeholder="Amount" maxlength="15" ng-maxlength="14">
+                                <span class="input-group-addon"><i class="fa fa-text-width req-icon-color"></i></span>
+                            </div>
+                            <span class="help-block" ng-show="FactoryExpensesForm.amount.$dirty && FactoryExpensesForm.amount.$invalid"> Amount is required</span>
+                            <span class="help-block" ng-if="FactoryExpensesForm.amount.$error.maxlength">15 Character Max</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : FactoryExpensesForm.Remarks.$invalid && FactoryExpensesForm.Remarks.$touched }" title="Remarks...">
+                            <div class="input-group">
+                                <textarea class="form-control" cols="1" rows="1" ng-model="FactoryExpenses.Remarks" placeholder="Remarks..."></textarea>
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block" ng-show="FactoryExpensesForm.Remarks.$dirty && FactoryExpensesForm.Remarks.$invalid">required</span>
+                            <span class="help-block" ng-if="FactoryExpensesForm.Remarks.$error.maxlength">50 Character Max</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-2">
+                <button class="btn btn-success tooltipAll" style="width:100%" ng-click="SaveFactoryExpenses()" ng-disabled="!ddlEmployee || !ddlFactoryExpensePurpose || !FactoryExpenses.ExpenseDate || !FactoryExpenses.Amount">
+                    <i class="fa fa-floppy-o"></i>&nbsp;Save
+                </button>
+            </div>
+            <div class="col-md-2">
+                <button id="Button3" style="width:100%" class="btn btn-danger tooltipAll" title="Search" ng-click="ResetForm()">
+                    <i class="fa fa-refresh"></i>&nbsp;Reset
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <br />
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-list"></i>&nbsp;Factory Expenses List</h3>
+            </div>
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <div class="input-group tooltipAll" data-toggle="tooltip" title="From Date">
+                                <input type="text" name="FromDate" id="txtFromDateForOB" ng-model="FromDate" ng-change="FactoryExpensesSearch();" class="form-control " placeholder="From Date" readonly />
+                                <span class="input-group-addon" ng-click="FormDateChangeForOB()" id="FormDateChange"><i class="fa fa-calendar req-icon-color"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group tooltipAll" data-toggle="tooltip" title="To Date">
+                                    <input type="text" name="ToDate" id="txtToDateForOB" ng-model="ToDate" ng-change="FactoryExpensesSearch();" class="form-control " placeholder="To Date" readonly />
+                                    <span class="input-group-addon" ng-click="ToDateChangeForOB()" id="ToDateChange"><i class="fa fa-calendar req-icon-color"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group tooltipAll" data-toggle="tooltip" title="Search Employee Name">
+                            <input type="text" class="form-control" id="textEmployeeName" ng-model="SearchEmployeeName" ng-change="FactoryExpensesSearch();" name="name" placeholder="Search Employee Name" />
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <button id="btnSearch" style="width:100%" ng-click="reloadBtn()" class="btn btn-danger tooltipAll" title="Reload">
+                            <i class="fa fa-refresh"></i>&nbsp;Clear
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="responstable table-hover">
+                            <tbody>
+                                <tr class="t-head">
+                                    <th>S/N</th>
+
+                                    <th class="txt-center">Expense No</th>
+                                    <th class="txt-center">Expense Date</th>
+                                    <th class="txt-center">Bill Reference No</th>
+                                    <th class="txt-center">Employee Name</th>
+                                    <th class="txt-center">Purpose</th>
+                                    <th class="txt-center">Amount</th>
+                                    <th class="txt-center">Branch</th>
+                                    <th class="txt-center">Remarks</th>
+                                    <th class="txt-center">Action</th>
+                                </tr>
+                                <tr class="HoverTable searchRow" dir-paginate="aFactoryExpenses in FactoryExpensesListPaged | itemsPerPage: PerPage"  current-page="currentPage" total-items="total_count">
+                                    <td class="t-cell-center">{{$index + ((currentPage-1)*PerPage) + 1}}</td>
+
+                                    <td class="txt-center">{{aFactoryExpenses.ExpenseNo }}</td>
+                                    <td class="txt-center">{{aFactoryExpenses.ExpenseDate }}</td>
+                                    <td class="txt-center">{{aFactoryExpenses.BillReferenceNo }}</td>
+                                    <td class="txt-center">{{aFactoryExpenses.EmployeeName }}</td>
+                                    <td class="txt-center">{{aFactoryExpenses.PurposeName }}</td>
+                                    <td class="txt-center">{{aFactoryExpenses.Amount }}</td>
+                                    <td class="txt-center">{{aFactoryExpenses.BranchName }}</td>
+                                    <td class="txt-center">{{aFactoryExpenses.Remarks }}</td>
+                                    <td class="txt-center">
+                                        <button id="btnReport" style=""
+                                                ng-click="SelFactoryExpenses(aFactoryExpenses);">
+                                            <i class="fa fa-edit" style="font-size:18px"></i>  Edit
+                                        </button>
+                                        <button id="btnReport" style=""
+                                                ng-click="OpenPopupWindow(aFactoryExpenses)">
+                                            <i class="fa fa-print" style="font-size:18px"></i>  Report
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr class="t-foot" ng-show="total_count>PerPage">
+                                    <th colspan="10">
+                                        <dir-pagination-controls max-size="8"
+                                                                 direction-links="true"
+                                                                 boundary-links="true"
+                                                                 on-page-change="getData(newPageNumber)" style="text-align:center;">
+                                        </dir-pagination-controls>
+                                    </th>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="row pagination-footer">
+                            <div class="col-md-6">
+                                <span>Show </span><input class="input-pagesize" type="number" ng-maxlength="100" ng-minlength="1" width="1" ng-model="PerPage"> <span>Records </span>
+                            </div>
+                            <div class="col-md-6">
+                                <span class="pull-right">Showing {{((currentPage-1)*PerPage)+1}} to {{((currentPage-1) * PerPage) + FactoryExpensesListPaged.length}} of {{total_count}} Records</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!--<pre>{{pay_OpeningBalance | json}}</pre>-->
+</form>
+
+<script>
+    $('.tooltipAll').tooltip({ boundary: 'window' })
+    $("#ddlEmployee").select2({
+        //placeholder: "Select Employee",
+        theme: "classic",
+        dropdownAutoWidth: false
+    });
+</script>

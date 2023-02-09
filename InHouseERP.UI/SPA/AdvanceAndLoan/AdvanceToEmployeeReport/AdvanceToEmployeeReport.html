@@ -1,0 +1,213 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+
+        body {
+            font-family: "Times New Roman", Times, serif;
+            color: #000000;
+            writing-mode: inherit;
+            width: 100%;
+            height: 100%;
+        }
+
+        #UpperTable td {
+            border: 1px solid black;
+            border-collapse: collapse;
+            padding: 5px;
+        }
+
+        .ProductTable th {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+
+        .ProductTable td {
+            border: 1px solid black;
+            border-collapse: collapse;
+            padding: 5px;
+        }
+
+        .footer {
+            position: fixed;
+            left: 29px;
+            bottom: 0px;
+        }
+
+        .flexcontainer {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        @media screen {
+            img {
+                height: 200px;
+                width: 300px;
+                margin-top: 0px;
+            }
+        }
+
+        @media print {
+            #LogoImg, img {
+                margin-top: -10px;
+            }
+
+            #PrintImg, img {
+                margin-top: -10px;
+                height: 200px;
+                width: 300px;
+            }
+
+            .page-break {
+                display: block;
+                page-break-before: always;
+            }
+
+            img {
+                height: 200px;
+                width: 300px;
+                margin-top: 60px;
+            }
+        }
+
+        @page {
+            size: A4;
+            max-height: 100%;
+            max-width: 100%;
+            font-family: 'Times New Roman';
+        }
+    </style>
+</head>
+<body>
+    <table style="width: 100%">
+        <tbody>
+            <tr>
+                <td>
+                    <div class=" hidden-print">
+                        <div class="row">
+                            <div class="col-sm-2 col-md-1">
+                                <button type="button" onclick="document.title = 'Supplier Payment ' + getCurrentDateTime(); PrintPdf();" class="customBtn custmoBtnReset" style="border-radius: 3px; margin-bottom: -.9em; margin-top: -15px; padding-bottom: 3px; padding-top: 3px;" title="Export to .doc">
+                                    <i class="fa fa-print"></i>&nbsp;Print
+                                </button>
+                            </div>
+
+                        </div>
+                        <hr />
+                    </div>
+                    <div class="" id="source-html">
+                        <table id="heading" style="text-align: center;margin-left:auto;margin-right:auto;">
+
+                            <tr>
+                                <td>
+                                    <!--<img style="height: 80px; width: 80px; padding: 5px" src="../../../UploadedImages/logo.jpg" />-->
+                                </td>
+                                <td>
+                                    <p style="font-size: 30px;line-height: 1; margin : 0; padding : 0 ; font-weight: bold;"><strong>Retail Technologies Limited</strong></p>
+                                    <p style="font-size: 14px; line-height: 1.5; margin : 0; padding : 0 ;">
+                                        Address: Flat- 22 A, Navana Tower, 45 Gulshan1, Dhaka-1212
+                                    </p>
+
+                                    <p style="font-size: 25px; text-align: center; margin: 0px; padding: 0px;"> <b> <u>{{ReportName}}</u></b></p>
+                                </td>
+                            </tr>
+                        </table>
+                        <br />
+
+                        <table style="width:100%">
+                            <tr>
+                                <td style="width:80%">
+                                </td>
+                                <td style="width:20%;text-align:right;">Date : {{toDate}}</td>
+                            </tr>
+                        </table>
+                        <table class="ProductTable" style="width: 100%;  margin-left: auto; margin-right: auto;margin-top:20px">
+
+                            <tr>
+                                <th>Employee Name</th>
+                                <td>{{AdvanceToEmployee.EmployeeName}}</td>
+                            </tr>
+                            <tr>
+                                <th>Advance Payment No</th>
+                                <td>{{AdvanceToEmployee.AdvancePaymentNo}}</td>
+                            </tr>
+                            <tr>
+                                <th>Payment Date</th>
+                                <td>{{AdvanceToEmployee.PaymentDate}}</td>
+                            </tr>
+                            <tr>
+                                <th>Remarks</th>
+                                <td>{{AdvanceToEmployee.Remarks}}</td>
+
+                            </tr>
+                        </table>
+
+                        <table class="ProductTable" style="width: 100%;  margin-left: auto; margin-right: auto;margin-top:20px">
+
+                            <tr ng-if="AdvanceToEmployee.ChequeNo">
+                                <th>Cheque No</th>
+                                <td>{{AdvanceToEmployee.ChequeNo}}</td>
+                            </tr>
+                            <tr ng-if="AdvanceToEmployee.ChequeTypeName">
+                                <th>Cheque Type</th>
+                                <td>{{AdvanceToEmployee.ChequeTypeName}}</td>
+                            </tr>
+
+                            <tr ng-if="AdvanceToEmployee.MobileBankingServiceName">
+                                <th>Mobile No</th>
+                                <td>{{AdvanceToEmployee.MobileBankingServiceName}}</td>
+                            </tr>
+                            <tr ng-if="AdvanceToEmployee.MobileNo">
+                                <th>Mobile No</th>
+                                <td>{{AdvanceToEmployee.MobileNo}}</td>
+                            </tr>
+                            <tr ng-if="AdvanceToEmployee.TransactionNo">
+                                <th>Transaction No</th>
+                                <td>{{AdvanceToEmployee.TransactionNo}}</td>
+                            </tr>
+                            <tr ng-if="AdvanceToEmployee.MoneyReceiptNo">
+                                <th>Money ReceiptNo</th>
+                                <td>{{AdvanceToEmployee.MoneyReceiptNo}}</td>
+                            </tr>
+
+
+                            <tr ng-if="AdvanceToEmployee.PayerBankAccountName">
+                                <th>Payer Bank Account Name</th>
+                                <td>{{AdvanceToEmployee.PayerBankAccountName}}</td>
+                            </tr>
+                            <tr ng-if="AdvanceToEmployee.ReceiverBankAccountName">
+                                <th>Receiver Bank Account Name</th>
+                                <td>{{AdvanceToEmployee.ReceiverBankAccountName}}</td>
+                            </tr>
+
+                        </table>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>
+<script>
+
+
+
+    jQuery(document).ready(function ($) {
+
+        $(".main-sidebar").attr("hidden", true);
+        $(".main-header").attr("hidden", true);
+        $(".main-footer").attr("hidden", true);
+        $("#br").attr("hidden", true);
+
+        $("div").removeClass("wrapper");
+        $("div").removeClass("content-wrapper");
+    });
+
+
+    function PrintPdf() {
+        window.print();
+    }
+
+</script>

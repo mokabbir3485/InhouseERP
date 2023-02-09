@@ -1,0 +1,854 @@
+﻿
+<style>
+
+    #BankDddlDiv .select2-container {
+        width: 100% !important;
+    }
+    #DivDDLEmployee .select2-container {
+        width: 227px !important;
+    }
+
+    #OnlineDiv .select2-container {
+        width: 409px !important;
+    }
+
+    .select2-container {
+        width: 100% !important;
+    }
+
+    #PayOrderDiv .select2-container {
+        width: 320px !important;
+    }
+
+    #BankDddlDiv1 .select2-container {
+        width: 320px !important;
+    }
+
+    #OnlineDiv1 .select2-container {
+        width: 320px !important;
+    }
+</style>
+<form name="AdvanceToEmployeeForm" novalidate>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="alert alert-info alert-dismissible fade in" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <div class="topInfo"> &nbsp; &#9755; <span style="color:red;">Red Icon</span> Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp; &#9755; Click On A Table Row To Update/Delete</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading " style=" height:40px;">
+            <h3 class="panel-title"><i class="fa fa-share-alt"></i>&nbsp;Advance To Employee</h3>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="tab-content">
+                    <div id="Local" class="tab-pane fade in active">
+                        <div id="Local" class="tab-pane">
+                            <div class="col-md-12">
+                                <div class="panel panel-info">
+
+                                    <div class="panel-footer">
+
+                                        <div class="row">
+                                            <!--<div class="col-md-3">
+                                                <div class="form-group tooltipAll" ng-class="{ 'has-error' : AdvanceToEmployeeForm.AdvancePaymentDate.$invalid && AdvanceToEmployeeForm.AdvancePaymentDate.$touched }" data-toggle="tooltip" data-placement="bottom" title="Advance Payment Date">
+                                                    <div class="input-group">
+                                                        <input type="text" name="AdvancePaymentDate" id="AdvancePaymentDate" ng-model="AdvanceToEmployee.AdvancePaymentDate" class="form-control datepicker" placeholder="Advance Payment Date" readonly required />
+                                                        <span class="input-group-addon" ng-click="ChangeForAdvancePaymentDate()" id="ChangeForAdvancePaymentDate"><i class="fa fa-calendar " style="color:red;"></i></span>
+                                                    </div>
+
+                                                    <span class="help-block" style="display: block;" ng-if="AdvanceToEmployeeForm.AdvancePaymentDate.$error.required && AdvanceToEmployeeForm.AdvancePaymentDate.$touched">Advance Payment Date is required</span>
+                                                </div>
+                                            </div>-->
+                                            <div class="col-md-3">
+                                                <div class="form-group" ng-class="{ 'has-error' :AdvanceToEmployeeForm.AdvancePaymentNo.$invalid && AdvanceToEmployeeForm.AdvancePaymentNo.$touched }" data-toggle="tooltip" data-placement="bottom">
+                                                    <div class="input-group ">
+                                                        <input type="text" ng-model="AdvanceToEmployee.AdvancePaymentNo" id="txtSupplierPaymentNo" class="form-control tooltipAll" name="AdvancePaymentNo" placeholder="Supplier Payment No" maxlength="40" ng-maxlength="40" title="Supplier Payment No" readonly />
+                                                        <span class="input-group-addon tooltipAll" title="This Advance Payment No may change automatically before saving if it already exists in the system."><i class="fa fa-info-circle" style="color:red"></i></span>
+                                                    </div>
+                                                    <span class="help-block" ng-if="AdvanceToEmployeeForm.AdvancePaymentNo.$error.required && AdvanceToEmployeeForm.AdvancePaymentNo.$touched">Advance Payment No is required</span>
+                                                    <span class="help-block" ng-if="AdvanceToEmployeeForm.AdvancePaymentNo.$error.maxlength">40 Character Max</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group tooltipAll" ng-class="{ 'has-error' : AdvanceToEmployeeForm.ddlEmployee.$dirty && AdvanceToEmployeeForm.ddlEmployee.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Employee">
+                                                    <div id="DivDDLEmployee" class="input-group input-group-md ddl">
+                                                        <select ng-model="ddlEmployee" name="ddlEmployee" id="ddlEmployee" class="form-control selectMendatory" ng-change="AdvanceToEmployee.EmployeeId=ddlEmployee.EmployeeId" ng-options="employee.FullName+' ~ '+employee.DesignationName+' ~ '+employee.DepartmentName  for employee in employeeList track by employee.EmployeeId" required>
+                                                            <option value="" label="">--Select Employee</option>
+                                                        </select>
+                                                    </div>
+                                                    <span class="help-block" ng-show="AdvanceToEmployeeForm.ddlPreparedBy.$dirty && AdvanceToEmployeeForm.ddlEmployee.$invalid">Employee is Required</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group tooltipAll" ng-class="{ 'has-error' : AdvanceToEmployeeForm.PaidAmount.$invalid && AdvanceToEmployeeForm.ConversionAmount.$touched }" data-toggle="tooltip" data-placement="bottom" title="Paid Amount">
+                                                    <div class="input-group">
+                                                        <input type="number" name="PaidAmount" class="form-control" ng-model="AdvanceToEmployee.PaidAmount" placeholder="Paid Amount" maxlength="50" ng-maxlength="49">
+                                                        <span class="input-group-addon"><i style="color:red; font-weight: bold; font-style: normal;">Paid Amount</i></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+
+
+                                        <div class="row">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading" style="font-weight:bold;font-size:16px;">Payment </div>
+                                                <div class="panel-body">
+
+
+                                                    <div class="row">
+
+
+                                                        <div class="col-md-4">
+                                                            <div class="form-group tooltipAll" ng-class="{ 'has-error' : AdvanceToEmployeeForm.ddlCheque.$invalid && AdvanceToEmployeeForm.ddlCheque.$touched }" title="Payment Type">
+                                                                <div class="input-group width-hundred-percent">
+                                                                    <select ng-model="ddlCheque" name="ddlCheque" class="form-control selectMendatory" ng-options="'['+payment.PaymentGroupName+'] : '+payment.PaymentTypeName for payment in  paymentTypelist track by payment.PaymentTypeId" ng-change="onChequeGetById(ddlCheque.PaymentTypeId,ddlCheque.PaymentGroupId);advancedAmountHide(ddlCheque.PaymentTypeId);CheckAdvancedAmout(ddlCheque)" required>
+                                                                        <option value="">-- Payment Type --</option>
+                                                                    </select>
+                                                                    <span class="help-block" style="display: block;" ng-if="AdvanceToEmployeeForm.ddlCheque.$error.required && AdvanceToEmployeeForm.ddlCheque.$touched">Cheque is required</span>
+
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+
+
+
+                                                        <div class="col-md-2" ng-if="ddlCheque.PaymentTypeId == 5 ">
+                                                            <div class="form-group tooltipAll" ng-class="{ 'has-error' : AdvanceToEmployeeForm.AdvanceAmount.$invalid && AdvanceToEmployeeForm.AdvanceAmount.$touched }" data-toggle="tooltip" data-placement="bottom" title="Advance Amount">
+                                                                <div class="input-group">
+                                                                    <input class="form-control" cols="1" rows="1" ng-model="AdvanceAmount" name="AdvanceAmount" placeholder="Advance Amount" readonly />
+                                                                    <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                                                </div>
+                                                                <span class="help-block" ng-show="AdvanceToEmployeeForm.AdvanceAmount.$dirty && AdvanceToEmployeeForm.AdvanceAmount.$invalid">required</span>
+                                                                <span class="help-block" ng-if="AdvanceToEmployeeForm.AdvanceAmount.$error.maxlength">50 Character Max</span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3" ng-show="ddlCheque.PaymentTypeId == 5 ">
+                                                            <div class="form-group tooltipAll" ng-class="{ 'has-error' : AdvanceToEmployeeForm.PaymentDate.$invalid && AdvanceToEmployeeForm.PaymentDate.$touched }" data-toggle="tooltip" data-placement="bottom" title="Payment Date">
+                                                                <div class="input-group">
+                                                                    <input type="text" name="PaymentDate" id="supplierPaymentDate" ng-model="AdvanceToEmployee.PaymentDate" ng-blur="getMaxPBIdByDate()" class="form-control datepicker" placeholder="Payment Date" readonly required />
+                                                                    <span class="input-group-addon" ng-click="ChangeForsupplierPaymentDate()" id="ChangeForsupplierPaymentDate"><i class="fa fa-calendar " style="color:red;"></i></span>
+                                                                </div>
+
+                                                                <span class="help-block" style="display: block;" ng-if="AdvanceToEmployeeForm.PaymentDate.$error.required && AdvanceToEmployeeForm.PaymentDate.$touched">Payment Date is required</span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3" ng-if="ddlCheque.PaymentTypeId == 5 ">
+                                                            <div class="form-group tooltipAll" ng-class="{ 'has-error' : AdvanceToEmployeeForm.Remarks.$invalid && AdvanceToEmployeeForm.Remarks.$touched }" title="Remarks...">
+                                                                <div class="input-group">
+                                                                    <textarea class="form-control" cols="1" rows="1" ng-model="AdvanceToEmployee.Remarks" placeholder="Remarks..."></textarea>
+                                                                    <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                                                </div>
+                                                                <span class="help-block" ng-show="AdvanceToEmployeeForm.Remarks.$dirty && AdvanceToEmployeeForm.Remarks.$invalid">required</span>
+                                                                <span class="help-block" ng-if="AdvanceToEmployeeForm.Remarks.$error.maxlength">50 Character Max</span>
+                                                            </div>
+                                                        </div>
+
+                                                        <div ng-show="ddlCheque.PaymentTypeId != 5 ">
+                                                            <div class="col-md-4">
+                                                                <div class="form-group tooltipAll" ng-class="{ 'has-error' : AdvanceToEmployeeForm.PaymentDate.$invalid && AdvanceToEmployeeForm.PaymentDate.$touched }" data-toggle="tooltip" data-placement="bottom" title="Payment Date">
+                                                                    <div class="input-group">
+                                                                        <input type="text" name="PaymentDate" id="supplierPaymentDate1" ng-model="AdvanceToEmployee.PaymentDate" ng-blur="getMaxPBIdByDate()" class="form-control datepicker" placeholder="Payment Date" readonly required />
+                                                                        <span class="input-group-addon" ng-click="ChangeForsupplierPaymentDate1()" id="ChangeForsupplierPaymentDate1"><i class="fa fa-calendar " style="color:red;"></i></span>
+                                                                    </div>
+
+                                                                    <span class="help-block" style="display: block;" ng-if="AdvanceToEmployeeForm.PaymentDate.$error.required && AdvanceToEmployeeForm.PaymentDate.$touched">Payment Date is required</span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <div class="form-group tooltipAll" ng-class="{ 'has-error' : AdvanceToEmployeeForm.Remarks.$invalid && AdvanceToEmployeeForm.Remarks.$touched }" data-toggle="tooltip" data-placement="bottom" title="Remarks...">
+                                                                    <div class="input-group">
+                                                                        <textarea class="form-control" cols="1" rows="1" ng-model="AdvanceToEmployee.Remarks" placeholder="Remarks..."></textarea>
+                                                                        <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                                                    </div>
+                                                                    <span class="help-block" ng-show="AdvanceToEmployeeForm.Remarks.$dirty && AdvanceToEmployeeForm.Remarks.$invalid">required</span>
+                                                                    <span class="help-block" ng-if="AdvanceToEmployeeForm.Remarks.$error.maxlength">50 Character Max</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+                                                    </div>
+                                                    <div class="row" ng-if="ddlCheque.PaymentTypeId == 1">
+                                                        <div class="col-md-4">
+
+                                                            <div class="form-group tooltipAll" ng-class="{ 'has-error' : AdvanceToEmployeeForm.MoneyReceiptNo.$invalid && AdvanceToEmployeeForm.MoneyReceiptNo.$touched }" data-toggle="tooltip" data-placement="bottom" title="Money Receipt No">
+                                                                <input type="text" id="textMoneyReceiptNo" name="MoneyReceiptNo" class="form-control tooltipAll" ng-model="AdvanceToEmployee.MoneyReceiptNo" placeholder="Money Receipt No" title="Money Receipt No">
+                                                                <span class="help-block" ng-show="AdvanceToEmployeeForm.MoneyReceiptNo.$dirty && AdvanceToEmployeeForm.MoneyReceiptNo.$invalid">PO No. is required</span>
+                                                                <span class="help-block" ng-if="AdvanceToEmployeeForm.MoneyReceiptNo.$error.maxlength">50 Character Max</span>
+                                                            </div>
+
+                                                        </div>
+                                                        
+                                                    </div>
+
+                                                    <div class="row" ng-show="ddlCheque.PaymentTypeId == 4 ">
+                                                        <div class="col-md-4">
+                                                            <div class="form-group tooltipAll" ng-class="{ 'has-error' : AdvanceToEmployeeForm.ddlServiceName.$dirty && AdvanceToEmployeeForm.ddlServiceName.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Service Name">
+                                                                <div class="input-group input-group-md ddl">
+                                                                    <select id="ddlServiceName" ng-model="ddlServiceName" name="ddlServiceName" class="form-control selectNotMandetory" ng-options="service.PaymentSubTypeName for service in MobilePaymentSubTypeList track by service.PaymentSubTypeId" ng-change="rcv_CompanyAdvance.MobileBankingServiceId = ddlServiceName.PaymentSubTypeId">
+                                                                        <option value=""> --- Select Service Name --- </option>
+                                                                    </select>
+                                                                    <span class="help-block" ng-show="AdvanceToEmployeeForm.ddlServiceName.$dirty && AdvanceToEmployeeForm.ddlServiceName.$invalid">Service Name is required</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="form-group tooltipAll" ng-class="{ 'has-error' : AdvanceToEmployeeForm.MobileNo.$invalid && AdvanceToEmployeeForm.MobileNo.$touched }" data-toggle="tooltip" data-placement="bottom" title="Mobile No">
+                                                                <div class="input-group">
+                                                                    <input type="text" id="txtMobileNo" name="MobileNo" class="form-control" ng-model="AdvanceToEmployee.MobileNo" placeholder="Mobile No" maxlength="50" ng-maxlength="49">
+                                                                    <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                                                </div>
+                                                                <span class="help-block" ng-show="AdvanceToEmployeeForm.MobileNo.$dirty && AdvanceToEmployeeForm.MobileNo.$invalid">Mobile No is required</span>
+                                                                <span class="help-block" ng-if="AdvanceToEmployeeForm.MobileNo.$error.maxlength">50 Character Max</span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="form-group tooltipAll" ng-class="{ 'has-error' : AdvanceToEmployeeForm.TransactionId.$invalid && AdvanceToEmployeeForm.TransactionId.$touched }" data-toggle="tooltip" data-placement="bottom" title="Transaction Id">
+                                                                <div class="input-group">
+                                                                    <input type="text" id="txtTransactionId" name="TransactionId" class="form-control" ng-model="AdvanceToEmployee.TransactionNo" placeholder="Transaction Id" maxlength="50" ng-maxlength="49">
+                                                                    <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                                                </div>
+                                                                <span class="help-block" ng-show="AdvanceToEmployeeForm.TransactionId.$dirty && AdvanceToEmployeeForm.Transaction.$invalid">Transaction Id is required</span>
+                                                                <span class="help-block" ng-if="AdvanceToEmployeeForm.TransectionId.$error.maxlength">50 Character Max</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div ng-show="checqueShowDiv">
+                                                        <div class="row">
+                                                            <div class="col-md-4">
+                                                                <div class="form-group tooltipAll" ng-class="{ 'has-error' : AdvanceToEmployeeForm.chequeId.$invalid && AdvanceToEmployeeForm.chequeId.$touched }" data-toggle="tooltip" data-placement="bottom" title="Cheque Type">
+                                                                    <div class="input-group width-hundred-percent">
+                                                                        <select id="ChequeTypeSelect2" ng-model="ddlChequeType" name="chequeId" class="form-control selectNotMandetory" ng-options="chequeType.PaymentSubTypeName for chequeType in ChequePaymentSubTypeList track by chequeType.PaymentSubTypeId" ng-change="pay_SupplierAdvance.ChequeTypeId = ddlChequeType.PaymentSubTypeId">
+                                                                            <option value=""> --- Select Cheque Type --- </option>
+                                                                        </select>
+                                                                        <span class="help-block" ng-show="AdvanceToEmployeeForm.chequeId.$dirty && AdvanceToEmployeeForm.chequeId.$invalid">Cheque Type is required</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <div class="form-group tooltipAll" ng-class="{ 'has-error' : AdvanceToEmployeeForm.ddlBankAccount.$invalid && AdvanceToEmployeeForm.ddlBankAccount.$touched }" data-toggle="tooltip" data-placement="bottom" title="Payer Bank Account">
+                                                                    <div id="OnlineDiv1" class="input-group width-hundred-percent">
+                                                                        <select id="bankddlPayerOnlinePayment2" ng-model="ddlPayerBankAccount" name="ddlBankAccount" class="form-control selectMendatory" ng-options="bank.BankNameTemp for bank in PayerBankAccountList track by bank.BankAccountId" ng-change="AdvanceToEmployee.PayerBankAccountId = ddlPayerBankAccount.BankAccountId">
+                                                                            <option value="">Bank Name : Not Found, Branch : Not Found , AccountNo : Not Found</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <div class="form-group tooltipAll" ng-class="{ 'has-error' : AdvanceToEmployeeForm.PONo.$invalid && AdvanceToEmployeeForm.PONo.$touched }" data-toggle="tooltip" data-placement="bottom" title="Cheque Mode">
+                                                                    <div id="BankDddlDiv1" class="input-group width-hundred-percent">
+                                                                        <select id="bankddl" ng-model="ddlChecqueBankAccount" name="ddlBankAccount" class="form-control selectMendatory" ng-options="bank.BankNameTemp for bank in SuppilerBankAccountList track by bank.BankAccountId" ng-change="AdvanceToEmployee.ReceiverBankAccountId = ddlChecqueBankAccount.BankAccountId">
+                                                                            <option value="">Bank Name : Not Found, Branch : Not Found , AccountNo : Not Found</option>
+                                                                        </select>
+                                                                        <span class="help-block" ng-show="AdvanceToEmployeeForm.ddlSupplier.$dirty && AdvanceToEmployeeForm.ddlSupplier.$invalid">Supplier is required</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+
+
+
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-4">
+                                                                <div class="form-group tooltipAll" ng-class="{ 'has-error' : AdvanceToEmployeeForm.ChequeDate.$invalid && AdvanceToEmployeeForm.ChequeDate.$touched }" data-toggle="tooltip" data-placement="bottom" title="Cheque Date">
+                                                                    <div class="input-group">
+                                                                        <input type="text" id="txtForChequeDate" ng-model="AdvanceToEmployee.ChequeDate" class="form-control datepicker" placeholder="Cheque Date" readonly />
+                                                                        <span class="input-group-addon" ng-click="ChangeForChequeDate()" id="ChangeForChequeDate"><i class="fa fa-calendar " style="color:black;"></i></span>
+                                                                    </div>
+
+                                                                    <span class="help-block" style="display: block;" ng-if="AdvanceToEmployeeForm.ChequeDate.$error.required && AdvanceToEmployeeForm.ChequeDate.$touched">PB Date is required</span>
+                                                                </div>
+
+                                                            </div>
+
+                                                            <div class="col-md-4">
+                                                                <div class="form-group tooltipAll" ng-class="{ 'has-error' : AdvanceToEmployeeForm.ChequeNo.$invalid && AdvanceToEmployeeForm.ChequeNo.$touched }" data-toggle="tooltip" data-placement="bottom" title="Cheque No">
+                                                                    <div class="input-group">
+                                                                        <input type="text" id="txtPONo" name="Pono" class="form-control" ng-model="AdvanceToEmployee.ChequeNo" placeholder="Cheque No" maxlength="50" ng-maxlength="49">
+                                                                        <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                                                    </div>
+                                                                    <span class="help-block" ng-show="AdvanceToEmployeeForm.ChequeNo.$dirty && AdvanceToEmployeeForm.ChequeNo.$invalid">PO No. is required</span>
+                                                                    <span class="help-block" ng-if="AdvanceToEmployeeForm.ChequeNo.$error.maxlength">50 Character Max</span>
+                                                                </div>
+                                                            </div>
+                                                            
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="row" ng-show="ddlCheque.PaymentTypeId== 2">
+                                                        <div class="col-md-4">
+                                                            <div class="form-group tooltipAll" ng-class="{ 'has-error' : AdvanceToEmployeeForm.ddlBankAccount.$invalid && AdvanceToEmployeeForm.ddlBankAccount.$touched }" data-toggle="tooltip" data-placement="bottom" title="Receiver Bank Account">
+                                                                <div id="PayOrderDiv" class="input-group width-hundred-percent">
+                                                                    <select id="bankddlPayOrderPayment" ng-model="ddlPayOrderBankAccount" name="ddlBankAccount" class="form-control selectMendatory" ng-options="bank.BankName for bank in SuppilerBankAccountList track by bank.BankAccountId" ng-change="AdvanceToEmployee.ReceiverBankAccountId = ddlPayOrderBankAccount.BankAccountId">
+                                                                        <option value="">Bank Name : Not Found, Branch : Not Found , AccountNo : Not Found</option>
+                                                                    </select>
+                                                                    <span class="help-block" ng-show="AdvanceToEmployeeForm.ddlBankAccount.$dirty && AdvanceToEmployeeForm.ddlBankAccount.$invalid">Supplier is required</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="form-group tooltipAll" ng-class="{ 'has-error' : AdvanceToEmployeeForm.ChequeDate.$invalid && AdvanceToEmployeeForm.ChequeDate.$touched }" data-toggle="tooltip" data-placement="bottom" title="Pay Order Date">
+                                                                <div class="input-group">
+                                                                    <input type="text" id="txtForPayOrderDate" ng-model="AdvanceToEmployee.ChequeDate" class="form-control datepicker" placeholder="Pay Order Date" readonly />
+                                                                    <span class="input-group-addon" ng-click="ChangeForPayOrderDate()" id="ChangeForChequeDate"><i class="fa fa-calendar " style="color:black;"></i></span>
+                                                                </div>
+
+                                                                <span class="help-block" style="display: block;" ng-if="AdvanceToEmployeeForm.ChequeDate.$error.required && AdvanceToEmployeeForm.ChequeDate.$touched">Pay Order Date is required</span>
+                                                            </div>
+
+                                                        </div>
+
+                                                        <div class="col-md-4">
+                                                            <div class="form-group tooltipAll" ng-class="{ 'has-error' : AdvanceToEmployeeForm.ChequeNo.$invalid && AdvanceToEmployeeForm.ChequeNo.$touched }" data-toggle="tooltip" data-placement="bottom" title="Pay Order No">
+                                                                <div class="input-group">
+                                                                    <input type="text" id="txtPONo" name="Pono" class="form-control" ng-model="AdvanceToEmployee.ChequeNo" placeholder="Pay Order No" maxlength="50" ng-maxlength="49">
+                                                                    <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                                                </div>
+                                                                <span class="help-block" ng-show="AdvanceToEmployeeForm.ChequeNo.$dirty && AdvanceToEmployeeForm.ChequeNo.$invalid">Pay Order No. is required</span>
+                                                                <span class="help-block" ng-if="AdvanceToEmployeeForm.ChequeNo.$error.maxlength">50 Character Max</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row" ng-show="ddlCheque.PaymentGroupId== 5">
+                                                        <div class="col-md-5">
+                                                            <div class="form-group tooltipAll" ng-class="{ 'has-error' : AdvanceToEmployeeForm.ddlBankAccount.$invalid && AdvanceToEmployeeForm.ddlBankAccount.$touched }" data-toggle="tooltip" data-placement="bottom" title="Payer Bank Account">
+                                                                <div id="OnlineDiv" class="input-group width-hundred-percent">
+                                                                    <select id="bankddlPayerOnlinePayment1" ng-model="ddlPayerBankAccount" name="ddlBankAccount" class="form-control selectMendatory" ng-options="bank.BankNameTemp for bank in PayerBankAccountList track by bank.BankAccountId" ng-change="AdvanceToEmployee.PayerBankAccountId = ddlPayerBankAccount.BankAccountId">
+                                                                        <option value="">Bank Name : Not Found, Branch : Not Found , AccountNo : Not Found</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-5">
+                                                            <div class="form-group tooltipAll" ng-class="{ 'has-error' : AdvanceToEmployeeForm.ddlBankAccount.$invalid && AdvanceToEmployeeForm.ddlBankAccount.$touched }" data-toggle="tooltip" data-placement="bottom" title="Receiver Bank Account">
+                                                                <div id="OnlineDiv" class="input-group width-hundred-percent">
+                                                                    <select id="bankddlSuppilerOnlinePayment" ng-model="ddlSuppilerBankAccount" name="ddlBankAccount" class="form-control selectMendatory" ng-options="bank.BankNameTemp for bank in SuppilerBankAccountList track by bank.BankAccountId" ng-change="AdvanceToEmployee.ReceiverBankAccountId = ddlSuppilerBankAccount.BankAccountId">
+                                                                        <option value="">Bank Name : Not Found, Branch : Not Found , AccountNo : Not Found</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+                                                        <div class="col-md-2">
+                                                            <div class="form-group tooltipAll" ng-class="{ 'has-error' : AdvanceToEmployeeForm.TransactionId.$invalid && AdvanceToEmployeeForm.TransactionId.$touched }" data-toggle="tooltip" data-placement="bottom" title="Transaction Id">
+                                                                <div class="input-group">
+                                                                    <input type="text" id="txtTransactionId" name="TransactionId" class="form-control" ng-model="AdvanceToEmployee.TransactionNo" placeholder="Transaction Id" maxlength="50" ng-maxlength="49">
+                                                                    <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                                                </div>
+                                                                <span class="help-block" ng-show="AdvanceToEmployeeForm.TransactionId.$dirty && AdvanceToEmployeeForm.Transaction.$invalid">Transaction Id is required</span>
+                                                                <span class="help-block" ng-if="AdvanceToEmployeeForm.TransectionId.$error.maxlength">50 Character Max</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        
+
+                                                        <div class="col-md-3" ng-show=" ddlCheque.PaymentTypeId==8||  ddlCheque.PaymentTypeId==9 || ddlCheque.PaymentTypeId==11 ||  ddlCheque.PaymentTypeId==12">
+                                                            <div class="form-group" ng-class="{ 'has-error' : AdvanceToEmployeeForm.Branch.$invalid && AdvanceToEmployeeForm.Branch.$touched }">
+                                                                <div class="input-group width-hundred-percent tooltipAll" title="From Bank Branch">
+                                                                    <input type="text" id="Branch" name="Branch" class="form-control" ng-model="AdvanceToEmployee.FromBranch" placeholder="From Bank Branch">
+                                                                    <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+                                                    </div>
+
+                                                    <br />
+                                                    <div class="row">
+                                                        <div class="col-md-2">
+                                                            <button class="btn btn-success" style="width:100%" name="btnSave" ng-click="AdvanceToEmployeeSave()" ng-disabled=" !ddlEmployee || !AdvanceToEmployee.PaidAmount || !AdvanceToEmployee.PaymentDate" title="Save">
+                                                                <i class="fa fa-floppy-o"></i>&nbsp;Save
+                                                            </button>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <button class="btn btn-danger" style="width:100%" ng-click="Reset()" title="Reset">
+                                                                <i class="fa fa-refresh"></i>&nbsp;Reset
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    <br />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-list"></i>&nbsp;Advance To Employee List</h3>
+            </div>
+
+            <div class="panel-footer">
+
+
+
+                <div class="row">
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <div class="input-group tooltipAll" data-toggle="tooltip" title="From Date">
+
+                                <input type="text" name="FromDate" id="txtFromDateForPB" ng-model="FromDate" ng-change="SPSearch();" class="form-control " placeholder="From Date" readonly />
+                                <span class="input-group-addon" ng-click="FormDateChangeForPB()" id="FormDateChangeForPB"><i class="fa fa-calendar req-icon-color"></i></span>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <div class="input-group tooltipAll" data-toggle="tooltip" title="To Date">
+                                <input type="text" name="ToDate" id="txtToDateForPB" ng-model="ToDate" ng-change="SPSearch();" class="form-control " placeholder="To Date" readonly />
+                                <span class="input-group-addon" ng-click="ToDateChangeForPB()" id="ToDateChangeForPB"><i class="fa fa-calendar req-icon-color"></i></span>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-group tooltipAll" data-toggle="tooltip" title="Search Advance No And Employee Name">
+                            <input type="text" class="form-control" id="PBAndCompany" ng-model="SearchAdvanceNoAndEmployee" ng-change="SPSearch();" name="name" placeholder="Search Advance No And Employee Name" />
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+
+                    </div>
+                    <div class="col-md-2">
+                        <button id="btnSearch" ng-click="reloadBtnSP()" style="width:100%" class="btn btn-danger tooltipAll" title="Reload">
+                            <i class="fa fa-refresh"></i>&nbsp;Clear
+                        </button>
+                    </div>
+
+                </div>
+                <div class="row">
+
+                    <div class="col-md-12">
+
+
+                        <table class="responstable table-hover">
+                            <tr>
+                                <th>SL No.</th>
+                                <th class="t-cell-center">Advance Payment No</th>
+                                <th class="t-cell-center">Employee Name</th>
+                                <th class="t-cell-center">Payment Type</th>
+                                <th class="t-cell-center">Payment Date</th>
+                                <th class="t-cell-center"> Paid Amount</th>
+                                <th class="t-cell-center"> Remarks</th>
+                                <th class="t-cell-center">Action</th>
+
+                            </tr>
+                            <tbody>
+                                <tr class="HoverTable" dir-paginate="Advance in AdvanceToEmployeeGetPagedList | itemsPerPage: PerPage" current-page="currentPage" total-items="total_count" pagination-id="Payment">
+                                    <td class="t-cell-center">
+                                        {{$index + ((currentPage-1)*PerPage) + 1}}
+                                    </td>
+
+                                    <td class="t-cell-center">{{Advance.AdvancePaymentNo}}</td>
+                                    <td class="t-cell-center">{{Advance.EmployeeName}}</td>
+                                    <td class="t-cell-center">{{Advance.PaymentTypeName}}</td>
+                                    <td class="t-cell-center">{{Advance.PaymentDate}}</td>
+
+                                    <td class="t-cell-center">{{Advance.PaidAmount}}</td>
+                                    <td class="t-cell-center">{{Advance.Remarks}}</td>
+                                    <td class="t-cell-center" style="width:10%">
+                                        <button style="margin: 2px; width: 95%; color: black;" name="ReportBtn" ng-click="SelAdvanceToEmployee(Advance)">
+                                            <i title="Report" class="fa fa-edit" style="font-size:18px;"> </i> Edit
+
+                                        </button>
+                                        <button style="margin: 2px; width: 95%; color: black;" name="ReportBtn" ng-click="OpenReport(Advance)">
+                                            <i title="Report" class="fa fa-print" style="font-size:18px;"> </i> Report
+
+                                        </button>
+
+
+
+                                    </td>
+                                </tr>
+                                <tr class="t-foot" ng-show="total_count>PerPage">
+                                    <th colspan="10">
+                                        <dir-pagination-controls max-size="8"
+                                                                 direction-links="true"
+                                                                 boundary-links="true"
+                                                                 on-page-change="getData(newPageNumber)" style="text-align:center;"
+                                                                 pagination-id="Payment">
+                                        </dir-pagination-controls>
+                                    </th>
+                                </tr>
+                            </tbody>
+
+                        </table>
+                        <div class="row pagination-footer">
+                            <div class="col-md-6">
+                                <span>Show </span><input class="input-pagesize" type="number" ng-maxlength="100" ng-minlength="1" width="1" ng-model="PerPage"> <span>Records </span>
+                            </div>
+                            <div class="col-md-6">
+                                <span class="pull-right">Showing {{((currentPage-1)*PerPage)+1}} to {{((currentPage-1) * PerPage) + AdvanceToEmployeeGetPagedList.length}} of {{total_count}} Records</span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script>
+    $('.tooltipAll').tooltip({ boundary: 'window' })
+    $("#ddlEmployee").select2({
+        //placeholder: "Select Employee",
+        theme: "classic",
+        dropdownAutoWidth: false
+    });
+
+
+    $("#bankddl").select2({
+        placeholder: "Select Supplier Bank Name",
+        dropdownAutoWidth: false
+    });
+    //$("#bankddlPayerOnlinePayment").select2({
+    //    placeholder: "Select Payer Bank Name",
+    //    dropdownAutoWidth: false
+    //});
+    $("#bankddlPayerOnlinePayment1").select2({
+        placeholder: "Select Payer Bank Name",
+        dropdownAutoWidth: false
+    });
+    $("#bankddlPayerOnlinePayment2").select2({
+        placeholder: "Select Payer Bank Name",
+        dropdownAutoWidth: false
+    });
+    $("#bankddlSuppilerOnlinePayment").select2({
+        placeholder: "Select Supplier Bank Name",
+        dropdownAutoWidth: false
+    });
+
+    $("#bankddlPayOrderPayment").select2({
+        placeholder: "Select Bank Name",
+        dropdownAutoWidth: false
+    });
+
+
+
+    $("#ChequeTypeSelect2").select2();
+    $("#localAndImportPBId").select2();
+
+
+
+
+    //var picker1 = new Pikaday({
+    //    field: document.getElementById('supplierPaymentDate1'),
+    //    firstDay: 6,
+    //    format: "DD/MM/YYYY",
+    //    minDate: new Date('1930-01-01'),
+    //    maxDate: new Date('2050-12-31'),
+    //    yearRange: [1930, 2050],
+    //    theme: 'blue-theme'
+    //});
+    //document.getElementById("supplierPaymentDateCalender1").addEventListener("click", function () {
+    //    picker1.show();
+
+    //});
+
+
+    //var picker2 = new Pikaday({
+    //    field: document.getElementById('supplierPaymentDate'),
+    //    firstDay: 6,
+    //    format: "DD/MM/YYYY",
+    //    minDate: new Date('1930-01-01'),
+    //    maxDate: new Date('2050-12-31'),
+    //    yearRange: [1930, 2050],
+    //    theme: 'blue-theme'
+    //});
+    //document.getElementById("supplierPaymentDateCalender").addEventListener("click", function () {
+    //    picker2.show();
+
+    //});
+
+    //var picker3 = new Pikaday({
+    //    field: document.getElementById('txtChequeDate'),
+    //    firstDay: 6,
+    //    format: "DD/MM/YYYY",
+    //    minDate: new Date('1930-01-01'),
+    //    maxDate: new Date('2050-12-31'),
+    //    yearRange: [1930, 2050],
+    //    theme: 'blue-theme'
+    //});
+    //document.getElementById("txtChequecalender").addEventListener("click", function () {
+    //    picker3.show();
+
+    //});
+
+    var elements = document.getElementsByClassName("arrow-togglable");
+    var currentIndex = 0;
+
+    function newControl(e) {
+        elements = document.getElementsByClassName("arrow-togglable");
+        currentIndex = 0;
+        if (window.event.which == 40) {
+            currentIndex = ((currentIndex + 1) == elements.length) ? 0 : ++currentIndex;
+            elements[currentIndex].focus();
+        }
+        if (window.event.which == 38) {
+            currentIndex = (currentIndex == 0) ? elements.length - 1 : --currentIndex;
+            elements[currentIndex].focus();
+        }
+    }
+
+    function nextControlFromSugession(e) {
+        if (window.event.which == 40) {
+            currentIndex = ((currentIndex + 1) == elements.length) ? 0 : ++currentIndex;
+            elements[currentIndex].focus();
+        }
+        if (window.event.which == 38) {
+            currentIndex = (currentIndex == 0) ? elements.length - 1 : --currentIndex;
+            elements[currentIndex].focus();
+        }
+    }
+    function Hilitor2(id, tag) {
+        var targetNode = document.getElementById(id) || document.body;
+        var hiliteTag = tag || "EM";
+        var skipTags = new RegExp("^(?:" + hiliteTag + "|SCRIPT|FORM)$");
+        var colors = ["#ff6", "#a0ffff", "#9f9", "#f99", "#f6f"];
+        var wordColor = [];
+        var colorIdx = 0;
+        var matchRegex = "";
+        var openLeft = false;
+        var openRight = false;
+
+        this.setMatchType = function (type) {
+            switch (type) {
+                case "left":
+                    this.openLeft = false;
+                    this.openRight = true;
+                    break;
+
+                case "right":
+                    this.openLeft = true;
+                    this.openRight = false;
+                    break;
+
+                case "open":
+                    this.openLeft = this.openRight = true;
+                    break;
+
+                default:
+                    this.openLeft = this.openRight = false;
+
+            }
+        };
+
+        function addAccents(input) {
+            retval = input;
+            retval = retval.replace(/([ao])e/ig, "$1");
+            retval = retval.replace(/\\u00E[024]/ig, "a");
+            retval = retval.replace(/\\u00E7/ig, "c");
+            retval = retval.replace(/\\u00E[89AB]/ig, "e");
+            retval = retval.replace(/\\u00E[EF]/ig, "i");
+            retval = retval.replace(/\\u00F[46]/ig, "o");
+            retval = retval.replace(/\\u00F[9BC]/ig, "u");
+            retval = retval.replace(/\\u00FF/ig, "y");
+            retval = retval.replace(/\\u00DF/ig, "s");
+            retval = retval.replace(/a/ig, "([aÃ Ã¢Ã¤]|ae)");
+            retval = retval.replace(/c/ig, "[cÃ§]");
+            retval = retval.replace(/e/ig, "[eÃ¨Ã©ÃªÃ«]");
+            retval = retval.replace(/i/ig, "[iÃ®Ã¯]");
+            retval = retval.replace(/o/ig, "([oÃ´Ã¶]|oe)");
+            retval = retval.replace(/u/ig, "[uÃ¹Ã»Ã¼]");
+            retval = retval.replace(/y/ig, "[yÃ¿]");
+            retval = retval.replace(/s/ig, "(ss|[sÃŸ])");
+            return retval;
+        }
+
+        this.setRegex = function (input) {
+            input = input.replace(/\\([^u]|$)/g, "$1");
+            input = input.replace(/[^\w\\\s']+/g, "").replace(/\s+/g, "|");
+            input = input.replace(/^\||\|$/g, "");
+            input = addAccents(input);
+            if (input) {
+                var re = "(" + input + ")";
+                if (!this.openLeft) re = "(?:^|[\\b\\s])" + re;
+                if (!this.openRight) re = re + "(?:[\\b\\s]|$)";
+                matchRegex = new RegExp(re, "i");
+                return true;
+            }
+            return false;
+        };
+
+        this.getRegex = function () {
+            var retval = matchRegex.toString();
+            retval = retval.replace(/(^\/|\(\?:[^\)]+\)|\/i$)/g, "");
+            return retval;
+        };
+
+        // recursively apply word highlighting
+        this.hiliteWords = function (node) {
+            if (node === undefined || !node) return;
+            if (!matchRegex) return;
+            if (skipTags.test(node.nodeName)) return;
+
+            if (node.hasChildNodes()) {
+                for (var i = 0; i < node.childNodes.length; i++)
+                    this.hiliteWords(node.childNodes[i]);
+            }
+            if (node.nodeType == 3) { // NODE_TEXT
+                if ((nv = node.nodeValue) && (regs = matchRegex.exec(nv))) {
+                    if (!wordColor[regs[1].toLowerCase()]) {
+                        wordColor[regs[1].toLowerCase()] = colors[colorIdx++ % colors.length];
+                    }
+
+                    var match = document.createElement(hiliteTag);
+                    match.appendChild(document.createTextNode(regs[1]));
+                    match.style.backgroundColor = wordColor[regs[1].toLowerCase()];
+                    match.style.fontStyle = "inherit";
+                    match.style.color = "#000";
+
+                    var after;
+                    if (regs[0].match(/^\s/)) { // in case of leading whitespace
+                        after = node.splitText(regs.index + 1);
+                    } else {
+                        after = node.splitText(regs.index);
+                    }
+                    after.nodeValue = after.nodeValue.substring(regs[1].length);
+                    node.parentNode.insertBefore(match, after);
+                }
+            };
+        };
+
+        // remove highlighting
+        this.remove = function () {
+            var arr = document.getElementsByTagName(hiliteTag);
+            while (arr.length && (el = arr[0])) {
+                var parent = el.parentNode;
+                parent.replaceChild(el.firstChild, el);
+                parent.normalize();
+            }
+        };
+
+        // start highlighting at target node
+        this.apply = function (input) {
+            // this.remove();
+            if (input === undefined || !(input = input.replace(/(^\s+|\s+$)/g, ""))) return;
+            input = convertCharStr2jEsc(input);
+            if (this.setRegex(input)) {
+                this.hiliteWords(targetNode);
+            }
+        };
+
+        // added by Yanosh Kunsh to include utf-8 string comparison
+        function dec2hex4(textString) {
+            var hexequiv = new Array("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F");
+            return hexequiv[(textString >> 12) & 0xF] + hexequiv[(textString >> 8) & 0xF] + hexequiv[(textString >> 4) & 0xF] + hexequiv[textString & 0xF];
+        }
+
+        function convertCharStr2jEsc(str, cstyle) {
+            // Converts a string of characters to JavaScript escapes
+            // str: sequence of Unicode characters
+            var highsurrogate = 0;
+            var suppCP;
+            var pad;
+            var n = 0;
+            var outputString = '';
+            for (var i = 0; i < str.length; i++) {
+                var cc = str.charCodeAt(i);
+                if (cc < 0 || cc > 0xFFFF) {
+                    outputString += '!Error in convertCharStr2UTF16: unexpected charCodeAt result, cc=' + cc + '!';
+                }
+                if (highsurrogate != 0) { // this is a supp char, and cc contains the low surrogate
+                    if (0xDC00 <= cc && cc <= 0xDFFF) {
+                        suppCP = 0x10000 + ((highsurrogate - 0xD800) << 10) + (cc - 0xDC00);
+                        if (cstyle) {
+                            pad = suppCP.toString(16);
+                            while (pad.length < 8) {
+                                pad = '0' + pad;
+                            }
+                            outputString += '\\U' + pad;
+                        } else {
+                            suppCP -= 0x10000;
+                            outputString += '\\u' + dec2hex4(0xD800 | (suppCP >> 10)) + '\\u' + dec2hex4(0xDC00 | (suppCP & 0x3FF));
+                        }
+                        highsurrogate = 0;
+                        continue;
+                    } else {
+                        outputString += 'Error in convertCharStr2UTF16: low surrogate expected, cc=' + cc + '!';
+                        highsurrogate = 0;
+                    }
+                }
+                if (0xD800 <= cc && cc <= 0xDBFF) { // start of supplementary character
+                    highsurrogate = cc;
+                } else { // this is a BMP character
+                    switch (cc) {
+                        case 0:
+                            outputString += '\\0';
+                            break;
+                        case 8:
+                            outputString += '\\b';
+                            break;
+                        case 9:
+                            outputString += '\\t';
+                            break;
+                        case 10:
+                            outputString += '\\n';
+                            break;
+                        case 13:
+                            outputString += '\\r';
+                            break;
+                        case 11:
+                            outputString += '\\v';
+                            break;
+                        case 12:
+                            outputString += '\\f';
+                            break;
+                        case 34:
+                            outputString += '\\\"';
+                            break;
+                        case 39:
+                            outputString += '\\\'';
+                            break;
+                        case 92:
+                            outputString += '\\\\';
+                            break;
+                        default:
+                            if (cc > 0x1f && cc < 0x7F) {
+                                outputString += String.fromCharCode(cc);
+                            } else {
+                                pad = cc.toString(16).toUpperCase();
+                                while (pad.length < 4) {
+                                    pad = '0' + pad;
+                                }
+                                outputString += '\\u' + pad;
+                            }
+                    }
+                }
+            }
+            return outputString;
+        }
+    }
+</script>
+

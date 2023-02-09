@@ -1,0 +1,265 @@
+﻿<form name="cancelProcessEntryForm" novalidate>
+    <div class="col-md-12">
+        <div class="alert alert-info alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="topInfo"> &nbsp; &#9755; <span style="color:red;">Red Icon</span> Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp; &#9755; Click On A Table Row To Update/Delete</div>
+        </div>
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-share-alt"></i>&nbsp; Cancel Process</h3>
+            </div>
+           
+            <div class="panel-body" ng-show="CreatePermission">
+                <div class="row">
+
+                    <div class="col-md-3">
+                        <div class="tooltipAll" title="Screen Name">
+                            <div class="form-group " ng-class="{ 'has-error' : cancelProcessEntryForm.ddlscreen.$touched && cancelProcessEntryForm.ddlscreen.$invalid }">
+                                <div class="input-group input-group-md ddl">
+                                    <select ng-model="ddlscreen" id="ddlscreen" class="form-control selectMendatory" ng-change="DocumentGetById(ddlscreen)" name="ddlscreen" ng-options="aScreen.DocumentTypeName for aScreen in ScreenList track by aScreen.DocumentTypeId" required>
+                                        <option value="">Select Screen Name</option>
+                                    </select>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="tooltipAll" title="Company Name">
+                            <div class="form-group " ng-class="{ 'has-error' : cancelProcessEntryForm.ddlCompany.$touched && cancelProcessEntryForm.ddlCompany.$invalid }">
+                                <div class="input-group input-group-md ddl">
+                                    <select ng-model="ddlCompany" id="ddlCompany" class="form-control selectMendatory" ng-change="DocumentGetByCompanyId(ddlCompany)" name="ddlCompany" ng-options="aCom.CompanyName for aCom in companyList track by aCom.CompanyId" required>
+                                        <option value="" >Select Company Name</option>
+                                    </select>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                   
+                    <div class="col-md-3">
+                        <div class="tooltipAll" title="Document No">
+                            <div class="form-group " ng-class="{ 'has-error' : cancelProcessEntryForm.ddlDocument.$touched && cancelProcessEntryForm.ddlDocument.$invalid }">
+                                <div class="input-group input-group-md ddl">
+                                    <select id="ddlDocument" ng-model="ddlDocument" class="form-control selectMendatory" name="ddlDocument" ng-options="aDocument.DocumentNo for aDocument in DocumentList track by aDocument.DocumentId" required>
+                                        <option value="" >Document No</option>
+                                    </select>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-md-3">
+                        <div class="tooltipAll" title="Reason">
+                            <div class="form-group " ng-class="{ 'has-error' : cancelProcessEntryForm.ddlReason.$touched && cancelProcessEntryForm.ddlReason.$invalid }">
+                                <div class="input-group input-group-md ddl">
+                                    <select id="ddlReason" ng-model="ddlReason" class="form-control selectMendatory" name="ddlReason" ng-options="aReason.ReasonName for aReason in ReasonList track by aReason.ReasonId" required>
+                                        <option value="">Select Reason</option>
+                                    </select>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="row">
+
+                    <div class="col-md-3">
+                        <div class="tooltipAll" title="Informed by">
+                            <div class="form-group " ng-class="{ 'has-error' : cancelProcessEntryForm.ddlInformedby.$touched && cancelProcessEntryForm.ddlInformedby.$invalid }">
+                                <div class="input-group input-group-md ddl">
+                                    <select id="ddlInformedby" ng-model="ddlInformedby" class="form-control selectMendatory" name="ddlReason"  ng-options="employee.FullName +' ~ '+employee.DesignationName+' ~ '+employee.DepartmentName  for employee in employeeList track by employee.EmployeeId" required>
+                                        <option value="">Select Informed by</option>
+                                    </select>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="tooltipAll" title="Cancel Reason Details">
+                            <div class="form-group " ng-class="{ 'has-error' : cancelProcessEntryForm.BranchType.$touched && cancelProcessEntryForm.BranchType.$invalid }">
+                                <div class="input-group">
+                                    <textarea rows="1" class="form-control" ng-model="ad_CancelProcess.ReasonDetails" placeholder="Cancel Reason Details"></textarea>
+                                    <span class="input-group-addon"><i class="fa fa-text-width" style="color:red;"></i></span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="tooltipAll" title="Save">
+                                    <div class="form-group ">
+                                        <button ng-click="SaveCancel()" ng-disabled="!ddlInformedby || !ddlReason ||!ddlDocument || !ddlscreen || !ad_CancelProcess.ReasonDetails" style="width:100%" class="btn btn-success">Save </button>
+                                    </div>
+                                </div>
+                             
+                            </div>
+                            <div class="col-md-6">
+                                <div class="tooltipAll" title="Reset">
+                                    <div class="form-group " >
+                                        <button style="width:100%" ng-click="Reset()" class="btn btn-danger">Reset </button>
+                                    </div>
+                                </div>
+                               
+                            </div>
+                        </div>
+
+                    </div>
+                   
+                </div>
+            </div>
+               
+          
+        </div>
+    </div>
+    <div class="col-md-12" ng-show="ListViewPermission">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-list"></i>&nbsp;Module Cancel List</h3>
+            </div>
+            <div class="panel-body custom-panal-body">
+                <div class="row">
+                    <div class="col-md-5">
+
+                    </div>
+                    <!--<div class="col-md-1">
+        <div class="form-group ">
+            <div class="input-group">
+                <button style="width:100%" ng-click="ClearCancelProcess()" class="btn btn-danger tooltipAll" title="Clear">
+                    <i class="fa fa-refresh"></i>Clear
+                </button>
+            </div>
+        </div>
+    </div>-->
+                    <div class="col-md-3">
+                        <div class="tooltipAll" title="Search">
+
+                            <input class="form-control" id="SearchForCancel" ng-model="SearchForCancelModel" type="text" placeholder="Search...." />
+                            <!--<span class="input-group-addon"><i class="fa fa-search"></i></span>-->
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-2">
+                        <div class="tooltipAll" title="Search">
+                            <div class="form-group ">
+                                <button style="width:100%" ng-click="CancelProcessSearch()" class="btn btn-primary" title="Search">
+                                    <i class="fa fa-search"></i>Search
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <div class="tooltipAll" title="Clear">
+                            <div class="form-group ">
+                                <button style="width:100%" ng-click="ClearBtn()" class="btn btn-danger" title="Clear">
+                                    <i class="fa fa-search"></i>Clear
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                    <table class="responstable table-hover">
+                        <tbody>
+                            <tr>
+                                <th>S/N</th>
+                          
+                                <th class="txt-center">Document No</th>
+                                <th class="txt-center">Reason Name</th>
+                                <th class="txt-center">Informed By</th>
+                                <th class="txt-center">Cancel Details</th>
+                               
+                            </tr>
+                            <tr class="HoverTable" dir-paginate="aCan in CancelList | filter:q | itemsPerPage: PerPage" current-page="currentPage" total-items="total_count">
+                                <td>{{$index + ((currentPage-1)*PerPage) + 1}}</td>
+                                <td class="txt-center">{{aCan.DocumentNo}}</td>
+                                <td class="txt-center">{{aCan.ReasonName }}</td>
+                                <td class="txt-center">{{aCan.EmployeeName }}</td>
+                                <td class="txt-center">{{aCan.ReasonDetails }}</td>
+                                
+                            </tr>
+                            <tr class="t-foot" ng-show="total_count>PerPage">
+                                <th colspan="8">
+                                    <dir-pagination-controls max-size="8"
+                                                             direction-links="true"
+                                                             boundary-links="true"
+                                                             on-page-change="getData(newPageNumber)" style="text-align:center;">
+                                    </dir-pagination-controls>
+                                </th>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="row pagination-footer">
+                        <div class="col-md-6">
+                            <span>Show </span><input class="input-pagesize" type="number" ng-maxlength="100" ng-minlength="1" width="1" ng-model="PerPage"> <span>Records </span>
+                        </div>
+                        <div class="col-md-6">
+                            <span class="pull-right">Showing {{((currentPage-1)*PerPage)+1}} to {{((currentPage-1)*PerPage)+Branchlist.length}} of {{total_count}} Records</span>
+                        </div>
+                    </div>
+              
+            </div>
+        </div>
+    </div>
+</form>
+
+
+
+<script>
+    $('.tooltipAll').tooltip({ boundary: 'window' });
+
+    $("#ddlscreen").select2({
+     //   placeholder: "Select Screen Name",
+        theme: "classic",
+      
+        // allowClear: true
+    });
+    $("#ddlInformedby").select2({
+        //   placeholder: "Select Screen Name",
+        theme: "classic",
+
+        // allowClear: true
+    });
+    
+
+    $("#ddlCompany").select2({
+       // theme: "classic",
+       // placeholder: "Select Company Name",
+      //  allowClear: true,
+      
+    });
+
+    $("#ddlDocument").select2({
+      //  placeholder: "Select Document No",
+        theme: "classic",
+         //allowClear: true
+       
+    });
+
+    $("#ddlReason").select2({
+      //  placeholder: "Select Reason",
+        theme: "classic",
+        // allowClear: true
+       
+    });
+    
+  
+</script>

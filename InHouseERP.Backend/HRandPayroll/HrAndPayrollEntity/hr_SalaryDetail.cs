@@ -1,0 +1,96 @@
+using System;
+
+namespace HrAndPayrollEntity
+{
+    public class hr_SalaryDetail
+    {
+        public long SalaryDetailId { get; set; }
+        public long SalaryId { get; set; }
+        public int EmployeeId { get; set; }
+        public int SectionId { get; set; }
+        public int BranchId { get; set; }
+        public int MonthId { get; set; }
+        public int YearId { get; set; }
+        public int SerialNumber { get; set; }
+        public int SlNo { get; set; }
+        public int GradeId { get; set; }
+        public decimal CasualLeave { get; set; }
+        public decimal SickLeave { get; set; }
+        public decimal EarnLeave { get; set; }
+        public decimal CompensatoryLeave { get; set; }
+        public decimal FestivalHolidays { get; set; }
+        public decimal ReceivableSalary { get; set; }
+        public string EmployeeCode { get; set; }
+        public string SectionName { get; set; }
+        public string SectionIds { get; set; }
+        public string UnitNameParam { get; set; }
+        public string UnitName { get; set; }
+        public string GradeName { get; set; }
+        public string DepartmentIds { get; set; }
+        public decimal GrossSalary { get; set; }
+        public decimal AttendanceBonus { get; set; }
+        public decimal TotalWages { get; set; }
+        public decimal BasicSalary { get; set; }
+        public string MonthNameParam { get; set; }
+        public string BranchNameParam { get; set; }
+        public string DepartmentNameParam { get; set; }
+        public decimal HouseRent { get; set; }
+        public decimal MedicalAllowance { get; set; }
+        public decimal ConveyanceAllowance { get; set; }
+        public decimal LunchAllowance { get; set; }
+        public decimal OtHrs { get; set; }
+        public decimal OtRate { get; set; }
+        public decimal OtAmount { get; set; }
+        public decimal OtherAddition { get; set; }
+        public string OtherAdditionRemarks { get; set; }
+        public decimal TotalB4Deduction { get; set; }
+        public decimal TotalDays { get; set; }
+        public decimal WorkingDays { get; set; }
+        public decimal Attendance { get; set; }
+        public decimal WeeklyHolidays { get; set; }
+        public decimal PublicHolidays { get; set; }
+        public decimal AbsentDays { get; set; }
+        public decimal DeductionAbsent { get; set; }
+        public decimal DeductionProvFund { get; set; }
+        public decimal DeductionTDS { get; set; }
+        public decimal DeductionRevenueStamp { get; set; }
+        public decimal DeductionAdvanceSalary { get; set; }
+        public decimal OtherDeduction { get; set; }
+        public string OtherDeductionRemarks { get; set; }
+        public decimal NetPaymentBDT { get; set; }
+        public decimal TotalPayableSalary { get; set; }
+        public decimal NetPaymentUSD { get; set; }
+        public decimal SumOfTotalPayableSalary { get; set; }
+        public decimal SumOfNetPaymentBDT { get; set; }
+        public decimal SumOfNetPaymentUSD { get; set; }
+        public decimal GrandTotalPayableSalary { get; set; }
+        public decimal GrandNetPaymentBDT { get; set; }
+        public decimal GrandNetPaymentUSD { get; set; }
+        public decimal GrandDeductionProvFund { get; set; }
+        public decimal GrandDeductionAbsent { get; set; }
+        public decimal GrandGrossSalary { get; set; }
+        public bool IsPaid { get; set; }
+        public int? PaymentBy { get; set; }
+        public DateTime? PaymentDate { get; set; }
+        public string JoiningDate { get; set; }
+        public string FinishDate { get; set; }
+        public decimal? CashPayment { get; set; }
+        public decimal? BankPayment { get; set; }
+        public decimal? ChequePayment { get; set; }
+        public int? BankAccountId { get; set; }
+        public string GeneralRemarks { get; set; }
+        public bool IsEditedAfterPayment { get; set; }
+        public string EmployeeName { get; set; }
+        public string BranchName { get; set; }
+        public decimal TotalPaidAttendence { get; set; }
+        public string DepartmentName { get; set; }
+        public string DesignationName { get; set; }
+        public string FirstSignLabel { get; set; }
+        public string SecondSignLabel { get; set; }
+        public string ThirdSignLabel { get; set; }
+        public string FourthSignLabel { get; set; }
+        public string FifthSignLabel { get; set; }
+        public bool IsCash { get; set; }
+        public bool IsCheque { get; set; }
+    }
+}

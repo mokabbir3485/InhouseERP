@@ -1,0 +1,233 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+
+    <style type="text/css">
+
+        body {
+            font-family: "Times New Roman", Times, serif;
+            color: #000000;
+            height: auto;
+            font-size: 15px;
+        }
+
+        #MainTable td {
+            text-align: center;
+        }
+
+        @page {
+            size: A4;
+            margin: auto;
+            display: block;
+        }
+
+        .flexcontainer {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        #UpperTable td {
+            border-collapse: collapse;
+            padding: 5px;
+        }
+
+        #container {
+            width: 100%;
+            bottom: 0;
+            position: fixed !important;
+        }
+
+        #left {
+            float: left;
+            width: 100px;
+        }
+
+        #right {
+            float: right;
+            width: 100px;
+        }
+
+        #center {
+            margin: 0 auto;
+            width: 100px;
+        }
+
+        @media print {
+            #source-html {
+                page-break-after: avoid;
+                page-break-before: avoid;
+
+            }
+        }
+    </style>
+
+</head>
+<body>
+    <!--<page>-->
+    <table class="table" style="margin: auto !important;">
+        <tbody>
+            <tr>
+                <td>
+                    <div class="container hidden-print">
+                        <div class="col-sm-7 col-md-9">
+
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3 col-md-2">
+
+                            </div>
+                            <div class="col-sm-2 col-md-1">
+                                <button type="button" onclick="PrintPdf();" class="customBtn custmoBtnReset" style="border-radius: 3px; margin-bottom: -.9em; margin-top: -15px; padding-bottom: 3px; padding-top: 3px;" title="Print To .PDF">
+                                    <i class="fa fa-print"></i>&nbsp;Print
+                                </button>
+                            </div>
+
+
+                        </div>
+                        <br />
+                    </div>
+
+                    <div id="source-html">
+
+
+                        <table id="heading" style="text-align: center;margin-left:auto;margin-right:auto;">
+
+                            <tr>
+                                <td>
+                                </td>
+                                <td>
+                                    <!--<p style="font-size: 30px;line-height: 1; margin : 0; padding : 0 ; font-weight: bold;"><strong>Retail Technologies Limited</strong></p>-->
+
+
+                                    <span style="font-size: 18px; line-height: 1; margin: 0; padding: 0;"><i><u><b>Stock Transfer Log Report</b></u></i></span>
+                                    <br />
+                                    <span style="font-size: 14px; line-height: 1; margin:0px; padding: 0;"> From Date : {{DropdowanObj.ToDate}} - To Date : {{DropdowanObj.FromDate}} </span>
+                                </td>
+                            </tr>
+                        </table>
+
+
+                        <table style="width:100%">
+                            <tr>
+                                <td style="width:30%">
+                                    <span style="font-size: 14px; line-height: 1; margin: 0; padding: 0;"><b>From Store:  </b>{{DropdowanObj.DepartmentName}}</span>
+                                    <!--<span style="font-size: 14px; line-height: 1; margin: 0; padding: 0; " ng-if="DropdowanObj.FromDate"><b>As On Date:  </b>{{DropdowanObj.FromDate}}</span>
+    <br />
+    <span style="font-size: 14px; line-height: 1; margin: 0; padding: 0;" ng-if="DropdowanObj.DepartmentName"><b>Store:  </b>{{DropdowanObj.DepartmentName}}</span>-->
+                                </td>
+                                <!--<td style="width:30%;text-align:center">
+
+                                </td>-->
+
+                                <td style="width: 70%;text-align:right" ng-if="DropdowanObj.Remarks">
+                                    <br />
+                                    Remarks: {{DropdowanObj.Remarks}}
+                                </td>
+
+
+                            </tr>
+                        </table>
+
+
+
+
+                        <div ng-repeat="aStockStatus in StockStatusListForReport track by $index">
+
+                            <table id="MainTable" border="1" width="100%" align="center">
+
+                                <tr>
+                                    <th> <span> ({{$index +1 }}) </span> - <span> </span>  <span><b>  Material : {{aStockStatus.MaterialTypeName}}</b> </span> </th>
+
+                                </tr>
+
+                                <tr>
+                                    <td style="border:none !important;">
+                                        <table id="MainTable" border="1" width="100%" style="border-right:none !important;border-bottom:none !important">
+
+                                            <tr>
+
+                                                <td class="text-center" style="width: 70%; border: none !important;">
+                                                    <table id="MainTable" style="border-top: none; " border="1" width="100%" align="center">
+                                                        <tr>
+                                                            <th>
+                                                                SL.
+                                                            </th>
+
+                                                            <th style="padding:0px;text-align:left" >
+                                                                <span style="margin-left: 2px; text-align: left !important"> Item Name</span>
+                                                            </th>
+
+                                                            <th class="text-center" style="padding:0px;">
+                                                                From Store
+                                                            </th>
+                                                            <th class="text-center" style="padding:1px;">
+                                                                To Store
+                                                            </th>
+                                                            <th class="text-center" style="padding:0px;">
+                                                                Transfer Date
+                                                            </th>
+                                                            <th class="text-center" style="padding:0px;">
+                                                                Transfer Type
+                                                            </th>
+
+                                                            <th class="text-center" style="padding:0px;">
+                                                                Quantity
+                                                            </th>
+
+                                                        </tr>
+
+                                                        <tr ng-repeat="aStockStatus in aStockStatus.DataList track by $index">
+
+                                                            <td class="text-center" style="padding:0px;">{{$index +1}}</td>
+
+                                                            <td style="padding: 0px; text-align: left">
+
+                                                                <span style="margin-left: 5px; text-align:left !important">  {{aStockStatus.ItemName}} </span>
+                                                            </td>
+                                                            <td class="text-center" style="padding:0px;">{{aStockStatus.FromDepartment}}</td>
+                                                            <td class="text-center" style="padding:1px;">{{aStockStatus.ToDepartment}}</td>
+                                                            <td class="text-center" style="padding:0px;">{{aStockStatus.StockTransferDate}}</td>
+                                                            <td class="text-center" style="padding:0px;">{{aStockStatus.TransferType}}</td>
+                                                            <td class="text-center" style="padding:0px;">{{aStockStatus.IssueQuantity}}</td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+
+                            </table>
+
+                        </div>
+
+                        <br />
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+
+    <script type="text/javascript">
+     
+        function PrintPdf() {
+            window.print();
+        }
+        jQuery(document).ready(function ($) {
+
+            $(".main-sidebar").attr("hidden", true);
+            $(".main-header").attr("hidden", true);
+            $(".main-footer").attr("hidden", true);
+            $("#Hidebr").attr("hidden", true);
+
+            $("div").removeClass("wrapper");
+            $("div").removeClass("content-wrapper");
+        });
+
+
+    </script>
+</body>
+
+</html>

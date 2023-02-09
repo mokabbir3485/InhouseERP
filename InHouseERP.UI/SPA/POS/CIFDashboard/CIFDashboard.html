@@ -1,0 +1,293 @@
+﻿<!--<link href="../../../Content/bootstrap-datetimepicker.css" rel="stylesheet" />-->
+<form name="CIFDashboardForm" novalidate>
+    <div class="col-md-12">
+        <div class="alert alert-info alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="topInfo"> &nbsp; &#9755; <span style="color:red;">Red Icon</span> Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp; &#9755; Click On A Table Row To Update</div>
+        </div>
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-shield"></i>&nbsp;Customer Information Formation Dashboard</h3>
+                <div class="clearfix">
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <div class="input-group " data-toggle="tooltip" title="From Date">
+                                <input type="text" name="FromDate" id="txtFromDateForSD" ng-model="FromDate" ng-change="" class="form-control " placeholder="From Date" readonly />
+                                <span class="input-group-addon" ng-click="FormDateChangeForSD()" id="FormDateChange"><i class="fa fa-calendar-times-o"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <div class="input-group " data-toggle="tooltip" title="To Date">
+                                <input type="text" name="ToDate" id="txtToDateForSD" ng-model="ToDate" ng-change="" class="form-control " placeholder="To Date" readonly />
+                                <span class="input-group-addon" ng-click="ToDateChangeForSD();" id="ToDateChange"><i class="fa fa-calendar-times-o"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group" ng-class="{ 'has-error' : CIFDashboardForm.ddlDashboardType.$dirty && CIFDashboardForm.ddlDashboardType.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Dashboard Type">
+                            <div class="input-group input-group-md ddl">
+                                <select ng-model="ddlDashboardType" name="ddlDashboardType" class="form-control selectMendatory" ng-change="onDivShowGetById(ddlDashboardType.DashboardTypeId)" ng-options="dashboardType.DashboardTypeName for dashboardType in DashboardTypeList track by dashboardType.DashboardTypeId" required>
+                                    <option value="" label="Select Dashboard Type"></option>
+                                </select>
+                                <span class="help-block" ng-show="CIFDashboardForm.ddlDashboardType.$dirty && CIFDashboardForm.ddlDashboardType.$invalid">Dashboard Type is required</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="form-group" ng-class="{ 'has-error' : CIFDashboardForm.CompanyEmployee.$dirty && CIFDashboardForm.CompanyEmployee.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Company or Employee">
+                            <div class="input-group input-group-md ddl">
+                                <select id="ddlCompanyEmployee" ng-model="ddlCompanyEmployee" name="CompanyEmployee" class="form-control selectMendatory" ng-options="CompanyEmployee.Name for CompanyEmployee in CompanyEmployeeList track by CompanyEmployee.Id" required>
+                                    <option value="" label="-- Select Company or Employee --"></option>
+                                </select>
+                                <span class="help-block" ng-show="CIFDashboardForm.CompanyEmployee.$dirty && CIFDashboardForm.CompanyEmployee.$invalid">Company Employee Name is required</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-1">
+                        <button class=" btn btn-primary" ng-click="onLoadBtn()" ng-disabled="!ddlCompanyEmployee || !ddlDashboardType">Load </button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table class="responstable table-hover">
+                                <tr>
+                                    <th class="t-cell-center"></th>
+                                    <th class="t-cell-center">SL.No</th>
+                                    <th class="t-cell-center">Company Name</th>
+                                    <th class="t-cell-center">Ref.Employee</th>
+                                    <th class="t-cell-center">Contact Person</th>
+                                    <th class="t-cell-center">Action</th>
+                                </tr>
+                                <tbody ng-repeat="aCIF in CIFDashboardList">
+
+                                    <tr>
+                                        <td class="t-cell-center"><label><i ng-show="!aCIF.DisplaySta" class="fa fa-plus-square"></i><i ng-show="aCIF.DisplaySta" class="fa fa-minus-square"></i><input style="visibility:hidden;" type="checkbox" ng-model="aCIF.DisplaySta" /></label></td>
+                                        <td class="t-cell-center">{{$index+1}}</td>
+                                        <td class="t-cell-center">{{aCIF.CompanyName}}</td>
+                                        <td class="t-cell-center">{{aCIF.RefEmployeeName}}</td>
+                                        <td class="t-cell-center">{{aCIF.ContactPerson}}</td>
+                                        <td class="t-cell-center">
+                                            <button class="btn btn-sm" style="background-color:#99e6ff;color:black;" title="Report View"
+                                                    ng-click="CIFReportBtn(aCIF.events[0].CompanyId)">
+                                                <i class="fa fa-print" aria-hidden="true"></i> Report
+                                            </button>
+                                            <button class="btn btn-sm" style="background-color:#99e6ff;color:black;" title="Make Payment" ng-click="">
+                                                <i class="fa fa-paper-plane" aria-hidden="true"></i> Payment
+                                            </button>
+                                            <button class="btn btn-sm" style="background-color:#99e6ff;color:black;" title="Company Info." ng-click="CompanyInfoModal(aCIF.events[0].CompanyId)">
+                                                <i class="fa fa-info-circle" aria-hidden="true"></i> C.Info
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr ng-click="$event.stopPropagation();" ng-show="aCIF.DisplaySta">
+                                        <td></td>
+                                        <td colspan="6">
+                                            <table class="responstable table-hover">
+                                                <tr>
+                                                    <th class="t-cell-center"></th>
+                                                    <th>SL.No</th>
+                                                    <th class="t-cell-center">SalesOrder No</th>
+                                                    <th class="t-cell-center">SalesOrder Date</th>
+                                                    <th class="t-cell-center">Company Name</th>
+                                                </tr>
+                                                <tbody ng-repeat="aSalesOrder in aCIF.events">
+                                                    <tr>
+                                                        <td class="t-cell-center"><label><i ng-show="!aSalesOrder.DisplaySta2" class="fa fa-plus-square"></i><i ng-show="aSalesOrder.DisplaySta2" class="fa fa-minus-square"></i><input style="visibility:hidden;" type="checkbox" ng-model="aSalesOrder.DisplaySta2" ng-change="GetCIFDetail(aSalesOrder.SalesOrderId);AutoCollaseSalesOrder(aSalesOrder);" /></label></td>
+                                                        <td>{{$index+1}}</td>
+                                                        <td class="t-cell-center">{{aSalesOrder.SalesOrderNo}}</td>
+                                                        <td class="t-cell-center">{{aSalesOrder.SalesOrderDate}}</td>
+                                                        <td class="t-cell-center">{{aSalesOrder.CompanyName}}</td>
+                                                    </tr>
+                                                    <tr ng-if="aSalesOrder.DisplaySta2">
+                                                        <td></td>
+                                                        <td colspan="7">
+                                                            <table class="responstable table-hover">
+                                                                <tr>
+                                                                    <th>SL.No</th>
+                                                                    <th class="t-cell-center">Size</th>
+                                                                    <th class="t-cell-center">Code</th>
+                                                                    <th class="t-cell-center">Material</th>
+                                                                    <th class="t-cell-center">Core</th>
+                                                                    <th class="t-cell-center">Roll Direction</th>
+                                                                    <th class="t-cell-center">Qty Per Roll</th>
+                                                                    <th class="t-cell-center">Unit</th>
+                                                                    <th class="t-cell-center">Order Qty.</th>
+                                                                    <th class="t-cell-center">Order Price(BDT)</th>
+                                                                </tr>
+                                                                <tr ng-repeat="aSalesOrderDetail in SalesOrderDetailList">
+                                                                    <td>{{$index+1}}</td>
+                                                                    <td class="t-cell-center">{{aSalesOrderDetail.Size}}</td>
+                                                                    <td class="t-cell-center">{{aSalesOrderDetail.ItemCode}}</td>
+                                                                    <td class="t-cell-center">{{aSalesOrderDetail.MaterialTypeCode}}</td>
+                                                                    <td class="t-cell-center">{{aSalesOrderDetail.Core}}</td>
+                                                                    <td class="t-cell-center">{{aSalesOrderDetail.RollDirection}}</td>
+                                                                    <td class="t-cell-center">{{aSalesOrderDetail.QtyPerRoll}}</td>
+
+                                                                    <td class="t-cell-center">{{aSalesOrderDetail.UnitName}}</td>
+                                                                    <td class="t-cell-center">{{aSalesOrderDetail.OrderQty}}</td>
+                                                                    <td class="t-cell-center">{{aSalesOrderDetail.OrderPriceBDT}}</td>
+                                                                </tr>
+                                                            </table>
+
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+
+                                            </table>
+
+                                        </td>
+                                    </tr>
+
+
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+                <!--<div class="row">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table class="responstable table-hover">
+                                <tr>
+                                    <th class="t-cell-center"></th>
+                                    <th class="t-cell-center">SL.No</th>
+                                    <th class="t-cell-center">Company Name</th>
+                                    <th class="t-cell-center">Ref.Employee</th>
+                                    <th class="t-cell-center">Contact Person</th>
+                                    <th class="t-cell-center">Action</th>
+                                </tr>
+                                <tbody ng-repeat="aCIF in CIFDashboardList  ">
+
+                                    <tr>
+                                        <td class="t-cell-center"><label><i ng-show="!aCIF.DisplaySta" class="fa fa-plus-square"></i><i ng-show="aCIF.DisplaySta" class="fa fa-minus-square"></i><input style="visibility:hidden;" type="checkbox" ng-model="aCIF.DisplaySta" /></label></td>
+                                        <td class="t-cell-center">{{$index+1}}</td>
+                                        <td class="t-cell-center">{{aCIF.CompanyName}}</td>
+                                        <td class="t-cell-center">{{aCIF.RefEmployeeName}}</td>
+                                        <td class="t-cell-center">{{aCIF.ContactPerson}}</td>
+                                        <td class="t-cell-center">
+                                            <button class="btn btn-success"
+                                                    ng-click="CIFReportBtn(aCIF.events[0].CompanyId)">
+                                                Report
+                                            </button>
+                                        </td>
+
+                                    </tr>
+                                    <tr ng-click="$event.stopPropagation();" ng-show="aCIF.DisplaySta">
+                                        <td></td>
+                                        <td colspan="6">
+                                            <table class="responstable table-hover">
+                                                <tr>
+                                                    <th>SL.No</th>
+                                                    <th class="t-cell-center">Size</th>
+                                                    <th class="t-cell-center">ERP Code</th>
+                                                    <th class="t-cell-center">Material</th>
+                                                    <th class="t-cell-center">Core</th>
+                                                    <th class="t-cell-center">Qty Per Roll</th>
+                                                    <th class="t-cell-center">Roll Direction</th>
+                                                    <th class="t-cell-center">Price Per PCS</th>
+                                                </tr>
+                                                <tr ng-repeat="aCIFDetail in aCIF.events">
+                                                    <td>{{$index+1}}</td>
+                                                    <td class="t-cell-center">{{aCIFDetail.Size}}</td>
+                                                    <td class="t-cell-center">{{aCIFDetail.ItemCode}}</td>
+                                                    <td class="t-cell-center">{{aCIFDetail.MaterialCode}}</td>
+                                                    <td class="t-cell-center">{{aCIFDetail.Core}}</td>
+                                                    <td class="t-cell-center">{{aCIFDetail.QtyPerRoll}}</td>
+                                                    <td class="t-cell-center">{{aCIFDetail.RollDirection}}</td>
+                                                    <td class="t-cell-center">{{aCIFDetail.PricePerPCS}}</td>
+                                                </tr>
+                                            </table>
+
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>-->
+
+            </div>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="modal" id="CompanyInfoModal" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="modal-header">
+                                    <h3 class="modal-title text-primary">Company Infomation</h3>
+
+                                </div>
+                            </div>
+                            <div class="col-md-4 text-center">
+                                <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>-->
+                            </div>
+                        </div>
+
+
+                        <div class="modal-body">
+                            <table class="responstable table-hover table-bordered">
+                                <tr>
+                                    <th style="text-align:center">Company</th>
+                                    <th style="text-align:center">Type</th>
+                                    <th style="text-align:center">Billing</th>
+                                    <th style="text-align:center">Ref.Employee</th>
+                                    <th style="text-align:center">Ref.Contact</th>
+                                    <th style="text-align:center">Ref.Email</th>
+                                    <th style="text-align:center">Contact Person</th>
+                                    <th style="text-align:center">Designation</th>
+                                    <th style="text-align:center">Con.Mobile</th>
+                                    <th style="text-align:center">Con.Email</th>
+
+                                </tr>
+                                <tr>
+                                    <td style="text-align:center">{{CompanyInfo.CompanyName}}</td>
+                                    <td style="text-align:center">{{CompanyInfo.CompanyTypeName}}</td>
+                                    <td style="text-align:center">{{CompanyInfo.AddressBilling}}</td>
+                                    <td style="text-align:center">{{CompanyInfo.RefEmployeeName}}</td>
+                                    <td style="text-align:center">{{CompanyInfo.RefContactNo}}</td>
+                                    <td style="text-align:center">{{CompanyInfo.RefEmail}}</td>
+                                    <td style="text-align:center">{{CompanyInfo.ContactPerson}}</td>
+                                    <td style="text-align:center">{{CompanyInfo.ContactDesignation}}</td>
+                                    <td style="text-align:center">{{CompanyInfo.Mobile}}</td>
+                                    <td style="text-align:center">{{CompanyInfo.Email}}</td>
+
+                                </tr>
+
+                            </table>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" ng-click="ModalClose()" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</form>
+<script>
+    $('#ddlCompanyEmployee').select2({
+        placeholder: "Select Company/Employee/Item",
+        theme: "classic",
+        dropdownAutoWidth: false
+    });
+</script>

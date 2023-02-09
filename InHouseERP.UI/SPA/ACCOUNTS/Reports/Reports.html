@@ -1,0 +1,178 @@
+﻿<style>
+    .responstable th:nth-child(2) {
+        width: 10% !important;
+    }
+
+    .ui-datepicker-calendar {
+        display: none;
+    }
+</style>
+<form name="AccountsReportUI" novalidate>
+    <div class="col-md-4">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-group"></i>&nbsp;Accounts Report UI </h3>
+            </div>
+            <div class="panel-body">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div>
+                            <div class="radio-inline">
+                                <label>
+                                    <input type="radio" name="AccountsReport" ng-click="TypesOfReport()" value="Ledger" ng-model="ReportType">Ledger
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div>
+
+                            <div class="radio-inline">
+                                <label>
+                                    <input type="radio" name="AccountsReport" ng-click="TypesOfReport()" value="ChartOfAccount" ng-model="ReportType">Chart Of Account
+                                </label>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-8" ng-if="ReportType == 'Ledger'">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-group"></i>&nbsp;Ledger Report UI</h3>
+            </div>
+            <div class="panel-body">
+                <div>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="input-group">
+                                        <input type="text" id="textToDate" ng-model="ExportEmportReport.FromDate" name="formDate" class="form-control" placeholder="Form Date" maxlength="51" ng-maxlength="50" required readonly disabled>
+                                        <span class="input-group-addon"><i class="fa fa-calendar req-icon-color"></i></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="input-group">
+                                        <input type="text" id="textFormDate" ng-model="ExportEmportReport.ToDate" name="toDate" class="form-control" placeholder="To Date" maxlength="51" ng-maxlength="50" required readonly disabled>
+                                        <span class="input-group-addon"><i class="fa fa-calendar req-icon-color"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-md-4">
+                            <div class="row">
+                                <div class="col-md-12">
+
+                                    <select ng-if="balanceReportflageHideAndShow" class="form-control" ng-model="ddlImport" ng-options="imp.Name for imp in  ImportReportRecorType track by imp.Id" ng-change="ImportAndExportReportModel.Name=ddlImport.Name;ImportAndExportReportModel.Id=ddlImport.Id">
+                                        <option value=""> --Select Export Record Type---</option>
+
+                                    </select>
+
+                                </div>
+
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-3" style="text-align:left">
+                            <button class="btn btn-primary" ng-click="reportBtn()">
+                                <i title="Report" class="fa fa-print" style="font-size:18px;"> </i> Report View
+                            </button>
+                        </div>
+
+                        <div class="col-md-9">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8" ng-if="ReportType == 'ChartOfAccount'">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-group"></i>&nbsp;Chart Of Account Report UI</h3>
+            </div>
+            <div class="panel-body">
+                <div>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="input-group">
+                                        <input type="text" id="textToDate" ng-model="ExportEmportReport.FromDate" name="formDate" class="form-control" placeholder="Form Date" maxlength="51" ng-maxlength="50" required readonly disabled>
+                                        <span class="input-group-addon"><i class="fa fa-calendar req-icon-color"></i></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="input-group">
+                                        <input type="text" id="textFormDate" ng-model="ExportEmportReport.ToDate" name="toDate" class="form-control" placeholder="To Date" maxlength="51" ng-maxlength="50" required readonly disabled>
+                                        <span class="input-group-addon"><i class="fa fa-calendar req-icon-color"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-md-4">
+                            <div class="row">
+                                <div class="col-md-12">
+
+                                    <select ng-if="balanceReportflageHideAndShow" class="form-control" ng-model="ddlImport" ng-options="imp.Name for imp in  ImportReportRecorType track by imp.Id" ng-change="ImportAndExportReportModel.Name=ddlImport.Name;ImportAndExportReportModel.Id=ddlImport.Id">
+                                        <option value=""> --Select Export Record Type---</option>
+
+                                    </select>
+
+                                </div>
+
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-3" style="text-align:left">
+                            <button class="btn btn-primary" ng-click="reportBtn()">
+                                <i title="Report" class="fa fa-print" style="font-size:18px;"> </i> Report View
+                            </button>
+                        </div>
+
+                        <div class="col-md-9">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</form>
+
+<script>
+    function RowSelect(e) {
+        $('.searchRow').css('background-color', '');
+        $(e).css('background-color', '#94d5ef');
+    }
+
+
+
+
+    //////////////////////////////////////////////////////////
+
+    $("#calender2CIF").click(function () {
+        $("#txtToDateCIF").val('');
+    });
+    $("#calender1CIF").click(function () {
+        $("#txtFromDateCIF").val('');
+    });
+</script>

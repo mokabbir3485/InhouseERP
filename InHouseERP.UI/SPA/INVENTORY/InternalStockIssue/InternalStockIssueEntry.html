@@ -1,0 +1,723 @@
+﻿<form name="issueEntryForm" novalidate>
+    <div class="col-md-12">
+        <div class="alert alert-info alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="topInfo"> &nbsp; &#9755; <span style="color:red;">Red Icon</span> Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp; &#9755; Click On A Table Row To Update/Delete</div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-list"></i>&nbsp;Internal Stock Issue</h3>
+            </div>
+
+            <div class="panel-body">
+                <div>
+
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group" data-toggle="tooltip" data-placement="bottom">
+                                        <div class="input-group">
+
+                                            <input type="text" name="FromDate" id="txtIssueDate" ng-model="inv_InternalStockIssue.IssueDate" class="form-control issueToltip" placeholder="Issue Date" readonly title="Issue Date" />
+                                            <span class="input-group-addon" ng-click="IssueDateChangeFor()" id="IssueDateChangeFor"><i class="fa fa-calendar req-icon-color"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group" ng-class="{ 'has-error' : issueEntryForm.IssueNo.$invalid && issueEntryForm.IssueNo.$touched }" data-toggle="tooltip" data-placement="bottom">
+                                        <div class="input-group ">
+                                            <input type="text" id="txtIssueNo" name="IssueNo" class="form-control issueToltip" ng-model="inv_InternalStockIssue.IssueNo" placeholder="Issue No" maxlength="100" ng-maxlength="100" readonly required title="Issue No">
+                                            <span class="input-group-addon"><i class="fa fa-text-width req-icon-color"></i></span>
+                                        </div>
+                                        <span class="help-block" style="display: block;" ng-if="issueEntryForm.IssueNo.$error.required && issueEntryForm.IssueNo.$touched">Issue No. is required</span>
+                                        <span class="help-block" style="display: block;" ng-if="issueEntryForm.IssueNo.$error.maxlength">10 Character Max</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group input-group-md ddl" data-toggle="tooltip" data-placement="bottom">
+
+                                <div class="input-group width-hundred-percent">
+                                    <div class="issueToltip" title="From Store">
+                                        <select ng-model="ddlDepartment" id="ddlDepartment" class="form-control selectMendatory" name="Department" ng-change="inv_InternalStockIssue.IssueFromDepartmentId=ddlDepartment.DepartmentId;inv_InternalStockIssue.IssueFromDepartmentName=ddlDepartment.DepartmentName;GetByCombinationLike()" ng-options="department.DepartmentName  for department in DepartmentList track by department.DepartmentId">
+                                            <option value=""> --From Store--</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group" ng-class="{ 'has-error' : issueEntryForm.ddlIssuedBy.$dirty && issueEntryForm.ddlIssuedBy.$invalid }" data-toggle="tooltip" data-placement="bottom">
+                                <div class="issueToltip" title="Issued By">
+                                    <div class="input-group input-group-md ddl">
+                                        <select id="ddlIssuedBy" ng-model="ddlIssuedBy" class="form-control selectMendatory" ng-change=" inv_InternalStockIssue.IssuedById =ddlIssuedBy.EmployeeId; inv_InternalStockIssue.IssuedBy =ddlIssuedBy.FullName;" ng-options="employee.FullName  +' ~ '+employee.DesignationName+' ~ '+employee.DepartmentName for employee in EmployeeList track by employee.EmployeeId" name="ddlIssuedBy" required>
+                                            <option value="" >Issued By</option>
+                                        </select>
+                                    </div>
+                                    <span class="help-block" ng-show="issueEntryForm.ddlIssuedBy.$dirty && issueEntryForm.ddlIssuedBy.$invalid">Issued By is required</span>
+                                </div>
+
+                            </div>
+                        </div>
+                        <!--<div class="col-md-3">
+
+        <div class="input-group input-group-md ddl" data-toggle="tooltip" data-placement="bottom">
+            <div class="issueToltip" title="To Store">
+                <select id="ddlStore" ng-model="ddlStore" class="form-control selectMendatory" name="Store" ng-change="inv_InternalStockIssue.IssueToDepartmentId=ddlStore.DepartmentId;inv_InternalStockIssue.IssueToDepartmentName=ddlStore.DepartmentName" ng-options="store.DepartmentName for store in Storelist track by store.DepartmentId">
+                    <option value="">--To Store--</option>
+                </select>
+            </div>
+        </div>
+    </div>-->
+                    </div>
+                    <div class="row">
+
+                        
+                        <div class="col-md-3">
+                        
+                            <div class="form-group" ng-class="{ 'has-error' : issueEntryForm.Category.$dirty && issueEntryForm.Category.$invalid }">
+                                <div class="issueToltip" title="Select Category">
+                                    <div class="input-group input-group-md ddl issueToltip" data-toggle="tooltip" data-placement="bottom">
+                                        <select ng-model="ddlCategory" class="form-control " name="Category" id="cmbCategory" ng-options="category.CategoryName for category in CategoryList track by category.CategoryId" ng-change="CheckPurchaseTypeFlag(ddlCategory)" required autofocus>
+                                            <option value="" >Select Category</option>
+                                        </select>
+                                    </div>
+                                    <span class="help-block" ng-show="issueEntryForm.Category.$dirty && issueEntryForm.Category.$invalid">Category is required</span>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-md-3">
+
+                            <div class="form-group" data-toggle="tooltip" data-placement="bottom">
+                                <div class="input-group width-hundred-percent issueToltip" title="Item Name ~ Description ~ Sub Category">
+                                    <select id="InternalIssueSelectitemName" ng-model="ItemSearchCombination" ng-change="CheckStock()" ng-disabled="!ddlDepartment" name="itemName" class="form-control " ng-options="aCombination.ItemName+' ~ '+aCombination.ItemDescription+' ~ '+ aCombination.ItemCode+' ~ '+ aCombination.SubCategoryName  for aCombination  in ItemCombinationList track by aCombination.ItemId">
+
+                                        <option value=""> Item Name ~ Description ~ Sub Category</option>
+                                    </select>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="issueToltip" title="Material Type">
+                                <select ng-model="ddlmatrialPaperType" ng-disabled="!ItemSearchCombination" class="form-control " name="ddlmatrialPaperType" id="ddlmatrialPaperType" ng-change="CheckStock()" ng-options="paper.Combination for paper in matrialPaperTypeList track by paper.MaterialTypeId">
+                                    <option value="">--Material Type--</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="input-group ">
+                                <input type="text" id="txtIssueNo" name="IssueNo" class="form-control issueToltip" ng-model="inv_InternalStockIssue.CurrentStock" placeholder="0.00" maxlength="100" ng-maxlength="100" readonly required title="Current Stock">
+                                <span class="input-group-addon">{{inv_InternalStockIssue.StockUnitName}}</span>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="input-group input-group-md ddl issueToltip" style="color:gray;" title="Item Unit">
+                                <select class="form-control selectMendatory" ng-model="ddlMu" name="Unit" ng-options="unit.UnitName for unit in ItemUnitlist track by unit.ItemUnitId" >
+                                    <option value="">--Select Unit--</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group" data-toggle="tooltip" data-placement="bottom">
+                                <div class="input-group">
+                                    <input type="number" id="txtPurchasePrice" class="form-control txt-center issueToltip" ng-model="InternalStockIssueDetail.Quantity" maxlength="10" placeholder="0.00 " required title="Quantity">
+                                    <span class="input-group-addon"> <i class="fa fa-bell" style="color:red;"></i></span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-md-9">
+
+                        </div>
+                        <div class="col-md-3">
+                            <button ng-click="AddInternalStock()" class="btn btn-primary" style="width:100%"> <i class="fa fa-plus-circle"></i> Add</button>
+                        </div>
+                      
+                    </div>
+                    <br />
+                    <div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <table class="responstable table-hover">
+                                    <tr>
+                                        <th class="t-cell-center">SL.No</th>
+
+                                        <th class="t-cell-center">Item Name</th>
+                                        <th class="t-cell-center">Paper Type Name</th>
+
+
+                                        <th class="t-cell-center">Unit Name</th>
+
+                                        <th class="t-cell-center">Issued Quantity</th>
+                                        <th class="t-cell-center">Action</th>
+
+                                    </tr>
+                                    <tbody ng-repeat="aIssue in InternalStockIssueDetailList track by $index">
+                                        <tr>
+                                            <td class="t-cell-center">{{$index+1}}</td>
+                                            <td class="t-cell-center">{{aIssue.ItemCombinationName}}</td>
+                                            <td class="t-cell-center">{{aIssue.MaterialTypeName}}</td>
+                                            <td class="t-cell-center">{{aIssue.UnitName}}</td>
+                                            <td class="t-cell-center">{{aIssue.Quantity}}</td>
+                                            <td class="t-cell-center">
+                                                <button title="Remove" ng-click="RemoveStockissue(aIssue)">
+                                                    <i class="fa fa-minus-square"></i>&nbsp;Remove
+                                                </button>
+                                            </td>
+
+                                           
+                                          
+
+                                        </tr>
+                                       
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                
+                                        <button class="btn btn-success" style="width:100%" ng-click="SaveInternalStockIssue()" ng-disabled="!ddlIssuedBy ||!inv_InternalStockIssue.IssueDate ||! inv_InternalStockIssue.IssueNo || !InternalStockIssueDetailList.length > 0" title="Save">
+                                            <i class="fa fa-save"></i>&nbsp;{{btnSave}}
+                                        </button>
+                              
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                   
+                                        <button  style="width:100%"  ng-click="resetForm()" class="btn btn-danger" title="Reset">
+                                            <i class="fa fa-refresh"></i>&nbsp;Reset
+                                        </button>
+                                   
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="col-md-12">
+                            <div class="panel panel-info">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title pull-left "><i class="fa fa-check"></i>&nbsp;Stock Issue List</h3>
+                                    <div class="clearfix">
+                                    </div>
+                                </div>
+
+                                <div class="panel-footer">
+
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <div class="input-group issueToltip" data-toggle="tooltip" title="From Date">
+
+                                                    <input type="text" name="FromDate" id="txtFromIssue" ng-model="FromDate" class="form-control " placeholder="From Date" readonly />
+                                                    <span class="input-group-addon" ng-click="FormDateChangeForIssue()" id="FormDateChangeForDelivery"><i class="fa fa-calendar req-icon-color"></i></span>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <div class="input-group issueToltip" data-toggle="tooltip" title="To Date">
+                                                    <input type="text" name="ToDate" id="txtToDateForIssue" ng-model="ToDate" class="form-control " placeholder="To Date" readonly />
+                                                    <span class="input-group-addon" ng-click="ToDateChangeForIssue()" id="ToDateChangeForSO"><i class="fa fa-calendar req-icon-color"></i></span>
+                                                </div>
+
+
+                                            </div>
+
+                                        </div>
+
+                                        <div class="col-md-3">
+                                            <div class="form-group issueToltip" title="Issue And Requestion No">
+                                                <input type="text" class="form-control " id="IsssueNoAndStore" ng-model="IssueNoAndCompanyName" name="name" placeholder="Issue No And Store" />
+                                            </div>
+                                        </div>
+
+                                        <!--<div class="col-md-2">
+                            <button id="btnSearch" ng-click="reloadBtn()" style="width:100%" class="btn btn-danger" title="Reload">
+                                <i class="fa fa-refresh"></i>&nbsp;Clear
+                            </button>
+                        </div>-->
+
+                                        <div class="col-md-3">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <button id="btnSearch" ng-click="IssueSearch();" style="width:100%" class="customBtn custmoBtnSearch issueToltip" title="Search">
+                                                        <i class="fa fa-search"></i>&nbsp;Search
+                                                    </button>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <button id="btnSearch" ng-click="reloadBtn()" style="width:100%" class="btn btn-danger issueToltip" title="Clear">
+                                                        <i class="fa fa-refresh"></i>&nbsp;Clear
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                    <hr />
+                                    <table class="responstable table-hover">
+                                        <tbody>
+                                            <tr>
+                                                <th class="t-cell-center">S/N</th>
+                                                <th class="t-cell-center">Issue No</th>
+                                                <th class="t-cell-center">Issue Date</th>
+                                                <th class="t-cell-center">Department Name </th>
+                                                <th class="t-cell-center">Employee Name</th>
+
+                                              
+
+                                                <th class="t-cell-center">Action</th>
+                                            </tr>
+                                            <tr class="HoverTable searchRow" dir-paginate="issue in IssueListForGrid | itemsPerPage: PerPage" current-page="currentPage" total-items="total_count">
+                                                <td class="t-cell-center">{{$index + ((currentPage-1)*PerPage) + 1}}</td>
+                                                <td class="t-cell-center">{{issue.IssueNo}}</td>
+                                                <td class="t-cell-center">{{issue.IssueDate}}</td>
+                                                <td class="t-cell-center">{{issue.DepartmentName}}</td>
+                                                <td class="t-cell-center">{{issue.IssuedBy}}</td>
+                                               
+
+                                                <td class="t-cell-center" style="width:10%">
+                                                    <button ng-disabled="isReportDisabled" style="margin: 2px; width: 95%; color: black;"
+                                                            ng-click="InternalIssueReport(issue);">
+                                                        <i class="fa fa-print" style="font-size:18px"></i>  Report
+                                                    </button>
+                                                    <button ng-show="issue.IsCancelled == true" style="margin: 2px; width: 95%; color: red;" ng-disabled="iwo.IsCancelled">
+                                                        <strong>Cancelled</strong>
+                                                    </button>
+                                                </td>
+
+
+                                            </tr>
+                                            <tr class="t-foot" ng-show="total_count>PerPage">
+                                                <th colspan="8">
+                                                    <dir-pagination-controls max-size="8"
+                                                                             direction-links="true"
+                                                                             boundary-links="true"
+                                                                             on-page-change="getData(newPageNumber)" style="text-align:center;">
+                                                    </dir-pagination-controls>
+                                                </th>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div class="row pagination-footer">
+                                        <div class="col-md-6">
+                                            <span>Show </span><input class="input-pagesize" type="number" ng-maxlength="100" ng-minlength="1" width="1" ng-model="PerPage"> <span>Records </span>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <span class="pull-right">Showing {{((currentPage-1)*PerPage)+1}} to {{((currentPage-1) * PerPage) + SalesOrderListPaged.length}} of {{total_count}} Records</span>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="modal" id="itemSqmLmKgModal" tabindex="-1" role="dialog">
+                                <div class="modal-dialog modal-lg" role="document">
+                                    <div class="modal-content">
+                                        <div class="row">
+                                            <div class="col-md-8">
+                                                <div class="modal-header">
+                                                    <h3 class="modal-title text-primary">Materials Infomation</h3>
+
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 text-center">
+                                                <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>-->
+                                            </div>
+                                        </div>
+
+
+                                        <div class="modal-body">
+                                            <table class="responstable table-hover table-bordered">
+                                                <tr>
+                                                    <th style="text-align:center">SL</th>
+                                                    <th style="text-align:center">Roll Qty (Meter)</th>
+                                                    <th style="text-align:center">Roll Qty (Sqm)</th>
+                                                    <th style="text-align:center">Roll Weight  (Kg)</th>
+
+                                                </tr>
+                                                <tr ng-repeat="itemInfo in ItemInfoList track by $index">
+                                                    <td style="text-align:center">{{$index + 1}}</td>
+                                                    <td style="text-align:center">{{itemInfo.RollLenghtInMeter}}</td>
+                                                    <td style="text-align:center">{{itemInfo.RollAreaInSqMeter}}</td>
+                                                    <td style="text-align:center">{{itemInfo.PackageWeight}}</td>
+
+                                                </tr>
+
+                                            </table>
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" ng-click="ModalClose()" data-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+        </div>
+    </div>
+
+</form>
+
+
+
+
+<!--<pre>{{TopForIssueList | json}}</pre>
+<pre>{{_inv_InternalStockIssueDetailAdAttribute | json}}</pre>-->
+<script>
+    function RowSelect(e) {
+        $('.searchRow').css('background-color', '');
+        $(e).css('background-color', '#94d5ef');
+    }
+
+    $("#ddlIssuedBy").select2({
+      //  placeholder: "Issued By",
+       // allowClear: true
+        theme: "classic"
+    });
+
+    $("#ddlReceivedBy").select2({
+      //  placeholder: "Received By",
+        theme: "classic"
+       // allowClear: true
+    });
+
+    $("#ddlDepartment").select2({
+       // placeholder: "To Department",
+        theme: "classic"
+    })
+    $("#ddlStore").select2({
+     //   placeholder: "Form Department",
+        theme: "classic"
+    })
+
+    $("#ddlStore").select2({
+        //   placeholder: "Form Department",
+        theme: "classic"
+    })
+
+    $("#InternalIssueSelectitemName").select2({
+        theme: "classic"
+    });
+
+    $("#ddlmatrialPaperType").select2({
+        //theme: "classic"
+    });
+
+
+</script>
+
+<script>
+    $('.issueToltip').tooltip({ boundary: 'window' })
+    //$("#SelectReq").select2({
+    //    placeholder: "Select Req No",
+    //})
+
+
+
+    //$(".iwoSelect2").select2({
+    //    placeholder: "Select Iwo",
+    //});
+
+
+    //var picker = new Pikaday({
+    //    field: document.getElementById('txtIssueDate'),
+    //    firstDay: 6,
+    //    format: "DD/MM/YYYY",
+    //    minDate: new Date('1930-01-01'),
+    //    maxDate: new Date('2050-12-31'),
+    //    yearRange: [1930, 2050],
+    //    theme: 'blue-theme'
+    //});
+    //document.getElementById("calender").addEventListener("click", function () {
+    //    picker.show();
+    //});
+
+    var elements = document.getElementsByClassName("arrow-togglable");
+    var currentIndex = 0;
+
+    function newControl(e) {
+        elements = document.getElementsByClassName("arrow-togglable");
+        currentIndex = 0;
+        if (window.event.which == 40) {
+            currentIndex = ((currentIndex + 1) == elements.length) ? 0 : ++currentIndex;
+            elements[currentIndex].focus();
+        }
+        if (window.event.which == 38) {
+            currentIndex = (currentIndex == 0) ? elements.length - 1 : --currentIndex;
+            elements[currentIndex].focus();
+        }
+    }
+
+    function nextControlFromSugession(e) {
+        if (window.event.which == 40) {
+            currentIndex = ((currentIndex + 1) == elements.length) ? 0 : ++currentIndex;
+            elements[currentIndex].focus();
+        }
+        if (window.event.which == 38) {
+            currentIndex = (currentIndex == 0) ? elements.length - 1 : --currentIndex;
+            elements[currentIndex].focus();
+        }
+    }
+    function Hilitor2(id, tag) {
+        var targetNode = document.getElementById(id) || document.body;
+        var hiliteTag = tag || "EM";
+        var skipTags = new RegExp("^(?:" + hiliteTag + "|SCRIPT|FORM)$");
+        var colors = ["#ff6", "#a0ffff", "#9f9", "#f99", "#f6f"];
+        var wordColor = [];
+        var colorIdx = 0;
+        var matchRegex = "";
+        var openLeft = false;
+        var openRight = false;
+
+        this.setMatchType = function (type) {
+            switch (type) {
+                case "left":
+                    this.openLeft = false;
+                    this.openRight = true;
+                    break;
+
+                case "right":
+                    this.openLeft = true;
+                    this.openRight = false;
+                    break;
+
+                case "open":
+                    this.openLeft = this.openRight = true;
+                    break;
+
+                default:
+                    this.openLeft = this.openRight = false;
+
+            }
+        };
+
+        function addAccents(input) {
+            retval = input;
+            retval = retval.replace(/([ao])e/ig, "$1");
+            retval = retval.replace(/\\u00E[024]/ig, "a");
+            retval = retval.replace(/\\u00E7/ig, "c");
+            retval = retval.replace(/\\u00E[89AB]/ig, "e");
+            retval = retval.replace(/\\u00E[EF]/ig, "i");
+            retval = retval.replace(/\\u00F[46]/ig, "o");
+            retval = retval.replace(/\\u00F[9BC]/ig, "u");
+            retval = retval.replace(/\\u00FF/ig, "y");
+            retval = retval.replace(/\\u00DF/ig, "s");
+            retval = retval.replace(/a/ig, "([aÃ Ã¢Ã¤]|ae)");
+            retval = retval.replace(/c/ig, "[cÃ§]");
+            retval = retval.replace(/e/ig, "[eÃ¨Ã©ÃªÃ«]");
+            retval = retval.replace(/i/ig, "[iÃ®Ã¯]");
+            retval = retval.replace(/o/ig, "([oÃ´Ã¶]|oe)");
+            retval = retval.replace(/u/ig, "[uÃ¹Ã»Ã¼]");
+            retval = retval.replace(/y/ig, "[yÃ¿]");
+            retval = retval.replace(/s/ig, "(ss|[sÃŸ])");
+            return retval;
+        }
+
+        this.setRegex = function (input) {
+            input = input.replace(/\\([^u]|$)/g, "$1");
+            input = input.replace(/[^\w\\\s']+/g, "").replace(/\s+/g, "|");
+            input = input.replace(/^\||\|$/g, "");
+            input = addAccents(input);
+            if (input) {
+                var re = "(" + input + ")";
+                if (!this.openLeft) re = "(?:^|[\\b\\s])" + re;
+                if (!this.openRight) re = re + "(?:[\\b\\s]|$)";
+                matchRegex = new RegExp(re, "i");
+                return true;
+            }
+            return false;
+        };
+
+        this.getRegex = function () {
+            var retval = matchRegex.toString();
+            retval = retval.replace(/(^\/|\(\?:[^\)]+\)|\/i$)/g, "");
+            return retval;
+        };
+
+        // recursively apply word highlighting
+        this.hiliteWords = function (node) {
+            if (node === undefined || !node) return;
+            if (!matchRegex) return;
+            if (skipTags.test(node.nodeName)) return;
+
+            if (node.hasChildNodes()) {
+                for (var i = 0; i < node.childNodes.length; i++)
+                    this.hiliteWords(node.childNodes[i]);
+            }
+            if (node.nodeType == 3) { // NODE_TEXT
+                if ((nv = node.nodeValue) && (regs = matchRegex.exec(nv))) {
+                    if (!wordColor[regs[1].toLowerCase()]) {
+                        wordColor[regs[1].toLowerCase()] = colors[colorIdx++ % colors.length];
+                    }
+
+                    var match = document.createElement(hiliteTag);
+                    match.appendChild(document.createTextNode(regs[1]));
+                    match.style.backgroundColor = wordColor[regs[1].toLowerCase()];
+                    match.style.fontStyle = "inherit";
+                    match.style.color = "#000";
+
+                    var after;
+                    if (regs[0].match(/^\s/)) { // in case of leading whitespace
+                        after = node.splitText(regs.index + 1);
+                    } else {
+                        after = node.splitText(regs.index);
+                    }
+                    after.nodeValue = after.nodeValue.substring(regs[1].length);
+                    node.parentNode.insertBefore(match, after);
+                }
+            };
+        };
+
+        // remove highlighting
+        this.remove = function () {
+            var arr = document.getElementsByTagName(hiliteTag);
+            while (arr.length && (el = arr[0])) {
+                var parent = el.parentNode;
+                parent.replaceChild(el.firstChild, el);
+                parent.normalize();
+            }
+        };
+
+        // start highlighting at target node
+        this.apply = function (input) {
+            // this.remove();
+            if (input === undefined || !(input = input.replace(/(^\s+|\s+$)/g, ""))) return;
+            input = convertCharStr2jEsc(input);
+            if (this.setRegex(input)) {
+                this.hiliteWords(targetNode);
+            }
+        };
+
+        // added by Yanosh Kunsh to include utf-8 string comparison
+        function dec2hex4(textString) {
+            var hexequiv = new Array("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F");
+            return hexequiv[(textString >> 12) & 0xF] + hexequiv[(textString >> 8) & 0xF] + hexequiv[(textString >> 4) & 0xF] + hexequiv[textString & 0xF];
+        }
+
+        function convertCharStr2jEsc(str, cstyle) {
+            // Converts a string of characters to JavaScript escapes
+            // str: sequence of Unicode characters
+            var highsurrogate = 0;
+            var suppCP;
+            var pad;
+            var n = 0;
+            var outputString = '';
+            for (var i = 0; i < str.length; i++) {
+                var cc = str.charCodeAt(i);
+                if (cc < 0 || cc > 0xFFFF) {
+                    outputString += '!Error in convertCharStr2UTF16: unexpected charCodeAt result, cc=' + cc + '!';
+                }
+                if (highsurrogate != 0) { // this is a supp char, and cc contains the low surrogate
+                    if (0xDC00 <= cc && cc <= 0xDFFF) {
+                        suppCP = 0x10000 + ((highsurrogate - 0xD800) << 10) + (cc - 0xDC00);
+                        if (cstyle) {
+                            pad = suppCP.toString(16);
+                            while (pad.length < 8) {
+                                pad = '0' + pad;
+                            }
+                            outputString += '\\U' + pad;
+                        } else {
+                            suppCP -= 0x10000;
+                            outputString += '\\u' + dec2hex4(0xD800 | (suppCP >> 10)) + '\\u' + dec2hex4(0xDC00 | (suppCP & 0x3FF));
+                        }
+                        highsurrogate = 0;
+                        continue;
+                    } else {
+                        outputString += 'Error in convertCharStr2UTF16: low surrogate expected, cc=' + cc + '!';
+                        highsurrogate = 0;
+                    }
+                }
+                if (0xD800 <= cc && cc <= 0xDBFF) { // start of supplementary character
+                    highsurrogate = cc;
+                } else { // this is a BMP character
+                    switch (cc) {
+                        case 0:
+                            outputString += '\\0';
+                            break;
+                        case 8:
+                            outputString += '\\b';
+                            break;
+                        case 9:
+                            outputString += '\\t';
+                            break;
+                        case 10:
+                            outputString += '\\n';
+                            break;
+                        case 13:
+                            outputString += '\\r';
+                            break;
+                        case 11:
+                            outputString += '\\v';
+                            break;
+                        case 12:
+                            outputString += '\\f';
+                            break;
+                        case 34:
+                            outputString += '\\\"';
+                            break;
+                        case 39:
+                            outputString += '\\\'';
+                            break;
+                        case 92:
+                            outputString += '\\\\';
+                            break;
+                        default:
+                            if (cc > 0x1f && cc < 0x7F) {
+                                outputString += String.fromCharCode(cc);
+                            } else {
+                                pad = cc.toString(16).toUpperCase();
+                                while (pad.length < 4) {
+                                    pad = '0' + pad;
+                                }
+                                outputString += '\\u' + pad;
+                            }
+                    }
+                }
+            }
+            return outputString;
+        }
+
+    }
+</script>

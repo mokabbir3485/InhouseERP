@@ -1,0 +1,430 @@
+﻿
+<style>
+    #DivBankddl .select2-container {
+        width: 234px !important;
+    }
+    #DivBankddlPayOrder .select2-container {
+        width:330px !important;
+    }
+    #OnlineDiv .select2-container {
+        width: 409px !important;
+    }
+    
+</style>
+<form name="supplierAdvanceEntryForm" novalidate>
+    <div class="col-md-12">
+        <div class="alert alert-info alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="topInfo"> &nbsp; &#9755; <span style="color:red;">Red Icon</span> Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp; &#9755; Click On A Table Row To Update</div>
+        </div>
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-shield"></i>&nbsp;Supplier Advance</h3>
+                <div class="clearfix">
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group" data-toggle="tooltip" title="Advance No">
+                            <div class="input-group tooltipAll" data-toggle="tooltip" title="Advance No">
+                                <input type="text" id="AdvancePaymentNo" ng-model="pay_SupplierAdvance.AdvancePaymentNo" class="form-control" name="AdvancePaymentNo" readonly />
+                                <span class="input-group-addon"><i class="fa fa-text-width req-icon-color"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <div class="input-group tooltipAll" data-toggle="tooltip" title="Advance Date">
+                                <input type="text" id="dtAdvanceDate" ng-model="pay_SupplierAdvance.AdvanceDate" class="form-control" name="AdvanceDate" placeholder="Advance Date" readonly />
+
+                                <span class="input-group-addon" ng-click="CalendarAdvanceDate()" id="calenderAdvanceDate"><i class="fa fa-calendar req-icon-color"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : supplierAdvanceEntryForm.supplier.$dirty && supplierAdvanceEntryForm.supplier.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Supplier">
+                            <div class="input-group input-group-md ddl">
+                                <select id="ddlSupplier" ng-model="ddlSupplier" name="supplier" class="form-control selectMendatory" ng-options="supplier.SupplierName for supplier in supplierList track by supplier.SupplierId" ng-change="pay_SupplierAdvance.SupplierId=ddlSupplier.SupplierId; pay_SupplierAdvance.SupplierName=ddlSupplier.SupplierName;" required>
+                                    <option value="" label=""></option>
+                                </select>
+                                <span class="help-block" ng-show="supplierAdvanceEntryForm.supplier.$dirty && supplierAdvanceEntryForm.supplier.$invalid">Supplier Name is required</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : supplierAdvanceEntryForm.PaymentSector.$dirty && supplierAdvanceEntryForm.PaymentSector.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Payment Sector">
+                            <div class="input-group input-group-md ddl">
+                                <select id="PaymentSector" ng-model="ddlPaymentSector" name="PaymentSector" class="form-control selectMendatory" ng-change="pay_SupplierAdvance.PaymentSectorId=ddlPaymentSector.PaymentSectorId;" ng-options="AdvancePaymentSector.SectorName  for AdvancePaymentSector in AdvancePaymentSectorList track by AdvancePaymentSector.PaymentSectorId" required>
+                                    <option value=""> Select Payment Sector</option>
+                                </select>
+                                <span class="help-block" ng-show="supplierAdvanceEntryForm.PaymentSector.$dirty && supplierAdvanceEntryForm.PaymentSector.$invalid">Payment Sector is required</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : supplierAdvanceEntryForm.PaymentType.$dirty && supplierAdvanceEntryForm.PaymentType.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Payment Type">
+                            <div class="input-group input-group-md ddl">
+                                <select ng-model="ddlPaymentType" name="PaymentType" class="form-control selectMendatory" ng-change="pay_SupplierAdvance.PaymentTypeId=ddlPaymentType.PaymentTypeId; onDivShowGetById(ddlPaymentType.PaymentTypeId,ddlPaymentType.PaymentGroupId)" ng-options="'['+paymentType.PaymentGroupName+'] : '+ paymentType.PaymentTypeName for paymentType in PaymentTypeList track by paymentType.PaymentTypeId" required>
+                                    <option value="" label="--Payment Type--"></option>
+                                </select>
+                                <span class="help-block" ng-show="supplierAdvanceEntryForm.PaymentType.$dirty && supplierAdvanceEntryForm.PaymentType.$invalid">Payment Type is required</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--<div class="col-md-4">
+        <div class="form-group tooltipAll" ng-class="{ 'has-error' : supplierAdvanceEntryForm.PaymentVoucherNo.$dirty && supplierAdvanceEntryForm.PaymentVoucherNo.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Refund No">
+            <div class="input-group">
+                <input type="text" id="txtAmount" ng-model="pay_SupplierAdvance.RefundNo" name="JvNo" class="form-control" placeholder="Refund No" readonly />
+                <span class="input-group-addon"><i class="fa fa-text-width req-icon-color"></i></span>
+            </div>
+            <span class="help-block" ng-show="supplierAdvanceEntryForm.PaymentVoucherNo.$dirty && supplierAdvanceEntryForm.PaymentVoucherNo.$invalid">Payment Voucher No is required</span>
+            <span class="help-block" ng-if="supplierAdvanceEntryForm.PaymentVoucherNo.$error.maxlength">15 Character Max</span>
+        </div>
+    </div>-->
+
+                    <div class="col-md-4">
+                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : supplierAdvanceEntryForm.amount.$dirty && supplierAdvanceEntryForm.amount.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Amount">
+                            <div class="input-group">
+                                <input type="number" id="txtAmount" ng-model="pay_SupplierAdvance.AdvanceAmount" name="amount" class="form-control" placeholder="Amount" maxlength="15" ng-maxlength="14">
+                                <span class="input-group-addon"><i class="fa fa-text-width req-icon-color"></i></span>
+                            </div>
+                            <span class="help-block" ng-show="supplierAdvanceEntryForm.amount.$dirty && supplierAdvanceEntryForm.amount.$invalid">Amount is required</span>
+                            <span class="help-block" ng-if="supplierAdvanceEntryForm.amount.$error.maxlength">15 Character Max</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : supplierAdvanceEntryForm.Remarks.$dirty && supplierAdvanceEntryForm.Remarks.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Remarks">
+                            <textarea type="text" name="Remarks" class="form-control" rows="1" ng-model="pay_SupplierAdvance.Remarks" placeholder="Remarks"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" ng-show="CashShowDiv">
+                    <div class="col-md-4">
+                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : supplierAdvanceEntryForm.MoneyReceiptNo.$invalid && supplierAdvanceEntryForm.MoneyReceiptNo.$touched }" data-toggle="tooltip" data-placement="bottom" title="Money Receipt No">
+                            <div class="input-group">
+                                <input type="text" id="txtMoneyReceiptNo" name="MoneyReceiptNo" class="form-control" ng-model="pay_SupplierAdvance.MoneyReceiptNo" placeholder="Money Receipt No" maxlength="50" ng-maxlength="49">
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block" ng-show="supplierAdvanceEntryForm.MoneyReceiptNo.$dirty && supplierAdvanceEntryForm.MoneyReceiptNo.$invalid">Money Receipt No is required</span>
+                            <span class="help-block" ng-if="supplierAdvanceEntryForm.MoneyReceiptNo.$error.maxlength">50 Character Max</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" ng-show="chequeShowDiv">
+                    <div class="col-md-3">
+                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : supplierAdvanceEntryForm.ddlBankAccount.$invalid && supplierAdvanceEntryForm.ddlBankAccount.$touched }" data-toggle="tooltip" data-placement="bottom" title="Payer Bank Account">
+                            <div id="DivBankddl" class="input-group width-hundred-percent">
+                                <!--<select id="bankddl" ng-model="ddlChecqueBankAccount" name="ddlBankAccount" class="form-control selectNotMandetory" ng-options="bank.BankName for bank in SuppilerBankAccountList track by bank.BankAccountId" ng-change="pay_SupplierAdvance.SupplierBankAccountId = ddlChecqueBankAccount.BankAccountId">
+                                    <option value=""></option>
+                                </select>-->
+                                <select id="bankddl" ng-model="ddlChecqueBankAccount" name="ddlBankAccount" class="form-control selectMendatory" ng-options="bank.BankNameTemp for bank in PayerBankAccountList track by bank.BankAccountId" ng-change="pay_SupplierAdvance.PayerBankAccountId = ddlChecqueBankAccount.BankAccountId">
+                                    <option value="">Bank Name : Not Found, Branch : Not Found , AccountNo : Not Found</option>
+                                </select>
+                                <span class="help-block" ng-show="supplierAdvanceEntryForm.ddlBankAccount.$dirty && supplierAdvanceEntryForm.ddlBankAccount.$invalid">Bank Account is required</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : supplierRefundEntryForm.ddlChequeType.$invalid && supplierRefundEntryForm.ddlChequeType.$touched }" data-toggle="tooltip" data-placement="bottom" title="Cheque Type">
+                            <div class="input-group width-hundred-percent">
+                                <select id="chequeTypeddl" ng-model="ddlChequeType" name="ddlChequeType" class="form-control selectNotMandetory" ng-options="chequeType.PaymentSubTypeName for chequeType in ChequePaymentSubTypeList track by chequeType.PaymentSubTypeId" ng-change="pay_SupplierAdvance.ChequeTypeId = ddlChequeType.PaymentSubTypeId">
+                                    <option value=""> --- Select Cheque Type --- </option>
+                                </select>
+                                <span class="help-block" ng-show="supplierRefundEntryForm.ddlChequeType.$dirty && supplierRefundEntryForm.ddlChequeType.$invalid">Cheque Type is required</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : supplierAdvanceEntryForm.ChequeDate.$invalid && supplierAdvanceEntryForm.ChequeDate.$touched }" data-toggle="tooltip" data-placement="bottom" title="Cheque Date">
+                            <div class="input-group">
+                                <input type="text" id="dtChequeDate" ng-model="pay_SupplierAdvance.ChequeDate" name="ChequeDate" class="form-control datepicker" placeholder="Cheque Date" readonly />
+                                <span class="input-group-addon" ng-click="CalendarChequeDate()" id="txtChequecalender"><i class="fa fa-calendar"></i></span>
+                            </div>
+
+                            <span class="help-block" style="display: block;" ng-if="supplierAdvanceEntryForm.ChequeDate.$error.required && supplierAdvanceEntryForm.ChequeDate.$touched">Cheque Date is required</span>
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : supplierAdvanceEntryForm.ChequeNo.$invalid && supplierAdvanceEntryForm.ChequeNo.$touched }" data-toggle="tooltip" data-placement="bottom" title="Cheque No">
+                            <div class="input-group">
+                                <input type="text" id="txtPONo" name="ChequeNo" class="form-control" ng-model="pay_SupplierAdvance.ChequeNo" placeholder="Cheque No" maxlength="50" ng-maxlength="49">
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block" ng-show="supplierAdvanceEntryForm.ChequeNo.$dirty && supplierAdvanceEntryForm.ChequeNo.$invalid">Cheque No is required</span>
+                            <span class="help-block" ng-if="supplierAdvanceEntryForm.ChequeNo.$error.maxlength">50 Character Max</span>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row" ng-show="ddlPaymentType.PaymentTypeId==2">
+                    <div class="col-md-4">
+                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : supplierAdvanceEntryForm.ddlBankAccount.$invalid && supplierAdvanceEntryForm.ddlBankAccount.$touched }" data-toggle="tooltip" data-placement="bottom" title="Bank Account">
+                            <div id="DivBankddlPayOrder" class="input-group width-hundred-percent">
+                                <select id="bankddlSupplierPayOrder" ng-model="ddlPayOrderBankAccount" name="ddlBankAccount" class="form-control selectNotMandetory" ng-options="bank.BankName for bank in SuppilerBankAccountList track by bank.BankAccountId" ng-change="pay_SupplierAdvance.SupplierBankAccountId = ddlPayOrderBankAccount.BankAccountId">
+                                    <option value=""></option>
+                                </select>
+                              
+                                <span class="help-block" ng-show="supplierAdvanceEntryForm.ddlBankAccount.$dirty && supplierAdvanceEntryForm.ddlBankAccount.$invalid">Bank Account is required</span>
+                            </div>
+                           
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : supplierAdvanceEntryForm.ChequeDate.$invalid && supplierAdvanceEntryForm.ChequeDate.$touched }" data-toggle="tooltip" data-placement="bottom" title="Pay Order Date">
+                            <div class="input-group">
+                                <input type="text" id="dtPayOrderDate" ng-model="pay_SupplierAdvance.ChequeDate" name="ChequeDate" class="form-control datepicker" placeholder="Pay Order Date" readonly />
+                                <span class="input-group-addon" ng-click="CalendarPayorderDate()" id="txtChequecalender"><i class="fa fa-calendar"></i></span>
+                            </div>
+
+                            <span class="help-block" style="display: block;" ng-if="supplierAdvanceEntryForm.ChequeDate.$error.required && supplierAdvanceEntryForm.ChequeDate.$touched">Pay Order Date is required</span>
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : supplierAdvanceEntryForm.ChequeNo.$invalid && supplierAdvanceEntryForm.ChequeNo.$touched }" data-toggle="tooltip" data-placement="bottom" title="Pay Order No">
+                            <div class="input-group">
+                                <input type="text" id="txtPONo" name="ChequeNo" class="form-control" ng-model="pay_SupplierAdvance.ChequeNo" placeholder="Pay Order No" maxlength="50" ng-maxlength="49">
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block" ng-show="supplierAdvanceEntryForm.ChequeNo.$dirty && supplierAdvanceEntryForm.ChequeNo.$invalid">Pay Order No is required</span>
+                            <span class="help-block" ng-if="supplierAdvanceEntryForm.ChequeNo.$error.maxlength">50 Character Max</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" ng-show="OtherShowDiv">
+                    <div class="col-md-4">
+                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : supplierAdvanceEntryForm.ddlServiceName.$invalid && supplierAdvanceEntryForm.ddlServiceName.$touched }" data-toggle="tooltip" data-placement="bottom" title="Service Name">
+                            <div class="input-group width-hundred-percent">
+                                <select id="ddlServiceName" ng-model="ddlServiceName" name="ddlServiceName" class="form-control selectNotMandetory" ng-options="service.PaymentSubTypeName for service in MobilePaymentSubTypeList track by service.PaymentSubTypeId" ng-change="pay_SupplierAdvance.MobileBankingServiceId = ddlServiceName.PaymentSubTypeId">
+                                    <option value=""> --- Select Service Name --- </option>
+                                </select>
+                                <span class="help-block" ng-show="supplierAdvanceEntryForm.ddlServiceName.$dirty && supplierAdvanceEntryForm.ddlServiceName.$invalid">Service Name is required</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group" ng-class="{ 'has-error' : supplierAdvanceEntryForm.MobileNo.$invalid && supplierAdvanceEntryForm.MobileNo.$touched }" data-toggle="tooltip" data-placement="bottom" title="Mobile No">
+                            <div class="input-group tooltipAll">
+                                <input type="text" id="txtMobileNo" name="MobileNo" class="form-control" ng-model="pay_SupplierAdvance.MobileNo" placeholder="Mobile No" maxlength="50" ng-maxlength="49">
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block" ng-show="supplierAdvanceEntryForm.MobileNo.$dirty && supplierAdvanceEntryForm.MobileNo.$invalid">Mobile No is required</span>
+                            <span class="help-block" ng-if="supplierAdvanceEntryForm.MobileNo.$error.maxlength">50 Character Max</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : supplierAdvanceEntryForm.TransactionId.$invalid && supplierAdvanceEntryForm.TransactionId.$touched }" data-toggle="tooltip" data-placement="bottom" title="Transaction Id">
+                            <div class="input-group">
+                                <input type="text" id="txtTransactionId" name="TransactionId" class="form-control" ng-model="pay_SupplierAdvance.TransactionNo" placeholder="Transaction Id" maxlength="50" ng-maxlength="49">
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block" ng-show="supplierAdvanceEntryForm.TransactionId.$dirty && supplierAdvanceEntryForm.Transaction.$invalid">Transaction Id is required</span>
+                            <span class="help-block" ng-if="supplierAdvanceEntryForm.TransectionId.$error.maxlength">50 Character Max</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" ng-show="ddlPaymentType.PaymentGroupId== 5">
+                    <div class="col-md-5">
+                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : supplierAdvanceEntryForm.ddlBankAccount.$invalid && supplierAdvanceEntryForm.ddlBankAccount.$touched }" data-toggle="tooltip" data-placement="bottom" title="Payer Bank Account">
+                            <div id="OnlineDiv" class="input-group width-hundred-percent">
+                                <select id="bankddlPayerOnlinePayment" ng-model="ddlPayerBankAccount" name="ddlBankAccount" class="form-control selectMendatory" ng-options="bank.BankNameTemp for bank in PayerBankAccountList track by bank.BankAccountId" ng-change="pay_SupplierAdvance.PayerBankAccountId = ddlPayerBankAccount.BankAccountId">
+                                    <option value="">Bank Name : Not Found, Branch : Not Found , AccountNo : Not Found</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : supplierAdvanceEntryForm.ddlBankAccount.$invalid && supplierAdvanceEntryForm.ddlBankAccount.$touched }" data-toggle="tooltip" data-placement="bottom" title="Supplier Bank Account">
+                            <div id="OnlineDiv" class="input-group width-hundred-percent">
+                                <select id="bankddlSuppilerOnlinePayment" ng-model="ddlSuppilerBankAccount" name="ddlBankAccount" class="form-control selectMendatory" ng-options="bank.BankNameTemp for bank in SuppilerBankAccountList track by bank.BankAccountId" ng-change="pay_SupplierAdvance.SupplierBankAccountId = ddlSuppilerBankAccount.BankAccountId">
+                                    <option value="">Bank Name : Not Found, Branch : Not Found , AccountNo : Not Found</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-2">
+                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : supplierAdvanceEntryForm.TransactionId.$invalid && supplierAdvanceEntryForm.TransactionId.$touched }" data-toggle="tooltip" data-placement="bottom" title="Transaction Id">
+                            <div class="input-group">
+                                <input type="text" id="txtTransactionId" name="TransactionId" class="form-control" ng-model="pay_SupplierAdvance.TransactionNo" placeholder="Transaction Id" maxlength="50" ng-maxlength="49">
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block" ng-show="supplierAdvanceEntryForm.TransactionId.$dirty && supplierAdvanceEntryForm.Transaction.$invalid">Transaction Id is required</span>
+                            <span class="help-block" ng-if="supplierAdvanceEntryForm.TransectionId.$error.maxlength">50 Character Max</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-2">
+                <button class="btn btn-success" style="width:100%" ng-click="SaveAdvance()" ng-disabled="!ddlSupplier || !ddlPaymentType || !ddlPaymentSector || !pay_SupplierAdvance.AdvanceDate || !pay_SupplierAdvance.AdvanceAmount">
+                    <i class="fa fa-floppy-o"></i>&nbsp;Save
+                </button>
+            </div>
+            <div class="col-md-2">
+                <button id="Button3" style="width:100%" class="btn btn-danger tooltipAll" title="Search" ng-click="ResetForm()">
+                    <i class="fa fa-refresh"></i>&nbsp;Reset
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <br />
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-list"></i>&nbsp;Supplier Advance List</h3>
+            </div>
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <div class="input-group tooltipAll" data-toggle="tooltip" title="From Date">
+                                <input type="text" name="FromDate" id="txtFromDateForSA" ng-model="FromDate" ng-change="SupplierAdvanceSearch();" class="form-control " placeholder="From Date" readonly />
+                                <span class="input-group-addon" ng-click="FormDateChangeForSA()" id="FormDateChange"><i class="fa fa-calendar req-icon-color"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group tooltipAll" data-toggle="tooltip" title="To Date">
+                                    <input type="text" name="ToDate" id="txtToDateForSA" ng-model="ToDate" ng-change="SupplierAdvanceSearch();" class="form-control " placeholder="To Date" readonly />
+                                    <span class="input-group-addon" ng-click="ToDateChangeForSA()" id="ToDateChange"><i class="fa fa-calendar req-icon-color"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group tooltipAll" data-toggle="tooltip" title="Search Supplier Name">
+                            <input type="text" class="form-control" id="textSupplierName" ng-model="SearchSupplierName" ng-change="SupplierAdvanceSearch();" name="name" placeholder="Search Supplier Name" />
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                   
+                            <button id="btnSearch" ng-click="reloadBtn()" style="width:100%" class="btn btn-danger tooltipAll" title="Reload">
+                                <i class="fa fa-refresh"></i>&nbsp;Clear
+                            </button>
+                        
+                    </div>
+                    <div class="col-md-2 col-sm-2 col-lg-2 col-xs-12" style="padding-right: 3%; padding-left: 3%;">
+                        <div class="row">
+                            <!--<button id="btnSearch" class="customBtn custmoBtnSearch" title="Search" ng-click="getToAndFormDate();CommercialInvoiceSearch()">
+                                <i class="fa fa-search-plus"></i>&nbsp;Search
+                            </button>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="responstable table-hover">
+                            <tbody>
+                                <tr class="t-head">
+                                    <th>S/N</th>
+                                    <th class="txt-center">Supplier Name</th>
+                                    <th class="txt-center">Advance No</th>
+                                    <th class="txt-center">Advance Date</th>
+                                    <th class="txt-center">Advance Amount</th>
+                                    <th class="txt-center">Payment Type</th>
+                                    <th class="txt-center">Sector Name</th>
+                                    <th class="txt-center">Remarks</th>
+                                    <th class="txt-center">Action</th>
+                                </tr>
+                                <tr class="HoverTable searchRow" dir-paginate="aSupplierAdvance in SupplierAdvanceListPaged | itemsPerPage: PerPage" current-page="currentPage" total-items="total_count">
+                                    <td class="t-cell-center">{{$index + ((currentPage-1)*PerPage) + 1}}</td>
+                                    <td class="txt-center">{{aSupplierAdvance.SupplierName }}</td>
+                                    <td class="txt-center">{{aSupplierAdvance.AdvancePaymentNo }}</td>
+                                    <td class="txt-center">{{aSupplierAdvance.AdvanceDate }}</td>
+                                    <td class="txt-center">{{aSupplierAdvance.AdvanceAmount }}</td>
+                                    <td class="txt-center">{{aSupplierAdvance.PaymentTypeName }}</td>
+                                    <td class="txt-center">{{aSupplierAdvance.SectorName }}</td>
+                                    <td class="txt-center">{{aSupplierAdvance.Remarks }}</td>
+                                    <td class="txt-center">
+
+                                        <button id="btnReport" style=""
+                                                ng-click="SelSupplierAdvance(aSupplierAdvance);">
+                                            <i class="fa fa-edit" style="font-size:18px"></i> Edit
+                                        </button>
+                                        <button id="btnReport" style=""
+                                                ng-click="OpenPopupWindow(aSupplierAdvance)">
+                                            <i class="fa fa-print" style="font-size:18px"></i> Report
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr class="t-foot" ng-show="total_count>PerPage">
+                                    <th colspan="10">
+                                        <dir-pagination-controls max-size="8"
+                                                                 direction-links="true"
+                                                                 boundary-links="true"
+                                                                 on-page-change="getData(newPageNumber)" style="text-align:center;">
+                                        </dir-pagination-controls>
+                                    </th>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="row pagination-footer">
+                            <div class="col-md-6">
+                                <span>Show </span><input class="input-pagesize" type="number" ng-maxlength="100" ng-minlength="1" width="1" ng-model="PerPage"> <span>Records </span>
+                            </div>
+                            <div class="col-md-6">
+                                <span class="pull-right">Showing {{((currentPage-1)*PerPage)+1}} to {{((currentPage-1) * PerPage) + SupplierAdvanceListPaged.length}} of {{total_count}} Records</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!--<pre>{{pay_SupplierAdvance | json}}</pre>-->
+</form>
+
+<script>
+    $('.tooltipAll').tooltip({ boundary: 'window' })
+    $("#ddlSupplier").select2({
+        placeholder: "Select Supplier",
+        theme: "classic"
+    });
+    $("#bankddl").select2({
+        placeholder: "Select Supplier Bank Name",
+        dropdownAutoWidth: false
+    });
+    $("#bankddlPayerOnlinePayment").select2({
+        placeholder: "Select Payer Bank Name",
+        dropdownAutoWidth: false
+    });
+    $("#bankddlSuppilerOnlinePayment").select2({
+        placeholder: "Select Supplier Bank Name",
+        dropdownAutoWidth: false
+    });
+    $("#bankddlSupplierPayOrder").select2({
+       // placeholder: "Select Bank Name",
+    });
+    $("#PaymentSector").select2({
+
+        theme: "classic"
+    });
+    
+</script>

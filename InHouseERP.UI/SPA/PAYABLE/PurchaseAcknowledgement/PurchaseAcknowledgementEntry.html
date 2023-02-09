@@ -1,0 +1,228 @@
+﻿<form name="purchaseAcknowledgementEntryForm" novalidate>
+    <div class="col-md-12">
+        <div class="alert alert-info alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="topInfo"> &nbsp; &#9755; <span style="color:red;">Red Icon</span> Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp; &#9755; Click On A Table Row To Update</div>
+        </div>
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-shield"></i>&nbsp;Purchase Acknowledgement</h3>
+                <div class="clearfix">
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+
+                    <div class="col-md-4">
+                        <div class="form-group" ng-class="{ 'has-error' : purchaseAcknowledgementEntryForm.AcknowledgementNo.$dirty && purchaseAcknowledgementEntryForm.AcknowledgementNo.$invalid }">
+                            <div class="input-group tooltipAll" data-toggle="tooltip" data-placement="bottom" title="Acknowledgement No">
+                                <input type="text" class="form-control" ng-model="AcknowledgementNo" name="AcknowledgementNo" placeholder="Acknowledgement No" maxlength="50" ng-maxlength="49" readonly>
+                                <span class="input-group-addon" style="color:red"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block" ng-if="purchaseAcknowledgementEntryForm.AcknowledgementNo.$error.maxlength">50 Character Max</span>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class='input-group'>
+                                <input type="text" class="form-control tooltipAll" id="dtApprovedDate" ng-model="AcknowledgementDate" placeholder="Acknowledge Date" title="Acknowledge Date" readonly="readonly" />
+                                <div class="input-group-addon" ng-click="CalendarOpenApprovedDate()">
+                                    <span class="fa fa-calendar" style="color:red"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : purchaseAcknowledgementEntryForm.AcknowledgedBy.$dirty && purchaseAcknowledgementEntryForm.AcknowledgedBy.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Acknowledged By">
+                            <div class="input-group input-group-md ddl">
+                                <select ng-model="ddlAcknowledgedBy" name="ddlAcknowledgedBy" id="ddlAcknowledgedBy" class="form-control selectMendatory" ng-change="AcknowledgedBy = ddlAcknowledgedBy.EmployeeId" ng-options="employee.FullName +' ~ '+employee.DesignationName+' ~ '+employee.DepartmentName  for employee in employeeList track by employee.EmployeeId" required>
+                                    <option value="" label="Acknowledged By" hidden></option>
+                                </select>
+                            </div>
+                            <span class="help-block" ng-show="purchaseAcknowledgementEntryForm.AcknowledgedBy.$dirty && purchaseAcknowledgementEntryForm.AcknowledgedBy.$invalid">Acknowledged By is Required</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            <div class="input-group width-hundred-percent tooltipAll" title="Select Supplier">
+                                <select ng-model="ddlSupplier" id="ddlSupplier" name="supplier" class="form-control selectNotMandetory" ng-options="supplier.SupplierName for supplier in supplierList track by supplier.SupplierId">
+                                    <option value="" label="-- Select Supplier --"></option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-3 col-lg-3 col-xs-12" style="padding-right: 3%; padding-left: 3%;">
+                        <div class="row">
+                            <button id="btnSearch" class="customBtn custmoBtnSearch tooltipAll" title="Search" ng-click="SearchPurchaseBill()" ng-disabled="!ddlSupplier">
+                                <i class="fa fa-search-plus"></i>&nbsp;Search
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer">
+                <div class="clearfix">
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="responstable table-hover">
+                            <tbody>
+                                <tr>
+                                    <th class="t-cell-center">S/N</th>
+                                    <th class="t-cell-center">Chk</th>
+                                    <th class="t-cell-center">Invoice No.</th>
+                                    <th class="t-cell-center">Invoice Date</th>
+                                    <th class="t-cell-center">Supplier</th>
+                                    <th class="t-cell-center">Reference</th>
+                                    <th class="t-cell-center">Amount</th>
+                                </tr>
+                                <tr ng-show="PurchaseBillList.length" class="HoverTable searchRow" ng-repeat="aPurchaseBill in PurchaseBillList">
+                                    <td class="t-cell-center">{{$index+1}}</td>
+                                    <td class="t-cell-center">
+                                        <input type="checkbox" name="PurchaseBill" ng-model="aPurchaseBill.selected" ng-click="RowSelect(aPurchaseBill)" />
+                                    </td>
+                                    <td class="t-cell-center">{{aPurchaseBill.PBNo}}</td>
+                                    <td class="t-cell-center">{{aPurchaseBill.PBDate}}</td>
+                                    <td class="t-cell-center">{{aPurchaseBill.SupplierName}}</td>
+                                    <td class="t-cell-center">{{aPurchaseBill.RefEmployeeName}}</td>
+                                    <td style="text-align:right; padding-right:10px">{{aPurchaseBill.TotalAmountAfterDiscount.toFixed(2)}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-6 col-sm-12 col-lg-4 col-xs-12">
+                <button id="btnSave" class="customBtn custmoBtnSave tooltipAll" ng-click="SaveAcknowledgement()" title="Save" ng-disabled="!AcknowledgementNo || !$PurchaseBillList.length || !AcknowledgementDate || !ddlAcknowledgedBy">
+                    <i class="fa fa-save"></i>&nbsp;Save
+                </button>
+            </div>
+            <div class="col-md-6 col-sm-12 col-lg-4 col-xs-12">
+                <button id="Button3" class="customBtn custmoBtnReset tooltipAll" title="Reset" ng-click="ResetForm()">
+                    <i class="fa fa-refresh"></i>&nbsp;Reset
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <br />
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-list"></i>&nbsp; Purchase Acknowledgement List</h3>
+            </div>
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <div class="input-group tooltipAll" data-toggle="tooltip" title="From Date">
+                                <input type="text" name="FromDate" id="txtFromDateForSA" ng-model="FromDateSA" ng-change=" AcknowledgementSearch();" class="form-control " placeholder="From Date" readonly />
+                                <span class="input-group-addon" ng-click="FormDateChangeForSA()" id="FormDateChange"><i class="fa fa-calendar req-icon-color"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group tooltipAll" data-toggle="tooltip" title="To Date">
+                                    <input type="text" name="ToDate" id="txtToDateForSA" ng-model="ToDateSA" ng-change="AcknowledgementSearch();" class="form-control " placeholder="To Date" readonly />
+                                    <span class="input-group-addon" ng-click="ToDateChangeForSA()" id="ToDateChange"><i class="fa fa-calendar req-icon-color"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group tooltipAll" data-toggle="tooltip" title="Search Supplier Name and Invoice No">
+                            <input type="text" class="form-control" id="textSearchCompanyName" ng-model="SearchCompanyName" ng-change="AcknowledgementSearch();" name="name" placeholder="Search Supplier Name And Number" />
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+
+                        <button id="btnSearch" style="width:100%" ng-click="reloadBtn()" class="btn btn-danger tooltipAll" title="Reload">
+                            <i class="fa fa-refresh"></i>&nbsp;Clear
+                        </button>
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="responstable table-hover">
+                            <tbody>
+                                <tr class="t-head">
+                                    <th>S/N</th>
+                                    <th class="txt-center">Acknowledgement No</th>
+                                    <th class="txt-center">Acknowledgement Date</th>
+                                    <th class="txt-center">Purchase No</th>
+                                    <th class="txt-center">Supplier Name</th>
+                                    <th class="txt-center">Acknowledged By</th>
+                                    <th class="txt-center">Amount</th>
+                                    <th class="txt-center">Action</th>
+
+                                </tr>
+                                <tr class="HoverTable searchRow" dir-paginate="aAcknowledgement in AcknowledgementListPaged | itemsPerPage: PerPage" ng-click="" current-page="currentPage" total-items="total_count">
+                                    <td class="t-cell-center">{{$index + ((currentPage-1)*PerPage) + 1}}</td>
+                                    <td class="txt-center">{{aAcknowledgement.AcknowledgementNo }}</td>
+                                    <td class="txt-center">{{aAcknowledgement.AcknowledgementDate }}</td>
+                                    <td class="txt-center">{{aAcknowledgement.PBNo }}</td>
+                                    <td class="txt-center">{{aAcknowledgement.SupplierName }}</td>
+                                    <td class="txt-center">{{aAcknowledgement.AcknowledgedByName }}</td>
+                                    <td class="txt-center">{{aAcknowledgement.TotalAmountAfterDiscount }}</td>
+                                    <td class="t-cell-center">
+                                        <button 
+                                                ng-click="OpenPopupWindow(aAcknowledgement)">
+                                            <i class="fa fa-print" style="font-size:18px"></i> Report
+                                        </button>
+                                    </td>
+
+                                </tr>
+                                <tr class="t-foot" ng-show="total_count>PerPage">
+                                    <th colspan="8">
+                                        <dir-pagination-controls max-size="8"
+                                                                 direction-links="true"
+                                                                 boundary-links="true"
+                                                                 on-page-change="getData(newPageNumber)" style="text-align:center;">
+                                        </dir-pagination-controls>
+                                    </th>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="row pagination-footer">
+                            <div class="col-md-6">
+                                <span>Show </span><input class="input-pagesize" type="number" ng-maxlength="100" ng-minlength="1" width="1" ng-model="PerPage"> <span>Records </span>
+                            </div>
+                            <div class="col-md-6">
+                                <span class="pull-right">Showing {{((currentPage-1)*PerPage)+1}} to {{((currentPage-1) * PerPage) + AcknowledgementListPaged.length}} of {{total_count}} Records</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--<pre>{{inv_PurchaseBill | json}}</pre>-->
+</form>
+<script>
+    $('.tooltipAll').tooltip({ boundary: 'window' })
+    $("#ddlAcknowledgedBy").select2({
+        placeholder: "Search for: Acknowledged By",
+        theme: "classic",
+        dropdownAutoWidth: false
+    });
+    $("#ddlSupplier").select2({
+        placeholder: "Search for: Supplier Name",
+        theme: "classic",
+        dropdownAutoWidth: false
+    });
+</script>

@@ -1,0 +1,291 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+
+    <style type="text/css">
+
+        body {
+            font-family: "Times New Roman", Times, serif;
+            color: #000000;
+            height: auto;
+            font-size: 15px;
+        }
+
+        #MainTable td {
+            text-align: center;
+        }
+
+        @page {
+            size: A4 portrait;
+        }
+
+        .flexcontainer {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        #UpperTable td {
+            border-collapse: collapse;
+            padding: 5px;
+        }
+
+        #container {
+            width: 100%;
+            bottom: 0;
+            position: fixed !important;
+        }
+
+        #left {
+            float: left;
+            width: 100px;
+        }
+
+        #right {
+            float: right;
+            width: 100px;
+        }
+
+        #center {
+            margin: 0 auto;
+            width: 100px;
+        }
+    </style>
+
+</head>
+<body>
+    <!--<page>-->
+    <table class="table" style="margin: auto !important;">
+        <tbody>
+            <tr>
+                <td>
+                    <div class="container hidden-print">
+                        <div class="col-sm-7 col-md-9">
+
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3 col-md-2">
+                                <!--<button type="button" onclick="ExportToDoc();" class="customBtn custmoBtnReset" style="border-radius: 3px; margin-bottom: -.9em; margin-top: -15px; padding-bottom: 3px; padding-top: 3px;" title="Export to .doc">
+                    <i class="fa fa-save"></i>&nbsp;Export to .doc
+                </button>-->
+                            </div>
+                            <div class="col-sm-2 col-md-1">
+                                <button type="button"  onclick="document.title = 'Production History ' + getCurrentDateTime(); PrintPdf();" class="customBtn custmoBtnReset" style="border-radius: 3px; margin-bottom: -.9em; margin-top: -15px; padding-bottom: 3px; padding-top: 3px;" title="Print To .PDF">
+                                    <i class="fa fa-print"></i>&nbsp;Print
+                                </button>
+                            </div>
+
+
+                        </div>
+                        <br />
+                    </div>
+
+                    <table id="heading" style="text-align: center;margin-left:auto;margin-right:auto;">
+
+                        <tr>
+                            <td>
+                                <span style="font-size: 18px; line-height: 1; margin: 0; padding: 0;"><i><u><b>Production Log</b></u></i></span>
+                            </td>
+                        </tr>
+                    </table>
+                    <br />
+                    <b>
+                        Date: {{FromDate}}  to {{ToDate}}
+                    </b>
+                    <table id="MainTable" border="1" width="100%" align="center" hidden>
+                        <thead>
+                            <tr>
+                                <td></td>
+                                <th style="text-align: center">SL</th>
+                                <th style="text-align: center;">F. Description</th>
+                                <th style="text-align: center;">Material</th>
+                                <th style="text-align: center;">Label Brand</th>
+                                <th style="text-align: center">Production Qty</th>
+                                <th style="text-align: center">Unit Name</th>
+                                <th style="text-align: center">Raw Description</th>
+                                <th style="text-align: center">Used Material Qty In Roll</th>
+                                <th style="text-align: center">Wastage Qty</th>
+
+                            </tr>
+                        </thead>
+                        <tbody ng-repeat="Production in ProductionHistoryList track by $index">
+                            <tr>
+                                <td>
+                                    <label>S/N: </label> {{$index+1}}
+                                </td>
+                                <td colspan="2" style="text-align: center">
+                                    <span style="font-size: .9em;"><label>Production No: </label> {{Production.ProductionNo}}</span>
+                                </td>
+                                <td colspan="2" style="text-align: center">
+                                    <span style="font-size: .9em;"><label>Date:</label> {{Production.events[0].ProductionDate}}</span>
+                                </td>
+                                <td colspan="2" style="text-align: center">
+                                    <span style="font-size: .9em;"><label>I.W.O No:</label> {{Production.events[0].InternalWorkOrderNo}}</span>
+                                </td>
+                                <td style="text-align: center">
+                                    <span style="font-size: .9em;"><label>I.W.O Date:</label> {{Production.events[0].InternalWorkOrderDate}}</span>
+                                </td>
+                                <td colspan="2" style="text-align: center">
+                                    <span style="font-size: .9em;"><label>Prepared By:</label> {{Production.events[0].PreparedBy}}</span>
+                                </td>
+                            </tr>
+                            <tr ng-repeat="aProduction in Production.events track by $index">
+                                <td></td>
+                                <td>
+                                    {{$index+1}}
+                                </td>
+                                <td style="text-align: center">
+                                    <span style="font-size: .9em;">{{aProduction.FinishDescription}}</span>
+                                </td>
+                                <td style="text-align: center">
+                                    <span style="font-size: .9em;">{{aProduction.MaterialTypeCode}}</span>
+                                </td>
+                                <td style="text-align: center">
+                                    <span style="font-size: .9em;">{{aProduction.LabelBrandName}}</span>
+                                </td>
+
+                                <td style="text-align: center">
+                                    <span style="font-size: .9em;">{{aProduction.ProductionQuantity}}</span>
+                                </td>
+                                <td style="text-align: center">
+                                    <span style="font-size: .9em;">{{aProduction.UnitName}}</span>
+                                </td>
+                                <td style="text-align: center">
+                                    <span style="font-size: .9em;">{{aProduction.RawDescription}}</span>
+                                </td>
+                                <td style="text-align: center">
+                                    <span style="font-size: .9em;">{{aProduction.UsedMaterialQtyInRoll}}</span>
+                                </td>
+                                <td style="text-align:center">
+                                    <span style="font-size: .9em;padding-right:5px">{{aProduction.WastageQty}}</span>
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+                        <tr>
+                            <td colspan="5" style="font-size: .9em; padding-right: 5px; text-align: right;"><b>Total:</b> </td>
+                            <td style="text-align:center">
+                                <span style="font-size: .9em;padding-right:5px"><b>{{TotalProductionQuantity}}</b></span>
+                            </td>
+                            <td></td>
+                            <td></td>
+                            <td style="text-align:center">
+                                <span style="font-size: .9em;padding-right:5px"><b>{{TotalUsedMaterialQtyInRoll}}</b></span>
+                            </td>
+                            <td style="text-align:center">
+                                <span style="font-size: .9em;padding-right:5px"><b>{{TotalWastageQty}}</b></span>
+                            </td>
+                        </tr>
+
+                    </table>
+
+
+                    <!--  -->
+                    <div ng-repeat="Production in ProductionHistoryList track by $index">
+
+                        <table id="MainTable" border="1" width="100%" align="center">
+                            <tr>
+                                <th> <span> ({{$index +1 }}) </span> - <span> </span>  <span>Production No : {{Production.events[0].ProductionNo}}</span> -- <span>Date : {{Production.events[0].ProductionDate}}</span> </th>
+
+                            </tr>
+                            <tr>
+                                <td style="border:none !important;">
+                                    <table id="MainTable" border="1" width="100%" style="border-right:none !important;border-bottom:none !important">
+
+                                        <tr>
+                                            <td class="text-center" style="width: 10%; border-right: none !important;">
+                                                I.W.O No:<br /> {{Production.events[0].InternalWorkOrderNo}}
+                                            </td>
+                                            <td class="text-center" style="width: 10%; border-right: none !important;">
+                                                I.W.O Date:<br /> {{Production.events[0].InternalWorkOrderDate}}
+                                            </td>
+                                            <td class="text-center" style="width: 10%; border-right: none !important;">
+                                                Prepared By:<br /> {{Production.events[0].PreparedBy}}
+                                            </td>
+                                            <td class="text-center" style="width: 70%; border: none !important;">
+                                                <table id="MainTable" style="border-top:none;" border="1" width="100%" align="center">
+                                                    <tr>
+                                                        <th style="text-align: center">SL</th>
+                                                        <th style="text-align: center;">Finish Goods Description</th>
+                                                        <th style="text-align: center;">Material</th>
+                                                        <th style="text-align: center;">Label Brand</th>
+                                                        <th style="text-align: center">Production Qty</th>
+                                                        <th style="text-align: center">Unit Name</th>
+                                                        <th style="text-align: center">Raw Material Description</th>
+                                                        <th style="text-align: center">Used Material Qty In Roll</th>
+                                                        <th style="text-align: center">Wastage Qty</th>
+
+                                                    </tr>
+                                                    <tr ng-repeat="aProduction in Production.events track by $index">
+                                                        <td>{{$index +1}}</td>
+                                                        <td style="text-align: center">
+                                                            <span style="font-size: .9em;">{{aProduction.FinishDescription}}</span>
+                                                        </td>
+                                                        <td style="text-align: center">
+                                                            <span style="font-size: .9em;">{{aProduction.MaterialTypeCode}}</span>
+                                                        </td>
+                                                        <td style="text-align: center">
+                                                            <span style="font-size: .9em;">{{aProduction.LabelBrandName}}</span>
+                                                        </td>
+
+                                                        <td style="text-align: center">
+                                                            <span style="font-size: .9em;">{{aProduction.ProductionQuantity}}</span>
+                                                        </td>
+                                                        <td style="text-align: center">
+                                                            <span style="font-size: .9em;">{{aProduction.UnitName}}</span>
+                                                        </td>
+                                                        <td style="text-align: center">
+                                                            <span style="font-size: .9em;">{{aProduction.RawDescription}}</span>
+                                                        </td>
+                                                        <td style="text-align: center">
+                                                            <span style="font-size: .9em;">{{aProduction.UsedMaterialQtyInRoll}}</span>
+                                                        </td>
+                                                        <td style="text-align:center">
+                                                            <span style="font-size: .9em;padding-right:5px">{{aProduction.WastageQty}}</span>
+                                                        </td>
+
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+
+                        </table>
+
+                    </div>
+
+
+</tbody>
+
+
+
+
+    </table>
+
+
+
+    <script type="text/javascript">
+
+        function PrintPdf() {
+
+            window.print();
+
+        }
+        jQuery(document).ready(function ($) {
+
+            $(".main-sidebar").attr("hidden", true);
+            $(".main-header").attr("hidden", true);
+            $(".main-footer").attr("hidden", true);
+            $("#Hidebr").attr("hidden", true);
+
+            $("div").removeClass("wrapper");
+            $("div").removeClass("content-wrapper");
+        });
+
+
+    </script>
+</body>
+
+</html>

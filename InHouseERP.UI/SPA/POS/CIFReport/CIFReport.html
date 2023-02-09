@@ -1,0 +1,213 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Information Formation</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 16px;
+            /*width: 850px;
+            margin: 0 auto;*/
+        }
+
+        table {
+            border-collapse: collapse;
+        }
+        .my-disable {
+            pointer-events: none;
+        }
+        @page {
+            size: A4 landscape;
+            
+            /*margin:0;*/
+        }
+    </style>
+</head>
+
+<body>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="hidden-print">
+                <div class="col-sm-7 col-md-9">
+
+                </div>
+                <div class="row">
+                    <div class="col-sm-3 col-md-2">
+                        <!--<button type="button" onclick="ExportToDoc();" class="customBtn custmoBtnReset" style="border-radius: 3px; margin-bottom: -.9em; margin-top: -15px; padding-bottom: 3px; padding-top: 3px;" title="Export to .doc">
+                            <i class="fa fa-save"></i>&nbsp;Export to .doc
+                        </button>-->
+                    </div>
+                    <div class="col-sm-2 col-md-1">
+                        <button type="button" onclick="document.title = 'CIF ' + getCurrentDateTime(); PrintPdf();"  class="customBtn custmoBtnReset" style="border-radius: 3px; margin-bottom: -.9em; margin-top: -15px; padding-bottom: 3px; padding-top: 3px;" title="Print To .PDF">
+                            <i class="fa fa-print"></i>&nbsp;Print
+                        </button>
+                    </div>
+
+
+                </div>
+                <br />
+            </div>
+        </div>
+    </div>
+
+    <table width=100% style="font-weight: bold;">
+        <tr>
+            <!--<td>
+                <p style="font-size: .9em; line-height: 1; margin : 0; padding : 0 ; font-weight: bold;">From No. {{CIFCustomerList.FormNo}}</p>
+            </td>-->
+            <td style="float: right">
+                <p style="font-size: .9em; line-height: 1; margin : 0; padding : 0 ; font-weight: bold;">Date of Origin: {{CIFProductList[0].DateOfOrigin}}</p>
+
+            </td>
+            <!--<td>
+                <p style="font-size: .9em; line-height: 1; margin : 0; padding : 0 ; font-weight: bold;">Revision No. {{CIFCustomerList.RevisionNo}}</p>
+
+            </td>
+            <td>
+                <p style="font-size: .9em; line-height: 1; margin : 0; padding : 0 ; font-weight: bold;">Revision Date: {{CIFCustomerList.RevisionDate}}</p>
+
+            </td>-->
+        </tr>
+    </table>
+
+    <table id="heading" style="text-align: center;margin-left:auto;margin-right:auto;">
+
+        <tr>
+            <!--<td>
+                <img style="height: 80px; width: 80px; padding: 5px" src="../../../UploadedImages/logo.jpg" />
+            </td>-->
+            <td>
+                <p style="font-size: 30px;line-height: 1; margin : 0; padding : 0 ; font-weight: bold;"><strong>{{CIFProductList[0].OrganizationName}}</strong></p>
+                <p style="font-size: 14px; line-height: 1.5; margin : 0; padding : 0 ;">
+                    {{CIFProductList[0].OrganizationAddress}}
+                </p>
+                <p style="font-size: 18px; line-height: 1; margin: 0; padding: 0;"><i><u><b>Customer Information Formation (CIF)</b></u></i></p>
+            </td>
+        </tr>
+    </table>
+    <br />
+    <!--<p style="font-size: .9em; line-height: 1; margin : 0; padding : 0 ; font-weight: bold;">SALES PERSON(CONTACT NO): {{CIFProductList[0].ContactPerson}}</p>-->
+    <div class="row" style="text-align:left !important; margin:0px;">
+        <b>Date: {{Company.CIFFromDate}} To {{Company.CIFToDate}}</b>
+    </div>
+    <table border="1" width="100%" style="padding: 5px; text-align: center;">
+        <thead>
+            <tr>
+                <th>Customer Name</th>
+                <td>
+                    <span style="font-size: .9em; font-weight: bold;">{{CIFProductList[0].CompanyName}}</span>
+                </td>
+                <th>Contact Person</th>
+                <td>
+                    <span style="font-size: .9em; font-weight: bold;">{{CIFProductList[0].ContactPerson}}</span>
+                </td>
+            </tr>
+            <tr>
+                <th>Billing Address</th>
+                <td>
+                    <span style="font-size: .9em; font-weight: bold;">{{CIFProductList[0].BillingAddress}}</span>
+                </td>
+                <th>Designation</th>
+                <td>
+                    <span style="font-size: .9em;  font-weight: bold;">{{CIFProductList[0].Designation}}</span>
+                </td>
+            </tr>
+            <tr>
+                <th>Delivery Address</th>
+                <td>
+                    <span style="font-size: .9em; font-weight: bold;">{{CIFProductList[0].DeliveryAddress}}</span>
+                </td>
+                <th>Contact No.</th>
+                <td>
+                    <span style="font-size: .9em; font-weight: bold;">{{CIFProductList[0].ContactNo}}</span>
+                </td>
+            </tr>
+            <!--<tr>
+                <th>Product name</th>
+                <td>
+                    <p style="font-size: .9em; line-height: 1; font-weight: bold;"></p>
+                </td>
+                <th>Payment Terms</th>
+                <td>
+                    <p style="font-size: .9em; line-height: 1; font-weight: bold;">{{CIFCustomerList.PaymentTerms}}</p>
+                </td>
+            </tr>-->
+        </thead>
+    </table>
+    <br>
+    <table style="text-align:center; font-weight: bold;" border="1" width="100%">
+        <thead>
+            <tr>
+                <td>SL.No</td>
+                <td>Sales Order Date</td>
+                <td>SIZE</td>
+                <td>CODE</td>
+                <td>MATERIAL</td>
+                <td>ROLL DIRECTION</td>
+                <td>CORE SIZE (MM)</td>
+                <td>Qty / ROLL (PCS)</td>
+                <td>Unit</td>
+                <td>Order Price(BDT)</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="aCIFProduct in CIFProductList track by $index">
+                <td>
+                    <p style="font-size: .9em; line-height: 1;    margin : 0;  padding : 0 ;">{{$index + 1}}</p>
+                </td>
+                <td>
+                    <p style="font-size: .9em; line-height: 1;    margin : 0;  padding : 0 ;">{{aCIFProduct.SalesOrderDate}}</p>
+                </td>
+                <td>
+                    <p style="font-size: .9em; line-height: 1;    margin : 0;  padding : 0 ;">{{aCIFProduct.ItemDescription}}</p>
+                </td>
+                <td>
+                    <p style="font-size: .9em; line-height: 1;    margin : 0;  padding : 0 ;">{{aCIFProduct.ItemCode}}</p>
+                </td>
+                <td>
+                    <p style="font-size: .9em; line-height: 1;    margin : 0;  padding : 0 ;">{{aCIFProduct.MaterialTypeCode}}</p>
+                </td>
+                <td>
+                    <p style="font-size: .9em; line-height: 1;    margin : 0;  padding : 0 ;">{{aCIFProduct.RollDirection}}</p>
+
+                </td>
+                <td style="text-align:justify;width: 115px; padding: 5px;">
+                    <p style="font-size: .9em; line-height: 1;    margin : 0;  padding : 0 ;">{{aCIFProduct.Core}}</p>
+                </td>
+                <td>
+                    <p style="font-size: .9em; line-height: 1;    margin : 0;  padding : 0 ;">{{aCIFProduct.QtyPerRoll}}</p>
+                </td>
+
+                <td>
+                    <p style="font-size: .9em; line-height: 1;    margin : 0;  padding : 0 ;">{{aCIFProduct.UnitName}}</p>
+                </td>
+                <td>
+                    <p style="font-size: .9em; line-height: 1;    margin : 0;  padding : 0 ;">{{aCIFProduct.OrderPriceBDT}}</p>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+   
+    <script>
+        function PrintPdf() {
+
+            window.print();
+
+        }
+        jQuery(document).ready(function ($) {
+
+            $(".main-sidebar").attr("hidden", true);
+            $(".main-header").attr("hidden", true);
+            $(".main-footer").attr("hidden", true);
+            $("#Hidebr").attr("hidden", true);
+
+            $("div").removeClass("wrapper");
+            $("div").removeClass("content-wrapper");
+        });
+    </script>
+</body>
+
+</html>

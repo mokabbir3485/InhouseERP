@@ -1,0 +1,239 @@
+﻿<!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" />-->
+<link href="../../../Content/uniq/fontawesome-free-5.15.3-web/css/brands.css" rel="stylesheet" />
+<link href="../../../Content/uniq/fontawesome-free-5.15.3-web/css/brands.min.css" rel="stylesheet" />
+<link href="../../../Content/uniq/fontawesome-free-5.15.3-web/css/fontawesome.css" rel="stylesheet" />
+<link href="../../../Content/uniq/fontawesome-free-5.15.3-web/css/fontawesome.min.css" rel="stylesheet" />
+<link href="../../../Content/uniq/fontawesome-free-5.15.3-web/css/regular.css" rel="stylesheet" />
+<link href="../../../Content/uniq/fontawesome-free-5.15.3-web/css/regular.min.css" rel="stylesheet" />
+<link href="../../../Content/uniq/fontawesome-free-5.15.3-web/css/solid.css" rel="stylesheet" />
+<link href="../../../Content/uniq/fontawesome-free-5.15.3-web/css/solid.min.css" rel="stylesheet" />
+<link href="../../../Content/uniq/fontawesome-free-5.15.3-web/css/svg-with-js.css" rel="stylesheet" />
+<link href="../../../Content/uniq/fontawesome-free-5.15.3-web/css/svg-with-js.min.css" rel="stylesheet" />
+<link href="../../../Content/uniq/fontawesome-free-5.15.3-web/css/v4-shims.css" rel="stylesheet" />
+<link href="../../../Content/uniq/fontawesome-free-5.15.3-web/css/v4-shims.min.css" rel="stylesheet" />
+
+<form name="StockTransferLog" novalidate>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="alert alert-info alert-dismissible fade in" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <div class="topInfo"> &nbsp; &#9755; <span style="color:red;">Red Icon</span> Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp; &#9755; Click On A Table Row To Update/Delete</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h3 class="panel-title"><i class="fa fa-share-alt"></i>&nbsp;Stock Transfer Log</h3>
+        </div>
+        <div class="panel-body">
+
+            <div class="row">
+                <div class="tab-content">
+                    <div id="Local" class="tab-pane fade in active">
+                        <div id="Local" class="tab-pane">
+                            <div class="col-md-12">
+                                <div class="panel panel-info">
+
+                                    <div class="panel-footer">
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <div class="input-group stockRecive" data-toggle="tooltip" title="From Date">
+
+                                                        <input type="text" name="FromDate" id="txtFromDateForRC" ng-model="FromDate" class="form-control " placeholder="From Date" readonly />
+                                                        <span class="input-group-addon" ng-click="FormDateChangeForRecived()" id="FormDateChangeForDelivery"><i class="fa fa-calendar req-icon-color"></i></span>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <div class="input-group stockRecive" data-toggle="tooltip" title="To Date">
+                                                        <input type="text" name="ToDate" id="txtToDateForRC" ng-model="ToDate" class="form-control " placeholder="To Date" readonly />
+                                                        <span class="input-group-addon" ng-click="ToDateChangeForRecived()" id="ToDateChangeForRecived"><i class="fa fa-calendar req-icon-color"></i></span>
+                                                    </div>
+
+
+                                                </div>
+
+                                            </div>
+
+
+                                            <div class="col-md-3">
+                                                <div class="form-group tooltipAll" ng-class="{ 'has-error' : StockTransferLog.ddlStore.$dirty && StockTransferLog.ddlStore.$invalid }" data-toggle="tooltip" data-placement="bottom">
+                                                    <div class="tooltipAll" title="Select From Store">
+                                                        <div class="input-group input-group-md ddl " data-toggle="tooltip" data-placement="bottom">
+                                                            <select id="ddlStore" ng-model="ddlStore" class="form-control selectNotMandetory" name="ddlStore" ng-options="department.DepartmentName + ' ~ ' + department.BranchName for department in StoreList track by department.DepartmentId">
+                                                                <option value=""> Select From Store ~ Branch </option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="form-group tooltipAll" ng-class="{ 'has-error' : StockTransferLog.ddlTransferType.$dirty && StockTransferLog.ddlTransferType.$invalid }" data-toggle="tooltip" data-placement="bottom">
+                                                    <div class="tooltipAll" title="Select Transfer Type">
+                                                        <div class="input-group input-group-md ddl " data-toggle="tooltip" data-placement="bottom">
+
+                                                            <select id="ddlTransferType" ng-model="ddlTransferType" class="form-control selectNotMandetory" name="ddlTransferType" ng-options="transfer.StockTransferTypeName  for transfer in TransferType track by transfer.StockTransferTypeId">
+                                                                <option value=""> Select Transfer Type</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+
+                                            <div class="col-md-3">
+
+                                                <div class="form-group" data-toggle="tooltip" data-placement="bottom">
+                                                    <div class="input-group width-hundred-percent deliveryToltipChange tooltipAll" title="Item Name ~ Description ~ Sub Category">
+                                                        <select id="SelectitemName" ng-model="ItemSearchCombination" name="itemName" class="form-control " ng-options="aCombination.TempItemName for aCombination in ItemCombinationList track by aCombination.ItemId">
+
+                                                            <option value=""> Item Name ~ Description ~ Sub Category</option>
+                                                        </select>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-2">
+
+                                                <div class="tooltipAll" title="Material Paper Type">
+                                                    <select ng-model="ddlmatrialPaperType" class="form-control " name="ddlmatrialPaperType" id="PaperType" ng-options="paper.Combination for paper in matrialPaperTypeList track by paper.MaterialTypeId">
+                                                        <option value="">-Material Type</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-1">
+                                                <button class=" btn btn-primary tooltipAll" ng-click="onLoadBtn()">Load </button>
+                                            </div>
+                                            <div class="col-md-1">
+                                                <button style="width:100%;" class="btn btn-primary tooltipAll" ng-click="OpenReport()">
+                                                    <i class="fa fa-print"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <hr />
+                                        <div class="row">
+
+                                            <div class="col-md-12">
+                                                <table class="responstable table-hover">
+                                                    <tr>
+
+                                                        <th class="t-cell-center">SL</th>
+                                                        <th>
+                                                      
+                                                            <input type="checkbox" ng-model="selectedAll" ng-click="checkAll()" /> Chk
+
+                                                        </th>
+                                                        <th class="t-cell-center">Item Name</th>
+                                                        <th class="t-cell-center">Material Type</th>
+                                                        <th class="t-cell-center">From Store</th>
+                                                        <th class="t-cell-center">To Store</th>
+                                                        <th class="t-cell-center"> Quantity</th>
+                                                        <th class="t-cell-center">Transfer Type</th>
+
+                                                    </tr>
+                                                    <tbody ng-repeat="aTransfer in StockTransferLogList track by $index  ">
+                                                        <tr>
+                                                            <!--<td ng-click="$event.stopPropagation();" class="t-cell-center"><label><i ng-show="!supLedList.DisplaySta" class="fa fa-plus-square"></i><i ng-show="supLedList.DisplaySta" class="fa fa-minus-square"></i><input style="visibility:hidden;" type="checkbox" ng-model="supLedList.DisplaySta" /></label></td>-->
+                                                            <td class="t-cell-center">{{$index+1}}</td>
+                                                            <td>
+                                                                <p style="margin-left:8px;">
+                                                                    <input type="checkbox" style="height:15px;width:15px;" name="isCheck" value="true" ng-model="aTransfer.IsCheck"
+                                                                           ng-click="checkFilterLis(aTransfer)" />
+                                                                </p>
+                                                            </td>
+                                                            <td class="t-cell-center">{{aTransfer.ItemName}} </td>
+                                                            <td class="t-cell-center">{{aTransfer.MaterialTypeName}} </td>
+                                                            <td class="t-cell-center">{{aTransfer.FromDepartment}}</td>
+                                                            <td class="t-cell-center">{{aTransfer.ToDepartment}}</td>
+
+                                                            <td class="t-cell-center">{{aTransfer.IssueQuantity}}</td>
+                                                            <td class="t-cell-center">{{aTransfer.TransferType}}</td>
+
+                                                        </tr>
+                                                        <!--<tr ng-click="$event.stopPropagation();" ng-show="supLedList.DisplaySta">
+                                                            <td></td>
+                                                            <td colspan="9">
+                                                                <div>
+                                                                    <table id="IWODetailsTable" class="responstable table-hover">
+                                                                        <tr>
+                                                                            <th class="t-cell-center">Cash</th>
+                                                                            <th class="t-cell-center">Bank</th>
+                                                                            <th class="t-cell-center">Others Payment </th>
+                                                                            <th class="t-cell-center">VAT </th>
+                                                                            <th class="t-cell-center">AIT </th>
+                                                                            <th class="t-cell-center">Realized Amount </th>
+
+
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="t-cell-center">{{supLedList.cash}}</td>
+                                                                            <td class="t-cell-center">{{supLedList.bank}}</td>
+                                                                            <td class="t-cell-center">{{supLedList.others}}</td>
+                                                                            <td class="t-cell-center">{{supLedList.vat}}</td>
+                                                                            <td class="t-cell-center">{{supLedList.ait}}</td>
+                                                                            <td class="t-cell-center">{{supLedList.RealizedAmount}}</td>
+
+                                                                        </tr>
+                                                                    </table>
+                                                                </div>
+                                                            </td>
+                                                        </tr>-->
+                                                    </tbody>
+                                                </table>
+                                            </div>
+
+                                        </div>
+
+
+
+                                        <hr />
+
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+   
+
+
+
+</form>
+
+<script>
+    $('.tooltipAll').tooltip({ boundary: 'window' })
+    $("#ddlStore").select2({
+        theme: "classic",
+    });
+    //$("#ddlTransferType").select2({
+    //    theme: "classic",
+    //});
+    //$("#SelectitemName").select2();
+    $("#PaperType").select2({
+
+    });
+
+</script>
+

@@ -1,0 +1,791 @@
+﻿<form name="issueEntryForm" novalidate>
+    <div class="col-md-12">
+        <div class="alert alert-info alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="topInfo"> &nbsp; &#9755; <span style="color:red;">Red Icon</span> Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp; &#9755; Click On A Table Row To Update/Delete</div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-list"></i>&nbsp;Stock Issue</h3>
+            </div>
+  
+                <div class="panel-body">
+                    <div ng-show="CreatePermission">
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="issueToltip" title="Select Iwo">
+                                    <div class="input-group input-group-md ddl" data-toggle="tooltip" data-placement="bottom" >
+                                        <select id="SelectReq" class="form-control SelectReq2" ng-model="ddlReq" name="ddlReq" ng-change="CellClick(ddlReq)" ng-options="topIssue.RequisitionNo +' ~ '+topIssue.InternalWorkOrderNo +' ~ '+topIssue.BranchName for topIssue  in TopForIssueList track by topIssue.RequisitionId">
+                                            <option value="" label="Select Req No"> </option>
+                                        </select>
+                                    </div>
+
+                                </div>
+                               
+                            </div>
+
+                            <div class="col-md-2">
+                                <button class="btn btn-primary" id="ReportBtnFlag" name="ReportBtnFlag" ng-disabled="ReportBtnDisabled" ng-click="Report()" style="text-align:center;width:100%">
+                                    <i class="fa fa-print" style="font-size:18px"></i> Report
+                                </button>
+                            </div>
+                            <div class="col-md-2">
+                                <button class="btn btn-danger" style="text-align:center;width:100%" ng-click="ClearIwo()">
+                                    <i class="fa fa-refresh" style="font-size:18px"></i> Clear
+                                </button>
+                            </div>
+                        </div>
+                        <!--<div class="row" ng-show="showTable">
+        <div class="col-md-12">
+            <table class="responstable table-hover">
+                <tbody>
+                    <tr class="t-head"><th colspan="5">Requisition</th></tr>
+                    <tr>
+                        <th>S/N</th>
+                        <th class="t-cell-center" width="20%">Requisition #</th>
+                        <th class="t-cell-center" width="20%">Requisition Date</th>
+                        <th class="t-cell-center" width="25%">From</th>
+                        <th class="t-cell-center" width="25%">To</th>
+                    </tr>
+                    <tr>
+                    <tr class="HoverTable searchRow" onclick="RowSelect(this)" ng-repeat="topIssue in TopForIssueList" ng-click="CellClick(topIssue)">
+                        <td>{{$index+1}}</td>
+                        <td class="t-cell-center">{{topIssue.RequisitionNo}}</td>
+                        <td class="t-cell-center">{{topIssue.RequisitionDate}}</td>
+                        <td class="t-cell-center">{{topIssue.FromDepartmentName}}</td>
+                        <td class="t-cell-center">{{topIssue.ToDepartmentName}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>-->
+
+                        <br />
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group" data-toggle="tooltip" data-placement="bottom" >
+                                            <div class="input-group">
+                                                <!--<input type="text" id="txtIssueDate" name="reqDate" ng-model="inv_StockIssue.IssueDate" ng-change="StockIssueNumberGenarator()" class="form-control" placeholder="Issue Date" required readonly="readonly" />
+    <span class="input-group-addon" id="calender"><i class="fa fa-calendar req-icon-color"></i></span>-->
+
+                                                <input type="text" name="FromDate" id="txtIssueDate" ng-model="inv_StockIssue.IssueDate"  class="form-control issueToltip" placeholder="From Date" readonly title="Issue Date"/>
+                                                <span class="input-group-addon" ng-click="IssueDateChangeFor()" id="IssueDateChangeFor"><i class="fa fa-calendar req-icon-color"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group" ng-class="{ 'has-error' : issueEntryForm.IssueNo.$invalid && issueEntryForm.IssueNo.$touched }" data-toggle="tooltip" data-placement="bottom">
+                                            <div class="input-group ">
+                                                <input type="text" id="txtIssueNo" name="IssueNo" class="form-control issueToltip" ng-model="inv_StockIssue.IssueNo" placeholder="Issue No" maxlength="100" ng-maxlength="100" readonly required  title="Issue No">
+                                                <span class="input-group-addon"><i class="fa fa-text-width req-icon-color"></i></span>
+                                            </div>
+                                            <span class="help-block" style="display: block;" ng-if="issueEntryForm.IssueNo.$error.required && issueEntryForm.IssueNo.$touched">Issue No. is required</span>
+                                            <span class="help-block" style="display: block;" ng-if="issueEntryForm.IssueNo.$error.maxlength">10 Character Max</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group input-group-md ddl" data-toggle="tooltip" data-placement="bottom">
+                                    
+                                    <div class="input-group width-hundred-percent">
+                                        <div class="issueToltip" title="From Store">
+                                            <select ng-model="ddlDepartment" disabled="disabled" id="ddlDepartment" class="form-control selectMendatory" name="Department" ng-change="inv_StockIssue.IssueFromDepartmentId=ddlDepartment.DepartmentId;inv_StockIssue.IssueFromDepartmentName=ddlDepartment.DepartmentName;GetByCombinationLike()" ng-options="department.DepartmentName for department in DepartmentList track by department.DepartmentId">
+                                                <option value="" label="From Store"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                   
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                             
+                                <div class="input-group input-group-md ddl" data-toggle="tooltip" data-placement="bottom" >
+                                    <div class="issueToltip" title="To Store">
+                                        <select id="ddlStore" ng-model="ddlStore" disabled="disabled" class="form-control selectMendatory" name="Store" ng-change="inv_StockIssue.IssueToDepartmentId=ddlStore.DepartmentId;inv_StockIssue.IssueToDepartmentName=ddlStore.DepartmentName" ng-options="store.DepartmentName for store in Storelist track by store.DepartmentId">
+                                            <option value="" label="To Store"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        <div class="row">
+                            <div class="col-md-5">
+                                <div class="form-group" ng-class="{ 'has-error' : issueEntryForm.ddlIssuedBy.$dirty && issueEntryForm.ddlIssuedBy.$invalid }" data-toggle="tooltip" data-placement="bottom">
+                                    <div class="issueToltip" title="Issued By">
+                                        <div class="input-group input-group-md ddl">
+                                            <select id="ddlIssuedBy" ng-model="ddlIssuedBy" class="form-control selectMendatory" ng-change=" inv_StockIssue.IssuedById =ddlIssuedBy.EmployeeId; inv_StockIssue.IssuedBy =ddlIssuedBy.FullName;" ng-options="employee.FullName  +' ~ '+employee.DesignationName+' ~ '+employee.DepartmentName for employee in EmployeeList track by employee.EmployeeId" name="ddlIssuedBy" required>
+                                                <option value="" label="Issued By"></option>
+                                            </select>
+                                        </div>
+                                        <span class="help-block" ng-show="issueEntryForm.ddlIssuedBy.$dirty && issueEntryForm.ddlIssuedBy.$invalid">Issued By is required</span>
+                                    </div>
+                                   
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group" ng-class="{ 'has-error' : issueEntryForm.ddlReceivedBy.$dirty && issueEntryForm.ddlReceivedBy.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Received By">
+                                    <div class="issueToltip" title="Receive By">
+                                        <div class="input-group input-group-md ddl">
+                                            <select id="ddlReceivedBy" ng-model="ddlReceivedBy" class="form-control selectMendatory" ng-change=" inv_StockIssue.ReceivedById =ddlReceivedBy.EmployeeId; inv_StockIssue.ReceivedBy =ddlReceivedBy.FullName;" ng-options="employee.FullName +' ~ '+employee.DesignationName+' ~ '+employee.DepartmentName  for employee in EmployeeList | filter:{EmployeeId: '!' + ddlIssuedBy.EmployeeId} track by employee.EmployeeId" name="ddlReceivedBy" required>
+                                                <option value="" label="Receive By"></option>
+                                            </select>
+                                        </div>
+                                        <span class="help-block" ng-show="issueEntryForm.ddlReceivedBy.$dirty && issueEntryForm.ddlReceivedBy.$invalid">Received By</span>
+                                    </div>
+                                   
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <input type="text" name="InternalWorkOrderNo" id="InternalWorkOrderNo" ng-model="SingleIssuelist[0].InternalWorkOrderNo" class="form-control issueToltip" placeholder="IWO No" readonly title="IWO No"/>
+                            </div>
+                            <div class="col-md-2">
+                                <button id="btnAdd" ng-click="RedirectItemEntry()" class="customBtn custmoBtnReset" title="Item Entry">
+                                    <i class=" fa fa fa-repeat"></i>&nbsp; Item Entry
+                                </button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <table class="responstable table-hover">
+                                    <tr>
+                                        <th class="t-cell-center"></th>
+                                        <th class="t-cell-center">SL.No</th>
+                                        <!--<th class="t-cell-center">Finished Item</th>
+    <th class="t-cell-center">Order Qty</th>-->
+                                        <th class="t-cell-center">Raw Item Name</th>
+                                        <th class="t-cell-center">Raw Mat Paper Type</th>
+                                        <th class="t-cell-center">Finished Item Name</th>
+                                        <th class="t-cell-center">FG Material Paper Type</th>
+
+                                        <th class="t-cell-center">Order Qty</th>
+                                        <!--<th class="t-cell-center">Description 2</th>-->
+                                        <!--<th class="t-cell-center">Item Code</th>-->
+                                        <th class="t-cell-center">Req. Purpose</th>
+                                        <!--<th class="t-cell-center">Issue Quantity</th>-->
+                                    </tr>
+                                    <tbody ng-repeat="aIssue in SingleIssuelist track by $index">
+                                        <tr>
+                                            <td class="t-cell-center"><label><i ng-show="!aIssue.DisplaySta " class="fa fa-plus-square"></i><i ng-show="aIssue.DisplaySta " class="fa fa-minus-square"></i><input style="visibility:hidden;" type="checkbox" ng-model="aIssue.DisplaySta" /></label></td>
+                                            <td class="t-cell-center">{{$index+1}}</td>
+                                            <!--<td class="t-cell-center">{{aIssue.FinishItemName}}</td>
+                                            <td class="t-cell-center">{{aIssue.OrderQty}}</td>-->
+                                            <td class="t-cell-center">{{aIssue.RawItemName}}</td>
+                                            <td class="t-cell-center">{{aIssue.MaterialTypeName}}</td>
+                                            <td class="t-cell-center">{{aIssue.FinishItemName}}</td>
+                                            <td class="t-cell-center">{{aIssue.FGMaterialType}}</td>
+
+                                            <td class="t-cell-center">{{aIssue.OrderQty}}</td>
+                                            <!--<td class="t-cell-center">{{aIssue.ItemDescriptionTwo}}</td>-->
+                                            <!--<td class="t-cell-center">{{aIssue.Barcode}}</td>-->
+                                            <td class="t-cell-center">{{aIssue.RequisitionPurposeName}}</td>
+                                            <!--<td class="t-cell-center">{{aIssue.IssueQuantity}}</td>-->
+
+                                        </tr>
+                                        <tr ng-show="aIssue.DisplaySta ">
+                                            <td></td>
+                                            <td colspan="8">
+                                                <div>
+                                                    <table class="responstable table-hover">
+                                                        <tr>
+
+
+
+
+                                                            <th class="t-cell-center" style="width:20%">Stock Qty</th>
+                                                            <th class="t-cell-center" style="width:20%;">Issued Qty</th>
+
+                                                            <th class="t-cell-center" style="width:20%;">Req. Qty</th>
+                                                            <th class="t-cell-center" style="width:30%;">Issue Quantity</th>
+
+                                                            <!--<th class="t-cell-center" style="width:3%;">Item Info</th>-->
+
+                                                            <!--<th class="t-cell-center" style="width:10%;">Roll Qty  (Meter)</th>
+                                                            <th class="t-cell-center" style="width:10%;">Roll Qty  (Sqm)</th>
+                                                            <th class="t-cell-center" style="width:10%;">Roll weight  (Kg)</th>-->
+
+
+
+                                                            <th class="t-cell-center" style="width:10px;">Action</th>
+                                                        </tr>
+                                                        <!--ng-repeat="aIssueDetailAdAttribute in _inv_StockIssueDetailAdAttribute | filter: { ItemId : aIssue.ItemId }:true"-->
+                                                        <tr class="HoverTable">
+
+
+                                                            <!--<td class="t-cell-center">{{aIssue.UnitName}}</td>-->
+
+                                                            <td class="t-cell-center">{{aIssue.CurrentQuantity}}  {{aIssue.UnitName}}</td>
+                                                            <td class="t-cell-center">
+                                                                <span>   {{aIssue.IssuedQuantity}} {{aIssueDetailAdAttribute.UnitName}} </span>
+                                                            </td>
+                                                            <td class="t-cell-center" style="width:15%">
+                                                                <span> {{  aIssue.RequisitionQuantity}} {{aIssue.UnitName}}</span>
+                                                                <!--<span>
+
+            <input type="number" style="width:80px;" class="form-control" ng-model="aIssueDetailAdAttribute.RequisitionQuantity" readonly />
+
+        </span>-->
+
+
+
+
+                                                            </td>
+                                                            <td class="t-cell-center text-center">
+                                                                <span>
+                                                                    <input type="number" min="0" style="text-align:center;width:60px;" placeholder="0.00" ng-change="SumQty();RollSqmMAndRollWeightCal(aIssue)" ng-model="aIssue.IssueQuantity" />
+                                                                    <input type="text" style="text-align:center;width:80px;" ng-model="aIssue.UnitName" disabled />
+                                                                  
+                                                                    <!--<button class="btn btn-default" style="height:30px;margin-top:8px;background-color:#99e6ff" ng-click="ItemForSqmRollKg(aIssue)">
+                                                                        Mat. Info
+                                                                    </button>-->
+                                                                  
+                                                                </span>
+
+
+                                                            </td>
+                                                            <!--<td class="t-cell-center" style="width:3%;">
+        <button class="btn btn-primary" ng-click="ItemForSqmRollKg(aIssueDetailAdAttribute)">Item Info </button>
+    </td>-->
+                                                            <!--<td class="t-cell-center" style="width:10%;">
+                                                                <input type="number" class="form-control" ng-model="aIssue.RollLenghtInMeter" readonly />
+                                                            </td>
+                                                            <td class="t-cell-center" style="width:10%;">
+
+                                                                <input type="number" class="form-control" ng-model="aIssue.RollAreaInSqMeter" readonly />
+                                                            </td>
+                                                            <td class="t-cell-center" style="width:10%;">
+
+                                                                <input type="number" class="form-control" ng-model="aIssue.PackageWeight" readonly />
+
+                                                            </td>-->
+
+
+
+                                                            <td class="t-cell-center">
+                                                                <button title="Remove" ng-click="Removeissue(aIssue)">
+                                                                    <i class="fa fa-minus-square"></i>&nbsp;Remove
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <button id="btnDelete" class="btn btn-success" ng-click="SaveStockIssue()" ng-disabled="!ddlIssuedBy ||!inv_StockIssue.IssueDate ||! inv_StockIssue.IssueNo || !ddlReceivedBy" title="Save">
+                                            <i class="fa fa-save"></i>&nbsp;{{btnSave}}
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <button id="btnReset" ng-click="resetForm()" class="btn btn-danger" title="Reset">
+                                            <i class="fa fa-refresh"></i>&nbsp;Reset
+                                        </button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" ng-show="ListViewPermission">
+
+                        <div class="col-md-12">
+                            <div class="panel panel-info">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title pull-left "><i class="fa fa-check"></i>&nbsp;Stock Issue List</h3>
+                                    <div class="clearfix">
+                                    </div>
+                                </div>
+
+                                <div class="panel-footer">
+
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <div class="input-group issueToltip" data-toggle="tooltip" title="From Date">
+
+                                                    <input type="text" name="FromDate" id="txtFromIssue" ng-model="FromDate"  class="form-control " placeholder="From Date" readonly />
+                                                    <span class="input-group-addon" ng-click="FormDateChangeForIssue()" id="FormDateChangeForDelivery"><i class="fa fa-calendar req-icon-color"></i></span>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <div class="input-group issueToltip" data-toggle="tooltip" title="To Date">
+                                                    <input type="text" name="ToDate" id="txtToDateForIssue" ng-model="ToDate" class="form-control " placeholder="To Date" readonly />
+                                                    <span class="input-group-addon" ng-click="ToDateChangeForIssue()" id="ToDateChangeForSO"><i class="fa fa-calendar req-icon-color"></i></span>
+                                                </div>
+
+
+                                            </div>
+
+                                        </div>
+
+                                        <div class="col-md-3">
+                                            <div class="form-group issueToltip"  title="Issue And Requestion No">
+                                                <input type="text" class="form-control " id="IsssueNoAndStore" ng-model="IssueNoAndCompanyName"  name="name" placeholder="Issue And Requestion No" />
+                                            </div>
+                                        </div>
+
+                                        <!--<div class="col-md-2">
+                                            <button id="btnSearch" ng-click="reloadBtn()" style="width:100%" class="btn btn-danger" title="Reload">
+                                                <i class="fa fa-refresh"></i>&nbsp;Clear
+                                            </button>
+                                        </div>-->
+
+                                        <div class="col-md-3">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <button id="btnSearch" ng-click="IssueSearch();" style="width:100%" class="customBtn custmoBtnSearch issueToltip" title="Search">
+                                                        <i class="fa fa-search"></i>&nbsp;Search
+                                                    </button>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <button id="btnSearch" ng-click="reloadBtn()" style="width:100%" class="btn btn-danger issueToltip" title="Clear">
+                                                        <i class="fa fa-refresh"></i>&nbsp;Clear
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                    <hr />
+                                    <table class="responstable table-hover">
+                                        <tbody>
+                                            <tr>
+                                                <th class="t-cell-center">S/N</th>
+                                                <th class="t-cell-center">Issue No</th>
+                                                <th class="t-cell-center">Issue Date</th>
+                                                <th class="t-cell-center">Requisition No</th>
+                                                <th class="t-cell-center">Requisition Date</th>
+
+                                                <th class="t-cell-center">From Department </th>
+                                                <th class="t-cell-center">To Department </th>
+
+                                                <th class="t-cell-center">Action</th>
+                                            </tr>
+                                            <tr class="HoverTable searchRow" dir-paginate="issue in IssueListForGrid | itemsPerPage: PerPage" current-page="currentPage" total-items="total_count">
+                                                <td class="t-cell-center">{{$index + ((currentPage-1)*PerPage) + 1}}</td>
+                                                <td class="t-cell-center">{{issue.IssueNo}}</td>
+                                                <td class="t-cell-center">{{issue.IssueDate}}</td>
+                                                <td class="t-cell-center">{{issue.RequisitionNo}}</td>
+                                                <td class="t-cell-center">{{issue.RequisitionDate}}</td>
+                                                <td class="t-cell-center">{{issue.IssueFromDepartmentName}}</td>
+                                                <td class="t-cell-center">{{issue.IssueToDepartmentName}}</td>
+
+                                                <td class="t-cell-center" style="width:10%">
+                                                    <button ng-disabled="isReportDisabled"style="margin: 2px; width: 95%; color: black;"
+                                                            ng-click="MaterialIssuedReportBtn(issue.IssueId, 'Issued');">
+                                                        <i class="fa fa-print" style="font-size:18px"></i>  Report
+                                                    </button>
+                                                    <button ng-show="issue.IsCancelled == true" style="margin: 2px; width: 95%; color: red;" ng-disabled="iwo.IsCancelled">
+                                                        <strong>Cancelled</strong>
+                                                    </button>
+                                                </td>
+                                               
+
+                                            </tr>
+                                            <tr class="t-foot" ng-show="total_count>PerPage">
+                                                <th colspan="8">
+                                                    <dir-pagination-controls max-size="8"
+                                                                             direction-links="true"
+                                                                             boundary-links="true"
+                                                                             on-page-change="getData(newPageNumber)" style="text-align:center;">
+                                                    </dir-pagination-controls>
+                                                </th>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div class="row pagination-footer">
+                                        <div class="col-md-6">
+                                            <span>Show </span><input class="input-pagesize" type="number" ng-maxlength="100" ng-minlength="1" width="1" ng-model="PerPage"> <span>Records </span>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <span class="pull-right">Showing {{((currentPage-1)*PerPage)+1}} to {{((currentPage-1) * PerPage) + SalesOrderListPaged.length}} of {{total_count}} Records</span>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="modal" id="itemSqmLmKgModal" tabindex="-1" role="dialog">
+                                <div class="modal-dialog modal-lg" role="document">
+                                    <div class="modal-content">
+                                        <div class="row">
+                                            <div class="col-md-8">
+                                                <div class="modal-header">
+                                                    <h3 class="modal-title text-primary">Materials Infomation</h3>
+
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 text-center">
+                                                <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>-->
+                                            </div>
+                                        </div>
+
+
+                                        <div class="modal-body">
+                                            <table class="responstable table-hover table-bordered">
+                                                <tr>
+                                                    <th style="text-align:center">SL</th>
+                                                    <th style="text-align:center">Roll Qty (Meter)</th>
+                                                    <th style="text-align:center">Roll Qty (Sqm)</th>
+                                                    <th style="text-align:center">Roll Weight  (Kg)</th>
+
+                                                </tr>
+                                                <tr ng-repeat="itemInfo in ItemInfoList track by $index">
+                                                    <td style="text-align:center">{{$index + 1}}</td>
+                                                    <td style="text-align:center">{{itemInfo.RollLenghtInMeter}}</td>
+                                                    <td style="text-align:center">{{itemInfo.RollAreaInSqMeter}}</td>
+                                                    <td style="text-align:center">{{itemInfo.PackageWeight}}</td>
+
+                                                </tr>
+
+                                            </table>
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" ng-click="ModalClose()" data-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                </div>
+        
+        </div>
+       </div>
+   
+</form>
+
+
+
+
+<!--<pre>{{TopForIssueList | json}}</pre>
+<pre>{{_inv_StockIssueDetailAdAttribute | json}}</pre>-->
+<script>
+    function RowSelect(e) {
+        $('.searchRow').css('background-color', '');
+        $(e).css('background-color', '#94d5ef');
+    }
+
+    $("#ddlIssuedBy").select2({
+        placeholder: "Issued By",
+       // allowClear: true
+    });
+
+    $("#ddlReceivedBy").select2({
+        placeholder: "Received By",
+       // allowClear: true
+    });
+
+
+
+</script>
+
+<script>
+    $('.issueToltip').tooltip({ boundary: 'window' })
+    $("#SelectReq").select2({
+        placeholder: "Select Req No",
+    })
+
+    //$(".iwoSelect2").select2({
+    //    placeholder: "Select Iwo",
+    //});
+
+
+    //var picker = new Pikaday({
+    //    field: document.getElementById('txtIssueDate'),
+    //    firstDay: 6,
+    //    format: "DD/MM/YYYY",
+    //    minDate: new Date('1930-01-01'),
+    //    maxDate: new Date('2050-12-31'),
+    //    yearRange: [1930, 2050],
+    //    theme: 'blue-theme'
+    //});
+    //document.getElementById("calender").addEventListener("click", function () {
+    //    picker.show();
+    //});
+
+    var elements = document.getElementsByClassName("arrow-togglable");
+    var currentIndex = 0;
+
+    function newControl(e) {
+        elements = document.getElementsByClassName("arrow-togglable");
+        currentIndex = 0;
+        if (window.event.which == 40) {
+            currentIndex = ((currentIndex + 1) == elements.length) ? 0 : ++currentIndex;
+            elements[currentIndex].focus();
+        }
+        if (window.event.which == 38) {
+            currentIndex = (currentIndex == 0) ? elements.length - 1 : --currentIndex;
+            elements[currentIndex].focus();
+        }
+    }
+
+    function nextControlFromSugession(e) {
+        if (window.event.which == 40) {
+            currentIndex = ((currentIndex + 1) == elements.length) ? 0 : ++currentIndex;
+            elements[currentIndex].focus();
+        }
+        if (window.event.which == 38) {
+            currentIndex = (currentIndex == 0) ? elements.length - 1 : --currentIndex;
+            elements[currentIndex].focus();
+        }
+    }
+    function Hilitor2(id, tag) {
+        var targetNode = document.getElementById(id) || document.body;
+        var hiliteTag = tag || "EM";
+        var skipTags = new RegExp("^(?:" + hiliteTag + "|SCRIPT|FORM)$");
+        var colors = ["#ff6", "#a0ffff", "#9f9", "#f99", "#f6f"];
+        var wordColor = [];
+        var colorIdx = 0;
+        var matchRegex = "";
+        var openLeft = false;
+        var openRight = false;
+
+        this.setMatchType = function (type) {
+            switch (type) {
+                case "left":
+                    this.openLeft = false;
+                    this.openRight = true;
+                    break;
+
+                case "right":
+                    this.openLeft = true;
+                    this.openRight = false;
+                    break;
+
+                case "open":
+                    this.openLeft = this.openRight = true;
+                    break;
+
+                default:
+                    this.openLeft = this.openRight = false;
+
+            }
+        };
+
+        function addAccents(input) {
+            retval = input;
+            retval = retval.replace(/([ao])e/ig, "$1");
+            retval = retval.replace(/\\u00E[024]/ig, "a");
+            retval = retval.replace(/\\u00E7/ig, "c");
+            retval = retval.replace(/\\u00E[89AB]/ig, "e");
+            retval = retval.replace(/\\u00E[EF]/ig, "i");
+            retval = retval.replace(/\\u00F[46]/ig, "o");
+            retval = retval.replace(/\\u00F[9BC]/ig, "u");
+            retval = retval.replace(/\\u00FF/ig, "y");
+            retval = retval.replace(/\\u00DF/ig, "s");
+            retval = retval.replace(/a/ig, "([aÃ Ã¢Ã¤]|ae)");
+            retval = retval.replace(/c/ig, "[cÃ§]");
+            retval = retval.replace(/e/ig, "[eÃ¨Ã©ÃªÃ«]");
+            retval = retval.replace(/i/ig, "[iÃ®Ã¯]");
+            retval = retval.replace(/o/ig, "([oÃ´Ã¶]|oe)");
+            retval = retval.replace(/u/ig, "[uÃ¹Ã»Ã¼]");
+            retval = retval.replace(/y/ig, "[yÃ¿]");
+            retval = retval.replace(/s/ig, "(ss|[sÃŸ])");
+            return retval;
+        }
+
+        this.setRegex = function (input) {
+            input = input.replace(/\\([^u]|$)/g, "$1");
+            input = input.replace(/[^\w\\\s']+/g, "").replace(/\s+/g, "|");
+            input = input.replace(/^\||\|$/g, "");
+            input = addAccents(input);
+            if (input) {
+                var re = "(" + input + ")";
+                if (!this.openLeft) re = "(?:^|[\\b\\s])" + re;
+                if (!this.openRight) re = re + "(?:[\\b\\s]|$)";
+                matchRegex = new RegExp(re, "i");
+                return true;
+            }
+            return false;
+        };
+
+        this.getRegex = function () {
+            var retval = matchRegex.toString();
+            retval = retval.replace(/(^\/|\(\?:[^\)]+\)|\/i$)/g, "");
+            return retval;
+        };
+
+        // recursively apply word highlighting
+        this.hiliteWords = function (node) {
+            if (node === undefined || !node) return;
+            if (!matchRegex) return;
+            if (skipTags.test(node.nodeName)) return;
+
+            if (node.hasChildNodes()) {
+                for (var i = 0; i < node.childNodes.length; i++)
+                    this.hiliteWords(node.childNodes[i]);
+            }
+            if (node.nodeType == 3) { // NODE_TEXT
+                if ((nv = node.nodeValue) && (regs = matchRegex.exec(nv))) {
+                    if (!wordColor[regs[1].toLowerCase()]) {
+                        wordColor[regs[1].toLowerCase()] = colors[colorIdx++ % colors.length];
+                    }
+
+                    var match = document.createElement(hiliteTag);
+                    match.appendChild(document.createTextNode(regs[1]));
+                    match.style.backgroundColor = wordColor[regs[1].toLowerCase()];
+                    match.style.fontStyle = "inherit";
+                    match.style.color = "#000";
+
+                    var after;
+                    if (regs[0].match(/^\s/)) { // in case of leading whitespace
+                        after = node.splitText(regs.index + 1);
+                    } else {
+                        after = node.splitText(regs.index);
+                    }
+                    after.nodeValue = after.nodeValue.substring(regs[1].length);
+                    node.parentNode.insertBefore(match, after);
+                }
+            };
+        };
+
+        // remove highlighting
+        this.remove = function () {
+            var arr = document.getElementsByTagName(hiliteTag);
+            while (arr.length && (el = arr[0])) {
+                var parent = el.parentNode;
+                parent.replaceChild(el.firstChild, el);
+                parent.normalize();
+            }
+        };
+
+        // start highlighting at target node
+        this.apply = function (input) {
+            // this.remove();
+            if (input === undefined || !(input = input.replace(/(^\s+|\s+$)/g, ""))) return;
+            input = convertCharStr2jEsc(input);
+            if (this.setRegex(input)) {
+                this.hiliteWords(targetNode);
+            }
+        };
+
+        // added by Yanosh Kunsh to include utf-8 string comparison
+        function dec2hex4(textString) {
+            var hexequiv = new Array("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F");
+            return hexequiv[(textString >> 12) & 0xF] + hexequiv[(textString >> 8) & 0xF] + hexequiv[(textString >> 4) & 0xF] + hexequiv[textString & 0xF];
+        }
+
+        function convertCharStr2jEsc(str, cstyle) {
+            // Converts a string of characters to JavaScript escapes
+            // str: sequence of Unicode characters
+            var highsurrogate = 0;
+            var suppCP;
+            var pad;
+            var n = 0;
+            var outputString = '';
+            for (var i = 0; i < str.length; i++) {
+                var cc = str.charCodeAt(i);
+                if (cc < 0 || cc > 0xFFFF) {
+                    outputString += '!Error in convertCharStr2UTF16: unexpected charCodeAt result, cc=' + cc + '!';
+                }
+                if (highsurrogate != 0) { // this is a supp char, and cc contains the low surrogate
+                    if (0xDC00 <= cc && cc <= 0xDFFF) {
+                        suppCP = 0x10000 + ((highsurrogate - 0xD800) << 10) + (cc - 0xDC00);
+                        if (cstyle) {
+                            pad = suppCP.toString(16);
+                            while (pad.length < 8) {
+                                pad = '0' + pad;
+                            }
+                            outputString += '\\U' + pad;
+                        } else {
+                            suppCP -= 0x10000;
+                            outputString += '\\u' + dec2hex4(0xD800 | (suppCP >> 10)) + '\\u' + dec2hex4(0xDC00 | (suppCP & 0x3FF));
+                        }
+                        highsurrogate = 0;
+                        continue;
+                    } else {
+                        outputString += 'Error in convertCharStr2UTF16: low surrogate expected, cc=' + cc + '!';
+                        highsurrogate = 0;
+                    }
+                }
+                if (0xD800 <= cc && cc <= 0xDBFF) { // start of supplementary character
+                    highsurrogate = cc;
+                } else { // this is a BMP character
+                    switch (cc) {
+                        case 0:
+                            outputString += '\\0';
+                            break;
+                        case 8:
+                            outputString += '\\b';
+                            break;
+                        case 9:
+                            outputString += '\\t';
+                            break;
+                        case 10:
+                            outputString += '\\n';
+                            break;
+                        case 13:
+                            outputString += '\\r';
+                            break;
+                        case 11:
+                            outputString += '\\v';
+                            break;
+                        case 12:
+                            outputString += '\\f';
+                            break;
+                        case 34:
+                            outputString += '\\\"';
+                            break;
+                        case 39:
+                            outputString += '\\\'';
+                            break;
+                        case 92:
+                            outputString += '\\\\';
+                            break;
+                        default:
+                            if (cc > 0x1f && cc < 0x7F) {
+                                outputString += String.fromCharCode(cc);
+                            } else {
+                                pad = cc.toString(16).toUpperCase();
+                                while (pad.length < 4) {
+                                    pad = '0' + pad;
+                                }
+                                outputString += '\\u' + pad;
+                            }
+                    }
+                }
+            }
+            return outputString;
+        }
+
+    }
+</script>

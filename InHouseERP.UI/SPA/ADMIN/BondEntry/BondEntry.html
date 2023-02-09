@@ -1,0 +1,219 @@
+﻿<form name="BondEntryForm" novalidate>
+    <div class="col-md-12">
+        <div class="alert alert-info alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="topInfo"> &nbsp;  &#9755;&nbsp; <span style="color:red;">Red Icon</span> Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp; &#9755; Click On A Table Row To Update/Delete</div>
+        </div>
+    </div>
+    <div class="col-md-4" ng-show="CreatePermission || RevisePermission">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-share-alt"></i>&nbsp;{{BondEntryName}} </h3>
+            </div>
+            <div class="panel-body">
+                <div class="form-group" ng-class="{ 'has-error' : BondEntryForm.BondNo.$invalid && BondEntryForm.BondNo.$touched }" data-toggle="tooltip" data-placement="bottom" title="Bond No">
+                    <div class="input-group">
+                        <input type="text" id="txtPriceTypeName" name="BondNo" class="form-control" ng-model="ad_Bond.BondNo" placeholder="Bond No"  maxlength="51" ng-maxlength="50" required autofocus>
+                        <span class="input-group-addon"><i class="fa fa-text-width" style="color:red"></i></span>
+                    </div>
+                    <span class="help-block" ng-if="BondEntryForm.BondNo.$error.required && BondEntryForm.BondNo.$touched">Bond No is required</span>
+                    <span class="help-block" ng-if="BondEntryForm.BondNo.$error.maxlength">50 Character Max</span>
+                </div>
+
+                <div class="form-group" ng-class="{ 'has-error' : BondEntryForm.BondDate.$invalid && BondEntryForm.BondDate.$touched }" data-toggle="tooltip" data-placement="bottom" title="Bond Date">
+                    <div class="input-group">
+                        <input type="text" id="textBondDate" name="BondDate" class="form-control" ng-model="ad_Bond.BondDate" placeholder="Bond Date" maxlength="51" ng-maxlength="50" required autofocus readonly>
+                        <span class="input-group-addon" ng-click="CalendartextBondDate()" id="textBondDate"><i class="fa fa-calendar req-icon-color"></i></span>
+                    </div>
+                    <span class="help-block" ng-if="BondEntryForm.BondDate.$error.required && BondEntryForm.BondDate.$touched">Bond Date is required</span>
+                    <span class="help-block" ng-if="BondEntryForm.BondDate.$error.maxlength">50 Character Max</span>
+                </div>
+
+                <div class="input-group">
+                    <label>Status: </label>
+                    &nbsp;&nbsp;
+                    <div class="radio-inline">
+                        <input type="radio" name="optionsRadios"
+                               ng-value="true" ng-model="ad_Bond.IsActive">
+                        Active
+                    </div>
+                    <div class="radio-inline">
+                        <input type="radio" name="optionsRadios"
+                               ng-value="false" ng-model="ad_Bond.IsActive"> Inactive
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <br />
+                    <div class=" row">
+                        <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 5%; padding-right: 7%;">
+                            <div class="row">
+                                <button ng-click="BondSave()" ng-disabled="!ad_Bond.BondNo || !ad_Bond.BondDate " class="customBtn custmoBtnSave">
+                                    <i class="fa fa-floppy-o"></i>&nbsp;{{Btn}}
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 6%; padding-right: 6%;">
+                        <div class="row">
+                            <button id="Button2" class="customBtn custmoBtnDelete" ng-click="reset()"  title="Reset">
+                                <i class="fa fa-trash"></i>&nbsp;Reset
+                            </button>
+                        </div>
+                        </div>
+                      
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8" ng-show="ListViewPermission">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-list"></i>&nbsp;Bond List</h3>
+            </div>
+            <div class="panel-body custom-panal-body">
+
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <div class="input-group tooltipAll" data-toggle="tooltip" title="From Date">
+
+                                <!--<input type="text" id="textformDate" name="BondDate" class="form-control" ng-change="BondSearch();" ng-model="formDate" placeholder="Form Date" maxlength="51" ng-maxlength="50" required autofocus readonly>
+    <span class="input-group-addon" id="textformDate1"><i class="fa fa-calendar" style="color:red"></i></span>-->
+
+                                <input type="text" name="FromDate" id="textformDate" ng-model="FromDate" ng-change="BondSearch();" class="form-control " placeholder="From Date" readonly />
+                                <span class="input-group-addon" ng-click="FromDateChangeForBond();" id="textformDate2"><i class="fa fa-calendar-times-o"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <div class="input-group tooltipAll" data-toggle="tooltip" title="To Date">
+                                <input type="text" name="ToDate" id="textToDate" ng-model="ToDate" ng-change="BondSearch();" class="form-control " placeholder="To Date" readonly />
+                                <span class="input-group-addon" ng-click="ToDateChangeForBond();" id="texttoDate2"><i class="fa fa-calendar-times-o"></i></span>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-group tooltipAll" data-toggle="tooltip" title="Bond No">
+                            <input type="text" class="form-control" id="searchaBondNameId" ng-model="searchaBondName" ng-change="BondSearch();" name="name" placeholder="Bond No" />
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-3">
+                        <button id="btnSearch" ng-click="reloadBtn()" class="customBtn custmoBtnSearch tooltipAll" title="Reload">
+                            <i class="fa fa-refresh"></i>&nbsp;Clear
+                        </button>
+                    </div>
+
+                </div>
+                <div class="tbl-outer">
+                    <table class="responstable table-hover">
+
+                        <tbody>
+                            <tr class="t-head">
+                                <th>S/N</th>
+                                <th class="txt-center" data-th="Price Type Name"><span>Price Type Name</span></th>
+                                <th class="txt-center">Default</th>
+                                <th class="txt-center">Status</th>
+                                <th class="txt-center">Action</th>
+                            </tr>
+                            <tr class="HoverTable" dir-paginate="abond in Bondlist | filter:q | itemsPerPage: PerPage" current-page="currentPage" total-items="total_count" ng-click="SelPriceType(aPrice)">
+                                <td>{{$index + ((currentPage-1)*PerPage) + 1}}</td>
+                                <td class="txt-center">{{abond.BondNo}}</td>
+                                <td class="txt-center">{{abond.BondDate}}</td>
+                                <td class="txt-center">
+                                    <!--<input type="checkbox" ng-model="abond.IsActive" value=" {{abond.IsActive}}" />-->
+                                    <p ng-if="abond.IsActive==true">Active</p>
+                                    <p ng-if="abond.IsActive==false">InActive</p>
+                                </td>
+                                <td class="txt-center">
+
+                                    <i class="fa fa-edit text-primary" ng-click="getUpdateBond(abond)" style="font-size:20px;font-weight:bold;" title="Edit"> </i>
+
+                                </td>
+                            </tr>
+                            <tr class="t-foot" ng-show="total_count>PerPage">
+                                <th colspan="4">
+                                    <dir-pagination-controls max-size="8"
+                                                             direction-links="true"
+                                                             boundary-links="true"
+                                                             on-page-change="getData(newPageNumber)" style="text-align:center;">
+                                    </dir-pagination-controls>
+                                </th>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="row pagination-footer">
+                        <div class="col-md-6">
+                            <span>Show </span><input class="input-pagesize" type="number" ng-maxlength="100" ng-minlength="1" width="1" ng-model="PerPage"> <span>Records </span>
+                        </div>
+                        <div class="col-md-6">
+                            <span class="pull-right">Showing {{((currentPage-1)*PerPage)+1}} to {{((currentPage-1)*PerPage)+Bondlist.length}} of {{total_count}} Records</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script>
+    $('.tooltipAll').tooltip({ boundary: 'window' })
+
+
+
+    //var picker = new Pikaday({
+    //    field: document.getElementById('textBondDate'),
+    //    firstDay: 1,
+    //    format: "DD/MM/YYYY",
+    //    minDate: new Date('1930-01-01'),
+    //    maxDate: new Date('2050-12-31'),
+    //    yearRange: [1930, 2050],
+    //    theme: 'blue-theme'
+    //});
+    //document.getElementById("textBondDate1").addEventListener("click", function () {
+    //    picker.show();
+    //});
+
+
+    //var picker = new Pikaday({
+    //    field: document.getElementById('textToDate'),
+    //    firstDay: 1,
+    //    format: "DD/MM/YYYY",
+    //    minDate: new Date('1930-01-01'),
+    //    maxDate: new Date('2050-12-31'),
+    //    yearRange: [1930, 2050],
+    //    theme: 'blue-theme'
+    //});
+    //document.getElementById("textToDate1").addEventListener("click", function () {
+    //    picker.show();
+    //});
+
+
+    //var picker = new Pikaday({
+    //    field: document.getElementById('textformDate'),
+    //    firstDay: 1,
+    //    format: "DD/MM/YYYY",
+    //    minDate: new Date('1930-01-01'),
+    //    maxDate: new Date('2050-12-31'),
+    //    yearRange: [1930, 2050],
+    //    theme: 'blue-theme'
+    //});
+    //document.getElementById("textformDate1").addEventListener("click", function () {
+    //    picker.show();
+    //});
+
+
+
+    
+    
+
+
+</script>

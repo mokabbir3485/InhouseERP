@@ -1,0 +1,308 @@
+﻿<style>
+    .responstable th:nth-child(2) {
+        width: 10% !important;
+    }
+
+    #DivDdlEmployee .select2-container {
+        width: 323px !important;
+    }
+    #DivDdlCompany .select2-container {
+        width: 323px !important;
+    }
+</style>
+<form name="SalesReportForm" novalidate>
+
+    <div class="col-md-4">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-group"></i>&nbsp;Reports </h3>
+            </div>
+            <div class="panel-body">
+
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="radio-inline" ng-show="SalesRegister">
+                            <label>
+                                <input type="radio" name="salesRegisterReport" value="SalesRegisterReport" ng-model="salesReport">{{SalesRegisterReportName}}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="radio-inline" ng-show="ExportSales">
+                            <label>
+                                <input type="radio" name="exportSalesReport" value="ExportSalesReport" ng-model="salesReport">{{ExportSalesReportName}}
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="radio-inline" ng-show="CompanyWiseTotalSales">
+                            <label>
+                                <input type="radio" name="CompanyWiseTotalSalesReport" value="CompanyWiseTotalSalesReport" ng-model="salesReport">{{CompanyWiseTotalSalesReportName}}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="radio-inline" ng-show="SalesProductivity">
+                            <label>
+                                <input type="radio" name="salesProductivityReport" value="SalesProductivityReport" ng-model="salesReport">{{SalesProductivityReportName}}
+
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="radio-inline" ng-show="CIF">
+                            <label>
+                                <input type="radio" name="CIFReport" value="CIFReport" ng-model="salesReport">{{CIFReportName}}
+
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="radio-inline" ng-show="CompanyPaymentStatus">
+                            <label>
+                                <input type="radio" name="CompanyPaymentStatusReport" value="CompanyPaymentStatusReport" ng-model="salesReport">{{CompanyPaymentStatusReportName}}
+
+                            </label>
+                        </div>
+                    </div>
+                    
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-list"></i>&nbsp;Report Parameters</h3>
+            </div>
+            <div class="panel-body custom-panal-body">
+                <div class="row" ng-show="salesReport == 'CompanyPaymentStatusReport'" ng-hide="salesReport=='SalesRegisterReport' || salesReport=='ExportSalesReport' || salesReport== 'CompanyWiseTotalSalesReport' || salesReport=='CIFReport' || salesReport=='SalesProductivityReport'">
+                    <div class="col-md-7">
+                        <label>
+                            Search By:
+                        </label>
+
+                    </div>
+
+                </div>
+                <div class="row" ng-show="salesReport == 'CompanyPaymentStatusReport'" ng-hide="salesReport=='SalesRegisterReport' || salesReport=='ExportSalesReport' || salesReport=='CompanyWiseTotalSalesReport' || salesReport=='CIFReport' || salesReport=='SalesProductivityReport'">
+                    <div class="col-md-7">
+                        <label>
+                            <input type="radio" name="FilterType" value="Sales Order" ng-model="FilterType"> Sales Order Date
+                        </label>
+                        <label>
+                            <input type="radio" name="FilterType" value="Sales Invoice" ng-model="FilterType"> Sales Invoice Date
+                        </label>
+                        <!--<label>
+                            <input type="radio" name="FilterType" value="Payment" ng-model="FilterType"> Payment Date
+                        </label>-->
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-md-6" ng-show="salesReport=='SalesRegisterReport' || salesReport=='ExportSalesReport' || salesReport=='CompanyWiseTotalSalesReport' || salesReport=='CIFReport' || salesReport == 'CompanyPaymentStatusReport'" ng-hide="salesReport=='SalesProductivityReport'">
+                        <div class="form-group " ng-class="{ 'has-error' : SalesReportForm.FromDate.$invalid && SalesReportForm.FromDate.$touched }" data-toggle="tooltip" data-placement="bottom" title="From Date">
+                            <div class='input-group'>
+                                <input type="text" name="FromDate" id="txtFromDate" onkeydown="return false" ng-model="FromDate" class="form-control" placeholder="From Date" readonly />
+                                <span class="input-group-addon" id="FormDate" ng-click="FormDateChange()"><i class="fa fa-calendar"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6" ng-show="salesReport=='SalesRegisterReport' || salesReport=='ExportSalesReport' || salesReport=='CompanyWiseTotalSalesReport' || salesReport=='CIFReport' || salesReport == 'CompanyPaymentStatusReport'" ng-hide="salesReport=='SalesProductivityReport'">
+                        <div class="form-group" ng-class="{ 'has-error' : SalesReportForm.ToDate.$invalid && SalesReportForm.ToDate.$touched }" data-toggle="tooltip" data-placement="bottom" title="To Date">
+                            <div class='input-group'>
+                                <input type="text" name="ToDate" id="txtToDate" ng-model="ToDate" class="form-control" placeholder="To Date" readonly />
+                                <span class="input-group-addon" id="ToDate" ng-click="ToDateChange()"><i class="fa fa-calendar"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" ng-show="salesReport=='SalesRegisterReport' || salesReport=='CompanyWiseTotalSalesReport' || salesReport == 'CompanyPaymentStatusReport'">
+                    <div class="col-md-6">
+                        <div ng-class="{ 'has-error' : SalesReportForm.SalesOrderType.$invalid && SalesReportForm.SalesOrderType.$touched }" data-toggle="tooltip" data-placement="bottom" title="Sales Order Type">
+                            <div class="input-group width-hundred-percent">
+                                <select ng-model="ddlSalesOrderType" name="SalesOrderType" id="SalesOrderType" class="form-control selectNotMandetory" ng-options="salesOType for salesOType in SalesOrderTypeList">
+                                    <option value="" label="S.O.Type"></option>
+                                </select>
+                                <span class="help-block" ng-show="SalesReportForm.SalesOrderType.$dirty && SalesReportForm.SalesOrderType.$invalid">Sales Order Type is required</span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                
+                <div class="row" ng-show="salesReport=='SalesRegisterReport' || salesReport == 'CompanyPaymentStatusReport'">
+                    <br />
+                    <div class="col-md-6">
+                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : SalesReportForm.ddlBranch.$dirty && SalesReportForm.ddlBranch.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Factory">
+                            <div class="input-group input-group-md ddl">
+                                <select id="ddlBranch" ng-model="ddlBrunch" class="form-control selectNotMandetory" name="ddlBranch" ng-options="brunch.BranchName  for brunch in Branchlist  track by brunch.BranchId">
+                                    <option value="" label="Select Factory"></option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" ng-show="salesReport == 'SalesRegisterReport' || salesReport == 'ExportSalesReport' || salesReport == 'CompanyWiseTotalSalesReport' || salesReport == 'CompanyPaymentStatusReport'">
+                    <br />
+                    <div class="col-md-6">
+                        <div ng-class="{ 'has-error' : SalesReportForm.IndividualOrTeam.$invalid && SalesReportForm.IndividualOrTeam.$touched }" data-toggle="tooltip" data-placement="bottom" title="Individual Or Team">
+                            <div class="input-group width-hundred-percent">
+                                <select ng-model="ddlIndividualOrTeam" name="IndividualOrTeam" id="IndividualOrTeam" class="form-control selectMendatory" ng-options="aIndividualOrTeam for aIndividualOrTeam in IndividualOrTeamList">
+                                </select>
+                                <span class="help-block" ng-show="SalesReportForm.IndividualOrTeam.$dirty && SalesReportForm.IndividualOrTeam.$invalid">Individual Or Team is required</span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-md-6" ng-show="salesReport == 'SalesRegisterReport' || salesReport == 'ExportSalesReport' || salesReport == 'CompanyWiseTotalSalesReport' || salesReport == 'CompanyPaymentStatusReport'">
+                        <br />
+                        <div id="DivDdlEmployee" class="form-group" title="Prepared By">
+                            <select id="ddlSalesReport" ng-model="ddlEmployee" class="form-control " name="ddlPreparedBy" ng-options="employee.FullName +' ~ '+employee.DesignationName+' ~ '+employee.DepartmentName for employee in EmployeeList track by employee.EmployeeId" ng-change="ChangeEmployee(ddlEmployee);" required>
+
+                                <option value="">Select Employee</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" ng-show="salesReport == 'SalesRegisterReport' || salesReport == 'ExportSalesReport' || salesReport == 'CompanyWiseTotalSalesReport' || salesReport == 'CIFReport'  || salesReport == 'CompanyPaymentStatusReport'">
+                    <div class="col-md-6">
+                        <!--<div id="DivDdlCompany" class="form-group" title="Company Name">
+                            <select id="ddlsection" ng-model="ddlCompany" class="form-control " name="ddlsection" ng-options="company.CompanyName for company in companyList track by company.CompanyId" required>
+
+                                <option value=""> Select Company</option>
+
+                            </select>
+                        </div>-->
+                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : SalesReportForm.Company.$dirty && SalesReportForm.Company.$invalid }" title="Select Company">
+                            <div class="input-group input-group-md ddl">
+                                <div id="selectCompany" ng-dropdown-multiselect=""
+                                     options="example8data"
+                                     selected-model="CompanyIdList"
+                                     extra-settings="example8settings"
+                                     ng-click="fouseSearchBox();"
+                                     translation-texts="companyPlaceholder">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" ng-show="salesReport == 'ExportSalesReport'">
+                    <div class="col-md-6">
+                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : SalesReportForm.ConversionRate.$invalid && SalesReportForm.ConversionRate.$touched }" data-toggle="tooltip" data-placement="bottom" title="Conversion Rate">
+                            <div class="input-group ">
+                                <input type="number" name="ConversionRate" id="ConversionRate" class="form-control" ng-model="ConversionRate" placeholder="USD Rate" maxlength="101" ng-maxlength="100">
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block" style="display: block;color:black" ng-if="SalesReportForm.ConversionRate.$error.maxlength">100 Character Max</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" ng-show="salesReport == 'SalesRegisterReport' || salesReport == 'ExportSalesReport' || salesReport == 'CompanyWiseTotalSalesReport' || salesReport == 'SalesProductivityReport' || salesReport == 'CIFReport' || salesReport == 'CompanyPaymentStatusReport'">
+                    <div class="col-md-4">
+                        <button id="Button1" class="customBtn custmoBtnSave tooltipAll" ng-click="SalesReportButton()" title="Report View">
+
+                            <i class="fa fa-floppy-o"></i>&nbsp;View Report
+                        </button>
+
+                    </div>
+                    <div class="col-md-4" ng-show="salesReport == 'SalesRegisterReport' ||  salesReport == 'ExportSalesReport' ||  salesReport == 'CompanyWiseTotalSalesReport' ||  salesReport == 'CIFReport' || salesReport == 'CompanyPaymentStatusReport'">
+                        <button id="Button1" class="btn btn-danger tooltipAll" ng-click="ResetButton()" title="Reset Button">
+
+                            Reset
+                        </button>
+                    </div>
+                    <div class="col-md-4">
+
+                    </div>
+
+                </div>
+
+
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+            </div>
+            </div>
+        </div>
+
+</form>
+
+<script>
+    $('.tooltipAll').tooltip({ boundary: 'window' })
+
+    function RowSelect(e) {
+        $('.searchRow').css('background-color', '');
+        $(e).css('background-color', '#94d5ef');
+    }
+
+    $("#ddlSalesReport").select2({
+
+        //placeholder: "Employee Name",
+        //theme: "classic"
+    });
+
+    $("#ddlsection").select2({
+
+
+        //theme: "classic"
+    });
+
+    
+    
+
+
+    //////////////////////////////////////////////////////////
+    //var picker3 = new Pikaday({
+    //    field: document.getElementById('txtFromDateCIF'),
+    //    firstDay: 6,
+    //    format: "DD/MM/YYYY",
+    //    minDate: new Date('2018-07-01'),
+    //    maxDate: yesterday,
+    //    yearRange: [1930, 2050],
+    //    theme: 'blue-theme'
+    //});
+    //document.getElementById("calender1CIF").addEventListener("click", function () {
+    //    picker1.show();
+
+    //});
+
+    //var picker4 = new Pikaday({
+    //    field: document.getElementById('txtToDateCIF'),
+    //    firstDay: 6,
+    //    format: "DD/MM/YYYY",
+    //    minDate: new Date('2018-07-01'),
+    //    maxDate: yesterday,
+    //    yearRange: [1930, 2050],
+    //    theme: 'blue-theme'
+    //});
+    //document.getElementById("calender2CIF").addEventListener("click", function () {
+    //    picker2.show();
+
+    //});
+    //$("#calender2CIF").click(function () {
+    //    $("#txtToDateCIF").val('');
+    //});
+    //$("#calender1CIF").click(function () {
+    //    $("#txtFromDateCIF").val('');
+    //});
+</script>

@@ -1,0 +1,459 @@
+﻿
+<form name="JumboStockIssueEntryForm" novalidate>
+
+        <div class="col-md-12" ng-show="CreatePermission">
+            <div class="alert alert-info alert-dismissible fade in" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <div class="topInfo"> &nbsp; &#9755; <span style="color:red;">Red Icon</span> Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp; &#9755; Click On A Table Row To Update</div>
+            </div>
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="fa fa-shield"></i>&nbsp;Mother Jumbo Issue </h3>
+                    <div class="clearfix">
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <div class="form-group" ng-class="{ 'has-error' : JumboStockIssueEntryForm.JamboIssueNo.$dirty && JumboStockIssueEntryForm.JamboIssueNo.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Jambo Issue No">
+                                <div class="input-group">
+                                    <input type="text" id="txtJamboIssueNo" ng-model="inv_JumboStockIssue.JIssueNo" name="JamboIssueNo" class="form-control" placeholder="Jambo Issue No" maxlength="20" ng-maxlength="20" readonly>
+                                    <span class="input-group-addon"><i class="fa fa-text-width req-icon-color"></i></span>
+                                </div>
+                                <span class="help-block" ng-show="JumboStockIssueEntryForm.JamboIssueNo.$dirty && JumboStockIssueEntryForm.JamboIssueNo.$invalid">Jambo Issue No is required</span>
+                                <span class="help-block" ng-if="JumboStockIssueEntryForm.JamboWidth.$error.maxlength">15 Character Max</span>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <div class="input-group " data-toggle="tooltip" title="Issued Date">
+
+                                    <input type="text" name="IssuedDate" id="txtIssueDate" ng-model="inv_JumboStockIssue.JIssueDate" class="form-control " placeholder="Issued Date" readonly />
+                                    <span class="input-group-addon" ng-click="DateChangeForJumbo()" id="DateChangeForJumbo"><i class="fa fa-calendar req-icon-color"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group input-group-md ddl" data-toggle="tooltip" data-placement="bottom" title="Select Departemt">
+                                <div class="input-group width-hundred-percent">
+                                    <select ng-model="ddlFromDepartment" id="ddlFromDepartment" class="form-control selectMendatory" name="FromDepartment" ng-change="inv_JumboStockIssue.DepartmentId=ddlFromDepartment.DepartmentId; GetByCombinationandDepertment();" ng-options="department.DepartmentName for department in DepartmentList track by department.DepartmentId;">
+                                        <option value="" label="Select Department"></option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group" ng-class="{ 'has-error' : JumboStockIssueEntryForm.IssuedBy.$dirty && JumboStockIssueEntryForm.IssuedBy.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Issued By">
+
+                                <div class="input-group width-hundred-percent">
+                                    <select ng-model="IssuedBy" id="IssuedBy" ng-disabled="jumboIssueIsDisabled" class="form-control selectMendatory" name="IssuedBy" ng-change="JumboIssuedByDisabled()" ng-options="employee.FullName +' ~ '+employee.DesignationName+' ~ '+employee.DepartmentName for employee in IssuedByList track by employee.EmployeeId">
+                                        <option value="" label="Issued By"></option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="proToltipChange" title="IWO No">
+                                <select class="form-control" id="ddlAllIwoSelect" name="ddlAllIwoData" ng-model="ddlAllIwoData" ng-options="iwo.InternalWorkOrderNo  +' ~ '+iwo.CompanyName +' ~ '+iwo.FactoryName for iwo  in iwoList track by iwo.InternalWorkOrderId" ng-change="getByInternalWorkOrderIssue()">
+                                    <option value="">Select IWO</option>
+                                </select>
+                            </div>
+
+                        </div>
+                        <div class="col-md-1">
+                            <button class="btn btn-primary " id="reportBtnDisable" ng-click="OpenReport()">
+                                Report
+                            </button>
+                        </div>
+
+                    </div>
+                    <div class="row" hidden>
+                        <div class="col-md-3" hidden>
+                            <div class="form-group" ng-class="{ 'has-error' : JumboStockIssueEntryForm.ReceivedBy.$dirty && JumboStockIssueEntryForm.ReceivedBy.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Received By">
+
+                                <div class="input-group width-hundred-percent">
+                                    <select ng-model="ReceivedBy" id="ReceivedBy" ng-disabled="RecivedSecialDdlDisabled||jumboIssueIsDisabled || !IssuedBy" class="form-control selectMendatory" name="ReceivedBy" ng-options="employee.FullName +' ~ '+employee.DesignationName+' ~ '+employee.DepartmentName for employee in IssuedByList track by employee.EmployeeId">
+                                        <option value="" label="Received By"></option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3" hidden>
+                            <div class="form-group input-group-md ddl" data-toggle="tooltip" data-placement="bottom" title="To Departemt">
+                                <div class="input-group width-hundred-percent">
+                                    <select ng-model="ddlToDepartment" ng-disabled="SecialDdlDisabled || jumboIssueIsDisabled || !ddlFromDepartment || true" id="ddlToDepartment" class="form-control selectMendatory" name="ToDepartment" ng-change="inv_JumboStockIssue.ToDepartmentId = ddlToDepartment.DepartmentId;" ng-options="department.DepartmentName for department in DepartmentList track by department.DepartmentId">
+                                        <option value="" label="To Department"></option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3" hidden>
+                            <div class="form-group" ng-class="{ 'has-error' : JumboStockIssueEntryForm.IssuedBy.$dirty && JumboStockIssueEntryForm.IssuedBy.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Issued By">
+
+                                <div class="input-group width-hundred-percent">
+                                    <select ng-model="IssuedBy" id="IssuedBy" ng-disabled="jumboIssueIsDisabled" class="form-control selectMendatory" name="IssuedBy" ng-change="JumboIssuedByDisabled()" ng-options="employee.FullName for employee in IssuedByList track by employee.EmployeeId">
+                                        <option value="" label="Issued By"></option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div style="width:100%" class="form-group" ng-class="{ 'has-error' : JumboStockIssueEntryForm.jumbo.$dirty && JumboStockIssueEntryForm.jumbo.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Jumbo Name">
+
+                                <div class="input-group width-hundred-percent">
+                                    <select ng-model="ddljumbo" id="ddljumboId" ng-change="ChangeItemCategory(ddljumbo);GetCurrentQuantity();" ng-disabled="!ddlFromDepartment || inv_JumboStockIssueDetailList.length > 0" class="form-control selectMendatory" name="ddljumbo" ng-options="jumbo.Combination for jumbo in jumboList track by jumbo.ItemId">
+                                        <option value="" label="Select Jumbo"></option>
+                                    </select>
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group" ng-class="{ 'has-error' : CheckNonCalculativeValueForm.MaterialType.$dirty && CheckNonCalculativeValueForm.MaterialType.$invalid }">
+                                <div class="input-group input-group-md ddl tooltipAll" data-toggle="tooltip" data-placement="bottom" title="Select Material Type">
+                                    <select ng-model="ddlMaterialType" class="form-control selectMendatory" name="MaterialType" ng-disabled="inv_JumboStockIssueDetailList.length > 0" id="cmbMaterialType" ng-options="MaterialType.MaterialType for MaterialType in MaterialTypeList track by MaterialType.MaterialTypeId" ng-change="inv_JumboStockIssue.MaterialTypeId=ddlMaterialType.MaterialTypeId; GetCurrentQuantity();" required autofocus>
+                                        <option value="" label="Select Material Type"></option>
+                                    </select>
+                                </div>
+                                <span class="help-block" ng-show="CheckNonCalculativeValueForm.MaterialType.$dirty && CheckNonCalculativeValueForm.MaterialType.$invalid">Material Type is required</span>
+                            </div>
+                        </div>
+                        <div class="col-md-3 CheckBoxDiv" hidden>
+
+                            <div class="checkbox" style="margin-top:15px;">
+                                <label class="MaterialCheckBox">
+                                    Receive As Jumbo<input type="checkbox" ng-disabled="!ddljumbo ||jumboIssueIsDisabled" name="IsLocalPurchase" id="isLocalPurchase" value="inv_StockReceive.IsJumboReceive" ng-click="ReciveAsJumbo(inv_StockReceive.IsJumboReceive)" ng-model="inv_StockReceive.IsJumboReceive">
+                                    <span class="cr"><i class="cr-icon fa fa-check"></i></span>
+                                </label>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group" ng-class="{ 'has-error' : JumboStockIssueEntryForm.JumboCurrentWidth.$dirty && JumboStockIssueEntryForm.JumboCurrentWidth.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Jumbo Current Width">
+                                <div class="input-group">
+                                    <!--<input type="number" id="txtJumboCurrentWidth" ng-model="ddljumbo.JumboCurrentWidth" name="JumboCurrentWidth" class="form-control" placeholder="J.Current Width" maxlength="15" ng-maxlength="14" readonly>-->
+                                    <!--<span class="input-group-addon" style="font-size:14px;font-weight:bold;border:1px solid black;height:12%;"> Curr. Width  (<span style="color:red;">{{CurrentWidth}}</span>) Curr. Qty (<span style="color:red;"> {{CurrentQuantity}}</span>)</span>-->
+                                    <span class="input-group-addon" style="font-size:14px;font-weight:bold;border:1px solid black;height:12%;">Current Quantity (<span style="color:red;"> {{CurrentQuantity}}</span>)</span>
+
+                                    <!--<label>Curr. Width {{ddljumbo.JumboCurrentWidth}} Qty {{CurrentWidthAndQty}}</label>-->
+                                </div>
+                                <span class="help-block" ng-show="JumboStockIssueEntryForm.JumboCurrentWidth.$dirty && JumboStockIssueEntryForm.JumboCurrentWidth.$invalid">Jumbo Current Width is required</span>
+                                <span class="help-block" ng-if="JumboStockIssueEntryForm.JumboCurrentWidth.$error.maxlength">15 Character Max</span>
+                            </div>
+                        </div>
+                        <div class="col-md-3" hidden>
+                            <div class="form-group" ng-class="{ 'has-error' : JumboStockIssueEntryForm.JamboWidth.$dirty && JumboStockIssueEntryForm.JamboWidth.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Issue Jumbo Width">
+                                <div class="input-group">
+                                    <!--<input type="number" id="txtJamboWidth" ng-model="IssuedJumboWidth" ng-change="JumboRollQtyCalculetion()" name="JamboWidth" class="form-control" placeholder="Issue Jumbo Width" maxlength="15" ng-maxlength="14">-->
+                                    <input type="number" id="txtJamboWidth" ng-model="IssuedJumboWidth" name="JamboWidth" class="form-control" placeholder="Issue Jumbo Width" maxlength="15" ng-maxlength="14">
+                                    <span class="input-group-addon" style="color:red"><b>J.Issue Width(M)</b></span>
+                                </div>
+                                <span class="help-block" ng-show="JumboStockIssueEntryForm.JamboWidth.$dirty && JumboStockIssueEntryForm.JamboWidth.$invalid">Issue Jumbo Width is required</span>
+                                <span class="help-block" ng-if="JumboStockIssueEntryForm.JamboWidth.$error.maxlength">15 Character Max</span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group" ng-class="{ 'has-error' : JumboStockIssueEntryForm.IssuedJumboRollQty.$dirty && JumboStockIssueEntryForm.IssuedJumboRollQty.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Issued Jumbo Roll Qty">
+                                <div class="input-group">
+                                    <!--<input type="number" id="txtIssuedJumboRollQty" ng-model="IssuedJumboRollQty" ng-change="JumboIssueQtyMultiplication()" name="IssuedJumboRollQty" class="form-control" placeholder="Issued Jumbo Roll Qty" maxlength="15" ng-maxlength="14">-->
+                                    <input type="number" id="txtIssuedJumboRollQty" ng-model="IssuedJumboRollQty" ng-disabled="inv_JumboStockIssueDetailList.length > 0" name="IssuedJumboRollQty" class="form-control" placeholder="Issued Jumbo Roll Qty" maxlength="15" ng-maxlength="14">
+                                    <span class="input-group-addon" style="color:red"><b>J.Issue Qty(Roll)</b></span>
+                                </div>
+                                <span class="help-block" ng-show="JumboStockIssueEntryForm.IssuedJumboRollQty.$dirty && JumboStockIssueEntryForm.JamboWidth.$invalid">Issued Jumbo Roll Qty is required</span>
+                                <span class="help-block" ng-if="JumboStockIssueEntryForm.IssuedJumboRollQty.$error.maxlength">15 Character Max</span>
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="form-group" ng-class="{ 'has-error' : JumboStockIssueEntryForm.JamboWidth.$dirty && JumboStockIssueEntryForm.JumboWastageInMM.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Jumbo Wastage">
+                                <div class="input-group">
+                                    <!--<input type="number" id="txtJumboWastage" ng-model="JumboWastageInMM" ng-change="JumboRollQtyCalculetion()" name="JumboWastageInMM" class="form-control" placeholder="Jumbo Wastage" maxlength="15" ng-maxlength="14">-->
+                                    <input type="number" id="txtJumboWastage" ng-model="JumboWastageInMM" name="JumboWastageInMM" class="form-control" ng-disabled="inv_JumboStockIssueDetailList.length > 0" placeholder="Jumbo Wastage" maxlength="15" ng-maxlength="14">
+                                    <span class="input-group-addon" style="color:black"><b>Jumbo Wastage(Width in mm)</b></span>
+                                </div>
+                                <span class="help-block" ng-show="JumboStockIssueEntryForm.JumboWastageInMM.$dirty && JumboStockIssueEntryForm.JumboWastageInMM.$invalid">Jumbo Wastage is required</span>
+                                <span class="help-block" ng-if="JumboStockIssueEntryForm.JumboWastageInMM.$error.maxlength">15 Character Max</span>
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group" ng-class="{ 'has-error' : JumboStockIssueEntryForm.Raw.$dirty && JumboStockIssueEntryForm.Raw.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Raw Name">
+
+                                <div class="input-group width-hundred-percent">
+                                    <select ng-model="ddlraw" id="ddlrawMatId" class="form-control selectMendatory" name="ddlraw" ng-options="raw.Combination for raw in rawList track by raw.ItemId">
+                                        <option value="" label="Select Rawmastrials"></option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group" ng-class="{ 'has-error' : JumboStockIssueEntryForm.RawQty.$dirty && JumboStockIssueEntryForm.RawQty.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Material Qty">
+                                <div class="input-group">
+                                    <input type="number" id="txtRawQty" ng-model="IssuedRawMatQty" name="RawQty" class="form-control" placeholder="Issued Material Qty" maxlength="15" ng-maxlength="14">
+                                    <span class="input-group-addon" style="color:red"><b>Material Qty(Roll)</b></span>
+                                </div>
+                                <span class="help-block" ng-show="JumboStockIssueEntryForm.RawQty.$dirty && JumboStockIssueEntryForm.RawQty.$invalid">Material Qty is required</span>
+                                <span class="help-block" ng-if="JumboStockIssueEntryForm.RawQty.$error.maxlength">15 Character Max</span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group" ng-class="{ 'has-error' : JumboStockIssueEntryForm.IssuedRawMatUnitPrice.$dirty && JumboStockIssueEntryForm.IssuedRawMatUnitPrice.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Issued Material Unit Price">
+                                <div class="input-group">
+                                    <input type="number" id="txtIssuedRawMatUnitPrice" ng-model="IssuedRawMatUnitPrice" name="IssuedRawMatUnitPrice" class="form-control" placeholder="Issued Material Unit Price" maxlength="15" ng-maxlength="14">
+                                    <span class="input-group-addon" style="color:black"><b>Material U.Price</b></span>
+                                </div>
+                                <span class="help-block" ng-show="JumboStockIssueEntryForm.RawQty.$dirty && JumboStockIssueEntryForm.IssuedRawMatUnitPrice.$invalid">Issued Material Unit Price is required</span>
+                                <span class="help-block" ng-if="JumboStockIssueEntryForm.IssuedRawMatUnitPrice.$error.maxlength">15 Character Max</span>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                    <div class="row">
+                        <div class="col-md-9">
+
+                        </div>
+
+                        <div class="col-md-3">
+                            <button id="btnAdd" class="customBtn custmoBtnReset" name="AddJumboIssued" title="Add" ng-click="AddJumboIssuedDetail()" ng-disabled="!ddljumbo || !ddlMaterialType || !ddlraw || !IssuedJumboRollQty || !IssuedRawMatQty || !(CurrentQuantity >= IssuedJumboRollQty)">
+                                <i class=" fa fa-plus-square"></i>&nbsp;Add
+                            </button>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="center">
+                                <table class="responstable table-hover" style="width: 100%;  margin-left: auto; margin-right: auto;">
+                                    <tbody>
+                                        <tr class="t-head">
+                                            <th class="t-cell-center">S/N</th>
+                                            <!--<th class="t-cell-center">Jumbo Name</th>
+                                            <th class="t-cell-center">Jumbo Qty(Roll)</th>
+                                            <th class="t-cell-center">Jumbo Waste(mm)</th>-->
+                                            <th class="t-cell-center">Material Name</th>
+                                            <th class="t-cell-center">Material Qty(Roll)</th>
+                                            <th class="t-cell-center">Material Unit Price</th>
+                                            <th class="t-cell-center">Remove</th>
+                                        </tr>
+                                        <tr class="HoverTable" ng-repeat="inv_JumboStockIssueDetail in inv_JumboStockIssueDetailList track by $index">
+                                            <td class="t-cell-center">{{$index+1}}</td>
+
+                                            <!--<td class="t-cell-center">{{inv_JumboStockIssueDetail.JumboItemName}}</td>
+                                            <td class="t-cell-center">{{inv_JumboStockIssueDetail.IssuedJumboRollQty}}</td>
+                                            <td class="t-cell-center">{{inv_JumboStockIssueDetail.JumboWastageInMM}}</td>-->
+                                            <td class="t-cell-center">{{inv_JumboStockIssueDetail.RawItemName}}</td>
+                                            <td class="t-cell-center">{{inv_JumboStockIssueDetail.IssuedRawMatQty}}</td>
+                                            <td class="t-cell-center">{{inv_JumboStockIssueDetail.IssuedRawMatUnitPrice}}</td>
+                                            <td class="t-cell-center">
+                                                <button title="Remove" ng-click="removeJumboIssuedDetail(inv_JumboStockIssueDetail)">
+                                                    <i class="fa fa-minus-square"></i>&nbsp;
+                                                </button>
+                                            </td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <br />
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <button class="btn btn-success" style="width:100%" name="SaveBtn" ng-click="SaveJumboStockIssue()" ng-disabled="!inv_JumboStockIssue.JIssueNo || !inv_JumboStockIssue.JIssueDate || !ddlFromDepartment  || !inv_JumboStockIssueDetailList.length || !IssuedBy">
+                                        <i class="fa fa-floppy-o"></i>&nbsp;Save
+                                    </button>
+                                </div>
+                                <div class="col-md-2 ">
+                                    <button id="Button3" class="btn btn-danger" style="width:100%" title="Reset" ng-click="ResetForm()">
+                                        <i class="fa fa-refresh"></i>&nbsp;Reset
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+             </div>
+           
+        </div>
+       
+
+        <div class="col-md-12" ng-show="ListViewPermission">
+            <br />
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="fa fa-list"></i>&nbsp;Mother Issue List</h3>
+                </div>
+                <div class="panel-footer">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <div class="input-group " data-toggle="tooltip" title="From Date">
+                                    <input type="text" name="FromDate" id="txtFromDateForJS" ng-model="FromDate" ng-change="JumboStockIssueSearch();" class="form-control " placeholder="From Date" readonly />
+                                    <span class="input-group-addon" ng-click="FormDateChangeForJS()" id="FormDateChange"><i class="fa fa-calendar req-icon-color"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group " data-toggle="tooltip" title="To Date">
+                                        <input type="text" name="ToDate" id="txtToDateForJS" ng-model="ToDate" ng-change="JumboStockIssueSearch();" class="form-control " placeholder="To Date" readonly />
+                                        <span class="input-group-addon" ng-click="ToDateChangeForJS()" id="ToDateChange"><i class="fa fa-calendar req-icon-color"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group" data-toggle="tooltip" title="Search Supplier Name">
+                                <input type="text" class="form-control" id="textJumboStockIssue" ng-model="SearchJumboStockIssue" ng-change="JumboStockIssueSearch();" name="name" placeholder="Search Supplier Name" />
+                            </div>
+                        </div>
+
+                        <div class="col-md-2">
+                          
+                                <button id="btnSearch" style="width:100%" ng-click="reloadBtn()" class="btn btn-danger" title="Reload">
+                                    <i class="fa fa-refresh"></i>&nbsp;Clear
+                                </button>
+                           
+                        </div>
+                       
+                    </div>
+                </div>
+
+                <div class="panel-footer">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table class="responstable table-hover">
+                                <tbody>
+                                    <tr class="t-head">
+                                        <th>S/N</th>
+                                        <th class="txt-center">Issue No</th>
+                                        <th class="txt-center">Issue Date</th>
+                                        <th class="txt-center">I.W.O. No.</th>
+                                        <th class="txt-center">Jumbo Name</th>
+                                        <th class="txt-center">Raw Item Name</th>
+                                        <th class="txt-center">Material Type</th>
+                                        <th class="txt-center">Issued Raw Mat Qty</th>
+                                        <th class="txt-center">Department</th>
+                                        <th class="t-cell-center" style="width:10%">Action</th>
+                                    </tr>
+                                    <tr class="HoverTable searchRow" dir-paginate="aJumboStockIssue in JumboStockIssueListPaged | itemsPerPage: PerPage" current-page="currentPage" total-items="total_count">
+                                        <td class="t-cell-center">{{$index + ((currentPage-1)*PerPage) + 1}}</td>
+                                        <td class="txt-center">{{aJumboStockIssue.JIssueNo }}</td>
+                                        <td class="txt-center">{{aJumboStockIssue.JIssueDate }}</td>
+                                        <td class="t-cell-center">{{aJumboStockIssue.InternalWorkOrderNo}}</td>
+                                        <td class="txt-center">{{aJumboStockIssue.JumboItemName }}</td>
+                                        <td class="txt-center">{{aJumboStockIssue.RawItemName }}</td>
+                                        <td class="txt-center">{{aJumboStockIssue.MaterialTypeCode }}</td>
+                                        <td class="txt-center">{{aJumboStockIssue.IssuedRawMatQty }}</td>
+                                        <td class="txt-center">{{aJumboStockIssue.DepartmentName }}</td>
+                                        <td class="t-cell-center">
+                                            <button ng-show="aJumboStockIssue.IsCancelled == true" class="" style="color: #d73925; margin: 2px; width: 95%" ng-disabled="aJumboStockIssue.IsCancelled"
+                                                    ng-click="">
+                                                <strong>Cancelled</strong>
+                                            </button>
+
+                                            <button class="" style="margin: 2px; width: 95%"
+                                                    ng-click="OpenPopupWindow(aJumboStockIssue)">
+                                                Report
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr class="t-foot" ng-show="total_count>PerPage">
+                                        <th colspan="10">
+                                            <dir-pagination-controls max-size="8"
+                                                                     direction-links="true"
+                                                                     boundary-links="true"
+                                                                     on-page-change="getData(newPageNumber)" style="text-align:center;">
+                                            </dir-pagination-controls>
+                                        </th>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="row pagination-footer">
+                                <div class="col-md-6">
+                                    <span>Show </span><input class="input-pagesize" type="number" ng-maxlength="100" ng-minlength="1" width="1" ng-model="PerPage"> <span>Records </span>
+                                </div>
+                                <div class="col-md-6">
+                                    <span class="pull-right">Showing {{((currentPage-1)*PerPage)+1}} to {{((currentPage-1) * PerPage) + JumboStockIssueListPaged.length}} of {{total_count}} Records</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+ 
+</form>
+<script>
+
+    $("#IssuedBy").select2({
+        placeholder: "Issued By",
+        theme: "classic"
+    });
+    $("#ReceivedBy").select2({
+        placeholder: "Received By",
+        theme: "classic"
+    });
+
+    $("#ddlToDepartment").select2({
+        placeholder: "To Department",
+        theme: "classic"
+    });
+
+    $("#ddlFromDepartment").select2({
+        placeholder: "Select Department",
+        theme: "classic"
+    });
+
+    $("#ddljumboId").select2({
+        placeholder: "Select Jumbo",
+        theme: "classic"
+    });
+    $("#cmbMaterialType").select2({
+        placeholder: "Select Material Type",
+        theme: "classic"
+    });
+    $("#ddlrawMatId").select2({
+        placeholder: "Select Item",
+        theme: "classic"
+    });
+    $("#ddlAllIwoSelect").select2({
+       
+    });
+
+    //var picker = new Pikaday({
+    //    field: document.getElementById('dtIssuedDate'),
+    //    firstDay: 6,
+    //    format: "DD/MM/YYYY",
+    //    minDate: new Date('1930-01-01'),
+    //    maxDate: new Date('2050-12-31'),
+    //    yearRange: [1930, 2050],
+    //    theme: 'blue-theme'
+    //});
+    //document.getElementById("calenderIssuedDate").addEventListener("click", function () {
+    //    picker.show();
+    //});
+</script>

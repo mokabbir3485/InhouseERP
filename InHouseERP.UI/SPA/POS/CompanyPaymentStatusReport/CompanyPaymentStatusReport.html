@@ -1,0 +1,261 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+
+    <style type="text/css">
+        #MainTable tbody tr:nth-child(1) {
+            counter-reset: rowNumber;
+        }
+
+        #MainTable tbody tr {
+            counter-increment: rowNumber;
+        }
+
+            #MainTable tbody tr td:first-child::before {
+                content: counter(rowNumber);
+                min-width: 1em;
+                margin-right: 0.5em;
+            }
+
+        body {
+            font-family: "Times New Roman", Times, serif;
+            color: #000000;
+            height: auto;
+            font-size: 15px;
+        }
+
+        #MainTable td {
+            text-align: center;
+        }
+
+        .footer {
+            position: fixed;
+            left: 160px;
+            bottom: 0px;
+        }
+
+        @page {
+           /* size: A4 portrait;*/
+            size: A4 landscape;
+        }
+
+        .flexcontainer {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        #UpperTable td {
+            border-collapse: collapse;
+            padding: 5px;
+        }
+
+        #container {
+            width: 100%;
+            bottom: 0;
+            position: fixed !important;
+        }
+        #left {
+            float: left;
+            width: 100px;
+        }
+
+        #right {
+            float: right;
+            width: 100px;
+        }
+
+        #center {
+            margin: 0 auto;
+            width: 100px;
+        }
+    </style>
+
+</head>
+<body>
+    <!--<page>-->
+    <table class="table" style="margin: auto !important;">
+        <tbody>
+            <tr>
+                <td>
+                    <div class="container hidden-print">
+                        <div class="row">
+                            <div class="col-sm-2 col-md-1">
+                                <button type="button"  onclick="document.title = 'Customer Payment Status ' + getCurrentDateTime(); PrintPdf();"  class="customBtn custmoBtnReset" style="border-radius: 3px; margin-bottom: -.9em; margin-top: -15px; padding-bottom: 3px; padding-top: 3px;" title="Print To .PDF">
+                                    <i class="fa fa-print"></i>&nbsp;Print
+                                </button>
+                            </div>
+                            
+
+                        </div>
+                        <br />
+                    </div>
+                    <div id="source-html">
+                        <div>
+                            <img id="LogoImg" style="height: 64px; width: 1050px;" src="/UploadedImages/rtlFullName.png" />
+                        </div>
+                        <br />
+                        <div valign="middle" align="center">
+                            <p style="font-size:20px; border: 1px solid #000000; width:240px; "><b>Company Payment Status</b></p>
+                        </div>
+                        <div class="row" style="text-align:left !important; margin:0px;">
+                            <b>{{FilterType}} Date: {{FromDate}} To {{ToDate}}</b>
+                        </div>
+                        <div class="row" style="text-align:left !important; margin:0px;">
+                            <b>*Currency BDT</b>, <b>Type: {{SalesOrderType}}</b>, <b>Branch Name: {{BranchName}}</b>, <b>{{IndividualOrTeam}}</b>, <b>{{EmployeeName}}</b>
+                        </div>
+                        <table id="MainTable" border="1" width="100%" align="center">
+                            <thead>
+                                <tr style="background-color: white">
+                                    <th id="disSort" style="text-align: center"></th>
+                                    <th style="text-align: center">Customer Name</th>
+                                    <th style="text-align: center;">Employee Name</th>
+                                    <th style="text-align: center">Sales Invoice No</th>
+                                    <th style="text-align: center">Due on</th>
+                                    <th style="text-align: center">Over Due</th>
+                                    <th style="text-align: center">Bill Amount</th>
+                                    <th style="text-align: center">Payment No</th>
+                                    <th style="text-align: center">Payment Date</th>
+                                    <th style="text-align: center">Received Amount</th>
+                                    <th style="text-align: center">Received VAT</th>
+                                    <th style="text-align: center">Received AIT</th>
+                                    <th style="text-align: center">Adjusted Amount</th>
+                                    <th style="text-align: center">Received Additional Cost</th>
+                                    <th style="text-align: center">Due Amount</th>
+
+
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="aPaymentStatus in CompanyPaymentStatusList track by $index">
+                                    <td id="disSort">
+                                        <!--{{$index+1}}-->
+                                    </td>
+                                    <td style="text-align: center">
+                                        <span style="font-size: .9em;">{{aPaymentStatus.CompanyName}}</span>
+                                    </td>
+                                    <td style="text-align: center">
+                                        <span style="font-size: .9em;">{{aPaymentStatus.EmployeeName}}</span>
+                                    </td>
+                                    <td style="text-align: center">
+                                        <span style="font-size: .9em;">{{aPaymentStatus.SalesInvoiceNo}}</span>
+                                    </td>
+                                    <td style="text-align: center">
+                                        <span style="font-size: .9em;">{{aPaymentStatus.SalesInvoiceDate}}</span>
+                                    </td>
+                                    <td style="text-align: center">
+                                        <span style="font-size: .9em;">{{aPaymentStatus.OverDueByDays}} Days</span>
+                                    </td>
+
+                                    <td style="text-align:right">
+                                        <span style="font-size: .9em;padding-right:5px">{{aPaymentStatus.AmountBDT}}</span>
+                                    </td>
+                                    <td style="text-align: center">
+                                        <span style="font-size: .9em;">{{aPaymentStatus.PaymentNo}}</span>
+                                    </td>
+                                    <td style="text-align: center">
+                                        <span style="font-size: .9em;">{{aPaymentStatus.PaymentDate}}</span>
+                                    </td>
+                                    <td style="text-align:right">
+                                        <span style="font-size: .9em;padding-right:5px">{{aPaymentStatus.PaidAmount}}</span>
+                                    </td>
+                                    <td style="text-align:right">
+                                        <span style="font-size: .9em;padding-right:5px">{{aPaymentStatus.PaidVAT}}</span>
+                                    </td>
+                                    <td style="text-align:right">
+                                        <span style="font-size: .9em;padding-right:5px">{{aPaymentStatus.PaidAIT}}</span>
+                                    </td>
+                                    <td style="text-align:right">
+                                        <span style="font-size: .9em;padding-right:5px">{{aPaymentStatus.AdjustedAmount}}</span>
+                                    </td>
+                                    <td style="text-align:right">
+                                        <span style="font-size: .9em;padding-right:5px">{{aPaymentStatus.PaidAdditionalCost}}</span>
+                                    </td>
+                                    <td style="text-align:right">
+                                        <span style="font-size: .9em;padding-right:5px">{{aPaymentStatus.DueAmount}}</span>
+                                    </td>
+
+
+
+
+                                </tr>
+                                
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="6" style="text-align:right">
+                                        <span style="font-size: .9em;padding-right:5px">Total:</span>
+                                    </td>
+                                    <td style="text-align:right">
+                                        <span style="font-size: .9em;padding-right:5px">{{TotalAmountBDT}}</span>
+                                    </td>
+                                    <td></td>
+                                    <td></td>
+                                    <td style="text-align:right">
+                                        <span style="font-size: .9em;padding-right:5px">{{TotalPaidAmount}}</span>
+                                    </td>
+                                    <td style="text-align:right">
+                                        <span style="font-size: .9em;padding-right:5px">{{TotalPaidVAT}}</span>
+                                    </td>
+                                    <td style="text-align:right">
+                                        <span style="font-size: .9em;padding-right:5px">{{TotalPaidAIT}}</span>
+                                    </td>
+                                    <td style="text-align:right">
+                                        <span style="font-size: .9em;padding-right:5px">
+                                            {{TotalAdjustAmount}}
+                                        </span>
+                                    </td>
+                                    <td style="text-align:right">
+                                        <span style="font-size: .9em;padding-right:5px">{{TotalPaidAdditionalCost}}</span>
+                                    </td>
+                                    <td style="text-align:right">
+                                        <span style="font-size: .9em;padding-right:5px">{{TotalDueAmount}}</span>
+                                    </td>
+                                </tr>
+                            </tfoot>
+
+                        </table>
+
+                        <div class="footer" hidden>
+                            <img id="LogoImg" style="height:20px; width:750px;" src="/UploadedImages/rtlAddress.png" />
+
+                        </div>
+                    </div>
+
+                </td>
+            </tr>
+        </tbody>
+
+
+
+
+    </table>
+    <!--</page>-->
+
+
+
+    <script type="text/javascript">
+        $('#HtmlData').hide();
+
+        function PrintPdf() {
+
+            window.print();
+
+        }
+        
+        jQuery(document).ready(function ($) {
+
+            $(".main-sidebar").attr("hidden", true);
+            $(".main-header").attr("hidden", true);
+            $(".main-footer").attr("hidden", true);
+            $("#Hidebr").attr("hidden", true);
+
+            $("div").removeClass("wrapper");
+            $("div").removeClass("content-wrapper");
+        });
+
+
+    </script>
+</body>
+
+</html>

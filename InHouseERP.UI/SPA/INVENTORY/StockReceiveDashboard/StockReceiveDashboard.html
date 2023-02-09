@@ -1,0 +1,174 @@
+﻿
+<form name="StockReceiveDashboardForm" novalidate>
+    <div class="col-md-12">
+        <div class="alert alert-info alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="topInfo"> &nbsp; &#9755; <span style="color:red;">Red Icon</span> Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp; &#9755; Click On A Table Row To Update</div>
+        </div>
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-shield"></i>&nbsp;Stock Receive Dashboard</h3>
+                <div class="clearfix">
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <div class="input-group " data-toggle="tooltip" title="From Date">
+                                <input type="text" name="FromDate" id="txtFromDateForSD" ng-model="FromDate" ng-change="" class="form-control " placeholder="From Date" readonly />
+                                <span class="input-group-addon" ng-click="FormDateChangeForSD()" id="FormDateChange"><i class="fa fa-calendar-times-o"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <div class="input-group " data-toggle="tooltip" title="To Date">
+                                <input type="text" name="ToDate" id="txtToDateForSD" ng-model="ToDate" ng-change="" class="form-control " placeholder="To Date" readonly />
+                                <span class="input-group-addon" ng-click="ToDateChangeForSD();" id="ToDateChange"><i class="fa fa-calendar-times-o"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group" ng-class="{ 'has-error' : StockReceiveDashboardForm.ddlDashboardType.$dirty && StockReceiveDashboardForm.ddlDashboardType.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Dashboard Type">
+                            <div class="input-group input-group-md ddl">
+                                <select ng-model="ddlDashboardType" name="ddlDashboardType" class="form-control selectMendatory" ng-change="onDivShowGetById(ddlDashboardType.DashboardTypeId)" ng-options="dashboardType.DashboardTypeName for dashboardType in DashboardTypeList track by dashboardType.DashboardTypeId" required>
+                                    <option value="" label="Select Dashboard Type"></option>
+                                </select>
+                                <span class="help-block" ng-show="StockReceiveDashboardForm.ddlDashboardType.$dirty && StockReceiveDashboardForm.ddlDashboardType.$invalid">Dashboard Type is required</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="form-group" ng-class="{ 'has-error' : StockReceiveDashboardForm.SupplierItem.$dirty && StockReceiveDashboardForm.SupplierItem.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Supplier or Item">
+                            <div class="input-group input-group-md ddl">
+                                <select id="ddlSupplierItem" ng-model="ddlSupplierItem" name="SupplierItem" class="form-control selectMendatory" ng-options="SupplierItem.Name for SupplierItem in SupplierItemList track by SupplierItem.Id" required>
+                                    <option value="" label="-- Select Supplier or Item --"></option>
+                                </select>
+                                <span class="help-block" ng-show="StockReceiveDashboardForm.SupplierItem.$dirty && StockReceiveDashboardForm.SupplierItem.$invalid">Supplier Item is required</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-1">
+                        <button class=" btn btn-primary" ng-click="onLoadBtn()" ng-disabled="!ddlSupplierItem || !ddlDashboardType">Load </button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table class="responstable table-hover">
+                                <tr>
+                                    <th class="t-cell-center"></th>
+                                    <th class="t-cell-center">SL.No</th>
+                                    <th class="t-cell-center">Supplier Name</th>
+                                    <th class="t-cell-center">Receive No</th>
+                                    <th class="t-cell-center">Receive Date</th>
+                                    <th class="t-cell-center">Received By</th>
+                                    <th class="t-cell-center">Type</th>
+                                    <th class="t-cell-center">Purchase No</th>
+                                    <th class="t-cell-center">Purchase Date</th>
+                                    <th class="t-cell-center">Purchased By</th>
+
+                                </tr>
+                                <tbody ng-repeat="StockReceiveDashboard in StockReceiveDashboardList">
+
+                                    <tr>
+                                        <td class="t-cell-center"><label><i ng-show="!StockReceiveDashboard.DisplaySta" class="fa fa-plus-square"></i><i ng-show="StockReceiveDashboard.DisplaySta" class="fa fa-minus-square"></i><input style="visibility:hidden;" type="checkbox" ng-model="StockReceiveDashboard.DisplaySta" /></label></td>
+                                        <td class="t-cell-center">{{$index+1}}</td>
+                                        <td class="t-cell-center">{{StockReceiveDashboard.SupplierName}}</td>
+                                        <td class="t-cell-center">{{StockReceiveDashboard.ReceiveNo}}</td>
+                                        <td class="t-cell-center">{{StockReceiveDashboard.ReceiveDate}}</td>
+                                        <td class="t-cell-center">{{StockReceiveDashboard.ReceivedBy}}</td>
+                                        <td class="t-cell-center">{{StockReceiveDashboard.PBType}}</td>
+                                        <td class="t-cell-center">{{StockReceiveDashboard.PBNo}}</td>
+                                        <td class="t-cell-center">{{StockReceiveDashboard.PBDate}}</td>
+                                        <td class="t-cell-center">{{StockReceiveDashboard.PreparedBy}}</td>
+
+                                    </tr>
+                                    <tr ng-click="$event.stopPropagation();" ng-show="StockReceiveDashboard.DisplaySta">
+                                        <td></td>
+                                        <td colspan="9">
+                                            <table class="responstable table-hover">
+                                                <tr>
+                                                    <!--<th class="t-cell-center"></th>-->
+                                                    <th>SL.No</th>
+                                                    <th class="t-cell-center">Description</th>
+                                                    <th class="t-cell-center">Material</th>
+                                                    <th class="t-cell-center">Unit Name</th>
+                                                    <th class="t-cell-center">SR Quantity</th>
+                                                    <!--<th class="t-cell-center">SR Unit Price</th>-->
+                                                </tr>
+                                                <tbody>
+                                                    <tr ng-repeat="aStockReceive in StockReceiveDashboard.events">
+                                                        <!--<td class="t-cell-center"><label><i ng-show="!aStockReceive.DisplaySta2" class="fa fa-plus-square"></i><i ng-show="aStockReceive.DisplaySta2" class="fa fa-minus-square"></i><input style="visibility:hidden;" type="checkbox" ng-model="aStockReceive.DisplaySta2" ng-change="AutoCollaseStockReceive(aStockReceive);" /></label></td>-->
+                                                        <td>{{$index+1}}</td>
+                                                        <td class="t-cell-center">{{aStockReceive.Description}}</td>
+                                                        <td class="t-cell-center">{{aStockReceive.MaterialTypeCode}}</td>
+                                                        <td class="t-cell-center">{{aStockReceive.UnitName}}</td>
+                                                        <td class="t-cell-center">{{aStockReceive.SRQuantity}}</td>
+                                                        <!--<td class="t-cell-center">{{aStockReceive.SRUnitPrice}}</td>-->
+                                                    </tr>
+                                                    <!--<tr ng-if="aSalesOrder.DisplaySta2">
+                                                        <td></td>
+                                                        <td colspan="7">
+                                                            <table class="responstable table-hover">
+                                                                <tr>
+                                                                    <th>SL.No</th>
+                                                                    <th class="t-cell-center">Size</th>
+                                                                    <th class="t-cell-center">Code</th>
+                                                                    <th class="t-cell-center">Material</th>
+                                                                    <th class="t-cell-center">Core</th>
+                                                                    <th class="t-cell-center">Roll Direction</th>
+                                                                    <th class="t-cell-center">Qty Per Roll</th>
+                                                                    <th class="t-cell-center">Unit</th>
+                                                                    <th class="t-cell-center">Order Qty.</th>
+                                                                    <th class="t-cell-center">Order Price(BDT)</th>
+                                                                </tr>
+                                                                <tr ng-repeat="aSalesOrderDetail in SalesOrderDetailList">
+                                                                    <td>{{$index+1}}</td>
+                                                                    <td class="t-cell-center">{{aSalesOrderDetail.Size}}</td>
+                                                                    <td class="t-cell-center">{{aSalesOrderDetail.ItemCode}}</td>
+                                                                    <td class="t-cell-center">{{aSalesOrderDetail.MaterialTypeCode}}</td>
+                                                                    <td class="t-cell-center">{{aSalesOrderDetail.Core}}</td>
+                                                                    <td class="t-cell-center">{{aSalesOrderDetail.RollDirection}}</td>
+                                                                    <td class="t-cell-center">{{aSalesOrderDetail.QtyPerRoll}}</td>
+
+                                                                    <td class="t-cell-center">{{aSalesOrderDetail.UnitName}}</td>
+                                                                    <td class="t-cell-center">{{aSalesOrderDetail.OrderQty}}</td>
+                                                                    <td class="t-cell-center">{{aSalesOrderDetail.OrderPriceBDT}}</td>
+                                                                </tr>
+                                                            </table>
+
+                                                        </td>
+                                                    </tr>-->
+                                                </tbody>
+
+                                            </table>
+
+                                        </td>
+                                    </tr>
+
+
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+
+        </div>
+    </div>
+
+</form>
+<script>
+    $('#ddlSupplierItem').select2({
+        placeholder: "Select Supplier/Item",
+        theme: "classic",
+        dropdownAutoWidth: false
+    });
+</script>

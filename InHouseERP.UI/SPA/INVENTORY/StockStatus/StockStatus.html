@@ -1,0 +1,198 @@
+﻿
+<link href="../../../Content/bootstrap-datetimepicker.css" rel="stylesheet" />
+
+<form name="StockStatusForm" novalidate ng-show="ListViewPermission">
+    <div class="col-md-12">
+        <div class="alert alert-info alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="topInfo"> &nbsp; &#9755; <span style="color:red;">Red Icon</span> Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp; &#9755; Click On A Table Row To Update</div>
+        </div>
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-shield"></i>&nbsp;Stock Status</h3>
+                <div class="clearfix">
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <div class="input-group StockStatus" data-toggle="tooltip" title="As On Date">
+                                <!--<input type="text" name="FromDate" id="txtFromDateForSS" ng-model="FromDate" ng-change="" class="form-control " placeholder="As On Date" readonly />
+                <span class="input-group-addon" ng-click="FormDateChangeForSS()" id="FormDateChange"><i class="fa fa-calendar req-icon-color"></i></span>-->
+                                <input type="text" name="FromDate" id="txtasOnDate" ng-model="FromDate" class="form-control issueToltip" placeholder="As On Date" readonly title="As On Date" />
+                                <span class="input-group-addon" ng-click="aSOnDate()" id="aSOnDate"><i class="fa fa-calendar req-icon-color"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group" ng-class="{ 'has-error' : StockStatusForm.Store.$invalid && StockStatusForm.Store.$touched }">
+                            <div class="input-group input-group-md ddl tooltipAll" data-toggle="tooltip" data-placement="bottom" title="Select Department ~ Branch">
+                                <select ng-model="ddlStore" class="form-control selectNotMandetory" name="Store" ng-options="department.DepartmentName + ' ~ ' + department.BranchName for department in StoreList track by department.DepartmentId">
+                                    <option value="" label="Select Department ~ Branch"></option>
+                                </select>
+                            </div>
+                            <!--<span class="help-block" ng-show="StockStatusForm.Store.$touched && StockStatusForm.Store.$invalid">Department is required</span>-->
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : SalesReportForm.Subcategory.$dirty && SalesReportForm.Subcategory.$invalid }" title="Select Company">
+                            <div class="input-group input-group-md ddl">
+                                <div id="selectSubcategory" ng-dropdown-multiselect=""
+                                     options="example8data"
+                                     selected-model="SubCategoryIdList"
+                                     extra-settings="example8settings"
+                                     ng-click="fouseSearchBox();"
+                                     translation-texts="subcategoryPlaceholder">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <button class=" btn btn-primary" style="width:100%" ng-click="onLoadBtn()" ng-disabled="!FromDate">Load </button>
+                    </div>
+
+                 
+
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <input class="form-control" ng-model="Remarks" type="text" name="reportName" placeholder="Remarks" />
+                    </div>
+
+                   
+                    <div class="col-md-9">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <button class=" btn btn-primary" style="width:100%" ng-click="OpenReportBtn()" ng-disabled="!FromDate">
+                                    Report <i class="fa fa-print"> </i>
+                                </button>
+                            </div>
+
+                            <div class="col-md-9">
+                                <div class="form-group">
+                                    <div class="input-group " data-toggle="tooltip" title="Search">
+                                        <input type="text" name="searchItem" ng-model="searchItem" ng-change="" class="form-control " placeholder="Search...." />
+                                        <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                   
+                </div>
+
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="responstable table-hover">
+                            <tr>
+                                <th class="t-cell-center"></th>
+                                <th class="t-cell-center">
+                                    <input type="checkbox" ng-model="selectedAll" ng-click="checkAll()" />Chk
+                                </th>
+                                <th class="t-cell-center">SL.No</th>
+                                <th class="t-cell-center">Code</th>
+                                <th class="t-cell-center">Item Name</th>
+                                <th class="t-cell-center" ng-hide="ddlCategory.CategoryId == 2">Material Type</th>
+                                <th class="t-cell-center" ng-hide="ddlCategory.CategoryId == 2">Label Brand</th>
+                                <th class="t-cell-center">Ledger Date</th>
+                                <th class="t-cell-center">Total Stock Qty</th>
+                            </tr>
+                            <tbody ng-repeat="aStockStatus in margeStockStatusList | filter:searchItem  track by $index">
+
+
+                                <tr>
+                                    <td class="t-cell-center"><label><i ng-show="!aStockStatus.DisplaySta" class="fa fa-plus-square"></i><i ng-show="aStockStatus.DisplaySta" class="fa fa-minus-square"></i><input style="visibility:hidden;" type="checkbox" ng-model="aStockStatus.DisplaySta" ng-change="AutoCollaseStockStatus(aStockStatus);" /></label></td>
+                                    <td class="t-cell-center">
+                                        <input type="checkbox" ng-model="aStockStatus.Selected" name="StockStatus" ng-click="RowSelect();">
+                                    </td>
+                                    <td class="t-cell-center">{{$index+1}}</td>
+                                    <td class="t-cell-center">{{aStockStatus.ItemCode}}</td>
+                                    <td class="t-cell-center">{{aStockStatus.ItemName}}</td>
+                                    <td class="t-cell-center" ng-hide="ddlCategory.CategoryId == 2">{{aStockStatus.MaterialTypeName}}</td>
+                                    <td class="t-cell-center" ng-hide="ddlCategory.CategoryId == 2">{{aStockStatus.LabelBrandName}}</td>
+                                    <td class="t-cell-center">{{aStockStatus.LedgerDate}}</td>
+                                    <td class="t-cell-center">{{aStockStatus.BalanceQuantity}}</td>
+
+                                </tr>
+                                <tr ng-click="$event.stopPropagation();" ng-show="aStockStatus.DisplaySta">
+                                    <td></td>
+                                    <td></td>
+                                    <td colspan="2">
+                                        <table class="responstable table-hover">
+                                            <tr>
+                                                <th>SL.No</th>
+                                                <th class="t-cell-center">Store Name</th>
+                                                <th class="t-cell-center">Stock Quantity</th>
+                                            </tr>
+                                            <tr ng-repeat="aStockStatusDetail in StockStatusDetailList">
+                                                <td>{{$index+1}}</td>
+                                                <td class="t-cell-center">{{aStockStatusDetail.DepartmentName}}</td>
+                                                <td class="t-cell-center">{{aStockStatusDetail.BalanceQuantity}} ({{aStockStatusDetail.ItemUnitName}})</td>
+                                            </tr>
+                                        </table>
+
+                                    </td>
+                                    <td colspan="5" ng-show="WarrentyAndSerialNoDetailAdAttributeLst.length > 0">
+                                        <table class="responstable table-hover">
+                                            <tr>
+                                                <th>SL.No</th>
+                                                <th class="t-cell-center">Serial No</th>
+                                                <th class="t-cell-center">Warrenty In Days</th>
+                                                <th class="t-cell-center">Department Name</th>
+                                            </tr>
+                                            <tr ng-repeat="aWarrentyAndSerialNoDetailAdAttribute in WarrentyAndSerialNoDetailAdAttributeLst">
+                                                <td>{{$index+1}}</td>
+                                                <td class="t-cell-center">{{aWarrentyAndSerialNoDetailAdAttribute.SerialNo}}</td>
+                                                <td class="t-cell-center">{{aWarrentyAndSerialNoDetailAdAttribute.WarrentyInDays}}</td>
+                                                <td class="t-cell-center">{{aWarrentyAndSerialNoDetailAdAttribute.DepartmentName}}</td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!--<div class="row">
+                    <div class="col-md-12">
+                        <table class="responstable table-hover">
+                            <thead>
+                                <tr>
+                                    <th class="t-cell-center">SL.No</th>
+                                    <th class="t-cell-center">Item Name</th>
+                                    <th class="t-cell-center">Department</th>
+                                    <th class="t-cell-center">Ledger Date</th>
+                                    <th class="t-cell-center">Balance Qty</th>
+                                    <th class="t-cell-center">Average Price</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <tr ng-repeat="aStockStatus in StockStatusList track by $index">
+                                    <td class="t-cell-center">{{$index+1}}</td>
+                                    <td class="t-cell-center">{{aStockStatus.ItemName}}</td>
+                                    <td class="t-cell-center">{{aStockStatus.DepartmentName}}</td>
+                                    <td class="t-cell-center">{{aStockStatus.LedgerDate}}</td>
+                                    <td class="t-cell-center">{{aStockStatus.BalanceQuantity}}</td>
+                                    <td class="t-cell-center">{{aStockStatus.AveragePrice}}</td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>-->
+            </div>
+
+        </div>
+    </div>
+</form>
+
+<script>
+    $('.StockStatus').tooltip({ boundary: 'window' })
+</script>

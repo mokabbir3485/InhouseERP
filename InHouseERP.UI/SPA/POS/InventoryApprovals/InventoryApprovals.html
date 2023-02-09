@@ -1,0 +1,222 @@
+﻿<style>
+    .selectWidthForThisPage {
+        width: 158px !important;
+    }
+
+    .upload-btn-wrapper {
+        position: relative;
+        overflow: hidden;
+        display: inline-block;
+        float: left;
+    }
+
+    .btnFile {
+        border: 2px solid gray;
+        color: gray;
+        background-color: white;
+        padding: 1px 10px;
+        /*border-radius: 8px;*/
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    .upload-btn-wrapper input[type=file] {
+        font-size: 100px;
+        position: absolute;
+        left: 0;
+        top: 0;
+        opacity: 0;
+    }
+
+
+    
+
+</style>
+<form name="InventoryApprovalsForm" novalidate>
+            <div class="col-md-12">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h3 class="panel-title  "><i class="fa fa-list"></i>&nbsp;Internal Work Order Approve</h3>
+                    </div>
+                    <div class="panel-body">
+                        <ul class="nav nav-tabs">
+                            <li ng-show="ApprovedPermission" class="active" style="cursor:pointer;"><a data-toggle="tab" data-target="#NewApproval"><span><i class="fa fa-list"></i></span>&nbsp;New Approval</a></li>
+                            <li ng-show="AmendmentApprovedPermission" style="cursor:pointer;"><a data-toggle="tab" data-target="#AmendmentRequest"><span><i class="fa fa-list"></i></span>&nbsp;Amendment Request</a></li>
+                        </ul>
+
+                        <div class="tab-content">
+                            <div ng-show="ApprovedPermission" id="NewApproval" class="tab-pane fade in active">
+                                <div class="row">
+                                    <div class="col-md-12">
+
+                                        <div class="row">
+                                            <table class="responstable table-hover"></table>
+                                        </div>
+                                        <br />
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <table class="responstable table-hover">
+                                                    <tbody>
+                                                        <tr>
+                                                            <th class="t-cell-center">S/N</th>
+                                                            <th class="t-cell-center">Chk</th>
+                                                            <th class="t-cell-center">Iwo No</th>
+                                                            <th class="t-cell-center">Factory</th>
+                                                            <th class="t-cell-center">Customer Name</th>
+                                                            <th class="t-cell-center">SalesOrder No </th>
+                                                            <th class="t-cell-center">Prepared By</th>
+                                                            <th class="t-cell-center">Place Of Delivery  </th>
+                                                            <th class="t-cell-center">Remarks  </th>
+                                                            <th class="t-cell-center" style="width:10%">Action</th>
+
+
+                                                        </tr>
+                                                        <tr ng-show="InternalWorkOrderApprovalTypeList1.length" class="HoverTable searchRow" ng-repeat="IwoAmendment in InternalWorkOrderApprovalTypeList1">
+                                                            <td class="t-cell-center">{{$index+1}}</td>
+                                                            <td class="t-cell-center">
+                                                                <input type="checkbox" id="radioCheckedBtn" name="check" value="check" ng-model="selectedAmendment"
+                                                                       ng-click="SelectAmendmentRequestList(IwoAmendment,selectedAmendment);SelSearch(IwoAmendment)" />
+                                                            </td>
+                                                            <td class="t-cell-center">{{IwoAmendment.DocNo}}</td>
+
+                                                            <td class="t-cell-center">{{IwoAmendment.FactoryName}}</td>
+
+                                                            <td class="t-cell-center">{{IwoAmendment.Party}}</td>
+                                                            <td class="t-cell-center">{{IwoAmendment.SalesOrderNo}}</td>
+                                                            <td class="t-cell-center">{{IwoAmendment.PreparedByName}}</td>
+                                                            <td class="t-cell-center">{{IwoAmendment.PlaceOfDelivery}}</td>
+                                                            <td class="t-cell-center">{{IwoAmendment.Remarks}}</td>
+                                                            <td class="t-cell-center" style="width:10%">
+
+                                                                <button ng-click="OpenReport(IwoAmendment.InternalWorkOrderId)">
+                                                                    <i title="Report" class="fa fa-print"> </i> Report
+                                                                </button>
+                                                           
+                                                            </td>
+
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+
+
+                                            </div>
+                                        </div>
+                                        <br />
+
+                                        <div class="row" style="margin-top:1%;">
+                                            <div class="col-md-4">
+                                                <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 5%; padding-right: 7%;">
+                                                    <div class="row">
+                                                        <button  class="customBtn custmoBtnSave" ng-click="Approve()" title="Approve">
+                                                            <i class="fa fa-save"></i>&nbsp;Submit
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 7%; padding-right: 5%;">
+                                                    <div class="row">
+                                                        <button id="btnReload" class="btn btn-danger" ng-click="Reset()" title="Reload">
+                                                            <i class="fa fa-refresh"></i>&nbsp;Reset
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div ng-show="AmendmentApprovedPermission" id="AmendmentRequest" class="tab-pane fade">
+                                <div class="col-md-12 tabBorder">
+                                    <div class="panel-footer">
+                                        <!--<div class="clearfix">
+    </div>-->
+                                        <br />
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <table class="responstable table-hover">
+                                                    <tbody>
+                                                        <tr>
+                                                            <th class="t-cell-center">S/N</th>
+                                                            <th class="t-cell-center">Chk</th>
+                                                            <th class="t-cell-center">IWO No</th>
+                                                            <th class="t-cell-center">ApprovalId</th>
+                                                            <th class="t-cell-center">ApprovalType</th>
+                                                            <th class="t-cell-center">DocType</th>
+                                                            <th class="t-cell-center">DocumentId</th>
+                                                            <th class="t-cell-center">Factory</th>
+                                                            <th class="t-cell-center">Party</th>
+                                                            <th class="txt-center" style="width:10%">Action</th>
+                                                        </tr>
+                                                        <tr ng-show="InternalWorkOrderApprovalTypeList.length" class="HoverTable searchRow" ng-repeat="IwoAmendment in InternalWorkOrderApprovalTypeList">
+                                                            <td class="t-cell-center">{{$index+1}}</td>
+                                                            <td class="t-cell-center">
+                                                                <input type="radio" name="rakin" value="rakin" ng-model="selectedAmendment"
+                                                                       ng-click="SelectAmendmentRequestList(IwoAmendment,selectedAmendment)" />
+                                                            </td>
+                                                            <td class="t-cell-center">{{IwoAmendment.DocNo}}</td>
+                                                            <td class="t-cell-center">{{IwoAmendment.ApprovalId}}</td>
+                                                            <td class="t-cell-center">{{IwoAmendment.ApprovalType}}</td>
+                                                            <td class="t-cell-center">{{IwoAmendment.DocType}}</td>
+                                                            <td class="t-cell-center">{{IwoAmendment.DocumentId}}</td>
+                                                            <td class="t-cell-center">{{IwoAmendment.FactoryName}}</td>
+                                                            <td class="t-cell-center">{{IwoAmendment.Party}}</td>
+                                                            <td class="t-cell-center" style="width:10%">
+                                                                <button ng-click="OpenReport(IwoAmendment.DocumentId)">
+                                                                    <i title="Report" class="fa fa-print"> </i> Report
+                                                                </button>
+                                                              
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+
+
+
+                                        </div>
+                                        <!--<div class="col-md-12">-->
+                                        <br />
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <input type="text" name="OTP" class="form-control" ng-model="aPassword" id="txtPassword" ng-blur="CheckDuplicatePassword(aPassword)" placeholder="One Time Password">
+                                                </div>
+                                                <div class="col-md-2">
+
+
+                                                    <button id="btnSave" class="btn btn-success" style="width:100%;"  ng-click="SaveAmendmentRequest()" title="Save" ng-disabled="!btnAmendmentReqDis || !aPassword">
+                                                        <i class="fa fa-save"></i>&nbsp;Submit
+                                                    </button>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <button id="Button3" class="btn btn-danger" style="width:100%;" title="Reset" ng-click="ResetForm()">
+                                                        <i class="fa fa-refresh"></i>&nbsp;Reset
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        <!--</div>-->
+                                    </div>
+                                    <br />
+                                
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+</form>
+<!--<pre>{{inv_InternalOrderDetailList |json}}</pre>-->
+<script>
+
+    $('.IwoToltipChange').tooltip('enable')
+    $('.IwoToltipChange').tooltip({ boundary: 'window' })
+
+
+
+    function RowSelect(e) {
+        $('.searchRow').css('background-color', '');
+        $(e).css('background-color', '#94d5ef');
+    }
+</script>

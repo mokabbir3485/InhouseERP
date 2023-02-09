@@ -1,0 +1,121 @@
+﻿<form name="ItemStatusForm" novalidate>
+    <div class="col-md-12">
+        <div class="alert alert-info alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="topInfo"> &nbsp; &#9755; <span style="color:red;">Red Icon</span> Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp; &#9755; Click On A Table Row To Update/Delete</div>
+        </div>
+    </div>
+    <div class="col-md-12">
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h3 class="panel-title pull-left "><i class="fa fa-check"></i>&nbsp;Item Status List</h3>
+                        <div class="clearfix">
+                        </div>
+                    </div>
+
+                    <div class="panel-footer">
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group tooltipAll" data-toggle="tooltip" title="Search Item">
+                                    <input type="text" class="form-control" id="ItemStatusSearchBox" ng-model="SearchItemStatus" ng-change="ItemStatusSearch();" name="name" placeholder="Item Status Search ..." />
+                                </div>
+                            </div>
+
+                            <div class="col-md-2 text-right">
+                                <button id="btnSearch" ng-click="reloadBtn()" style="width:100%" class="btn btn-danger" title="Reload">
+                                    <i class="fa fa-refresh"></i>&nbsp;Clear
+                                </button>
+                            </div>
+
+                        </div>
+                        <table class="responstable table-hover">
+                            <tr>
+                                <th class="t-cell-center"></th>
+                                <th class="t-cell-center">SL.No</th>
+                                <th class="t-cell-center">Item Code</th>
+                                <th class="t-cell-center">Item Description</th>
+                                <th class="t-cell-center">Item DescriptionTwo</th>
+                                <th class="t-cell-center">Hs Code</th>
+                                <th class="t-cell-center">Item Id</th>
+                            </tr>
+                            <tbody class="HoverTable searchRow" dir-paginate="aItemStatus in ItemStatusListForGrid | itemsPerPage: PerPage" current-page="currentPage" total-items="total_count">
+                                <tr>
+                                    <td class="t-cell-center"><label><i ng-show="!aItemStatus.DisplaySta" class="fa fa-plus-square"></i><i ng-show="aItemStatus.DisplaySta" class="fa fa-minus-square"></i><input style="visibility:hidden;" type="checkbox" ng-model="aItemStatus.DisplaySta" ng-change="GetItemStatusDetail(aItemStatus.ItemId); AutoCollaseItemStatus(aItemStatus);" /></label></td>
+                                    <td class="t-cell-center">{{$index + ((currentPage-1)*PerPage) + 1}}</td>
+                                    <td class="t-cell-center">{{aItemStatus.ItemCode}}</td>
+                                    <td class="t-cell-center">{{aItemStatus.ItemDescription}}</td>
+                                    <td class="t-cell-center">{{aItemStatus.ItemDescriptionTwo}}</td>
+                                    <td class="t-cell-center">{{aItemStatus.HsCode}}</td>
+                                    <td class="t-cell-center">{{aItemStatus.ItemId}}</td>
+                                </tr>
+                                <tr ng-click="$event.stopPropagation();" ng-show="aItemStatus.DisplaySta">
+                                    <td></td>
+                                    <td colspan="6">
+                                        <table class="responstable table-hover">
+                                            <tr>
+                                                <th>SL.No</th>
+                                                <th class="t-cell-center">Company Name</th>
+                                                <th class="t-cell-center">Price</th>
+                                                <th class="t-cell-center">Pc Per Roll</th>
+                                                <th class="t-cell-center">Roll Per Carton</th>
+                                                <th class="t-cell-center">Roll Weight</th>
+                                                <th class="t-cell-center">Carton Weight</th>
+                                                <th class="t-cell-center">Carton Size</th>
+                                            </tr>
+                                            <tr ng-repeat="aItemStatusDetail in ItemStatusDetailList">
+                                                <td>{{$index+1}}</td>
+                                                <td class="t-cell-center">{{aItemStatusDetail.CompanyNameBilling}}</td>
+                                                <td class="t-cell-center">{{aItemStatusDetail.UnitPrice}}</td>
+                                                <td class="t-cell-center">{{aItemStatusDetail.PcPerRoll}}</td>
+                                                <td class="t-cell-center">{{aItemStatusDetail.RollPerCarton}}</td>
+                                                <td class="t-cell-center">{{aItemStatusDetail.RollWeight}}</td>
+                                                <td class="t-cell-center">{{aItemStatusDetail.CartonWeight}}</td>
+                                                <td class="t-cell-center">{{aItemStatusDetail.CartonSize}}</td>
+                                            </tr>
+                                        </table>
+
+                                    </td>
+                                </tr>
+                                
+                            </tbody>
+                            <tr class="t-foot" ng-show="total_count>PerPage">
+                                <th colspan="8">
+                                    <dir-pagination-controls max-size="8"
+                                                             direction-links="true"
+                                                             boundary-links="true"
+                                                             on-page-change="getData(newPageNumber)" style="text-align:center;">
+                                    </dir-pagination-controls>
+                                </th>
+                            </tr>
+                        </table>
+                        <div class="row pagination-footer">
+                            <div class="col-md-6">
+                                <span>Show </span><input class="input-pagesize" type="number" ng-maxlength="100" ng-minlength="1" width="1" ng-model="PerPage"> <span>Records </span>
+                            </div>
+                            <div class="col-md-6">
+                                <span class="pull-right">Showing {{((currentPage-1)*PerPage)+1}} to {{((currentPage-1) * PerPage) + ItemStatusListForGrid.length}} of {{total_count}} Records</span>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</form>
+<script>
+    $('.tooltipAll').tooltip({ boundary: 'window' })
+    function RowSelect(e) {
+        $('.searchRow').css('background-color', '');
+        $(e).css('background-color', '#94d5ef');
+    }
+</script>

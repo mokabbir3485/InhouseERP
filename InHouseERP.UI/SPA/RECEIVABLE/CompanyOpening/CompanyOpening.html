@@ -1,0 +1,181 @@
+﻿
+<form name="CompanyOpeningBalanceEntryForm" novalidate>
+    <div class="col-md-12">
+        <div class="alert alert-info alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="topInfo"> &nbsp; &#9755; <span style="color:red;">Red Icon</span> Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp; &#9755; Click On A Table Row To Update</div>
+        </div>
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-shield"></i>&nbsp;Customer Opening Balance</h3>
+                <div class="clearfix">
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : CompanyOpeningBalanceEntryForm.Importer.$dirty && CompanyOpeningBalanceEntryForm.Importer.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Importer">
+                            <div class="input-group width-hundred-percent">
+                                <select id="Importer" ng-model="ddlImporter" name="Importer" class="form-control selectMendatory" ng-options="company.CompanyName for company in companyList track by company.CompanyId" ng-change="rcv_CompanyOpeningBalance.CompanyId == ddlImporter.CompanyId;">
+                                    <option value=""></option>
+                                </select>
+                                <span class="help-block" ng-show="CompanyOpeningBalanceEntryForm.Importer.$dirty && CompanyOpeningBalanceEntryForm.Importer.$invalid">Importer is required</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : CompanyOpeningBalanceEntryForm.FinancialCycle.$dirty && CompanyOpeningBalanceEntryForm.FinancialCycle.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Financial Cycle">
+                            <div class="input-group input-group-md ddl">
+                                <select ng-model="ddlFinancialCycle" class="form-control selectMendatory" name="FinancialCycle" ng-change="rcv_CompanyOpeningBalance.FiscalYearId=ddlFinancialCycle.FiscalYearId;" ng-options="financialCycle.FiscalYearName for financialCycle in FinancialCycleList track by financialCycle.FiscalYearId" required>
+                                    <option value="" label="Select Financial Cycle"></option>
+                                </select>
+                                <span class="help-block" ng-show="CompanyOpeningBalanceEntryForm.FinancialCycle.$dirty && CompanyOpeningBalanceEntryForm.FinancialCycle.$invalid">Financial Cycle is required</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <div class="input-group tooltipAll" data-toggle="tooltip" title="Opening Balance Date">
+                                <input type="text" id="dtOpeningBalanceDate" ng-model="rcv_CompanyOpeningBalance.OpeningDate" class="form-control" name="OpeningBalanceDate" placeholder="Opening Balance Date" readonly />
+
+                                <span class="input-group-addon" ng-click="CalendarOpeningBalanceDate()" id="calenderOpeningBalanceDate"><i class="fa fa-calendar req-icon-color"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : CompanyOpeningBalanceEntryForm.amount.$dirty && CompanyOpeningBalanceEntryForm.amount.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Opening Balance Amount">
+                            <div class="input-group">
+                                <input type="number" id="txtAmount" ng-model="rcv_CompanyOpeningBalance.Amount" name="amount" class="form-control" placeholder="Opening Balance Amount" maxlength="15" ng-maxlength="14">
+                                <span class="input-group-addon"><i class="fa fa-text-width req-icon-color"></i></span>
+                            </div>
+                            <span class="help-block" ng-show="CompanyOpeningBalanceEntryForm.amount.$dirty && CompanyOpeningBalanceEntryForm.amount.$invalid">Opening Balance Amount is required</span>
+                            <span class="help-block" ng-if="CompanyOpeningBalanceEntryForm.amount.$error.maxlength">15 Character Max</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-2">
+                <button class="btn btn-success tooltipAll" style="width:100%" ng-click="SaveOpeningBalance()" ng-disabled="!ddlImporter || !ddlFinancialCycle || !rcv_CompanyOpeningBalance.OpeningDate || !rcv_CompanyOpeningBalance.Amount">
+                    <i class="fa fa-floppy-o"></i>&nbsp;Save
+                </button>
+            </div>
+            <div class="col-md-2">
+                <button id="Button3" style="width:100%" class="btn btn-danger tooltipAll" title="Search" ng-click="ResetForm()">
+                    <i class="fa fa-refresh"></i>&nbsp;Reset
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <br />
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-list"></i>&nbsp;Customer Opening Balance List</h3>
+            </div>
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <div class="input-group tooltipAll" data-toggle="tooltip" title="From Date">
+                                <input type="text" name="FromDate" id="txtFromDateForOB" ng-model="FromDate" ng-change="CompanyOpeningBalanceSearch();" class="form-control " placeholder="From Date" readonly />
+                                <span class="input-group-addon" ng-click="FormDateChangeForOB()" id="FormDateChange"><i class="fa fa-calendar req-icon-color"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group tooltipAll" data-toggle="tooltip" title="To Date">
+                                    <input type="text" name="ToDate" id="txtToDateForOB" ng-model="ToDate" ng-change="CompanyOpeningBalanceSearch();" class="form-control " placeholder="To Date" readonly />
+                                    <span class="input-group-addon" ng-click="ToDateChangeForOB()" id="ToDateChange"><i class="fa fa-calendar req-icon-color"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group tooltipAll" data-toggle="tooltip" title="Search Customer Name">
+                            <input type="text" class="form-control" id="textCompanyName" ng-model="SearchCompanyName" ng-change="CompanyOpeningBalanceSearch();" name="name" placeholder="Search Customer Name" />
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <button id="btnSearch" style="width:100%" ng-click="reloadBtn()" class="btn btn-danger tooltipAll" title="Reload">
+                            <i class="fa fa-refresh"></i>&nbsp;Clear
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="responstable table-hover">
+                            <tbody>
+                                <tr class="t-head">
+                                    <th>S/N</th>
+                                    <!--<th class="txt-center">Opening Balance No</th>-->
+                                    <th class="txt-center">Customer Name</th>
+                                    <th class="txt-center">Financial Cycle Year</th>
+                                    <th class="txt-center">Opening Balance Date</th>
+                                    <th class="txt-center">Opening Balance Amount</th>
+                                    <th class="txt-center">Action</th>
+                                </tr>
+                                <tr class="HoverTable searchRow" dir-paginate="aCompanyOpeningBalance in CompanyOpeningBalanceListPaged | itemsPerPage: PerPage" ng-click="SelCompanyOpeningBalance(aCompanyOpeningBalance);" current-page="currentPage" total-items="total_count">
+                                    <td class="t-cell-center">{{$index + ((currentPage-1)*PerPage) + 1}}</td>
+                                    <!--<td class="txt-center">{{aCompanyOpeningBalance.OpeningBalanceNo }}</td>-->
+                                    <td class="txt-center">{{aCompanyOpeningBalance.CompanyName }}</td>
+                                    <td class="txt-center">{{aCompanyOpeningBalance.FiscalYearName }}</td>
+                                    <td class="txt-center">{{aCompanyOpeningBalance.OpeningDate }}</td>
+                                    <td class="txt-center">{{aCompanyOpeningBalance.Amount }}</td>
+                                    <td class="txt-center">
+                                        <button  id="btnReport" 
+                                                ng-click="OpenPopupWindow(aCompanyOpeningBalance)">
+                                            <i class="fa fa-print" style="font-size:18px"></i>  Report
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr class="t-foot" ng-show="total_count>PerPage">
+                                    <th colspan="8">
+                                        <dir-pagination-controls max-size="8"
+                                                                 direction-links="true"
+                                                                 boundary-links="true"
+                                                                 on-page-change="getData(newPageNumber)" style="text-align:center;">
+                                        </dir-pagination-controls>
+                                    </th>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="row pagination-footer">
+                            <div class="col-md-6">
+                                <span>Show </span><input class="input-pagesize" type="number" ng-maxlength="100" ng-minlength="1" width="1" ng-model="PerPage"> <span>Records </span>
+                            </div>
+                            <div class="col-md-6">
+                                <span class="pull-right">Showing {{((currentPage-1)*PerPage)+1}} to {{((currentPage-1) * PerPage) + CompanyOpeningBalanceListPaged.length}} of {{total_count}} Records</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</form>
+
+<script>
+    $('.tooltipAll').tooltip({ boundary: 'window' })
+    $("#Importer").select2({
+        placeholder: "Search for: Customer Name",
+        theme: "classic",
+        dropdownAutoWidth: false
+    }); 
+</script>

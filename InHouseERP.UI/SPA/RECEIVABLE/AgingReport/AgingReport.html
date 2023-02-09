@@ -1,0 +1,81 @@
+﻿
+<form name="Aging" novalidate>
+
+    <div class="panel panel-info hidden-print">
+        <div class="panel-heading">
+            <div class="row">
+                <div class="col-md-4">
+                    <h3 class="panel-title pull-left "><i class="fa fa-file"></i>&nbsp;{{HeadingName}}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+
+                <div class="col-md-3">
+                    <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Select Payment Type">
+                        <div class="input-group input-group-md ddl">
+                            <select ng-model="ddldateRange" name="dateRange" class="form-control selectMendatory" ng-options="dateR.DateRange for dateR in DateRangeList track by dateR.Id">
+                                <option value="" label="--- Select Duration ---"></option>
+                            </select>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <button class="btn btn-primary" ng-click="AgingReportShowWithDayRange()">View Report</button>
+                </div>
+                <div class="col-md-1">
+                    <button class="btn btn-primary" ng-click="print()"><i class="fa fa-print"></i> Print</button>
+                </div>
+            </div>
+            <br />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="responstable table-hover" >
+                <thead border="1" style="border: 1px solid">
+                    <tr>
+                        <th style="border: 1px solid">S/N</th>
+                        <th class="txt-center" style="border: 1px solid">Customer Name</th>
+                        <th class="txt-center" style="border: 1px solid">Total Receivable</th>
+                        <th class="txt-center" style="border: 1px solid">{{SlotHeader1}}</th>
+                        <th class="txt-center" style="border: 1px solid">{{SlotHeader2}}</th>
+                        <th class="txt-center" style="border: 1px solid">{{SlotHeader3}}</th>
+                        <th class="txt-center" style="border: 1px solid">{{SlotHeader4}}</th>
+                        <th class="txt-center" style="border: 1px solid">{{SlotHeader5}}</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="HoverTable searchRow" ng-repeat="aging in AgingReportList">
+                        <td class="t-cell-center">{{$index + 1}}</td>
+                        <td class="t-cell-center">{{aging.CompanyName}}</td>
+                        <td class="t-cell-center">{{aging.TotalReceivable}}</td>
+                        <td class="txt-center">{{aging.Slot_01}}</td>
+                        <td class="txt-center">{{aging.Slot_02}}</td>
+                        <td class="txt-center">{{aging.Slot_03}}</td>
+                        <td class="txt-center">{{aging.Slot_04}}</td>
+                        <td class="txt-center">{{aging.Slot_05}}</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td></td>
+                        <td style="text-align:right">Total</td>
+                        <td class="txt-center">{{toFixedtotalReciable}}</td>
+                        <td class="txt-center">{{toFixedTotalSlot1}}</td>
+                        <td class="txt-center">{{toFixedTotalSlot2}}</td>
+                        <td class="txt-center">{{toFixedTotalSlot3}}</td>
+                        <td class="txt-center">{{toFixedTotalSlot4}}</td>
+                        <td class="txt-center">{{toFixedTotalSlot5}}</td>
+                        <!--<td class="txt-center">{{TotalSlot6}}</td>-->
+                    </tr>
+                </tfoot>
+            </table>
+
+        </div>
+    </div>
+</form>
+

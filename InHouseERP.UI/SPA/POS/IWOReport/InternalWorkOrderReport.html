@@ -1,0 +1,365 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+        body {
+            font-family: "Times New Roman", Times, serif;
+            color: #000000;
+            writing-mode: inherit;
+            width: 100%;
+            height: 100%;
+        }
+
+        #UpperTable td {
+            border: 1px solid black;
+            border-collapse: collapse;
+            padding: 5px;
+        }
+
+        .ProductTable th {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+
+        .ProductTable td {
+            border: 1px solid black;
+            border-collapse: collapse;
+            padding: 5px;
+        }
+
+        .footer {
+            position: fixed;
+            left: 29px;
+            bottom: 0px;
+        }
+
+        .flexcontainer {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        @media screen {
+            #source-html {
+                margin-top: -100px;
+            }
+
+            img {
+                height: 200px;
+                width: 300px;
+                margin-top: 0px;
+            }
+        }
+
+        @media print {
+            .HeightPrintView {
+                margin-top:-500px;
+            }
+            a[href]:after {
+                content: none !important;
+            }
+            href {
+                display: none;
+                visibility: hidden;
+            }
+            #source-html {
+                margin-top: -100px;
+            }
+
+            #LogoImg, img {
+                margin-top: -10px;
+            }
+
+            #PrintImg, img {
+                margin-top: auto;
+                height: 100px;
+                width: 80px;
+            }
+
+            .page-break {
+                display: block;
+                page-break-before: always;
+            }
+
+            img {
+                height: 100px;
+                width: 80px;
+                margin-top:0px;
+            }
+        }
+
+        @page {
+            size: A4 landscape;
+            max-height: 100%;
+            max-width: 100%;
+            font-family: 'Times New Roman';
+        }
+    </style>
+</head>
+<body>
+
+        <table style="width: 100%;">
+            <tbody>
+                <tr>
+                    <td>
+                        <div class=" hidden-print">
+                            <div class="col-sm-7 col-md-9">
+
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3 col-md-2">
+                                    <!--<button type="button" onclick="ExportToDoc();" class="customBtn custmoBtnReset" style="border-radius: 3px; margin-bottom: -.9em; margin-top: -15px; padding-bottom: 3px; padding-top: 3px;" title="Export to .doc">
+                                        <i class="fa fa-save"></i>&nbsp;Export to .doc
+                                    </button>-->
+                                </div>
+                                <div class="col-sm-2 col-md-1">
+                                    <button type="button"  onclick="document.title = 'Internal Work Order ' + getCurrentDateTime(); PrintPdf();"  class="customBtn custmoBtnReset" style="border-radius: 3px; margin-bottom: -.9em; margin-top: -15px; padding-bottom: 3px; padding-top: 3px;" title="Print">
+                                        <i class="fa fa-print"></i>&nbsp;Print
+                                    </button>
+                                </div>
+
+
+                            </div>
+                            <hr />
+                        </div>
+
+                        <div  id="source-html" style="margin-top:-38px;">
+                            <div>
+                                <!--<img id="LogoImg" style="width:65px;height:65px;border-radius:100%;margin-right:15px;" src="/UploadedImages/logo.jpg" />-->
+                                <p style="font-size: 25px; text-align: center; margin: 0px; padding: 0px;"><u><b>Internal Work Order</b></u></p>
+                                <p style="font-size: 25px; text-align: center; margin: 0px; padding: 0px;"> <b>Retail Technologies Limited</b></p>
+                                <p style="font-size: 12px; text-align: center;padding: 0px;margin-top:0px;">
+
+                                    Factory :<b>   {{InternalWorkOrderList[0].BranchName}} </b>
+                                </p>
+                                <p style="font-size: 12px; text-align: center; margin-top: -10px; padding: 0px;">
+                                 
+                                   {{InternalWorkOrderList[0].BranchAddress}}
+                                  
+                                </p>
+
+                            </div>
+                            <table id="UpperTable" style="width: 100%;height:60px; border:1px;">
+                                <tbody>
+                                    <tr style="text-align:left;padding:5px;">
+
+                                        <td>Cumstomer Name.</td>
+                                        <td>
+                                            {{InternalWorkOrderList[0].CompanyName}}
+                                        </td>
+                                        <td>Internal Work Odrer NO.</td>
+                                        <td>
+                                            {{InternalWorkOrderList[0].InternalWorkOrderNo}}
+                                        </td>
+
+                                    </tr>
+                                    <tr>
+                                        <td> Address</td>
+                                        <td> {{InternalWorkOrderList[0].CompanyAddress}}</td>
+                                        <td>Internal WorkOrder Date.</td>
+                                        <td>
+                                            {{InternalWorkOrderList[0].InternalWorkOrderDate}}
+                                        </td>
+
+
+                                    </tr>
+                                    <tr>
+                                        <td>BIN</td>
+                                        <td>{{InternalWorkOrderList[0].BIN}}</td>
+                                        <td>Purchase Order NO.</td>
+                                        <td>
+                                            {{InternalWorkOrderList[0].PONo}}
+
+                                        </td>
+
+                                    </tr>
+                                    <tr>
+                                        <td>Prepared by.</td>
+                                        <td>{{InternalWorkOrderList[0].FullName}}</td>
+
+                                        <td>PO Date</td>
+                                        <td>
+                                            {{ InternalWorkOrderList[0].PODate}}
+                                        </td>
+
+
+                                    </tr>
+
+                                    <tr ng-if="InternalWorkOrderList[0].ApprovedByName">
+                                        <td>Approved By</td>
+                                        <td>
+                                            {{InternalWorkOrderList[0].ApprovedByName}}
+                                        </td>
+
+                                        <td>Approved Date</td>
+                                        <td>
+                                            {{InternalWorkOrderList[0].ApprovedDate}}
+                                        </td>
+
+
+                                    </tr>
+
+                                </tbody>
+                            </table>
+
+                            <table class="ProductTable table-hover" style="width: 100%;  margin-left: auto; margin-right: auto;margin-top:20px">
+                                <tbody>
+                                    <tr>
+                                        <th class="t-cell-center">S/N</th>
+                                        <!--<th class="t-cell-center" ng-show="!IshardWareFlag">RM Code</th>-->
+                                        <th class="t-cell-center" ng-show="isHardwareFinishedCode">Item Code</th>
+                                        <th class="t-cell-center">Product Description</th>
+                                        <th class="t-cell-center" > Material Paper Type</th>
+                                        <th class="t-cell-center"> Label Brand Name</th>
+                                        <th class="t-cell-center" >Ups</th>
+                                        <th class="t-cell-center" >Color</th>
+                                        <th class="t-cell-center">Radias / Corner</th>
+                                        <th class="t-cell-center" >Core Dia (mm)</th>
+                                        <th class="t-cell-center" >Qty Per Roll</th>
+                                        <th class="t-cell-center" >Roll Direction</th>
+                                        <th class="t-cell-center">Quantity</th>
+                                        <th class="t-cell-center" style="width:10%">Delivery Date</th>
+                                        <th class="t-cell-center">Remarks</th>
+
+                                    </tr>
+                                    <tr class="HoverTable" ng-repeat="anternalWorkOrder in   InternalWorkOrderReportList track by $index">
+                                        <td class="t-cell-center">{{$index+1}}</td>
+                                        <!--<td class="t-cell-center" ng-show="!IshardWareFlag">{{anternalWorkOrder.Barcode}}</td>-->
+                                        <td class="t-cell-center" ng-show="isHardwareFinishedCode">{{anternalWorkOrder.FinishedItemCode}}</td>
+                                        <td class="t-cell-center">{{anternalWorkOrder.FinishedItemName}}</td>
+                                        <td class="t-cell-center">{{anternalWorkOrder.MaterialPaperTypeName}}</td>
+                                        <td class="t-cell-center">{{anternalWorkOrder.LabelBrandName}}</td>
+                                        <td class="t-cell-center" >{{anternalWorkOrder.Ups}}</td>
+                                        <td class="t-cell-center" >{{anternalWorkOrder.Color}}</td>
+                                        <td class="t-cell-center" >{{anternalWorkOrder.Radius}}</td>
+                                        <td class="t-cell-center" >{{anternalWorkOrder.Core}}</td>
+                                        <td class="t-cell-center" >{{anternalWorkOrder.QtyPerRoll}}</td>
+                                        <td class="t-cell-center" >{{anternalWorkOrder.RollDirection}}</td>
+                                        <td class="t-cell-center">{{anternalWorkOrder.OrderQty}} {{anternalWorkOrder.UnitName}}</td>
+                                        <td class="t-cell-center" style="width:10%">{{anternalWorkOrder.DeliveryDate}} </td>
+                                        <td style="text-align:justify">{{anternalWorkOrder.DetailRemarks}}  </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <div>
+                                <h5><b>Place Of Delivery: </b><span style="font-size:16px;"> {{InternalWorkOrderList[0].PlaceOfDelivery}} </span> </h5>
+                                <!--<h5><b>Delivery Date: </b><span style="font-size:16px;"> {{InternalWorkOrderList[0].DeliveryDate}} </span> </h5>-->
+                                <h5><b>Special Instrcution:</b>  <span style="font-size:16px;"> {{InternalWorkOrderList[0].Remarks}} </span> </h5>
+                            </div>
+                            <div  ng-show="isUrlNofound">
+                                <table border="1" style="width: 100%;" ng-show="!IshardWareFlag">
+                                    <tr>
+                                       <td style="width:40% ;text-align:center;padding:5px;"> Product Name</td>
+                                       <td style="width: 35%; text-align: center; padding: 5px;"> ArtWork Attachment</td>
+                                       <!--<td style="width: 35%; text-align: center; padding: 5px;"> Attachment</td>-->
+
+                                    </tr>
+                                    <tr ng-repeat="anternalWorkOrder in InternalWorkOrderList | filter:{ArtWork:''}">
+
+                                        <td style="width:60% ;" class="t-cell-center">
+                                            <b>Product Name:</b> {{anternalWorkOrder.FinishedItemName}} <b>Product Code:</b>{{anternalWorkOrder.Barcode}}
+                                        </td>
+                                        <td style="width: 40%;" class="t-cell-center">
+                                            <!--<div ng-if="anternalWorkOrder.ArtWork">
+                        <img ng-show="!anternalWorkOrder.ShowImg" src="../../../UploadedFiles/ArtWork/{{anternalWorkOrder.ArtWork}}" style="border-radius: 5px 5px 5px 5px ;" width="200" height="155" class=" ng-pristine ng-untouched ng-valid ng-empty" ng-src="{{anternalWorkOrder.thumb}}" />
+
+                    </div>-->
+                                            <!--<div  style="height:150px;" >-->
+                                            <p ng-repeat="img in anternalWorkOrder.Image track by $index">
+                                                <a href="../../../UploadedFiles/ArtWork/{{img}}" dowanload target="_blank">{{img}}</a>
+                                            </p>
+
+                                            <!--<a ng-repeat="img in anternalWorkOrder.Image" href="../../../UploadedFiles/ArtWork/{{img}}" download> <img src="../../../UploadedFiles/ArtWork/{{img}}" align="left" style="border-radius: 5px 5px 5px 5px ;padding:5px;width:100px;height:80px;" class="form-inline ng-pristine ng-untouched ng-valid ng-empty" dowanload /></a>-->
+                                            <!--<img id="PrintImg" ng-src="../../../UploadedFiles/ArtWork/{{anternalWorkOrder.ArtWork}}" alt="Description" ng-empty"  />-->
+                                            <!--</div>-->
+
+                                        </td>
+                                        <!--<td style="width: 35%;" class="t-cell-center">
+
+                                            <a href="../../../UploadedFiles/SampleFiles/{{anternalWorkOrder.AttachmentName}}" download target="_blank">{{anternalWorkOrder.AttachmentName}}</a>
+
+                                        </td>-->
+                                    </tr>
+                                </table>
+
+                            </div>
+
+                            <table ng-show="PurchaseOrderlist.length > 0" class="ProductTable table-hover" style="width: 100%;  margin-left: auto; margin-right: auto;margin-top:20px">
+                              
+                                    <tr>
+                                       <td >PO No</td>
+                                       <td >PO Attachment</td>
+
+                                    </tr>
+                                    <tr class="HoverTable" ng-repeat="PO in PurchaseOrderlist track by $index">
+                                        <td>{{PO.PONo}}</td>
+                                        <td>
+                                            <!--href="../../../UploadedFiles/POAttachment/{{poFile}}" download-->
+                                            <div ng-repeat="poFile in PO.POArrayList" style="color: black;margin:4px;" > {{poFile}}</div>
+                                        </td>
+                                    </tr>
+                           
+                            </table>
+                            <br />
+                            <div>
+                                <p>Authorized Signature :</p>
+                            </div>
+                            <!--<div>
+          <table style="width:100%">
+              <tr>
+                  <td style="width:35%">
+                      <div>
+                          <p style="border-top:0.5px solid black;text-align:center;width:100px;"> Prepared By</p>
+                      </div>
+
+                  </td>
+                  <td style="width:30%">
+                      <div style="margin-left:260px;">
+                          <p style="border-top:0.5px solid black;text-align:center;width:100px;"> Approved By</p>
+                      </div>
+
+                  </td>
+                  <td style="width:35%">
+                      <div style="margin-left:360px;">
+                          <p style="border-top:0.5px solid black;text-align:center;width:100px;"> Authorized By</p>
+                      </div>
+
+                  </td>
+              </tr>
+      </table>
+    </div>-->
+
+                        </div>
+
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+
+
+</body>
+</html>
+<script>
+
+
+
+    jQuery(document).ready(function ($) {
+
+        $(".main-sidebar").attr("hidden", true);
+        $(".main-header").attr("hidden", true);
+        $(".main-footer").attr("hidden", true);
+        $("#br").attr("hidden", true);
+
+        $("div").removeClass("wrapper");
+        $("div").removeClass("content-wrapper");
+    });
+
+
+    function PrintPdf() {
+        window.print();
+    }
+
+</script>

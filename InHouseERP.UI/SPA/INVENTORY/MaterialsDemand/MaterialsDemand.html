@@ -1,0 +1,750 @@
+﻿<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js" integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<form name="MaterialsDemandForm" novalidate>
+
+    <div class="col-md-12">
+        <div class="alert alert-info alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="topInfo"> &nbsp; &#9755; <span style="color:red;">Red Icon</span> Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp; &#9755; Click On A Table Row To Update</div>
+        </div>
+        <div ng-show="CreatePermission || RevisePermission">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="fa fa-share-alt"></i>&nbsp;Materials Demand For Purchase</h3>
+                    <div class="clearfix">
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+
+                        <div class="col-md-3">
+                            <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Demand Date">
+                                <div class="input-group">
+                                    <!--<input type="text" id="txtDate" name="DemandDate" ng-model="inv_MaterialsDemand.DemandDate" class="form-control datepicker" placeholder="Demand Date" required readonly="readonly"/>
+                            <span class="input-group-addon" id="calender"><i class="fa fa-calendar req-icon-color"></i></span>-->
+                                    <input type="text" name="DemandDate" id="txtDemandDate" ng-model="inv_MaterialsDemand.DemandDate" ng-change="" class="form-control " placeholder="Demand Date" readonly />
+                                    <span class="input-group-addon" ng-click="DemandDateChangeForDemand();" id="txtDemandDate2"><i class="fa fa-calendar req-icon-color"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group" ng-class="{ 'has-error' : MaterialsDemandForm.DemandNo.$invalid && MaterialsDemandForm.DemandNo.$touched }" data-toggle="tooltip" data-placement="bottom" title="Demand No.">
+                                <div class="input-group">
+                                    <input type="text" id="tbxDemandNo" ng-model="inv_MaterialsDemand.MaterialsDemandNo" name="DemandNo" class="form-control" placeholder="Demand No" maxlength="51" ng-maxlength="50" required disabled>
+                                    <span class="input-group-addon"><i class="fa fa-text-width req-icon-color"></i></span>
+                                </div>
+                                <span class="help-block" ng-if="MaterialsDemandForm.DemandNo.$error.required && MaterialsDemandForm.DemandNo.$touched">Demand No is required</span>
+                                <span class="help-block" ng-if="MaterialsDemandForm.DemandNo.$error.maxlength">50 Character Max</span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Delivery Date">
+                                <div class="input-group">
+                                    <!--<input type="text" id="txtDeliveryDate" name="DeliveryDate" ng-model="inv_MaterialsDemand.DeliveryDate" class="form-control datepicker" placeholder="Delivery Date" required readonly="readonly" />
+                            <span class="input-group-addon" id="calender1"><i class="fa fa-calendar req-icon-color"></i></span>-->
+                                    <input type="text" name="DeliveryDate" id="txtDeliveryDate" ng-model="inv_MaterialsDemand.DeliveryDate" ng-change="" class="form-control " placeholder="Delivery Date" readonly />
+                                    <span class="input-group-addon" ng-click="DeliveryDateChangeForDemand();" id="txtDeliveryDate2"><i class="fa fa-calendar req-icon-color"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group" ng-class="{ 'has-error' : MaterialsDemandForm.ddlPreparedBy.$dirty && MaterialsDemandForm.ddlPreparedBy.$invalid }" data-toggle="tooltip" data-placement="bottom" title="To Prepared By.">
+                                <div class="input-group input-group-md ddl">
+                                    <select id="ddlPreparedBy" ng-model="ddlPreparedBy" class="form-control selectMendatory" name="ddlPreparedBy" ng-options="employee.FullName+' ~ '+employee.DesignationName+' ~ '+employee.DepartmentName  for employee in EmployeeList track by employee.EmployeeId" ng-change="inv_MaterialsDemand.PreparedById = ddlPreparedBy.EmployeeId" required>
+                                        <option value="" label="Prepared By"></option>
+                                    </select>
+                                </div>
+                                <span class="help-block" ng-show="MaterialsDemandForm.ddlPreparedBy.$dirty && MaterialsDemandForm.ddlPreparedBy.$invalid">Prepared By is Required</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group" ng-class="{ 'has-error' : MaterialsDemandForm.Branch.$dirty && MaterialsDemandForm.Branch.$invalid }">
+                                <div class="input-group input-group-md ddl" data-toggle="tooltip" data-placement="bottom" title="Select Demand From">
+                                    <select name="Branch" ng-model="ddlBranch" id="ddlBranchSelect2" class="form-control selectMendatory" ng-change="inv_MaterialsDemand.BranchId=ddlBranch.BranchId;" ng-options="branch.BranchName for branch in BranchList track by branch.BranchId" required>
+                                        <option value="" label="Select Branch"></option>
+                                    </select>
+                                    <span class="help-block" style="display: block; color:red" ng-if="MaterialsDemandForm.Branch.$error.required && MaterialsDemandForm.Branch.$touched">Demand From is Required</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group" ng-class="{ 'has-error' : MaterialsDemandForm.ddlDepartment.$dirty && MaterialsDemandForm.ddlDepartment.$invalid }">
+                                <div class="input-group input-group-md ddl" data-toggle="tooltip" data-placement="bottom" title="Demand From Department">
+                                    <select name="Department" ng-model="ddlDepartment" id="ddlDepartmentSelect2" class="form-control selectMendatory" ng-change="inv_MaterialsDemand.DemandFromDeptId=ddlDepartment.DepartmentId; " ng-options="department.DepartmentName for department in DepartmentList track by department.DepartmentId" required>
+                                        <option value="" label="Demand From Department"></option>
+                                    </select>
+                                    <span class="help-block" style="display: block; color:red" ng-if="MaterialsDemandForm.ddlDepartment.$error.required && MaterialsDemandForm.ddlDepartment.$touched">Demand From Department is Required</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="input-group input-group-md ddl" data-toggle="tooltip" data-placement="bottom" title="Demand To Department">
+                                <select ng-model="ddlStore" id="ddlDemandSelect2" class="form-control selectMendatory" name="Store" ng-change="inv_MaterialsDemand.DemandToDeptId=ddlStore.DepartmentId;" ng-options="store.DepartmentName for store in Storelist track by store.DepartmentId" required>
+                                    <option value="" label="Demand To Department"></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Remarks">
+                                <div class="input-group">
+                                    <textarea type="text" id="Remarks" ng-model="inv_MaterialsDemand.Remarks" name="Remarks" class="form-control" placeholder="Remarks" rows="1" maxlength="500" ng-maxlength="500"></textarea>
+                                    <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                </div>
+                                <span class="help-block" ng-if="MaterialsDemandForm.Remarks.$error.maxlength">200 Character Max</span>
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+
+                    <div class="panel-footer">
+                        <div class="row">
+
+                            <div class="col-md-3">
+                                <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Name Of Materials">
+                                    <textarea type="text" id="NameOfMaterials" ng-model="NameOfMaterials" name="NameOfMaterials" class="form-control" placeholder="Name Of Materials"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <textarea type="text" id="ItemSpecification" ng-model="ItemSpecification" name="ItemSpecification" class="form-control" placeholder="Item Specification" title="Item Specification"></textarea>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <select id="iwoSelect2" class="form-control iwoSelect2" ng-model="ddlIwo" name="ddlIwo" ng-options="iwo.InternalWorkOrderNo for iwo  in iwolist track by iwo.InternalWorkOrderId" title="Select Iwo">
+                                            <option value="" label="Select Iwo">Select Iwo </option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <button id="reportBtnDisable" ng-click="OpenReport()">
+                                            <!--<i class="fa fa-print"></i>-->Report
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-2">
+                                <textarea type="text" id="CustomerName" ng-model="CustomerName" name="CustomerName" class="form-control" placeholder="Customer Name" title="Customer Name"></textarea>
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-3">
+                                <textarea type="text" id="MCName" ng-model="MCName" name="MCName" class="form-control" placeholder="M/C Name" title="M/C Name"></textarea>
+                            </div>
+                            <div class="col-md-3">
+                                <textarea type="text" id="StockDetails" ng-model="StockDetails" name="StockDetails" class="form-control" placeholder="Stock Details" title="Stock Details"></textarea>
+                            </div>
+
+                            <div class="col-md-2">
+                                <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Demand Quantity">
+                                    <div class="input-group">
+                                        <input type="number" id="txtDemandQty" class="form-control txt-center" min="0" step=".01" ng-model="DemandQuantity" placeholder="Qty">
+                                        <span class="input-group-addon"><i class="fa fa-text-width req-icon-color"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="input-group input-group-md ddl tooltipAll" data-toggle="tooltip" data-placement="bottom" title="Select Unit">
+
+                                    <select ng-model="ddlMU" class="form-control selectMendatory" name="ddlMUId" ng-options="unit.UnitName  for unit in ItemUnitlist track by unit.ItemUnitId">
+                                        <option value="">Select Unit </option>
+                                    </select>
+                                </div>
+                            </div>
+
+
+
+                            <div class="col-md-2">
+                                <button id="btnAdd" class="customBtn custmoBtnReset" title="Add" ng-click="AddMaterialsDemandDetail()">
+                                    <i class=" fa fa-plus-square"></i>&nbsp;Add
+                                </button>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table class="responstable table-hover">
+                                <tr>
+                                    <th class="t-cell-center">S/N</th>
+                                    <th class="t-cell-center">Name Of Materials</th>
+                                    <th class="t-cell-center">Specification</th>
+                                    <th class="t-cell-center">I.W.O No.</th>
+                                    <th class="t-cell-center">Customer</th>
+                                    <th class="t-cell-center">M/C</th>
+                                    <th class="t-cell-center">Stock</th>
+                                    <th class="t-cell-center">Demand</th>
+                                    <th class="t-cell-center">Unit</th>
+                                    <th class="t-cell-center">Action</th>
+                                </tr>
+                                <tbody ng-repeat="aMaterialsDemandDetail in MaterialsDemandDetailList track by $index">
+                                    <tr>
+                                        <td class="t-cell-center">{{$index + 1}} </td>
+                                        <td class="t-cell-center">
+                                            <textarea type="text" id="NameOfMaterials" ng-model="aMaterialsDemandDetail.NameOfMaterials" name="NameOfMaterials" class="form-control" placeholder="Name Of Materials" title="Name Of Materials"></textarea>
+                                        </td>
+                                        <td class="t-cell-center">
+                                            <textarea type="text" id="NameOfMaterials" ng-model="aMaterialsDemandDetail.ItemSpecification" name="NameOfMaterials" class="form-control" placeholder="Name Of Materials" title="Name Of Materials"></textarea>
+
+                                        </td>
+                                        <td class="t-cell-center">{{aMaterialsDemandDetail.InternalWorkOrderNo}} </td>
+                                        <td class="t-cell-center">
+                                            <textarea type="text" id="NameOfMaterials" ng-model="aMaterialsDemandDetail.CustomerName" name="CustomerName" class="form-control" placeholder="Customer Name" title="Customer Name"></textarea>
+                                        </td>
+                                        <td class="t-cell-center">
+                                            <textarea type="text" id="MCName" ng-model="aMaterialsDemandDetail.MCName" name="MCName" class="form-control" placeholder="M/C Name" title="M/C Name"></textarea>
+                                        </td>
+                                        <td class="t-cell-center">
+                                            <textarea type="text" id="StockDetails" ng-model="aMaterialsDemandDetail.StockDetails" name="StockDetails" class="form-control" placeholder="Stock Details" title="Stock Details"></textarea>
+                                        </td>
+                                        <td class="t-cell-center">
+                                            <input type="number" ng-model="aMaterialsDemandDetail.DemandQuantity" placeholder="Quantity" title="Demand Quantity" />
+                                        </td>
+                                        <td class="t-cell-center">{{aMaterialsDemandDetail.UnitName}}</td>
+                                        <td class="t-cell-center"><button ng-click="removeMaterialsDemandDetail(aMaterialsDemandDetail, $index)">Remove</button></td>
+
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="input-group">
+                            <button class="btn btn-success" style="width:100%" ng-disabled="!inv_MaterialsDemand.MaterialsDemandNo||!inv_MaterialsDemand.DemandDate||!inv_MaterialsDemand.DeliveryDate || !ddlDepartment||!ddlStore|| !ddlBranch || !ddlPreparedBy || !MaterialsDemandDetailList.length" ng-click="SaveMaterialsDemand()">
+                                <i class="fa fa-floppy-o"></i>&nbsp;Save
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="input-group">
+                            <button id="Button3" class="btn btn-danger" style="width:100%" title="Search" ng-click="resetForm()">
+                                <i class="fa fa-refresh"></i>&nbsp;Reset
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <br />
+            </div>
+
+        </div>
+        
+    </div>
+    
+
+
+    <div class="row" ng-show="ListViewPermission">
+
+        <div class="col-md-12">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h3 class="panel-title pull-left "><i class="fa fa-check"></i>&nbsp;Materials Demand List</h3>
+                    <div class="clearfix">
+                    </div>
+                </div>
+
+                <div class="panel-footer">
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <div class="input-group " data-toggle="tooltip" title="From Date">
+
+                                    <input type="text" name="FromDate" id="txtFromReq" ng-model="FromDate" ng-change="MaterialsDemandSearch();" class="form-control " placeholder="From Date" readonly />
+                                    <span class="input-group-addon" ng-click="FormDateChangeForReq()" id="FormDateChangeForDelivery"><i class="fa fa-calendar req-icon-color"></i></span>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <div class="input-group " data-toggle="tooltip" title="To Date">
+                                    <input type="text" name="ToDate" id="txtToDateForReq" ng-model="ToDate" ng-change="MaterialsDemandSearch();" class="form-control " placeholder="To Date" readonly />
+                                    <span class="input-group-addon" ng-click="ToDateChangeForReq()" id="ToDateChangeForSO"><i class="fa fa-calendar req-icon-color"></i></span>
+                                </div>
+
+
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group" data-toggle="tooltip" title="Search Demand No">
+                                <input type="text" class="form-control" id="DemandNo" ng-model="DemandNo" ng-change="MaterialsDemandSearch();" name="name" placeholder="Company Name / Production NO..." />
+                            </div>
+                        </div>
+                       
+                        <div class="col-md-2">
+                            <button id="btnSearch" style="width:100%;" ng-click="reloadBtn()" class="btn btn-danger" title="Reload">
+                                <i class="fa fa-refresh"></i>&nbsp;Clear
+                            </button>
+                        </div>
+
+                    </div>
+
+                    <hr />
+                    <table class="responstable table-hover">
+                        <tbody>
+                            <tr>
+                                <th class="t-cell-center">S/N</th>
+                                <th class="t-cell-center">Demand No</th>
+                                <th class="t-cell-center">Demand Date</th>
+                                <th class="t-cell-center">Delivery Date</th>
+                                <th class="t-cell-center">Prepared By</th>
+
+                                <th class="t-cell-center">BranchName</th>
+                                <th class="t-cell-center">From Department </th>
+                                <th class="t-cell-center">To Department </th>
+                                <th class="t-cell-center">Status </th>
+
+                                <th class="t-cell-center">Action</th>
+                            </tr>
+                            <tr class="HoverTable searchRow" dir-paginate="aMaterialsDemand in MaterialsDemandListForGrid | itemsPerPage: PerPage" current-page="currentPage" total-items="total_count">
+                                <td class="t-cell-center">{{$index + ((currentPage-1)*PerPage) + 1}}</td>
+                                <td class="t-cell-center">{{aMaterialsDemand.MaterialsDemandNo}}</td>
+                                <td class="t-cell-center">{{aMaterialsDemand.DemandDate}}</td>
+                                <td class="t-cell-center">{{aMaterialsDemand.DeliveryDate}}</td>
+                                <td class="t-cell-center">{{aMaterialsDemand.PreparedByName}}</td>
+                                <td class="t-cell-center">{{aMaterialsDemand.BranchName}}</td>
+                                <td class="t-cell-center">{{aMaterialsDemand.FromDepartmentName}}</td>
+                                <td class="t-cell-center">{{aMaterialsDemand.ToDepartmentName}}</td>
+                                <td class="t-cell-center">{{aMaterialsDemand.Status}}</td>
+
+                                <td class="t-cell-center">
+                                    <button ng-hide="aMaterialsDemand.IsApproved"  ng-click="SelMaterialsDemand(aMaterialsDemand);"  >
+                                        <i class="fa fa-edit"></i> Edit
+                                    </button>
+                                    <button ng-click="MaterialDemandedReportBtn(aMaterialsDemand)" >
+                                        <!--<i class="fa fa-print"></i>--> Report
+                                    </button>
+
+
+
+                                </td>
+
+
+                            </tr>
+                            <tr class="t-foot" ng-show="total_count>PerPage">
+                                <th colspan="10">
+                                    <dir-pagination-controls max-size="8"
+                                                             direction-links="true"
+                                                             boundary-links="true"
+                                                             on-page-change="getData(newPageNumber)" style="text-align:center;">
+                                    </dir-pagination-controls>
+                                </th>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="row pagination-footer">
+                        <div class="col-md-6">
+                            <span>Show </span><input class="input-pagesize" type="number" ng-maxlength="100" ng-minlength="1" width="1" ng-model="PerPage"> <span>Records </span>
+                        </div>
+                        <div class="col-md-6">
+                            <span class="pull-right">Showing {{((currentPage-1)*PerPage)+1}} to {{((currentPage-1) * PerPage) + MaterialsDemandListForGrid.length}} of {{total_count}} Records</span>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</form>
+<style>
+    .typeahead-demo .custom-popup-wrapper {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        z-index: 1000;
+        display: none;
+        background-color: #f9f9f9;
+    }
+
+        .typeahead-demo .custom-popup-wrapper > .message {
+            padding: 10px 20px;
+            border-bottom: 1px solid #ddd;
+            color: #868686;
+        }
+
+        .typeahead-demo .custom-popup-wrapper > .dropdown-menu {
+            position: static;
+            float: none;
+            display: block;
+            min-width: 100%;
+            background-color: transparent;
+            border: none;
+            border-radius: 0;
+            box-shadow: none;
+        }
+</style>
+
+<script>
+    function RowSelect(e) {
+        $('.searchRow').css('background-color', '');
+        $(e).css('background-color', '#94d5ef');
+    }
+
+</script>
+
+
+
+<script>
+
+    $("#iwoSelect2").select2({
+        //placeholder: "Select Iwo",
+    });
+    //$("#ddlRawMatrial").select2();
+    $("#ddlPreparedBy").select2({
+        placeholder: "Prepared By",
+    });
+
+    //$("#ddlDepartmentSelect2").select2({
+    //    placeholder: "Requisiton From Department",
+    //    allowClear: true
+    //});
+
+
+
+</script>
+<script>
+    function getData() {
+        var comboplete = new Awesomplete('input.dropdown-input', {
+            minChars: 0,
+        });
+        Awesomplete.$('.dropdown-btn').addEventListener("click", function () {
+            if (comboplete.ul.childNodes.length === 0) {
+                comboplete.minChars = 0;
+                comboplete.evaluate();
+            }
+            else if (comboplete.ul.hasAttribute('hidden')) {
+                comboplete.open();
+            }
+            else {
+                comboplete.close();
+            }
+        });
+    }</script>
+
+<script>
+    $("#MaterialType1").select2({
+        placeholder: "--Material  Type--",
+    });
+    $("#LabelBrand").select2({
+        placeholder: "--Label Brand--",
+        //theme: "classic",
+        dropdownAutoWidth: false
+    });
+    //var picker = new Pikaday({
+    //    field: document.getElementById('txtDate'),
+    //    firstDay: 1,
+    //    format: "DD/MM/YYYY",
+    //    minDate: new Date('1930-01-01'),
+    //    maxDate: new Date('2050-12-31'),
+    //    yearRange: [1930, 2050],
+    //    theme: 'blue-theme'
+    //});
+    //document.getElementById("calender").addEventListener("click", function () {
+    //    picker.show();
+    //});
+    //var picker1 = new Pikaday({
+    //    field: document.getElementById('txtDeliveryDate'),
+    //    firstDay: 1,
+    //    format: "DD/MM/YYYY",
+    //    minDate: new Date('1930-01-01'),
+    //    maxDate: new Date('2050-12-31'),
+    //    yearRange: [1930, 2050],
+    //    theme: 'blue-theme'
+    //});
+    //document.getElementById("calender1").addEventListener("click", function () {
+    //    picker1.show();
+    //});
+
+    var elements = document.getElementsByClassName("arrow-togglable");
+    var currentIndex = 0;
+
+    function newControl(e) {
+        elements = document.getElementsByClassName("arrow-togglable");
+        currentIndex = 0;
+        if (window.event.which == 40) {
+            currentIndex = ((currentIndex + 1) == elements.length) ? 0 : ++currentIndex;
+            elements[currentIndex].focus();
+        }
+        if (window.event.which == 38) {
+            currentIndex = (currentIndex == 0) ? elements.length - 1 : --currentIndex;
+            elements[currentIndex].focus();
+        }
+    }
+
+    function nextControlFromSugession(e) {
+        if (window.event.which == 40) {
+            currentIndex = ((currentIndex + 1) == elements.length) ? 0 : ++currentIndex;
+            elements[currentIndex].focus();
+        }
+        if (window.event.which == 38) {
+            currentIndex = (currentIndex == 0) ? elements.length - 1 : --currentIndex;
+            elements[currentIndex].focus();
+        }
+    }
+    function Hilitor2(id, tag) {
+        var targetNode = document.getElementById(id) || document.body;
+        var hiliteTag = tag || "EM";
+        var skipTags = new RegExp("^(?:" + hiliteTag + "|SCRIPT|FORM)$");
+        var colors = ["#ff6", "#a0ffff", "#9f9", "#f99", "#f6f"];
+        var wordColor = [];
+        var colorIdx = 0;
+        var matchRegex = "";
+        var openLeft = false;
+        var openRight = false;
+
+        this.setMatchType = function (type) {
+            switch (type) {
+                case "left":
+                    this.openLeft = false;
+                    this.openRight = true;
+                    break;
+
+                case "right":
+                    this.openLeft = true;
+                    this.openRight = false;
+                    break;
+
+                case "open":
+                    this.openLeft = this.openRight = true;
+                    break;
+
+                default:
+                    this.openLeft = this.openRight = false;
+
+            }
+        };
+
+        function addAccents(input) {
+            retval = input;
+            retval = retval.replace(/([ao])e/ig, "$1");
+            retval = retval.replace(/\\u00E[024]/ig, "a");
+            retval = retval.replace(/\\u00E7/ig, "c");
+            retval = retval.replace(/\\u00E[89AB]/ig, "e");
+            retval = retval.replace(/\\u00E[EF]/ig, "i");
+            retval = retval.replace(/\\u00F[46]/ig, "o");
+            retval = retval.replace(/\\u00F[9BC]/ig, "u");
+            retval = retval.replace(/\\u00FF/ig, "y");
+            retval = retval.replace(/\\u00DF/ig, "s");
+            retval = retval.replace(/a/ig, "([aÃ Ã¢Ã¤]|ae)");
+            retval = retval.replace(/c/ig, "[cÃ§]");
+            retval = retval.replace(/e/ig, "[eÃ¨Ã©ÃªÃ«]");
+            retval = retval.replace(/i/ig, "[iÃ®Ã¯]");
+            retval = retval.replace(/o/ig, "([oÃ´Ã¶]|oe)");
+            retval = retval.replace(/u/ig, "[uÃ¹Ã»Ã¼]");
+            retval = retval.replace(/y/ig, "[yÃ¿]");
+            retval = retval.replace(/s/ig, "(ss|[sÃŸ])");
+            return retval;
+        }
+
+        this.setRegex = function (input) {
+            input = input.replace(/\\([^u]|$)/g, "$1");
+            input = input.replace(/[^\w\\\s']+/g, "").replace(/\s+/g, "|");
+            input = input.replace(/^\||\|$/g, "");
+            input = addAccents(input);
+            if (input) {
+                var re = "(" + input + ")";
+                if (!this.openLeft) re = "(?:^|[\\b\\s])" + re;
+                if (!this.openRight) re = re + "(?:[\\b\\s]|$)";
+                matchRegex = new RegExp(re, "i");
+                return true;
+            }
+            return false;
+        };
+
+        this.getRegex = function () {
+            var retval = matchRegex.toString();
+            retval = retval.replace(/(^\/|\(\?:[^\)]+\)|\/i$)/g, "");
+            return retval;
+        };
+
+        // recursively apply word highlighting
+        this.hiliteWords = function (node) {
+            if (node === undefined || !node) return;
+            if (!matchRegex) return;
+            if (skipTags.test(node.nodeName)) return;
+
+            if (node.hasChildNodes()) {
+                for (var i = 0; i < node.childNodes.length; i++)
+                    this.hiliteWords(node.childNodes[i]);
+            }
+            if (node.nodeType == 3) { // NODE_TEXT
+                if ((nv = node.nodeValue) && (regs = matchRegex.exec(nv))) {
+                    if (!wordColor[regs[1].toLowerCase()]) {
+                        wordColor[regs[1].toLowerCase()] = colors[colorIdx++ % colors.length];
+                    }
+
+                    var match = document.createElement(hiliteTag);
+                    match.appendChild(document.createTextNode(regs[1]));
+                    match.style.backgroundColor = wordColor[regs[1].toLowerCase()];
+                    match.style.fontStyle = "inherit";
+                    match.style.color = "#000";
+
+                    var after;
+                    if (regs[0].match(/^\s/)) { // in case of leading whitespace
+                        after = node.splitText(regs.index + 1);
+                    } else {
+                        after = node.splitText(regs.index);
+                    }
+                    after.nodeValue = after.nodeValue.substring(regs[1].length);
+                    node.parentNode.insertBefore(match, after);
+                }
+            };
+        };
+
+        // remove highlighting
+        this.remove = function () {
+            var arr = document.getElementsByTagName(hiliteTag);
+            while (arr.length && (el = arr[0])) {
+                var parent = el.parentNode;
+                parent.replaceChild(el.firstChild, el);
+                parent.normalize();
+            }
+        };
+
+        // start highlighting at target node
+        this.apply = function (input) {
+            // this.remove();
+            if (input === undefined || !(input = input.replace(/(^\s+|\s+$)/g, ""))) return;
+            input = convertCharStr2jEsc(input);
+            if (this.setRegex(input)) {
+                this.hiliteWords(targetNode);
+            }
+        };
+
+        // added by Yanosh Kunsh to include utf-8 string comparison
+        function dec2hex4(textString) {
+            var hexequiv = new Array("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F");
+            return hexequiv[(textString >> 12) & 0xF] + hexequiv[(textString >> 8) & 0xF] + hexequiv[(textString >> 4) & 0xF] + hexequiv[textString & 0xF];
+        }
+
+        function convertCharStr2jEsc(str, cstyle) {
+            // Converts a string of characters to JavaScript escapes
+            // str: sequence of Unicode characters
+            var highsurrogate = 0;
+            var suppCP;
+            var pad;
+            var n = 0;
+            var outputString = '';
+            for (var i = 0; i < str.length; i++) {
+                var cc = str.charCodeAt(i);
+                if (cc < 0 || cc > 0xFFFF) {
+                    outputString += '!Error in convertCharStr2UTF16: unexpected charCodeAt result, cc=' + cc + '!';
+                }
+                if (highsurrogate != 0) { // this is a supp char, and cc contains the low surrogate
+                    if (0xDC00 <= cc && cc <= 0xDFFF) {
+                        suppCP = 0x10000 + ((highsurrogate - 0xD800) << 10) + (cc - 0xDC00);
+                        if (cstyle) {
+                            pad = suppCP.toString(16);
+                            while (pad.length < 8) {
+                                pad = '0' + pad;
+                            }
+                            outputString += '\\U' + pad;
+                        } else {
+                            suppCP -= 0x10000;
+                            outputString += '\\u' + dec2hex4(0xD800 | (suppCP >> 10)) + '\\u' + dec2hex4(0xDC00 | (suppCP & 0x3FF));
+                        }
+                        highsurrogate = 0;
+                        continue;
+                    } else {
+                        outputString += 'Error in convertCharStr2UTF16: low surrogate expected, cc=' + cc + '!';
+                        highsurrogate = 0;
+                    }
+                }
+                if (0xD800 <= cc && cc <= 0xDBFF) { // start of supplementary character
+                    highsurrogate = cc;
+                } else { // this is a BMP character
+                    switch (cc) {
+                        case 0:
+                            outputString += '\\0';
+                            break;
+                        case 8:
+                            outputString += '\\b';
+                            break;
+                        case 9:
+                            outputString += '\\t';
+                            break;
+                        case 10:
+                            outputString += '\\n';
+                            break;
+                        case 13:
+                            outputString += '\\r';
+                            break;
+                        case 11:
+                            outputString += '\\v';
+                            break;
+                        case 12:
+                            outputString += '\\f';
+                            break;
+                        case 34:
+                            outputString += '\\\"';
+                            break;
+                        case 39:
+                            outputString += '\\\'';
+                            break;
+                        case 92:
+                            outputString += '\\\\';
+                            break;
+                        default:
+                            if (cc > 0x1f && cc < 0x7F) {
+                                outputString += String.fromCharCode(cc);
+                            } else {
+                                pad = cc.toString(16).toUpperCase();
+                                while (pad.length < 4) {
+                                    pad = '0' + pad;
+                                }
+                                outputString += '\\u' + pad;
+                            }
+                    }
+                }
+            }
+            return outputString;
+        }
+
+    }
+</script>
+<!--Filter-->
+<script>
+    function getCategory(x) {
+        document.getElementById('btnCat').value = x.rowIndex;
+        document.getElementById("btnCat").click();
+    }
+    function getSubCategory(x) {
+        document.getElementById('btnSubCat').value = x.rowIndex;
+        document.getElementById("btnSubCat").click();
+    }
+</script>
+
+<script>
+    $('.popover-markup>.trigger').popover({
+        html: true,
+        title: function () {
+            return $(this).parent().find('.head').html();
+        },
+        content: function () {
+            return $(this).parent().find('.content').html();
+        }
+
+    });
+    $("#popover-markup").click(function () {
+        $('.trigger').popover('toggle');
+    });
+
+    
+</script>
+
+
+

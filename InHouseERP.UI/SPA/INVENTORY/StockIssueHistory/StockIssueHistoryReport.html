@@ -1,0 +1,209 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+
+    <style type="text/css">
+
+        body {
+            font-family: "Times New Roman", Times, serif;
+            color: #000000;
+            height: auto;
+            font-size: 15px;
+        }
+
+        #MainTable td {
+            text-align: center;
+        }
+
+        @page {
+            size: A4 landscape;
+        }
+
+        .flexcontainer {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        #UpperTable td {
+            border-collapse: collapse;
+            padding: 5px;
+        }
+
+        #container {
+            width: 100%;
+            bottom: 0;
+            position: fixed !important;
+        }
+
+        #left {
+            float: left;
+            width: 100px;
+        }
+
+        #right {
+            float: right;
+            width: 100px;
+        }
+
+        #center {
+            margin: 0 auto;
+            width: 100px;
+        }
+    </style>
+
+</head>
+<body>
+    <!--<page>-->
+    <table class="table" style="margin: auto !important;">
+        <tbody>
+            <tr>
+                <td>
+                    <div class="container hidden-print">
+                        <div class="col-sm-7 col-md-9">
+
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3 col-md-2">
+                          
+                            </div>
+                            <div class="col-sm-2 col-md-1">
+                                <button type="button" onclick="document.title = 'Stock Issue ' + getCurrentDateTime(); PrintPdf();"  class="customBtn custmoBtnReset" style="border-radius: 3px; margin-bottom: -.9em; margin-top: -15px; padding-bottom: 3px; padding-top: 3px;" title="Print To .PDF">
+                                    <i class="fa fa-print"></i>&nbsp;Print
+                                </button>
+                            </div>
+
+
+                        </div>
+                        <br />
+                    </div>
+
+                    <div id="source-html">
+
+
+                        <table id="heading" style="text-align: center;margin-left:auto;margin-right:auto;">
+
+                            <tr>
+                                <td>
+                                    <img style="height: 80px; width: 80px; padding: 5px" src="../../../UploadedImages/rtlLogo.jpg" />
+                                </td>
+                                <td>
+                                    <p style="font-size: 30px;line-height: 1; margin : 0; padding : 0 ; font-weight: bold;"><strong>Retail Technologies Limited</strong></p>
+                                    <br />
+                                    <span style="font-size: 18px; line-height: 1; margin: 0; padding: 0;"><i><u><b>Stock Issue Log</b></u></i></span>
+                                </td>
+                            </tr>
+                        </table>
+
+
+                        <span style="font-size: 14px; line-height: 1; margin: 0; padding: 0;"><b>From Date </b>{{StockIssue.FromDate}} - <b>To Date</b>{{StockIssue.ToDate}}</span>
+
+                        <br />
+                     
+                        <div ng-repeat="aIssueHead in StockIssueHistoryList track by $index">
+
+                            <table id="MainTable"  border="1"  width="100%"   align="center" >
+                                <tr>
+                                    <th> <span> ({{$index +1 }}) </span> - <span> </span>  <span>Stock Issue NO : {{aIssueHead.IssueNo}}</span> </th>
+
+                                </tr>
+                                <tr>
+                                    <td style="border:none !important;">
+                                        <table id="MainTable"  border="1"   width="100%" style="border-right:none !important;border-bottom:none !important" >
+
+                                            <tr>
+                                                <td class="text-center" style="width: 10%; border-right: none !important;">
+                                                    IWO : <br /> {{aIssueHead.DataList[0].InternalWorkOrderNo}}
+                                                </td>
+                                                <td class="text-center" style="width: 10%; border-right: none !important;">
+                                                    Requestion :  <br />{{aIssueHead.DataList[0].RequisitionNo}}
+                                                </td>
+                                                <td class="text-center" style="width: 10%; border-right: none !important;">
+                                                    Date: <br /> {{aIssueHead.DataList[0].RequisitionDate}}
+                                                </td>
+                                                <td class="text-center" style="width: 70%; border: none !important;" >
+                                                    <table id="MainTable" style="border-top:none;" border="1" width="100%"  align="center">
+                                                        <tr >
+                                                            <th>
+                                                                SL.
+                                                            </th>
+                                                            <th class="text-center">
+                                                                Finished Item Name
+
+                                                            </th>
+                                                            <th class="text-center">
+                                                                Item Name
+                                                            </th>
+
+                                                            <th class="text-center">
+                                                                Issue Quantity
+                                                            </th>
+
+                                                        </tr>
+                                                        <tr  ng-repeat="aIssue in aIssueHead.DataList track by $index">
+                                                            <td>{{$index +1}}</td>
+                                                            <td>{{aIssue.FinishedItemName}}</td>
+                                                            <td>{{aIssue.ItemName}}</td>
+
+                                                            <td style="text-align:right;">
+                                                               
+                                                                <span style="margin-right:5px;"> {{aIssue.IssueQuantity}} </span>
+                                                            </td>
+
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+
+                            </table>
+
+                        </div>
+                        <table border="1" width="100%" align="center">
+                            <tfoot>
+                                <tr>
+
+                                    <td style="text-align: right; padding-right: 5px">
+                                    
+                                        <span > Total: {{Totalissue}}</span>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+
+                        <br />
+
+                    </div>
+                      </td>
+            </tr>
+        </tbody>
+    </table>
+
+
+    <script type="text/javascript">
+        $('#HtmlData').hide();
+
+
+
+        function PrintPdf() {
+
+            window.print();
+
+        }
+        jQuery(document).ready(function ($) {
+
+            $(".main-sidebar").attr("hidden", true);
+            $(".main-header").attr("hidden", true);
+            $(".main-footer").attr("hidden", true);
+            $("#Hidebr").attr("hidden", true);
+
+            $("div").removeClass("wrapper");
+            $("div").removeClass("content-wrapper");
+        });
+
+
+    </script>
+</body>
+
+</html>

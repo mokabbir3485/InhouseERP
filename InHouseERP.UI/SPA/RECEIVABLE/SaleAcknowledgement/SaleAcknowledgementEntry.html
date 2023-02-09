@@ -1,0 +1,261 @@
+﻿<form name="saleAcknowledgementEntryForm" novalidate>
+    <div class="col-md-12">
+        <div class="alert alert-info alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="topInfo"> &nbsp; &#9755; <span style="color:red;">Red Icon</span> Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp; &#9755; Click On A Table Row To Update</div>
+        </div>
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-shield"></i>&nbsp;Sale Acknowledgement</h3>
+                <div class="clearfix">
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+
+                    <div class="col-md-4">
+                        <div class="form-group" ng-class="{ 'has-error' : saleAcknowledgementEntryForm.AcknowledgementNo.$dirty && saleAcknowledgementEntryForm.AcknowledgementNo.$invalid }">
+                            <div class="input-group tooltipAll" data-toggle="tooltip" data-placement="bottom" title="Acknowledgement No">
+                                <input type="text" class="form-control" ng-model="AcknowledgementNo" name="AcknowledgementNo" placeholder="Acknowledgement No" maxlength="50" ng-maxlength="49" readonly>
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block" ng-if="saleAcknowledgementEntryForm.AcknowledgementNo.$error.maxlength">50 Character Max</span>
+                        </div>
+                    </div>
+                    <!--<div class="col-md-3">
+                        <div class="form-group" ng-class="{ 'has-error' : saleAcknowledgementEntryForm.JvNo.$dirty && saleAcknowledgementEntryForm.JvNo.$invalid }">
+                            <div class="input-group" data-toggle="tooltip" data-placement="bottom" title="Jv No">
+                                <input type="text" class="form-control" ng-model="JvNo" name="JvNo" placeholder="Jv No" maxlength="50" ng-maxlength="49">
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block" ng-if="saleAcknowledgementEntryForm.JvNo.$error.maxlength">50 Character Max</span>
+                        </div>
+                    </div>-->
+                    <div class="col-md-4">
+                        <div class="form-group tooltipAll" title="Acknowledgement Date">
+                            <div class='input-group'>
+                                <input type="text" class="form-control" id="dtApprovedDate" ng-model="AcknowledgementDate" placeholder="Acknowledge Date" readonly="readonly" />
+                                <div class="input-group-addon" ng-click="CalendarOpenApprovedDate()">
+                                    <span class="fa fa-calendar"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group tooltipAll" ng-class="{ 'has-error' : saleAcknowledgementEntryForm.AcknowledgedBy.$dirty && saleAcknowledgementEntryForm.AcknowledgedBy.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Acknowledged By" >
+                            <div class="input-group input-group-md ddl">
+                                <select ng-model="ddlAcknowledgedBy" name="ddlAcknowledgedBy" id="ddlAcknowledgedBy" class="form-control selectMendatory" ng-change="AcknowledgedBy = ddlAcknowledgedBy.EmployeeId" ng-options="employee.FullName +' ~ '+employee.DesignationName+' ~ '+employee.DepartmentName for employee in employeeList track by employee.EmployeeId" required>
+                                    <option value="" label="Acknowledged By" hidden></option>
+                                </select>
+                            </div>
+                            <span class="help-block" ng-show="saleAcknowledgementEntryForm.AcknowledgedBy.$dirty && saleAcknowledgementEntryForm.AcknowledgedBy.$invalid">Acknowledged By is Required</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <!--<div class="col-md-2">
+                        <div class="form-group tooltipAll" title="Form Date">
+                            <div class='input-group'>
+                                <input type="text" class="form-control" id="dtFromDate" ng-model="FromDate" placeholder="From Date" readonly="readonly" />
+                                <div class="input-group-addon" ng-click="CalendarOpenFromDate()">
+                                    <span class="fa fa-calendar"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group tooltipAll" title="To Date">
+                            <div class='input-group'>
+                                <input type="text" class="form-control" id="dtToDate" ng-model="ToDate" placeholder="To Date" readonly="readonly" />
+                                <div class="input-group-addon" ng-click="CalendarOpenToDate()">
+                                    <span class="fa fa-calendar"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>-->
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            <div class="input-group width-hundred-percent tooltipAll" title="Select Customer">
+                                <select ng-model="ddlCompany" id="ddlCompany" name="company" class="form-control selectNotMandetory" ng-options="company.CompanyName for company in companyList track by company.CompanyId">
+                                    <option value="" label="-- Select Customer --" hidden></option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-3 col-lg-3 col-xs-12" style="padding-right: 3%; padding-left: 3%;">
+                        <div class="row">
+                            <button id="btnSearch" class="customBtn custmoBtnSearch tooltipAll" title="Search" ng-click="SearchSalesInvoice()">
+                                <i class="fa fa-search-plus"></i>&nbsp;Search
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer">
+                <div class="clearfix">
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="responstable table-hover">
+                            <tbody>
+                                <tr>
+                                    <th class="t-cell-center">S/N</th>
+                                    <th class="t-cell-center">Chk</th>
+                                    <th class="t-cell-center">Invoice No.</th>
+                                    <th class="t-cell-center">Invoice Date</th>
+                                    <th class="t-cell-center">Customer</th>
+                                    <!--<th class="t-cell-center">Reference</th>-->
+                                    <th class="t-cell-center">Amount</th>
+                                    <th class="t-cell-center">Additional Cost</th>
+                                </tr>
+                                <tr ng-show="SalesInvoiceList.length" class="HoverTable searchRow" ng-repeat="aSalesInvoice in SalesInvoiceList">
+                                    <td class="t-cell-center">{{$index+1}}</td>
+                                    <td class="t-cell-center">
+                                        <!--<input type="radio" ng-model="aSalesInvoice.selected" name="aSalesInvoice" ng-value="aSalesInvoice.selected" ng-init="aSalesInvoice.selected=false"
+                                        ng-click="RowSelect()" />-->
+                                        <input type="checkbox" ng-model="aSalesInvoice.selected" name="Acknowledgement" ng-click="RowSelect(aSalesInvoice);">
+                                    </td>
+                                    <td class="t-cell-center" ng-click="OpenPopupWindowSalesInvoiceReport(aSalesInvoice, false)"><u>{{aSalesInvoice.SalesInvoiceNo}}</u> <span ng-if="aSalesInvoice.ManualSalesInvoiceNo"> ({{aSalesInvoice.ManualSalesInvoiceNo }})</span></td>
+                                    <td class="t-cell-center">{{aSalesInvoice.SalesInvoiceDate}}</td>
+                                    <td class="t-cell-center">{{aSalesInvoice.CompanyName}}</td>
+                                    <!--<td class="t-cell-center">{{aSalesInvoice.RefEmployeeName}}</td>-->
+                                    <td style="text-align:right; padding-right:10px">{{aSalesInvoice.Amount.toFixed(2)}}</td>
+                                    <td style="text-align:right; padding-right:10px">{{aSalesInvoice.AdditionalCost.toFixed(2)}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-2">
+                <button id="btnSave" ng-disabled="!AcknowledgementNo || !AcknowledgementDate || !pos_SalesInvoiceList.length >0" style="width:100%" class="btn btn-success" ng-click="SaveAcknowledgement();" title="Save"> <!--ng-disabled="!AcknowledgementNo || !JvNo || !AcknowledgementDate || !pos_SalesInvoiceList.length"-->
+                    <i class="fa fa-save"></i>&nbsp;Save
+                </button>
+            </div>
+            <div class="col-md-2">
+                <button id="Button3" style="width:100%" class="btn btn-danger tooltipAll" title="Reset" ng-click="ResetForm()">
+                    <i class="fa fa-refresh"></i>&nbsp;Reset
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <br />
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-list"></i>&nbsp; Sale Acknowledgement List</h3>
+            </div>
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <div class="input-group tooltipAll" data-toggle="tooltip" title="From Date">
+                                <input type="text" name="FromDate" id="txtFromDateForSA" ng-model="FromDateSA" ng-change=" AcknowledgementSearch();" class="form-control " placeholder="From Date" readonly />
+                                <span class="input-group-addon" ng-click="FormDateChangeForSA()" id="FormDateChange"><i class="fa fa-calendar req-icon-color"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group tooltipAll" data-toggle="tooltip" title="To Date">
+                                    <input type="text" name="ToDate" id="txtToDateForSA" ng-model="ToDateSA" ng-change="AcknowledgementSearch();" class="form-control " placeholder="To Date" readonly />
+                                    <span class="input-group-addon" ng-click="ToDateChangeForSA()" id="ToDateChange"><i class="fa fa-calendar req-icon-color"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group tooltipAll" data-toggle="tooltip" title="Search Customer and Invoice No">
+                            <input type="text" class="form-control" id="textSearchCompanyName" ng-model="SearchCompanyName" ng-change="AcknowledgementSearch();" name="name" placeholder="Search Customer Name And Number" />
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+
+                        <button id="btnSearch" style="width:100%" ng-click="reloadBtn()" class="btn btn-danger tooltipAll" title="Reload">
+                            <i class="fa fa-refresh"></i>&nbsp;Clear
+                        </button>
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="responstable table-hover">
+                            <tbody>
+                                <tr class="t-head">
+                                    <th>S/N</th>
+                                    <th class="txt-center">Acknowledgement No</th>
+                                    <!--<th class="txt-center">Jv No</th>-->
+                                    <th class="txt-center">Acknowledgement Date</th>
+                                    <th class="txt-center">Sales Invoice No</th>
+                                    <th class="txt-center">Customer Name</th>
+                                    <th class="txt-center">Acknowledged By</th>
+                                    <th class="txt-center">Action</th>
+
+                                </tr>
+                                <tr class="HoverTable searchRow" dir-paginate="aAcknowledgement in AcknowledgementListPaged | itemsPerPage: PerPage" ng-click="" current-page="currentPage" total-items="total_count">
+                                    <td class="t-cell-center">{{$index + ((currentPage-1)*PerPage) + 1}}</td>
+                                    <td class="txt-center">{{aAcknowledgement.AcknowledgementNo }}</td>
+                                    <!--<td class="txt-center">{{aAcknowledgement.JvNo }}</td>-->
+                                    <td class="txt-center">{{aAcknowledgement.AcknowledgementDate }}</td>
+                                    <td class="txt-center">{{aAcknowledgement.SalesInvoiceNo }}</td>
+                                    <td class="txt-center">{{aAcknowledgement.CompanyName }}</td>
+                                    <td class="txt-center">{{aAcknowledgement.AcknowledgedByName }}</td>
+                                    <td class="t-cell-center">
+                                        <button  
+                                                ng-click="OpenPopupWindow(aAcknowledgement)">
+                                            <i class="fa fa-print" style="font-size:18px"></i> Report
+                                        </button>
+                                    </td>
+
+                                </tr>
+                                <tr class="t-foot" ng-show="total_count>PerPage">
+                                    <th colspan="8">
+                                        <dir-pagination-controls max-size="8"
+                                                                 direction-links="true"
+                                                                 boundary-links="true"
+                                                                 on-page-change="getData(newPageNumber)" style="text-align:center;">
+                                        </dir-pagination-controls>
+                                    </th>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="row pagination-footer">
+                            <div class="col-md-6">
+                                <span>Show </span><input class="input-pagesize" type="number" ng-maxlength="100" ng-minlength="1" width="1" ng-model="PerPage"> <span>Records </span>
+                            </div>
+                            <div class="col-md-6">
+                                <span class="pull-right">Showing {{((currentPage-1)*PerPage)+1}} to {{((currentPage-1) * PerPage) + AcknowledgementListPaged.length}} of {{total_count}} Records</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<script>
+    $('.tooltipAll').tooltip({ boundary: 'window' })
+    $("#ddlAcknowledgedBy").select2({
+        placeholder: "Search for: Acknowledged By",
+        theme: "classic",
+        dropdownAutoWidth: false
+    });
+    $("#ddlCompany").select2({
+        placeholder: "Search for: Customer Name",
+        theme: "classic",
+        dropdownAutoWidth: false
+    });
+</script>

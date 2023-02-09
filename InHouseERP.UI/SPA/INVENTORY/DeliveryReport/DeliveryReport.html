@@ -1,0 +1,292 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+        body {
+            font-family: "Times New Roman", Times, serif;
+            color: #000000;
+            writing-mode: inherit;
+            width: 100%;
+            height: 100%;
+        }
+
+        #UpperTable td {
+            border: 1px solid black;
+            border-collapse: collapse;
+            padding: 5px;
+        }
+
+        .ProductTable th {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+
+        .ProductTable td {
+            border: 1px solid black;
+            padding: 5px;
+        }
+
+        .footer {
+            position: fixed;
+            left: 29px;
+            bottom: 0px;
+        }
+
+        .flexcontainer {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /*Signature*/
+        @media screen {
+            div#footer_wrapper {
+                display: none;
+            }
+        }
+
+        @media print {
+            tfoot {
+                visibility: hidden;
+            }
+
+            div#footer_wrapper {
+                margin: 0px 2px 0px 7px;
+                position: fixed;
+                bottom: 10px;
+            }
+
+            div#footer_content {
+                font-weight: bold;
+            }
+        }
+
+        @page {
+            size: A4 ;
+            max-height: 100%;
+            max-width: 100%;
+            font-family: 'Times New Roman';
+        }
+    </style>
+</head>
+<body>
+    <div id="footer_wrapper" class="container">
+        <div id="footer_content">
+
+            <table style="width: 100%;">
+                <tbody style="left:30px; right: 50px;">
+                    <tr>
+                        <td style="text-align:left; width:450px;padding-bottom:60px;">
+                            Received in Good Condition
+                        </td>
+                        <td style="text-align: right;width: 450px;">
+                            <div>
+                                <span style="font-size: .9em; line-height: 1;"><b>for Retail Technologies Limited</b></span>
+                                <br />
+                                <br />
+                                <br />
+                                <span style="font-size: .9em; line-height: 1;">Authorized Signature</span>
+
+                            </div>
+
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <table style="width: 100%">
+        <tbody>
+            <tr>
+                <td>
+                    <div class=" hidden-print">
+
+                        <div class="container hidden-print">
+                          
+                            <div class="row">
+                                <div class="col-sm-3 col-md-2">
+                                    <input type="checkbox" value="MaterialTypeChecked" ng-model="MaterialTypeChecked" ng-change="ShowMaterialType(MaterialTypeChecked);" />&nbsp;Show Material Type
+                                </div>
+                                <div class="col-sm-3 col-md-2">
+                                    <input type="checkbox" value="dollarChecked" ng-model="LabelBrandChecked" ng-change="ShowLabelBrand(LabelBrandChecked);" />&nbsp;Show Label Brand
+                                </div>
+                                <div class="col-sm-3 col-md-2">
+                                    <input type="checkbox" value="dollarChecked" ng-model="PcPerRollChecked" ng-change="ShowPcPerRoll(PcPerRollChecked);" />&nbsp;Show Pc/Roll
+                                </div>
+                                <div class="col-sm-2 col-md-1">
+                                    <button type="button"  onclick="document.title = 'Delivery ' + getCurrentDateTime(); PrintPdf();"  class="customBtn custmoBtnReset" style="border-radius: 3px; margin-bottom: -.9em; margin-top: -15px; padding-bottom: 3px; padding-top: 3px;" title="Export to .doc">
+                                        <i class="fa fa-print"></i>&nbsp;Print
+                                    </button>
+                                </div>
+                                <!--<div class="col-sm-2 col-md-1">
+                                    <a class="word-export" href="javascript:void(0)"> Export as .doc </a>
+                                </div>-->
+
+
+                            </div>
+                                <br />
+                            </div>
+
+
+                        
+                        <hr />
+                    </div>
+
+                    <div class="" id="page-content">
+
+                        <div>
+                            <table style="width:100%">
+                                <tr>
+                                    <td style="width:30%"></td>
+                                    <td style="width:40%">
+                                        <p style="font-size: 15px; text-align: center; margin: 0px; padding: 0px;"> <b>{{deliveryReportName}}</b></p>
+                                    </td>
+                                    <td style="width:30%"></td>
+                                </tr>
+                            </table>
+
+
+                            <p style="font-size: 15px; text-align: center; margin: 0px; padding: 0px;"> <b>Party: {{DeliveryReportList[0].CompanyName}}</b></p>
+                            <p style="font-size: 12px; text-align: center; margin-top: 10px; padding: 0px;margin-top:0px;">
+                                <b>
+                                    <!--House #02,Road #01,Black #A
+                                    <br />
+                                    <b>
+                                        Nolvoge,Nishatnagagar,Turag, Dhaka
+                                    </b>-->
+                                    <b>
+                                        {{DeliveryReportList[0].CompanyAddress}}
+                                    </b>
+                                </b>
+                            </p>
+
+                        </div>
+
+                        <table style="width:100%">
+                            <tr>
+                                <td style="width:80%">
+                                    <p><b>Delivery Challan No: {{DeliveryReportList[0].DeliveryNo}}</b></p>
+                                    <!--<p>Ref No.{{DeliveryReportList[0].ReferenceNo}}</p>-->
+                                </td>
+                                <td><p style="text-align:right"><b>Date : {{DeliveryReportList[0].DeliveryDate}}</b></p></td>
+                            </tr>
+                        </table>
+
+                        <table class="ProductTable" border="1" style="width: 100%;  margin-left: auto; margin-right: auto;">
+                            <tbody>
+                                <tr>
+                                    <td colspan="2" style="width:75%">
+                                        <p style="line-height: 0.3;">Order No: {{ DeliveryReportList[0].ReferenceNo}}</p>
+                                        <p style="line-height: 0.3;">Order Date : {{ DeliveryReportList[0].ReferenceDate}}</p>
+                                    </td>
+                                    <td style="width:25%">
+                                        <p >RTL S.O.: {{ DeliveryReportList[0].SalesOrderNo}}</p>
+                                        <p style="line-height: 0.3;">Date : {{ DeliveryReportList[0].SalesOrderDate}}</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="t-cell-center">S/N</th>
+                                    <th class="t-cell-center">Description Of Goods</th>
+                                    <th class="t-cell-center">Quantity</th>
+
+                                </tr>
+                                <tr class="HoverTable" ng-repeat="deiivery in   DeliveryReportList track by $index">
+                                    <td class="t-cell-center">{{$index+1}}</td>
+                                    <td class="" style="font-weight:bold;"><span>{{deiivery.Combination}}</span><span ng-show="PcPerRollChecked && (deiivery.SubCategoryId == 1 || deiivery.SubCategoryId == 3)"> ({{deiivery.PcPerRoll}} Pc/Roll)</span> <span ng-show="LabelBrandChecked && deiivery.SubCategoryId ==3"> ~ {{deiivery.LabelBrandName}} </span>  <span ng-show="MaterialTypeChecked && deiivery.CategoryId != 2"> ~ {{deiivery.MaterialTypeName}} ~ {{deiivery.MaterialTypeCode}}</span> </td>
+                                    <td class="t-cell-center" style="font-weight:bold;">{{deiivery.DeliveryQuantity}} {{deiivery.DeliveryQuantityString}}</td>
+
+                                </tr>
+                                <tr>
+                                    <td colspan="3" style="text-align:right; padding-right: 5px;">
+                                        <b>{{DeliveryReportList[0].QtySummary}}</b>
+                                    </td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p style="text-align:right;margin-top:5px;">E & OE</p>
+                        <table style="width:100%">
+                            <tr>
+                                <td ng-if="DeliveryReportList[0].Remarks"><b>Remarks: </b> {{DeliveryReportList[0].Remarks}}</td>
+                            </tr>
+                            <!--<tr>
+                                <td ng-show="deliveryReport.IsManual"><b>SO No: </b> {{DeliveryReportList[0].SalesOrderNo}}</td>
+                            </tr>-->
+                            <tr>
+
+                                <td style="width:40%;">
+                                   <!--Received in Good Condition-->
+                                
+                                </td>
+                            </tr>
+
+                        </table>
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td>
+                    <div id="footer">
+
+                        <table style="width: 100%;">
+                            <tbody style="left:30px; right: 50px;">
+                                <tr>
+                                    <td style="text-align:left; width:450px">
+                                        Received in Good Condition
+                                    </td>
+                                    <td style="text-align: right;width: 450px;">
+
+                                        <br />
+                                        <br />
+                                        <br />
+                                        <span style="font-size: .9em; line-height: 1;"><b>for Retail Technologies Limited</b></span>
+                                        <br />
+                                        <br />
+                                        <br />
+                                        <span style="font-size: .9em; line-height: 1;">Authorized Signature</span>
+
+
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+</body>
+
+</html>
+
+<script>
+
+
+
+    jQuery(document).ready(function ($) {
+        $("a.word-export").click(function (event) {
+            $("#page-content").wordExport();
+        });
+
+
+        $(".main-sidebar").attr("hidden", true);
+        $(".main-header").attr("hidden", true);
+        $(".main-footer").attr("hidden", true);
+        $("#Hidebr").attr("hidden", true);
+
+        $("div").removeClass("wrapper");
+        $("div").removeClass("content-wrapper");
+    });
+
+
+
+    function PrintPdf() {
+        window.print();
+    }
+
+</script>

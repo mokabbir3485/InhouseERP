@@ -1,0 +1,207 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title></title>
+
+    <style type="text/css">
+        body {
+            /*font-family: 'SolaimanLipi', sans-serif;*/
+            font-size: 12px;
+            line-height: 12px;
+        }
+
+        td {
+            vertical-align: top;
+            text-align: left;
+        }
+
+        .fixed {
+            height: 0;
+            text-align: center !important;
+            padding: 2px;
+        }
+
+        .header {
+            text-align: center;
+            /*line-height: 5px;*/
+        }
+
+        @page {
+            size: A4 landscape;
+            max-height: auto;
+            max-width: auto;
+        }
+    </style>
+
+</head>
+
+<body>
+    <table>
+        <tbody>
+            <tr>
+                <td>
+                    <div class=" hidden-print">
+
+                        <div class="row">
+                            <div class="col-sm-2 col-md-1">
+                                <button type="button" onclick="PrintPdf();" class="customBtn custmoBtnReset"
+                                        style="border-radius: 3px; margin-bottom: -.9em; margin-top: -15px; padding-bottom: 3px; padding-top: 3px;"
+                                        title="Export to .doc">
+                                    <i class="fa fa-print"></i>&nbsp;Print
+                                </button>
+                            </div>
+
+                            <div class="col-sm-3 col-md-2">
+                                <!--<button type="button" onclick="ExportToDoc();" class="customBtn custmoBtnReset"
+                                        style="border-radius: 3px; margin-bottom: -.9em; margin-top: -15px; padding-bottom: 3px; padding-top: 3px;"
+                                        title="Export to .doc">
+                                    <i class="fa fa-save"></i>&nbsp;Export to .doc
+                                </button>-->
+                            </div>
+                        </div>
+                        <hr />
+                    </div>
+                    <div style="justify-content: center;align-items: center;">
+                        <div>
+                            <p class="header" style="font-size:30px"><b>Retail Technologies Ltd.</b></p>
+                            <p class="header" style="font-size:18px">FSSFB # 7 (Ground Floor East Wing)</p>
+                            <p class="header" style="font-size:18px">DEPZ(EXT) Ganakbari, Savar, Dhaka.</p>
+
+                        </div>
+                    </div>
+
+                    <table class="" width="100%" border="1">
+                        <tr>
+                            <td class="CenterData" colspan="10"><span><b>{{BondImportExportBalanceReportObj.FromMonth}} To {{BondImportExportBalanceReportObj.ToMonth}} BOND IMPORT & EXPORT  BLANCE (AFTER AUDIT)</b></span></td>
+                        </tr>
+
+                        <tr>
+                            <td class="CenterData"><span>1</span></td>
+                            <td class="CenterData"><span>2</span></td>
+                            <td class="CenterData"><span>3</span></td>
+                            <td class="CenterData"><span>4</span></td>
+                            <td class="CenterData"><span>5</span></td>
+                            <td class="CenterData"><span>6</span></td>
+                            <td class="CenterData"><span>7</span></td>
+                            <td class="CenterData"><span>8</span></td>
+                            <td class="CenterData"><span>9</span></td>
+                            <td class="CenterData"><span>10</span></td>
+
+                        </tr>
+
+                        <tbody>
+                            <tr>
+                                <td class="CenterData"><span>BOND NO</span></td>
+                                <td class="CenterData"><span>DATE</span></td>
+                                <td class="CenterData"><span>B/E NO.</span></td>
+                                <td class="CenterData"><span>DATE</span></td>
+                                <td class="CenterData"><span>IMPORT QTY(KG)</span></td>
+                                <td class="CenterData"><span>IM. AMOUNT</span></td>
+                                <td class="CenterData"><span>CON. (KG)</span></td>
+                                <td class="CenterData"><span>EX. AMOUNT</span></td>
+                                <td class="CenterData"><span>BLANCE QTY (KG)</span></td>
+                                <td class="CenterData"><span>REMARKS</span></td>
+                            </tr>
+                            <tr ng-repeat="aExportBalance in ExportBalancelist">
+                                <td class="CenterData" id="7"> <span ng-bind="aExportBalance.BondNo"></span></td>
+                                <td class="CenterData" id="7"> <span ng-bind="aExportBalance.BondDate"></span></td>
+                                <td class="CenterData" id="7"> <span ng-bind="aExportBalance.BillOfEntryNo"></span></td>
+                                <td class="CenterData" id="7"> <span ng-bind="aExportBalance.BillOfEntryDate"></span></td>
+                                <td class="CenterData" id="8"> <span ng-bind="aExportBalance.ImportInQTY"></span></td>
+                                <td class="CenterData" id="9"> <span ng-bind="aExportBalance.ImportAmount"></span></td>
+                                <td class="CenterData" id="10"><span ng-bind="aExportBalance.ConsumptionInKG"></span></td>
+                                <td class="CenterData" id="11"><span ng-bind="aExportBalance.ExportInAmount"></span></td>
+                                <td class="CenterData" id="12"><span ng-bind="aExportBalance.BalanceQTYInKG"></span></td>
+                                <td class="CenterData" id="13"><span ng-bind="aExportBalance.Remarks"></span></td>
+                            </tr>
+                            <tr ng-repeat="TotalExportBalance in ExportBalancelist |limitTo:1">
+                                <td class="" colspan="4" style="text-align: right"><b>Total</b></td>
+                                <td class="CenterData" ng-bind="TotalExportBalance.TotalImportInKG"></td>
+                                <td class="CenterData" ng-bind="TotalExportBalance.TotalImportInAmount"></td>
+                                <td class="CenterData" ng-bind="TotalExportBalance.TotalExport"></td>
+                                <td class="CenterData" ng-bind="TotalExportBalance.TotalExportAmount"></td>
+                                <td class="CenterData" ng-bind="TotalExportBalance.TotalBalance"></td>
+                                <td class="CenterData"></td>
+
+                            </tr>
+                        </tbody>
+                        <tr>
+                            <td class="" colspan="4"><b></b></td>
+                            <td class="CenterData"><b></b></td>
+                            <td class="CenterData"><b></b></td>
+                            <td class="CenterData"><b></b></td>
+                            <td class="CenterData"><b></b></td>
+                            <td class="CenterData"><b></b></td>
+                            <td class=""><b></b></td>
+                        </tr>
+                        <tr>
+                            <td class="" colspan="4"><b></b></td>
+                            <td class="CenterData"><b>TOTAL IMPORT KG.</b></td>
+                            <td class="CenterData"><b>TOTAL IMPORT AM.</b></td>
+                            <td class="CenterData"><b>TOTAL EXPORT KG.</b></td>
+                            <td class="CenterData"><b>TOTAL CONSUPSION KG.</b></td>
+                            <td class="CenterData"><b>TOTAL EXPORT AMOUNT</b></td>
+                            <td class=""><b></b></td>
+                        </tr>
+                        <tr ng-repeat="GrandExportBalance in ExportBalancelist | limitTo:1">
+                            <td class="" colspan="4"><b></b></td>
+                            <td class="CenterData"><b>{{GrandExportBalance.TotalImportInKG}}</b></td>
+                            <td class="CenterData"><b>{{GrandExportBalance.TotalImportInAmount}}</b></td>
+                            <td class="CenterData"><b>{{GrandExportBalance.TotalExport}}</b></td>
+                            <td class="CenterData"><b>{{GrandExportBalance.TotalExportAmount}}</b></td>
+                            <td class="CenterData"><b>{{GrandExportBalance.TotalBalance}}</b></td>
+                            <td class=""><b></b></td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+
+</html>
+<script>
+    $(function () {
+        //var header_height = 0;
+        //$('.rotate-table-grid td span').each(function () {
+        //    if ($(this).outerWidth() > header_height) header_height = $(this).outerWidth();
+        //});
+
+        //$('.rotate-table-grid td').height(header_height);
+
+        //$('.fixed').css('height', '');
+        //$('.head').css('height', '');
+        //$('.head').css('padding', '2px');
+        //$('.CenterData').css('height', '92px');
+        //$('.rotatingData').css('height', '65px');
+        //$('.CenterData').css('bottom', '');
+        //$('.rotatingData').css('bottom', '');
+
+        //$('.SN').css('padding', '5px');
+        //$('.total').css('padding', '5px');
+        //$('.CenterData').css('text-align', 'center !important');
+        $('.CenterData').css('text-align', 'center');
+        $('.CenterData').css('font-weight', 'bold');
+        $('.CenterData').css('padding', '5px');
+        //$('.signature').css('width', '120px');
+    });
+
+
+    jQuery(document).ready(function ($) {
+
+        $(".main-sidebar").attr("hidden", true);
+        $(".main-header").attr("hidden", true);
+        $(".main-footer").attr("hidden", true);
+        $("#Hidebr").attr("hidden", true);
+
+        $("div").removeClass("wrapper");
+        $("div").removeClass("content-wrapper");
+    });
+
+
+    function PrintPdf() {
+        window.print();
+    }
+
+</script>

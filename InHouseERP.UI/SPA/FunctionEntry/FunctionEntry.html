@@ -1,0 +1,102 @@
+﻿
+<form name="FunctionEntry">
+    <div class="col-md-3" ng-show="CreatePermission || RevisePermission">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-group"></i>&nbsp;Function Entry</h3>
+            </div>
+            <div class="panel-body">
+                
+
+                <div class="form-group tooltipAll" ng-class="{ 'has-error' : FunctionEntry.FunctionName.$dirty && FunctionEntry.FunctionName.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Function Name">
+                    <div class="input-group input-group-md ddl">
+                        <input type="text" id="tbxFunctionName" name="FunctionName" class="form-control" ng-model="Function.FunctionName" placeholder="Function Name" required />
+                        <span class="input-group-addon"><i class="fa fa-pagelines req-icon-color"></i></span>
+                    </div>
+                    <span class="help-block" ng-show="FunctionEntry.FunctionName.$dirty && FunctionEntry.FunctionName.$invalid">Function Name is Required</span>
+                </div>
+                
+                
+                <br />
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="input-group">
+                            <button id="btnSave" class="btn btn-success" ng-click="PostFunction();" title="Save">
+                                <i class="fa fa-floppy-o"></i>&nbsp;Save
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="input-group">
+                            <button id="btnClear" class="btn btn-primary" ng-click="resetForm();" title="Clear">
+                                <i class="fa fa-refresh"></i>&nbsp;Clear
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="col-md-9" ng-show="ListViewPermission">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-list"></i>&nbsp;Function List</h3>
+            </div>
+            <div class="panel-body custom-panal-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group tooltipAll" data-toggle="tooltip" title="Function Name">
+                            <input type="text" class="form-control" id="textFunctionName" ng-model="FunctionName" ng-change="FunctionNameSearch();" name="name" placeholder="Function Name" />
+                        </div>
+                    </div>
+                </div>
+                <div class="tbl-outer">
+                    <table class="responstable table-hover">
+                        <thead>
+                            <tr class="t-head">
+                                <th>S/N</th>
+                                <th>Function Id</th>
+                                <th>Function Name</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="HoverTable" dir-paginate="Function in Functionlist | filter:q | itemsPerPage: PerPage" current-page="currentPage" total-items="total_count">
+                                <td>{{$index + ((currentPage-1)*PerPage) + 1}}</td>
+                                <td>{{Function.FunctionId}}</td>
+                                <td>{{Function.FunctionName}}</td>
+                                <td>
+                                    <button ng-click="SelFunction(Function)" title="Edit">
+                                        Edit
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr class="t-foot" ng-show="total_count>PerPage">
+                                <th colspan="10">
+                                    <dir-pagination-controls max-size="8"
+                                                             direction-links="true"
+                                                             boundary-links="true"
+                                                             on-page-change="getData(newPageNumber)" style="text-align:center;">
+                                    </dir-pagination-controls>
+                                </th>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="row pagination-footer">
+                        <div class="col-md-6">
+                            <span>Show </span><input class="input-pagesize" type="number" ng-maxlength="100" ng-minlength="1" width="1" ng-model="PerPage"> <span>Records </span>
+                        </div>
+                        <div class="col-md-6">
+                            <span class="pull-right">Showing {{((currentPage-1)*PerPage)+1}} to {{((currentPage-1)*PerPage)+Functionlist.length}} of {{total_count}} Records</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script>
+    $('.tooltipAll').tooltip({ boundary: 'window' })
+</script>

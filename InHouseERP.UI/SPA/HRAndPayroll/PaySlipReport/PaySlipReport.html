@@ -1,0 +1,253 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title></title>
+
+    <style type="text/css">
+        body {
+            font-family: 'SolaimanLipi', sans-serif;
+            font-size: 12px;
+            /*line-height: 12px;*/
+        }
+       /* th, td {
+            padding: 15px;
+        }*/
+
+        .fixed {
+            height: 0;
+            text-align: center !important;
+            padding: 2px;
+        }
+
+        .header {
+            text-align: center;
+            line-height: 5px;
+        }
+
+        @page {
+            size: A4 portrait;
+        }
+
+        .flexcontainer {
+            display: flex;
+            justify-content: space-between;
+        }
+
+
+        /*Signature*/
+        @media screen {
+            div#footer_wrapper {
+                display: none;
+            }
+        }
+
+        @media print {
+            #Source {
+                page-break-after: avoid;
+                page-break-before: avoid;
+            }
+
+            tfoot {
+                visibility: hidden;
+            }
+
+            div#footer_wrapper {
+                margin: 0px 2px 0px 7px;
+                position: fixed;
+                bottom: 0;
+            }
+
+            div#footer_content {
+                font-weight: bold;
+            }
+        }
+        /**/
+    </style>
+
+</head>
+
+<body>
+    <table>
+        <tbody>
+            <tr>
+                <td>
+                    <div class=" hidden-print">
+
+                        <div class="row">
+                            <div class="col-sm-2 col-md-1">
+                                <button type="button" onclick="document.title = 'PaySlip ' + getCurrentDateTime(); PrintPdf();" class="customBtn custmoBtnReset"
+                                        style="border-radius: 3px; margin-bottom: -.9em; margin-top: -15px; padding-bottom: 3px; padding-top: 3px;"
+                                        title="Export to .doc">
+                                    <i class="fa fa-print"></i>&nbsp;Print
+                                </button>
+                            </div>
+
+                            <div class="col-sm-3 col-md-2">
+
+                            </div>
+                        </div>
+                        <hr />
+                    </div>
+                    <div id="Source" ng-repeat="PaySlip in PaySliplist">
+                        <table width="100%" border="1" style="width:810px; padding:5px;">
+                            <tbody>
+                                <tr>
+                                    <td colspan="8">
+                                        <p style="text-align: center;"><b>রিটেইল টেকনোলজিস লিমিটেড</b></p>
+                                        <p style="text-align: center; line-height: 1px;">পে স্লিপ (শ্রমিক)</p>
+                                        <p style="text-align: right; line-height: 1px;">তারিখ : {{currentDatetimeFormated}}</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="8"><b>কর্মীর বিবরন:</b></td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:right;">নাম : </td>
+                                    <td colspan="7">{{PaySlip.EmployeeName}}</td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:right;">পদবি : </td>
+                                    <td colspan="7">{{PaySlip.DesignationName}}</td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:right;">বিভাগ : </td>
+                                    <td colspan="7">{{PaySlip.SectionName}}</td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:right;">কর্মীর আইডি নং : </td>
+                                    <td>{{PaySlip.EmployeeCode}}</td>
+                                    <td colspan="6"></td>
+                                </tr>
+                                <tr>
+                                    <td>মাস : </td>
+                                    <td>{{PaySlipReportObj.MonthName}}</td>
+                                    <td style="text-align:center;">কর্মদিবস</td>
+                                    <td style="text-align:right;">{{PaySlip.WorkingDays}}</td>
+                                    <td style="text-align:center;">অনুপস্থিতি </td>
+                                    <td style="text-align:right;">{{PaySlip.AbsentDays}}</td>
+                                    <td style="text-align:center;">ছুটি</td>
+                                    <td style="text-align:right;">{{PaySlip.CasualLeave + PaySlip.SickLeave}}</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="8"><b>মজুরীর বিবরন : </b></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4" style="text-align:center;">উপার্জন</td>
+                                    <td colspan="4" style="text-align:center;">কর্তন</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" style="text-align:center;">ধরণ</td>
+                                    <td colspan="2" style="text-align:center;">সংখ্যা</td>
+                                    <td colspan="2" style="text-align:center;">ধরণ</td>
+                                    <td colspan="2" style="text-align:center;">সংখ্যা</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" style="text-align:right;">মূল বেতন : </td>
+                                    <td colspan="2" style="text-align:right;">{{PaySlip.BasicSalary}}</td>
+                                    <td colspan="2" style="text-align:right;">ভবিষ্যৎ তহবিল : </td>
+                                    <td colspan="2" style="text-align:right;">{{PaySlip.DeductionProvFund}}</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" style="text-align:right;">বাড়ি ভাড়া : </td>
+                                    <td colspan="2" style="text-align:right;">{{PaySlip.HouseRent}}</td>
+                                    <td colspan="2" style="text-align:right;">অগ্রিম ঋণ : </td>
+                                    <td colspan="2" style="text-align:right;">{{PaySlip.DeductionAdvanceSalary}}</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" style="text-align:right;">চিকিৎসা ভাতা: </td>
+                                    <td colspan="2" style="text-align:right;">{{PaySlip.MedicalAllowance}}</td>
+                                    <td colspan="2" style="text-align:right;">রাজস্ব স্ট্যাম্প :</td>
+                                    <td colspan="2" style="text-align:right;">{{PaySlip.DeductionRevenueStamp}}</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" style="text-align:right;">খাদ্য ভাতা : </td>
+                                    <td colspan="2" style="text-align:right;">{{PaySlip.LunchAllowance}}</td>
+                                    <td colspan="2" style="text-align:right;">অনুনোমোদিত ছুটি: </td>
+                                    <td colspan="2" style="text-align:right;">{{PaySlip.DeductionAbsent}}</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" style="text-align:right;">যাতায়াত ভাতা : </td>
+                                    <td colspan="2" style="text-align:right;">{{PaySlip.ConveyanceAllowance}}</td>
+                                    <td colspan="4" style="text-align:right;"></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" style="text-align:right;"><b>মোট উপার্জন : </b></td>
+                                    <td colspan="2" style="text-align:right;"><b>{{PaySlip.GrossSalary}}</b></td>
+                                    <td colspan="2" style="text-align:right;"><b>মোট কর্তন : </b></td>
+                                    <td colspan="2" style="text-align:right;"><b>{{PaySlip.TotalDeduction}}</b></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="8" style="border: none;">&emsp;</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4" rowspan="2" style="border: none;"></td>
+                                    <td colspan="2" rowspan="2"> সর্বমোট প্রদেয়</td>
+                                    <td style="text-align:center;">টাকা</td>
+                                    <td style="text-align:center;">ডলার</td>
+
+                                </tr>
+                                <tr>
+                                    <td style="text-align:right;">{{PaySlip.NetPaymentBDT}}</td>
+                                    <td style="text-align:right;">{{PaySlip.NetPaymentUSD}}</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4" style="border: none; height: 50px;"></td>
+                                    <td colspan="2" style="border: none; text-align: right;">গ্রহণকারীর স্বাক্ষর : </td>
+                                    <td colspan="2" style="border:none;">_______________________</td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="2" style="text-align: center; border: none; height: 90px; vertical-align: bottom; ">
+                                        <span>_______________________</span>
+                                        <p>মানব সম্পদ বিভাগ</p>
+                                    </td>
+                                    <td style="border:none;"></td>
+                                    <td colspan="2" style=" text-align: center; border: none; vertical-align: bottom;">
+                                        <span>_______________________</span>
+                                        <p>অফিসার (হিসাব বিভাগ)</p>
+                                    </td>
+                                    <td style="border:none;"></td>
+                                    <td colspan="2" style=" text-align: center; border: none; vertical-align: bottom;">
+                                        <span>_______________________</span>
+                                        <p>ব্যবস্থাপক (হিসাব ও অর্থ বিভাগ)</p>
+                                    </td>
+                                </tr>
+
+                            </tbody>
+
+                        </table>
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                    </div>
+                    
+                    
+
+                </td>
+            </tr>
+        </tbody>
+        
+    </table>
+</body>
+</html>
+<script>
+
+    jQuery(document).ready(function ($) {
+
+        $(".main-sidebar").attr("hidden", true);
+        $(".main-header").attr("hidden", true);
+        $(".main-footer").attr("hidden", true);
+        $("#Hidebr").attr("hidden", true);
+
+        $("div").removeClass("wrapper");
+        $("div").removeClass("content-wrapper");
+    });
+
+
+    function PrintPdf() {
+        window.print();
+    }
+
+</script>

@@ -1,0 +1,168 @@
+﻿<form name="SystemControlForm" novalidate>
+    <div class="col-md-12">
+        <div class="alert alert-info alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="topInfo"> &nbsp; &#9755; <span style="color:red;">Red Icon</span> Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp; &#9755; Click On A Table Row To Update/Delete</div>
+        </div>
+    </div>
+    <div class="">
+        <div class="col-md-12">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="fa fa-cogs"></i>&nbsp;System Control</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="col-md-4" hidden>
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                <h3 class="panel-title"><i class="fa fa-cog"></i>&nbsp;Maintenance Break</h3>
+                            </div>
+                            <div class="panel-body">
+                                <div class="form-group" ng-class="{ 'has-error' : SystemControlForm.Message.$invalid && SystemControlForm.Message.$touched }" data-toggle="tooltip" data-placement="bottom" title="Message">
+                                    <div class="input-group">
+                                        <textarea type="text" id="txtMessage" style="width:100%" name="Message" class="form-control" ng-model="SystemMaintenance.Message" placeholder="Message" />
+                                        <!--<span class="input-group-addon">--><!--<i class="fa fa-text-width" style="color:black"></i>--><!--</span>-->
+                                        <span class="input-group-addon"><i style="color:black"><b>Message</b></i></span>
+                                    </div>
+                                    <!--<span class="help-block" ng-if="SystemControlForm.Message.$error.required && SystemControlForm.Message.$touched">Message is required</span>-->
+                                    <span class="help-block" ng-if="SystemControlForm.Message.$error.maxlength">100 Character Max</span>
+                                </div>
+                                <div class="form-group" ng-class="{ 'has-error' : SystemControlForm.StartTime.$invalid && SystemControlForm.StartTime.$touched }" data-toggle="tooltip" data-placement="bottom" title="Start Time">
+                                    <div class="input-group">
+                                        <input type="datetime-local" id="txtStartTime" name="StartTime" class="form-control" ng-value="SystemMaintenance.Maintenance_StartTimeStr" ng-model="SystemMaintenance.Maintenance_StartTime" placeholder="StartTime" maxlength="50" ng-maxlength="50" autofocus required>
+                                        <!--<span class="input-group-addon"><i class="fa fa-text-width" style="color:red"></i></span>-->
+                                        <span class="input-group-addon"><i style="color:red"><b>Start Time</b></i></span>
+                                    </div>
+                                    <span class="help-block" ng-if="SystemControlForm.StartTime.$error.required && SystemControlForm.StartTime.$touched">Start Time is required</span>
+
+                                    <span class="help-block" ng-if="SystemControlForm.StartTime.$error.maxlength">50 Character Max</span>
+                                </div>
+                                <div class="form-group" ng-class="{ 'has-error' : SystemControlForm.EndTime.$invalid && SystemControlForm.EndTime.$touched }" data-toggle="tooltip" data-placement="bottom" title="End Time">
+                                    <div class="input-group">
+                                        <input type="datetime-local" id="txtEndTime" name="EndTime" class="form-control" ng-value="SystemMaintenance.Maintenance_EndTimeStr" ng-model="SystemMaintenance.Maintenance_EndTime" placeholder="EndTime" maxlength="50" ng-maxlength="50" autofocus required>
+                                        <!--<span class="input-group-addon"><i class="fa fa-text-width" style="color:red"></i></span>-->
+                                        <span class="input-group-addon"><i style="color:red"><b>End Time</b></i></span>
+                                    </div>
+                                    <span class="help-block" ng-if="SystemControlForm.EndTime.$error.required && SystemControlForm.EndTime.$touched">End Time is required</span>
+
+                                    <span class="help-block" ng-if="SystemControlForm.EndTime.$error.maxlength">50 Character Max</span>
+                                </div>
+                                <div class="input-group">
+                                    <label>Status: </label>
+                                    &nbsp;&nbsp;
+                                    <div class="radio-inline">
+                                        <input type="radio" name="optionsRadios"
+                                               ng-value="true" ng-model="SystemMaintenance.IsActive">
+                                        Active
+                                    </div>
+                                    <div class="radio-inline">
+                                        <input type="radio" name="optionsRadios"
+                                               ng-value="false" ng-model="SystemMaintenance.IsActive"> Inactive
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <br />
+                                    <div class=" row">
+                                        <div class="col-md-6">
+                                            <div class="row">
+                                                <button ng-click="LoggoutAllUser()" class="btn btn-success" ng-disabled="SystemControlForm.$invalid">
+                                                    <i class="fa fa-floppy-o"></i>&nbsp;Loggout All
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="row">
+                                                <button id="Button3" class="btn btn-danger" title="Search" ng-click="resetForm()">
+                                                    <i class="fa fa-refresh"></i>&nbsp;Reset
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                <h3 class="panel-title"><i class="fa fa-cog"></i>&nbsp;Immediate Maintenance Break</h3>
+                            </div>
+                            <div class="panel-body">
+                                <div class="form-group" ng-class="{ 'has-error' : exportInvoiceForm.CheckBox.$invalid && exportInvoiceForm.CheckBox.$touched }" data-toggle="tooltip" data-placement="bottom" title="CheckBox">
+                                    <span><b>Login Mode</b></span>
+                                    <label class="switch">
+                                        <input type="checkbox" ng-model="IsLogout" ng-click="hideButton(); LoggoutAllUserImmediate();">
+                                        <span class="slider round"></span>
+                                    </label>
+                                    <span><b>Logout Mode</b></span>
+                                    <span class="help-block" style="color: red; display: block;" ng-if="exportInvoiceForm.CheckBox.$error.required && exportInvoiceForm.CheckBox.$touched">Invoice No is required</span>
+                                    <span class="help-block" style="color: red; display: block;" ng-if="exportInvoiceForm.CheckBox.$error.maxlength">50 Character Max</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-info">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title"><i class="fa fa-cog"></i>&nbsp;Send Notification</h3>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="form-group" ng-class="{ 'has-error' : SystemControlForm.NotificationMessage.$invalid && SystemControlForm.NotificationMessage.$touched }" data-toggle="tooltip" data-placement="bottom" title="Notification Message">
+                                        <div class="input-group">
+                                            <textarea type="text" id="txtNotificationMessage" style="width:100%" name="NotificationMessage" class="form-control" ng-model="SystemNotification.Message" placeholder="Notification Message" />
+                                            <!--<span class="input-group-addon">--><!--<i class="fa fa-text-width" style="color:black"></i>--><!--</span>-->
+                                            <span class="input-group-addon"><i style="color:black"><b>Message</b></i></span>
+                                        </div>
+                                        <!--<span class="help-block" ng-if="SystemControlForm.Message.$error.required && SystemControlForm.Message.$touched">Message is required</span>-->
+                                        <span class="help-block" ng-if="SystemControlForm.NotificationMessage.$error.maxlength">100 Character Max</span>
+                                    </div>
+                                    <div class="input-group">
+                                        <label>Status: </label>
+                                        &nbsp;&nbsp;
+                                        <div class="radio-inline">
+                                            <input type="radio" name="SystemNotification"
+                                                   ng-value="true" ng-model="SystemNotification.IsActive" ng-change="ChangeId();">
+                                            Active
+                                        </div>
+                                        <div class="radio-inline">
+                                            <input type="radio" name="SystemNotification"
+                                                   ng-value="false" ng-model="SystemNotification.IsActive" ng-change="ChangeId();"> Inactive
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <br />
+                                        <div class=" row">
+                                            <div class="col-md-6">
+                                                <div class="row">
+                                                    <button ng-click="SystemNotificationAllUser()" class="btn btn-success">
+                                                        <i class="fa fa-floppy-o"></i>&nbsp;Send
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <div class="row">
+                                                    <button id="Button3" class="btn btn-danger" title="Search" ng-click="resetForm()">
+                                                        <i class="fa fa-refresh"></i>&nbsp;Reset
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                    
+        </div>
+    </div>
+
+
+</form>

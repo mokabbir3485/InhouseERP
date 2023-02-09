@@ -1,0 +1,420 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title></title>
+
+    <style type="text/css">
+        body {
+            font-family: 'SolaimanLipi', sans-serif;
+            font-size: 8px;
+            line-height: 12px;
+        }
+
+        .rotate-table-grid tr, .rotate-table-grid td {
+           /* border: 1px solid #ddd;*/
+            border: 1px solid;
+            position: relative;
+            /*padding: 15px;*/
+            /*padding-top:5px;*/
+            padding-left: 9px;
+            padding-right: 9px;
+        }
+        .centerNumber {
+            
+            bottom: 25px;
+        }
+        .rotate-table-grid td span {
+            transform-origin: 0 50%;
+            transform: rotate(-90deg);
+            white-space: nowrap;
+            /*display: block;*/
+            position: absolute;
+            bottom: 0;
+            /*vertical-align: middle;*/
+            left: 50%;
+        }
+        .fixed {
+            height: 0;
+            text-align: center !important;
+            padding: 2px;
+        }
+        .header {
+            text-align: center;
+            line-height: 5px;
+        }
+        @page {
+            size: A4 landscape;
+        }
+        .flexcontainer {
+            display: flex;
+            justify-content: space-between;
+        }
+
+
+        /*Signature*/
+        @media screen {
+            div#footer_wrapper {
+                display: none;
+            }
+        }
+
+        @media print {
+            #Source {
+                page-break-after: avoid;
+                page-break-before: avoid;
+            }
+            tfoot {
+                visibility: hidden;
+            }
+            div#footer_wrapper {
+                margin: 0px 2px 0px 7px;
+                position: fixed;
+                bottom: 0;
+            }
+
+            div#footer_content {
+                font-weight: bold;
+            }
+        }
+/**/
+    </style>
+
+</head>
+
+<body>
+    <!--  -->
+    <div id="footer_wrapper">
+        <div id="footer_content">
+
+            <table style="width: 100%;">
+                <tbody>
+                    <tr>
+                        <td ng-hide="WagesSliplist[0].events[0].FirstSignLabel == ''" width="500px" style="text-align:center;">
+                            <div>
+                                <span style="font-size: .9em; text-align: center;"><b>____________________________________________</b></span>
+                                <p style="font-size: 1.5em;text-align: center;"><b>{{WagesSliplist[0].events[0].FirstSignLabel}}</b></p>
+                            </div>
+                        </td>
+                        <td ng-hide="WagesSliplist[0].events[0].SecondSignLabel == ''" width="500px" style="text-align:center;">
+                            <div>
+                                <span style="font-size: .9em; text-align: center;"><b>____________________________________________</b></span>
+                                <p style="font-size: 1.5em;text-align: center;"><b>{{WagesSliplist[0].events[0].SecondSignLabel}}</b></p>
+                            </div>
+                        </td>
+                        <td ng-hide="WagesSliplist[0].events[0].ThirdSignLabel == ''" width="500px" style="text-align:center;">
+                            <div>
+                                <span style="font-size: .9em; text-align: center;"><b>____________________________________________</b></span>
+                                <p style="font-size: 1.5em;text-align: center;"><b>{{WagesSliplist[0].events[0].ThirdSignLabel}}</b></p>
+                            </div>
+                        </td>
+                        <td ng-hide="WagesSliplist[0].events[0].FourthSignLabel == ''" width="500px" style="text-align: center;">
+                            <div>
+                                <span style="font-size: .9em;text-align: center;"><b>____________________________________________</b></span>
+                                <p style="font-size: 1.5em;text-align: center;"><b>{{WagesSliplist[0].events[0].FourthSignLabel}}</b></p>
+                            </div>
+                        </td>
+                        <td ng-hide="WagesSliplist[0].events[0].FifthSignLabel == ''" width="500px" style="text-align: center;">
+                            <div>
+                                <span style="font-size: .9em;text-align: center;"><b>____________________________________________</b></span>
+                                <p style="font-size: 1.5em;text-align: center;"><b>{{WagesSliplist[0].events[0].FifthSignLabel}}</b></p>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <table>
+        <tbody>
+            <tr>
+                <td>
+                    <div class=" hidden-print">
+
+                        <div class="row">
+                            <div class="col-sm-2 col-md-1">
+                                <button type="button"  onclick="document.title = 'Wages Slip ' + getCurrentDateTime(); PrintPdf();"  class="customBtn custmoBtnReset"
+                                        style="border-radius: 3px; margin-bottom: -.9em; margin-top: -15px; padding-bottom: 3px; padding-top: 3px;"
+                                        title="Export to .doc">
+                                    <i class="fa fa-print"></i>&nbsp;Print
+                                </button>
+                            </div>
+
+                            <div class="col-sm-3 col-md-2">
+                                <!--<button type="button" onclick="ExportToDoc();" class="customBtn custmoBtnReset"
+                        style="border-radius: 3px; margin-bottom: -.9em; margin-top: -15px; padding-bottom: 3px; padding-top: 3px;"
+                        title="Export to .doc">
+                    <i class="fa fa-save"></i>&nbsp;Export to .doc
+                </button>-->
+                            </div>
+                        </div>
+                        <hr />
+                    </div>
+                    <div id="Source">
+                        <div style="justify-content: center;align-items: center;">
+                            <div>
+                                <p class="header"><b>রিটেইল টেকনোলজিস লিমিটেড</b></p>
+                                <p class="header"><b>শাখা/বিভাগ: {{WagesSlipReportObj.BranchNameBangla}}</b></p>
+                                <p class="header"><b>বেতন/মজুরী প্রদান রশিদ- {{WagesSlipReportObj.MonthName}} - {{WagesSlipReportObj.YearIdBangla}}</b></p>
+
+                            </div>
+                        </div>
+                        <table id="footer" style="width: 100%;">
+                            <tbody style="left:30px; right: 50px;">
+                                <tr>
+                                    <td style="text-align:right;">
+                                        <div class="footer">
+                                            <span><b>Doc No: {{WagesSlipReportObj.WagesSlipNumber}}; Issue Date: {{currentDatetimeFormated}}</b></span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table class="rotate-table-grid" width="100%" border="1">
+                            <tr>
+                                <td class="rotating SN" rowspan="2"><span>ক্রমিক নং</span></td>
+                                <td class="rotating SN" rowspan="2"><span>শ্রমিক রেজি: ক্রমিক নং</span></td>
+                                <td class="rotating SN" rowspan="2">শ্রমিকের নাম</td>
+                                <td class="rotating" rowspan="2"><span>পদবি</span></td>
+                                <td class="rotating" rowspan="2">চাকরিতে <br /> যোগদানের তারিখ</td>
+                                <td class="rotating" rowspan="2"><span>সর্বশেষ কাজের তারিখ</span></td>
+                                <td class="rotating" rowspan="2"><span>মোট বেতন/মজুরী</span></td>
+                                <td class="fixed" colspan="5">হাজিরা সংক্রান্ত তথ্য</td>
+                                <td class="fixed" colspan="5">ছুটি সংক্রান্ত তথ্য</td>
+                                <td class="rotating" rowspan="2"><span>পরিশোধিত মোট হাজিরা</span></td>
+                                <td class="rotating" rowspan="2"><span>অনুপস্থিতি</span></td>
+                                <td class="fixed" colspan="5">বেতন/মজুরীর উপাদান </td>
+                                <td class="rotating" rowspan="2"><span>অনুপস্থিতির জন্য<br /> কর্তনকৃত টাকা</span></td>
+                                <td class="rotating" rowspan="2"><span>সমন্বয়</span></td>
+                                <td class="rotating" rowspan="2"><span>তহবিল</span></td>
+                                <td class="rotating" rowspan="2"><span>প্রাপ্য বেতন/মজুরী</span></td>
+                                <td class="fixed" colspan="3">অতিরিক্ত কর্ম ঘণ্টা</td>
+                                <td class="rotating" rowspan="2"><span>১০০% উপস্থিতির<br /> জন্য-হাজিরা বোনাস</span></td>
+                                <td class="rotating" rowspan="2"><span>মোট প্রদেয় বেতন/মজুরী</span></td>
+                                <td class="rotating" rowspan="2"><span>রাজস্ব কর্তন</span></td>
+                                <td class="rotating" rowspan="2"><span>নীট বেতন/মজুরী</span></td>
+                                <td class="rotating" rowspan="2" ng-hide="WagesSlipReportObj.GradeId == 2"><span>নীট বেতন ডলার</span></td>
+                                <td class="rotating signature" rowspan="2">গ্রহণকারীর স্বাক্ষর</td>
+                            </tr>
+                            <tr>
+                                <td class="rotating"><span>মাসের দিন</span></td>
+                                <td class="rotating"><span>কার্যকাল</span></td>
+                                <td class="rotating"><span>কর্ম দিবস</span></td>
+                                <td class="rotating"><span>উপস্থিতি</span></td>
+                                <td class="rotating"><span>সাপ্তাহিক ছুটি</span></td>
+                                <td class="rotating"><span>উৎসব ছুটি</span></td>
+                                <td class="rotating"><span>নৈমিত্তিক ছুটি</span></td>
+                                <td class="rotating"><span>অসুস্থতাজনিত ছুটি</span></td>
+                                <td class="rotating"><span>অর্জিত ছুটি</span></td>
+                                <td class="rotating"><span>বিকল্প ছুটি</span></td>
+                                <td class="rotating"><span>মূলবেতন/মজুরী</span></td>
+                                <td class="rotating"><span>বাড়ি ভাড়া ভাতা</span></td>
+                                <td class="rotating"><span>চিকিৎসা ভাতা</span></td>
+                                <td class="rotating"><span>যাতায়াত ভাতা</span></td>
+                                <td class="rotating"><span>খাদ্য ভাতা</span></td>
+                                <td class="rotating"><span>অতিরিক্ত কর্ম ঘণ্টা</span></td>
+                                <td class="rotating"><span>অতিরিক্ত কর্ম ঘণ্টার হার</span></td>
+                                <td class="rotating"><span>অতিরিক্ত কর্ম ঘণ্টার টাকা</span></td>
+                            </tr>
+                            <tbody ng-repeat="WagesSlip in WagesSliplist">
+
+                                <tr>
+
+                                    <td class="head" colspan="39" style="background-color: gray;" ng-bind="WagesSlip.SectionName"></td>
+                                </tr>
+                                <tr ng-repeat="aWagesSlip in WagesSlip.events">
+                                    <td class="rotatingData SN" id="1" ng-bind="aWagesSlip.SN"></td>
+                                    <td class="rotatingData SN" id="2" ng-bind="aWagesSlip.EmployeeCode"></td>
+                                    <td class="rotatingData SN" id="3" ng-bind="aWagesSlip.EmployeeName"></td>
+                                    <td class="rotatingData" id="4"> <span ng-bind="aWagesSlip.DesignationName"></span></td>
+                                    <td class="rotatingData" id="5">{{aWagesSlip.JoiningDate}}</td>
+                                    <td class="rotatingData" id="6"> <span ng-bind="aWagesSlip.FinishDate"></span></td>
+                                    <td class="rotatingData" id="7"> <span ng-bind="aWagesSlip.GrossSalary"></span></td>
+                                    <td class="rotatingData" id="8"><span ng-bind="aWagesSlip.TotalDays"></span></td>
+                                    <td class="rotatingData" id="9"><span ng-bind="aWagesSlip.TotalDays"></span></td>
+                                    <td class="rotatingData" id="10"><span ng-bind="aWagesSlip.WorkingDays"></span></td>
+                                    <td class="rotatingData" id="11"><span ng-bind="aWagesSlip.Attendance"></span></td>
+                                    <td class="rotatingData" id="12"><span ng-bind="aWagesSlip.WeeklyHolidays"></span></td>
+                                    <td class="rotatingData" id="13"><span ng-bind="aWagesSlip.FestivalHolidays"></span></td>
+                                    <td class="rotatingData" id="14"><span ng-bind="aWagesSlip.CasualLeave"></span></td>
+                                    <td class="rotatingData" id="15"><span ng-bind="aWagesSlip.SickLeave"></span></td>
+                                    <td class="rotatingData" id="16"><span ng-bind="aWagesSlip.EarnLeave"></span></td>
+                                    <td class="rotatingData" id="17"><span ng-bind="aWagesSlip.CompensatoryLeave"></span></td>
+                                    <td class="rotatingData" id="18"><span ng-bind="aWagesSlip.TotalPaidAttendence"></span></td>
+                                    <td class="rotatingData" id="19"><span ng-bind="aWagesSlip.AbsentDays">}</span></td>
+                                    <td class="rotatingData" id="20"><span ng-bind="aWagesSlip.BasicSalary"></span></td>
+                                    <td class="rotatingData" id="21"><span ng-bind="aWagesSlip.HouseRent"></span></td>
+                                    <td class="rotatingData" id="22"><span ng-bind="aWagesSlip.MedicalAllowance"></span></td>
+                                    <td class="rotatingData" id="23"><span ng-bind="aWagesSlip.ConveyanceAllowance"></span></td>
+                                    <td class="rotatingData" id="24"><span ng-bind="aWagesSlip.LunchAllowance"></span></td>
+                                    <td class="rotatingData" id="25"><span ng-bind="aWagesSlip.DeductionAbsent"></span></td>
+                                    <td class="rotatingData" id="26"><span ng-bind="aWagesSlip.OtherAddition"></span></td>
+                                    <td class="rotatingData" id="27"><span ng-bind="aWagesSlip.DeductionProvFund"></span></td>
+                                    <td class="rotatingData" id="28"><span ng-bind="aWagesSlip.ReceivableSalary"></span></td>
+                                    <td class="rotatingData" id="29"><span ng-bind="aWagesSlip.OtHrs"></span></td>
+                                    <td class="rotatingData" id="30"><span ng-bind="aWagesSlip.OtRate"></span></td>
+                                    <td class="rotatingData" id="31"><span ng-bind="aWagesSlip.OtAmount"></span></td>
+                                    <td class="rotatingData" id="32"><span ng-bind="aWagesSlip.AttendanceBonus"></span></td>
+                                    <td class="rotatingData" id="33"><span ng-bind="aWagesSlip.TotalPayableSalary"></span></td>
+                                    <td class="rotatingData" id="34"><span ng-bind="aWagesSlip.DeductionTDS"></span></td>
+                                    <td class="rotatingData" id="35"><span ng-bind="aWagesSlip.NetPaymentBDT"></span></td>
+                                    <td class="rotatingData" id="36" ng-hide="WagesSlipReportObj.GradeId == 2"><span ng-bind="aWagesSlip.NetPaymentUSD"></span></td>
+                                    <td class="rotatingData signature" id="37"></td>
+                                </tr>
+                                <tr ng-repeat="TotalWagesSlip in WagesSlip.events |limitTo:1">
+                                    <td class="head" colspan="32" style="text-align: right"><b>Total =</b></td>
+                                    <td class="head" ng-bind="TotalWagesSlip.SumOfTotalPayableSalary"></td>
+                                    <td class="head"></td>
+                                    <td class="head" ng-bind="TotalWagesSlip.SumOfNetPaymentBDT"></td>
+                                    <td class="head" ng-bind="TotalWagesSlip.SumOfNetPaymentUSD" ng-hide="WagesSlipReportObj.GradeId == 2"></td>
+                                    <td class="head signature"></td>
+
+                                </tr>
+                            </tbody>
+                            <tr ng-repeat="GrandWagesSlip in $WagesSliplist | limitTo:1">
+                                <td class="head" colspan="6" style="text-align: right"><b>Grand Total =</b></td>
+                                <td class="head" ng-bind="GrandWagesSlip.GrandGrossSalary"></td>
+                                <td class="head" colspan="17" style="text-align: right"></td>
+                                <td class="head" ng-bind="GrandWagesSlip.GrandDeductionAbsent"></td>
+                                <td class="head" style="text-align: right"></td>
+                                <td class="head" ng-bind="GrandWagesSlip.GrandDeductionProvFund"></td>
+                                <td class="head" colspan="5" style="text-align: right"></td>
+                                <td class="head" ng-bind="GrandWagesSlip.GrandTotalPayableSalary"></td>
+                                <td class="head"></td>
+                                <td class="head" ng-bind="GrandWagesSlip.GrandNetPaymentBDT"></td>
+                                <td class="head" ng-hide="WagesSlipReportObj.GradeId == 2" ng-bind="GrandWagesSlip.GrandNetPaymentUSD"></td>
+                                <td class="head signiture"></td>
+
+                            </tr>
+
+                        </table>
+
+                    </div>
+                    
+                </td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td>
+                    <br />
+                    <br />
+                    <br />
+                    <div>
+                        <table style="width: 100%;">
+                            <tbody>
+                                <tr class="flexcontainer">
+                                    <td ng-hide="WagesSliplist[0].events[0].FirstSignLabel == ''">
+                                        <div>
+                                            <span style="font-size: .9em; text-align: center;"><b>____________________________________________</b></span>
+                                            <p style="font-size: 1.5em;text-align: center;"><b>{{WagesSliplist[0].events[0].FirstSignLabel}}</b></p>
+                                        </div>
+                                    </td>
+                                    <td ng-hide="WagesSliplist[0].events[0].SecondSignLabel == ''">
+                                        <div>
+                                            <span style="font-size: .9em;text-align: center;"><b>____________________________________________</b></span>
+                                            <p style="font-size: 1.5em;text-align: center;"><b>{{WagesSliplist[0].events[0].SecondSignLabel}}</b></p>
+                                        </div>
+                                    </td>
+                                    <td ng-hide="WagesSliplist[0].events[0].ThirdSignLabel == ''">
+                                        <div>
+                                            <span style="font-size: .9em; text-align: center;"><b>____________________________________________</b></span>
+                                            <p style="font-size: 1.5em;text-align: center;"><b>{{WagesSliplist[0].events[0].ThirdSignLabel}}</b></p>
+                                        </div>
+                                    </td>
+                                    <td ng-hide="WagesSliplist[0].events[0].FourthSignLabel == ''">
+                                        <div>
+                                            <span style="font-size: .9em;text-align: center;"><b>____________________________________________</b></span>
+                                            <p style="font-size: 1.5em;text-align: center;"><b>{{WagesSliplist[0].events[0].FourthSignLabel}}</b></p>
+                                        </div>
+                                    </td>
+                                    <td ng-hide="WagesSliplist[0].events[0].FifthSignLabel == ''">
+                                        <div>
+                                            <span style="font-size: .9em;text-align: center;"><b>____________________________________________</b></span>
+                                            <p style="font-size: 1.5em;text-align: center;"><b>{{WagesSliplist[0].events[0].FifthSignLabel}}</b></p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <!--<table style="width: 100%;">
+                            <tbody>
+                                <tr class="flexcontainer">
+                                    <td ng-hide="WagesSliplist[0].events[0].FirstSignLabel == ''">
+                                        <div>
+                                            <span style="font-size: .9em; text-align: center;"><b>____________________________________________</b></span>
+                                            <p style="font-size: 1.5em;text-align: center;"><b>Prepared by Admin & Accounts</b></p>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div>
+                                            <span style="font-size: .9em;text-align: center;"><b>____________________________________________</b></span>
+                                            <p style="font-size: 1.5em;text-align: center;"><b>Manager Accounts & Finance</b></p>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div>
+                                            <span style="font-size: .9em; text-align: center;"><b>____________________________________________</b></span>
+                                            <p style="font-size: 1.5em;text-align: center;"><b>GM Operation</b></p>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div>
+                                            <span style="font-size: .9em;text-align: center;"><b>____________________________________________</b></span>
+                                            <p style="font-size: 1.5em;text-align: center;"><b>Managing Director</b></p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>-->
+                    </div>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+</body>
+</html>
+<script>
+    $(function () {
+        var header_height = 0;
+        $('.rotate-table-grid td span').each(function () {
+            if ($(this).outerWidth() > header_height) header_height = $(this).outerWidth();
+        });
+
+        $('.rotate-table-grid td').height(header_height);
+
+        $('.fixed').css('height', '');
+        $('.head').css('height', '');
+        $('.head').css('padding', '2px');
+        $('.rotating').css('height', '92px');
+        $('.rotating').css('width', '25px');
+        //$('.rotatingData').css('height', '65px');
+        $('.rotatingData').css('height', '75px');
+        $('.rotating').css('bottom', '');
+        $('.rotatingData').css('bottom', '');
+
+        $('.SN').css('padding', '5px');
+        $('.total').css('padding', '5px');
+        $('.rotating').css('text-align', 'center !important');
+        $('.rotatingData').css('text-align', 'center !important');
+        $('.signature').css('width', '120px');
+    });
+
+
+    jQuery(document).ready(function ($) {
+
+        $(".main-sidebar").attr("hidden", true);
+        $(".main-header").attr("hidden", true);
+        $(".main-footer").attr("hidden", true);
+        $("#Hidebr").attr("hidden", true);
+
+        $("div").removeClass("wrapper");
+        $("div").removeClass("content-wrapper");
+    });
+
+
+    function PrintPdf() {
+        window.print();
+    }
+
+</script>
